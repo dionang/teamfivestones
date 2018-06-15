@@ -2,14 +2,10 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"   
 "http://struts.apache.org/dtds/struts-2.1.dtd">  
 <struts>  
-  
-  
-<package name="default" extends="tiles-default" >  
-  
-<action name="login" class="action.login">  
-<result name="success" type="tiles">login-success</result>  
-<result name="error" type="tiles">login-error</result>  
-</action>  
-   
-</package>  
+	<package name="default" extends="tiles-default" >    
+	<action name="login" class="action.login">  
+	<result name="success">/dashboard.jsp</result>  
+	<result name="error" type="tiles">login-error</result>  
+	</action>  
+	</package>  
 </struts>     
