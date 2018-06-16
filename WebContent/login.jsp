@@ -71,7 +71,7 @@
                 <form name="loginForm" action="login" method="post">
                     <div class="input-group " >
                       <span class="input-group-addon" ><i class="glyphicon glyphicon-user"></i></span>
-                      <input id="email" type="text" class="form-control" name="user" placeholder="User Name" required="true">
+                      <input id="email" type="text" class="form-control" name="username" placeholder="User Name" required="true">
                     </div>
                     <br>
                     <div class="input-group">

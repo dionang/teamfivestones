@@ -5,7 +5,7 @@
 	<package name="default" extends="tiles-default" >    
 		<action name="login" class="action.LoginAction">  
 			<result name="success">/containers/dashboard.jsp</result>  
-			<result name="error" type="tiles">login-error</result>  
+			<result name="error">index.jsp</result>  
 		</action>  
 	</package>  
 </struts>     

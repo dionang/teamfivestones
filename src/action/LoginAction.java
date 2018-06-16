@@ -1,17 +1,20 @@
 package action;
 
+import models.AccountDAO;
+
 public class LoginAction {
 
-	private String name,password;  
+	private String username;
+	private String password;  
 	  
 	//getters and setters  
 	  
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -22,8 +25,10 @@ public class LoginAction {
 		this.password = password;
 	}
 
-	public String execute(){  
-		if(password.equals("admin")){  
+	public String execute() throws Exception{  
+		System.out.println(password);
+		System.out.println(AccountDAO.authenticate(username, password));
+		if(AccountDAO.authenticate(username, password)){  
 		    return "success";  
 		}  
 		else{  
