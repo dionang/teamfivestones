@@ -1,11 +1,23 @@
 package action;
 
+import org.apache.struts2.interceptor.SessionAware;
+import com.opensymphony.xwork2.ActionSupport;
+
+import entities.Account;
+
+import java.util.Map;
 import models.AccountDAO;
 
-public class LoginAction {
+public class LoginAction extends ActionSupport implements SessionAware {
 
 	private String username;
-	private String password;  
+	private String password;
+	private Map<String, Object> session;
+	
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
+	}  
 	  
 	//getters and setters  
 	  
@@ -25,14 +37,14 @@ public class LoginAction {
 		this.password = password;
 	}
 
-	public String execute() throws Exception{  
-		System.out.println(password);
-		System.out.println(AccountDAO.authenticate(username, password));
-		if(AccountDAO.authenticate(username, password)){  
+	public String execute() {  
+		Account account = AccountDAO.login(username, password);
+		
+		if(account != null){  
+			session.put("account", account);
 		    return "success";  
-		}  
-		else{  
+		} else {  
 		    return "error";  
 		}  
-	}  
+	}
 }  

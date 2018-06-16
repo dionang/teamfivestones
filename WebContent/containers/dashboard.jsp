@@ -1,3 +1,7 @@
+<%@ page import="entities.Account" %>
+<%
+	Account account = (Account) session.getAttribute("account");
+%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -20,7 +24,7 @@
                         <li class="">      
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <img src="./assets/images/user.png" style="height:50px;weight:50px" alt="" class="img-circle profile_img"> 
-                                <label style="color:white">John Doe</label>
+                                <label style="color:white"><%=account.getName() %></label>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
