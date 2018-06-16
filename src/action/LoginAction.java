@@ -4,6 +4,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ActionSupport;
 
 import entities.Account;
+import entities.Developer;
 
 import java.util.Map;
 import models.AccountDAO;
@@ -40,8 +41,11 @@ public class LoginAction extends ActionSupport implements SessionAware {
 	public String execute() {  
 		Account account = AccountDAO.login(username, password);
 		
-		if(account != null){  
+		if(account != null){
 			session.put("account", account);
+			if(account instanceof Developer) {
+				return "developer"; 
+			}
 		    return "success";  
 		} else {  
 		    return "error";  

@@ -2,6 +2,7 @@ package models;
 
 import java.sql.*;
 import entities.Account;
+import entities.Developer;
 
 public class AccountDAO {
 	public static Account login(String username, String enteredPassword) {
@@ -23,7 +24,12 @@ public class AccountDAO {
             	String pwHash = rs.getString("passwordHash");
                 
             	if(pwHash.equals(enteredPassword)) {
-            		return new Account(accountId, companyId, accountType, name);
+            		if (accountType.equals("developer")) {
+            			return new Developer(accountId, companyId, accountType, name);
+            		} else {
+            			return new Account(accountId, companyId, accountType, name);
+            		}
+            		
             	} else {
             		return null;
             	}
