@@ -1,6 +1,6 @@
 package action;
 
-public class login {
+public class LoginAction {
 
 	private String name,password;  
 	  

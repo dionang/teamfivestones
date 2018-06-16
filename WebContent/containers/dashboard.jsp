@@ -6,20 +6,20 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="css/dashboard.css">
+        <link rel="stylesheet" href="./assets/css/dashboard.css">
         <title>Dashboard</title>
     </head>
     <body>
         <div class="container" style="width:100%">
             <div class="row" style="background-color:#393254;border:1px solid black;height:100px">
                 <div class="col-lg-3">
-                    <img src="image/logo.png" />
-                </div>
+                    <img src="./assets/images/logo.png" />
+            	</div>
                 <div>
                     <ul class="nav navbar-nav navbar-right" style="margin-right:30px">
                         <li class="">      
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <img src="image/user.png" style="height:50px;weight:50px" alt="" class="img-circle profile_img"> 
+                                <img src="./assets/images/user.png" style="height:50px;weight:50px" alt="" class="img-circle profile_img"> 
                                 <label style="color:white">John Doe</label>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
@@ -201,11 +201,11 @@
     </div>
     
     <!-- jQuery -->
-    <script src="js/jquery.min.js"></script>
+    <script src="./assets/js/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
     <!-- Chart.js -->
-    <script src="js/Chart.min.js"></script>
-    <script src="js/dashboard.js"></script> 
+    <script src="./assets/js/chart.min.js"></script>
+    <script src="./assets/js/dashboard.js"></script> 
     </body>
 </html>
