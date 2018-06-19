@@ -2,7 +2,7 @@ package scube.dao;
 
 import java.sql.*;
 import org.mindrot.jbcrypt.BCrypt;
-import scube.entities.Account;
+import scube.entities.*;
 
 public class AccountDAO {
     public static Account login(String username, String enteredPassword) {
@@ -22,11 +22,15 @@ public class AccountDAO {
                 String accountType = rs.getString("accountType");
                 String name = rs.getString("name");
                 String passwordHash = rs.getString("passwordHash");
-                System.out.println(enteredPassword);
-                System.out.println(passwordHash);
-                System.out.println(passwordHash.length());
 
                 if(BCrypt.checkpw(enteredPassword, passwordHash)) {
+                    switch(accountType){
+                        case "admin":       return new Account(accountId, companyId, accountType, username, name);
+                        case "company":     return new CompanyAccount(accountId, companyId, accountType, username, name);  
+                        case "developer":   return new Developer(accountId, companyId, accountType, username, name);  
+                        case "manager":     return new Manager(accountId, companyId, accountType, username, name);  
+                        case "user":        return new User(accountId, companyId, accountType, username, name);  
+                    }
                     return new Account(accountId, companyId, accountType, username, name);
                 } else {
                     return null;
