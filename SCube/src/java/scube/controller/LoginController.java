@@ -19,7 +19,7 @@ import scube.entities.*;
  *
  * @author Dion
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+@WebServlet(name = "LoginController", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
 
     /**
@@ -40,10 +40,14 @@ public class LoginController extends HttpServlet {
         Account account = AccountDAO.login(username, password);
         if (account != null) {
             session.setAttribute("account", account);
-            if(account instanceof Developer){
+            if(account instanceof CompanyAccount){
+                response.sendRedirect("companyHome.jsp");
+            } else if (account instanceof Developer){
                 response.sendRedirect("devHome.jsp");
             } else if (account instanceof Manager) {
                 response.sendRedirect("managerHome.jsp");
+            } else if (account instanceof User) {
+                response.sendRedirect("userHome.jsp");
             } else {
                 response.sendRedirect("dashboard.jsp");
             }

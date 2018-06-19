@@ -1,9 +1,7 @@
 <%@ include file="protect.jsp" %>
-<%@ page import="scube.entities.Account" %>
-<%@ page import="scube.entities.Manager" %>
+<%@ page import="scube.entities.CompanyAccount" %>
 <%
-    Account account = (Account) session.getAttribute("account");
-    if (!(account instanceof Manager)){
+    if (!(session.getAttribute("account") instanceof CompanyAccount)){
         response.sendRedirect("/");
         return;
     }
@@ -15,7 +13,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/assets/css/dashboard.css">
-        <title>Manager Home</title>
+        <title>Company Home</title>
     </head>
 
     <body class="nav-md">
@@ -25,18 +23,12 @@
                 <jsp:include page="sidebar.jsp"></jsp:include>
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <!-- page content -->
-                <div class="right_col">
-                    Create User Account<br/>
-                    <form action="/createUser" method="post">
-                        <input class="form-control" name="name" placeholder="Enter your name" required="" />
-                        <input class="form-control" name="username" placeholder="Enter your username" required="" />
-                        <input type="password" class="form-control" name="password" placeholder="Enter your password" required=""/>     		  
+                
+                <!-- set datasource -->
+                
+                <!-- set datasource -->
 
-                        <input type="hidden" name="companyId" value="<%= account.getCompanyId() %>">
-                        <input type="hidden" name="operation" value="createUser"/>
-                        <input type="submit" value="Create User"/>
-                    </form>
-                </div>
+                
                 <!-- page content -->
             </div>
         </div>

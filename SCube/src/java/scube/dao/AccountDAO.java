@@ -5,6 +5,36 @@ import org.mindrot.jbcrypt.BCrypt;
 import scube.entities.*;
 
 public class AccountDAO {
+    //Create operations
+    public static boolean addAccount(String username, String password, int companyId,
+            String accountType, String name) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO account VALUES (?,?,?,?,?,?)");
+            stmt.setNull(1, Types.INTEGER);
+            stmt.setString(2, username);
+            stmt.setString(3, passwordHash);
+            stmt.setInt(4, companyId);
+            stmt.setString(5, accountType);
+            stmt.setString(6, name);
+            
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    // Read operations
     public static Account login(String username, String enteredPassword) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -44,25 +74,67 @@ public class AccountDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
-    
-    public static boolean addAccount(String username, String password, int companyId,
-            String accountType, String name) {
+
+    public static Account getAccountById(int accountId) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
-        String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO account VALUES (?,?,?,?,?,?)");
-            stmt.setNull(1, Types.INTEGER);
-            stmt.setString(2, username);
-            stmt.setString(3, passwordHash);
-            stmt.setInt(4, companyId);
-            stmt.setString(5, accountType);
-            stmt.setString(6, name);
-            
+            stmt = conn.prepareStatement("SELECT * FROM account WHERE accountId = ?");
+            stmt.setInt(1, accountId);
+            rs = stmt.executeQuery();
+
+            if(rs.next()){
+                int companyId = rs.getInt("companyId");
+                String accountType = rs.getString("accountType");
+                String username = rs.getString("username");
+                String name = rs.getString("name");
+                return new Account(accountId, companyId, accountType, username, name);
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    // Update operations
+    public static boolean changePassword(int accountId, String newPassword) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            String passwordHash = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("UPDATE account SET passwordHash = ? WHERE accountId = ?");
+            stmt.setString(1, passwordHash);            
+            stmt.setInt(2, accountId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    // Delete operations
+    public static boolean deleteAccount(int accountId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM account WHERE accountId = ?");
+            stmt.setInt(1, accountId);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {

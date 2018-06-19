@@ -1,5 +1,5 @@
 <%@page import="scube.entities.Account"%>
-<div class="top_nav col-md-9">
+<div class="top_nav">
     <div class="nav_menu">
         <nav>
             <div class="nav toggle">

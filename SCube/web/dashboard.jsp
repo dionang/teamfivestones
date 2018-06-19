@@ -16,56 +16,8 @@
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
-                <div class="col-md-3 left_col">
-                    <div class="left_col scroll-view">
-                        <div class="navbar nav_title" id="logo" style="border: 0;">
-                            <a href="" class="site_title"><img src="/assets/images/logo.png" style="height:90px;width:200px"></a>
-                        </div>
-                        <div class="navbar nav_title" id="logo2" style="border: 0;display:none;">
-                            <a href="" class="site_title"><img src="/assets/images/logo1_1.png" style="height:80px;width:50px;"></a>
-                        </div>
-                        <div class="clearfix"></div><br />
-                        <!-- sidebar menu -->
-                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                            <div class="menu_section">
-                                <ul class="nav side-menu" id="options">
-                                    <li><a><i class="fa fa-home"></i> Dashboard</a></li>
-                                    <li><a><i class="fa fa-home"></i> Report<span class="fa fa-chevron-down"></span></a>
-                                        <ul class="nav child_menu">
-                                            <li><a href="">Template</a></li>
-                                            <li><a href="">Past</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>    
-                </div>
-
-                <!-- top navigation -->
-                <div class="top_nav col-md-9">
-                    <div class="nav_menu">
-                        <nav>
-                            <div class="nav toggle">
-                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                            </div>
-
-                            <ul class="nav navbar-nav navbar-right">
-                                <li>
-                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <img src="/assets/images/user.png" alt=""><%= account.getName() %>
-                                        <span class=" fa fa-angle-down"></span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                        <li><a href="javascript:;"> Profile</a></li>
-                                        <li><a href="logout.jsp"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <!-- top navigation -->
+                <jsp:include page="sidebar.jsp"></jsp:include>
+                <jsp:include page="navbar.jsp"></jsp:include>
 
                 <!-- page content -->
                 <div class="right_col" role="main" >

@@ -1,11 +1,12 @@
 <%@ include file="protect.jsp" %>
+<%@ page import="scube.entities.Account" %>
 <%@ page import="scube.entities.Developer" %>
 <%
-    if (!(session.getAttribute("account") instanceof Developer)){
+    Account account = (Account) session.getAttribute("account");
+    if (!(account instanceof Developer)){
         response.sendRedirect("/");
         return;
     }
-    Developer dev = (Developer) session.getAttribute("account");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -24,7 +25,19 @@
                 <jsp:include page="sidebar.jsp"></jsp:include>
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <!-- page content -->
-               
+                
+                <!-- set datasource -->
+                <div class="right_col">
+                    <form action="/setDatasource">
+                        Datasource URL: <input name="datasource"/>
+                        <input type="hidden" name="companyId" value="<%= account.getCompanyId() %>">
+                        <input type="hidden" name="operation" value="setDatasource"/>
+                        <input type="submit" value="Set Datasource"/>
+                    </form>
+                </div>
+                <!-- set datasource -->
+
+                
                 <!-- page content -->
             </div>
         </div>

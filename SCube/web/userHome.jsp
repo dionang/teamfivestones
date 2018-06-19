@@ -5,7 +5,6 @@
         response.sendRedirect("/");
         return;
     }
-    User user = (User) session.getAttribute("account");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -24,7 +23,10 @@
                 <jsp:include page="sidebar.jsp"></jsp:include>
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <!-- page content -->
-               
+                <div class="right_col">
+                    Generate Report<br/>
+                    <!-- To complete-->
+                </div>
                 <!-- page content -->
             </div>
         </div>
