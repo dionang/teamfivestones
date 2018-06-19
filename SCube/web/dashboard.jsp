@@ -1,13 +1,13 @@
+<%@ include file="protect.jsp" %>
 <%@ page import="scube.entities.Account" %>
 <%
     Account account = (Account) session.getAttribute("account");
 %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/assets/css/dashboard.css">
         <title>Dashboard</title>
@@ -53,12 +53,12 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li>
                                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <img src="/assets/images/user.png" alt="">John Doe
+                                        <img src="/assets/images/user.png" alt=""><%= account.getName() %>
                                         <span class=" fa fa-angle-down"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                                         <li><a href="javascript:;"> Profile</a></li>
-                                        <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                        <li><a href="logout.jsp"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -248,17 +248,6 @@
         <script src="/assets/js/chart.min.js"></script>
         <script src="/assets/js/dashboard.js"></script> 
 
-        <script>
-            $('#options li').click(function () {
-                //console.log('hover over');
-                $(this).find('ul').toggle();
-            }),
-            $('#menu_toggle').click(function () {
-                $('#logo').toggle();
-                $('#logo2').toggle();
-
-                $('body').hasClass("nav-md") ? ($('#sidebar-menu').find("li.active ul").hide(), $('#sidebar-menu').find("li.active").addClass("active-sm").removeClass("active")) : ($('#sidebar-menu').find("li.active-sm ul").show(), $('#sidebar-menu').find("li.active-sm").addClass("active").removeClass("active-sm")), $('body').toggleClass("nav-md nav-sm")
-            });
-        </script>
+        <script>initAllCharts();</script>
     </body>
 </html>

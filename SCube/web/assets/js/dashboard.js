@@ -1,28 +1,42 @@
 $(document).ready(function () {
-	$(".collapse-link").on("click", function () {
+    // Collapsible charts
+    $(".collapse-link").on("click", function () {
         var a = $(this).closest(".x_panel"),
             b = $(this).find("i"), 
             c = a.find(".x_content");
             a.attr("style") ? c.slideToggle(200, function () {
             a.removeAttr("style")
         }) : (c.slideToggle(200), a.css("height", "auto")), b.toggleClass("fa-chevron-up fa-chevron-down")
-    }), 
-	$(".close-link").click(function () {
+    });
+    $(".close-link").click(function () {
         var a = $(this).closest(".x_panel");
         a.remove();
-	})
-	
-	//initialize charts
-	initLineChart();
-	initBarChart();
-	initDoughnutChart();
-	initRadarChart();
-	initPolarChart();
-	initPieChart();
+    });
+    
+    // Toggle sidebar
+    $('#options li').click(function () {
+        $(this).find('ul').toggle();
+    });
+    
+    $('#menu_toggle').click(function () {
+        $('#logo').toggle();
+        $('#logo2').toggle();
+
+        $('body').hasClass("nav-md") ? ($('#sidebar-menu').find("li.active ul").hide(), $('#sidebar-menu').find("li.active").addClass("active-sm").removeClass("active")) : ($('#sidebar-menu').find("li.active-sm ul").show(), $('#sidebar-menu').find("li.active-sm").addClass("active").removeClass("active-sm")), $('body').toggleClass("nav-md nav-sm")
+    });
 })
 
+function initAllCharts(){
+    initLineChart();
+    initBarChart();
+    initDoughnutChart();
+    initRadarChart();
+    initPolarChart();
+    initPieChart();
+}
+    
 function initLineChart(){
-	var ctx = document.getElementById('lineChart').getContext('2d');
+    var ctx = document.getElementById('lineChart').getContext('2d');
     ctx.canvas.width = 1200;
     ctx.canvas.height = 200;
     var chart = new Chart(ctx, {

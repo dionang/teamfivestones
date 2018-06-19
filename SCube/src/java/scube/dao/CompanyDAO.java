@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CompanyDAO {
-	public static void setDatasource(String datasourceUrl, int companyId) {
+	public static boolean setDatasource(String datasourceUrl, int companyId) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -17,9 +17,10 @@ public class CompanyDAO {
             stmt.setString(1, datasourceUrl);
             stmt.setInt(2, companyId);
             stmt.executeUpdate();
-    
+            return true;
         } catch (SQLException e) {
-            
+            e.printStackTrace(System.out);
+            return false;
         } finally {
             ConnectionManager.close(conn, stmt, rs);
         }

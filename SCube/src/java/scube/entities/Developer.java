@@ -5,6 +5,8 @@
  */
 package scube.entities;
 
+import scube.dao.CompanyDAO;
+
 /**
  *
  * @author Dion
@@ -14,5 +16,8 @@ public class Developer extends Account {
         super(accountId, companyId, accountType, username, name);
     }
     
-    
+    public boolean setDatasource(String datasourceUrl) {
+        boolean status = CompanyDAO.setDatasource(datasourceUrl, getCompanyId());
+        return status;
+    }
 }

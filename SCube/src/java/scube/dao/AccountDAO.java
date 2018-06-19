@@ -25,13 +25,12 @@ public class AccountDAO {
 
                 if(BCrypt.checkpw(enteredPassword, passwordHash)) {
                     switch(accountType){
-                        case "admin":       return new Account(accountId, companyId, accountType, username, name);
-                        case "company":     return new CompanyAccount(accountId, companyId, accountType, username, name);  
+                        case "company"  :   return new CompanyAccount(accountId, companyId, accountType, username, name);  
                         case "developer":   return new Developer(accountId, companyId, accountType, username, name);  
-                        case "manager":     return new Manager(accountId, companyId, accountType, username, name);  
-                        case "user":        return new User(accountId, companyId, accountType, username, name);  
+                        case "manager"  :   return new Manager(accountId, companyId, accountType, username, name);  
+                        case "user"     :   return new User(accountId, companyId, accountType, username, name);  
+                        default         :   return new Account(accountId, companyId, accountType, username, name);
                     }
-                    return new Account(accountId, companyId, accountType, username, name);
                 } else {
                     return null;
                 }

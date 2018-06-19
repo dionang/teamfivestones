@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import scube.dao.AccountDAO;
-import scube.entities.Account;
+import scube.entities.*;
 
 /**
  *
@@ -40,9 +40,15 @@ public class LoginController extends HttpServlet {
         Account account = AccountDAO.login(username, password);
         if (account != null) {
             session.setAttribute("account", account);
-            response.sendRedirect("dashboard.jsp");
+            if(account instanceof Developer){
+                response.sendRedirect("devHome.jsp");
+            } else if (account instanceof Manager) {
+                response.sendRedirect("managerHome.jsp");
+            } else {
+                response.sendRedirect("dashboard.jsp");
+            }
         } else {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login.jsp?error=true");
         }
     }
 
