@@ -1,0 +1,50 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 19 Jun, 2018, 1:37:36 AM
+    Author     : Dion
+*/
+body{
+    background-color: #393254;
+
+}
+.vl {
+    border-left: 1px solid rgb(207, 207, 209, 0.2);
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    margin-left: -3px;
+    margin-top:-55px;
+    top:0px;
+}
+.input-group{
+    border:2px solid rgb(207, 207, 209, 0.2);
+    border-radius:15px;
+}
+.input-group-addon{
+    height:50px;
+    background-color: transparent;
+    border:none;
+}
+.form-control{
+    height:50px;
+    background-color: transparent;
+    border:none;
+}
+.btn{
+    width:320px;
+    height:50px;
+    background-color: #57BB59;
+    border-color:#57BB59;
+    font-size:large;
+    font-weight:bold;
+
+}
+.forget{
+    color:rgb(207, 207, 209, 0.8);
+    font-size:medium;
+
+}
