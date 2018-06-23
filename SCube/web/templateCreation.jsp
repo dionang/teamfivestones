@@ -15,64 +15,20 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- icon libaray-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  
-    <!-- Include stylesheet -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    
-    
-    
-    <style> 
-  
-        .draggableBox{
-            width: 80px;
-            
-        }
-      
-      
-      .textbox{
-        background-color:#F9F7F7;
-        display: inline-block;
-        padding: 10px;
-        width: 80px;
-        height: 90px;
-        
-      }      
 
-    
-    textarea{
-        width: 200px;
-        height: 50px;
-        height: 80px;
-    }
-    
-    .sidebar{
-        float:left;
-        background: lightgray;
-        width: 15%;
-        height: 735px;
-    }
-    
-    .down {
-        transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
-    }
-    
-    i {
-        border: solid;
-        border-width: 0 3px 3px 0;
-        display: block;
-        padding: 2px;
-        float: left
-      }
-      
-      .marginRight{
+  <style>
+        #resizable { width: 150px; height: 150px; padding: 0.5em; }
+        #resizable h3 { text-align: center; margin: 0; }
+        #draggable { width: 150px; height: 150px; padding: 0.5em; }
+        
+        .marginRight{
           height: 735px; 
           width:85%; 
           background: darkblue; 
           float: right;
       }
       
-      .innerarea{
+        .innerarea{
           background: white;
           top: 20px;
           height: 600px;
@@ -80,66 +36,48 @@
           border: 3px;
       }
       
-      .button {
-                -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
-                -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
-                box-shadow:inset 0px 1px 0px 0px #ffffff;
-                background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
-                background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
-                background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
-                background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
-                background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
-                background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
-                background-color:#ffffff;
-                -moz-border-radius:6px;
-                -webkit-border-radius:6px;
-                border-radius:6px;
-                border:1px solid #dcdcdc;
-                display:inline-block;
-                cursor:pointer;
-                color:#666666;
-                font-family:Trebuchet MS;
-                font-size:14px;
-                padding:3px 5px;
-                text-decoration:none;
-                text-shadow:0px 1px 0px #ffffff;
-        }
-        .button:hover {
-                background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f6f6f6), color-stop(1, #ffffff));
-                background:-moz-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
-                background:-webkit-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
-                background:-o-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
-                background:-ms-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
-                background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
-                background-color:#f6f6f6;
-        }
-        .button:active {
-                position:relative;
-                top:1px;
-        }
-       
-        
         h1{
-            font-family: "Times New Roman", Times, serif;
-            color: white;
-            text-align: center;
-            font-size: 40px;
+         font-family: "Times New Roman", Times, serif;
+         color: white;
+         text-align: center;
+         font-size: 40px;
         }
-
-
-
-
+        
+       i {
+        border: solid;
+        border-width: 0 3px 3px 0;
+        display: block;
+        padding: 2px;
+        float: left
+      }
+      
+      
+      .sidebar{
+        float:left;
+        background: lightgray;
+        width: 15%;
+        height: 735px;
+    }
     
+    
+    .hi{
+        display:table;
+        width: fit-content;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+
+
+
   </style>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </head>
 <body>
- 
-        <div class ="marginRight">
+    
+    <div class ="marginRight">
         
         <h1> Build Your Template </h1>
                 
@@ -147,22 +85,20 @@
                     
         <div class = "innerarea" id = "container"> <!-- the template area -->
             <h2> </h2>
-            
-            
-                <div class = "textbox" id = "tb">
-                   
-                        <textarea id= "text" placeholder =" Enter your text here" contenteditable="true">testering</textarea><br>
-                    
+                <div class = "hi" id ="hiid" style = "background:red; display:none; ">
+                    <textarea id= "text" placeholder =" Enter your text here" contenteditable="true" style ="display: table-row;"></textarea><br>
                 </div>
            
-            
-            
         </div>
         
         
     </div>
+
+ 
     
-    <div class = "marginLeft">
+
+      
+     <div class = "marginLeft">
     
         <div class ="sidebar">
             <h3>Insert</h3>
@@ -179,116 +115,24 @@
         </div>
     </div>
 
-
-<script>
-  $( function() {
-    $( ".textbox" ).resizable();
-    $( ".textbox" ).draggable({ containment: "#container", scroll: false  });
+    <script>
+        
+          $( function() {
+    //$( "#text" ).resizable();
+    //$( ".textbox" ).draggable({ containment: "#container", scroll: false  });
     
     $("#textHype").click(function(){
-        //var dup = $("#tb").clone().draggable({ containment: "#container", scroll: false  });
-        //$("#container").append(dup.show());
-        
-        $("tb").show();
+        var hiid = $("#hiid").clone().draggable({ containment: "#container", scroll: false  });
+        $("#container").append(hiid.show());
         
     })
     
-    $('#edit').click(function() {
-         $("#btnBold").show();
-        $("#sizeUp").show();
-        $("#sizeDown").show();
-        $("#btnBold").show();
-        $("#italic").show();
-        $("#underline").show();
-        $("#done").show();
-        $("#edit").hide();
-       return false;
-       });
-       
-       
-       $('#done').click(function(){
-          $("#btnBold").hide();
-        $("#sizeUp").hide();
-        $("#sizeDown").hide();
-        $("#btnBold").hide();
-        $("#italic").hide();
-        $("#underline").hide();
-        $("#done").hide();
-        $("#edit").show(); 
-        return false;
-       });
-    
-    
-    
-    
+      
     
     
   } );
   
-  
-  
-  function bolden() {
-    
-
-    if (this.value == 'Bold') {
-
-        document.getElementById('text').style.fontWeight = 'bold';
-
-        this.value = 'UnBold';
-
-    } else {
-
-         document.getElementById('text').style.fontWeight = 'normal';
-        this.value = 'Bold';
-    }
-}
-document.getElementById('btnBold').addEventListener('click', bolden, false);
-
-
-function changeFontSize(target) {
-  var demo = document.getElementById("text");
-  var computedStyle = window.getComputedStyle
-        ? getComputedStyle(demo) // Standards
-        : demo.currentStyle;     // Old IE
-  var fontSize;
-
-  if (computedStyle) { // This will be true on nearly all browsers
-      fontSize = parseFloat(computedStyle && computedStyle.fontSize);
-
-      if (target == document.getElementById("sizeUp")) {
-        fontSize += 5;
-      } else if (target == document.getElementById("sizeDown")) {
-        fontSize -= 5;
-      }
-      demo.style.fontSize = fontSize + "px";
-  }
-}
-
-
-    function font(type) {
-      if (type == 'I') {
-        document.getElementById("text").style.fontStyle = 'italic';
-      }
-     // if (type == "U") {
-       // document.getElementById("text").style.textDecoration = "underline";
-      //}
-    }
-  
-  
-  
-  
   </script>
-  
-  
-  <!-- Include the Quill library -->
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
-    <!-- Initialize Quill editor -->
-    <script>
-      var quill = new Quill('#tb', {
-        theme: 'snow'
-      });
-    </script>
  
  
 </body>  
