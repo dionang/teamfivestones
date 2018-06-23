@@ -49,7 +49,7 @@ public class LoginController extends HttpServlet {
             } else if (account instanceof User) {
                 response.sendRedirect("userHome.jsp");
             } else {
-                response.sendRedirect("dashboard.jsp");
+                response.sendRedirect("managerHome.jsp");
             }
         } else {
             response.sendRedirect("login.jsp?error=true");
