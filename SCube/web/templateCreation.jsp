@@ -15,15 +15,26 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- icon libaray-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style> 
   
+    <!-- Include stylesheet -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     
+    
+    
+    <style> 
+  
+        .draggableBox{
+            width: 80px;
+            
+        }
       
       
       .textbox{
         background-color:#F9F7F7;
         display: inline-block;
         padding: 10px;
+        width: 80px;
+        height: 90px;
         
       }      
 
@@ -31,6 +42,7 @@
     textarea{
         width: 200px;
         height: 50px;
+        height: 80px;
     }
     
     .sidebar{
@@ -137,15 +149,10 @@
             <h2> </h2>
             
             
-                <div class = "textbox" id = "tb" style="display:none">
-                    <a id = "edit" style= "display:none; float:right"> Edit</a>
-                    <textarea id= "text" placeholder =" Enter your text here" contenteditable="true"></textarea><br>
-                    <input type="button" class="button" id ='btnBold' value = "Bold"/> 
-                     <input type="button" class="button" id ='sizeUp' value = "Z" onclick="changeFontSize(this)"/> 
-                     <input type="button" class="button" id ='sizeDown' value = "z" onclick="changeFontSize(this)"/> 
-                     <input type="button" class="button" id = 'italic' value = "Italic" onClick="font('I')"/> 
-                     <!--<input type="button" class="button" id = 'underline' value = "Underline" onClick="font('U')"/> -->
-                    <input type="button" class="btn-success" id = "done" value ="Done">
+                <div class = "textbox" id = "tb">
+                   
+                        <textarea id= "text" placeholder =" Enter your text here" contenteditable="true">testering</textarea><br>
+                    
                 </div>
            
             
@@ -175,12 +182,14 @@
 
 <script>
   $( function() {
-    //$( "#text" ).resizable();
-    //$( ".textbox" ).draggable({ containment: "#container", scroll: false  });
+    $( ".textbox" ).resizable();
+    $( ".textbox" ).draggable({ containment: "#container", scroll: false  });
     
     $("#textHype").click(function(){
-        var dup = $("#tb").clone().draggable({ containment: "#container", scroll: false  });
-        $("#container").append(dup.show());
+        //var dup = $("#tb").clone().draggable({ containment: "#container", scroll: false  });
+        //$("#container").append(dup.show());
+        
+        $("tb").show();
         
     })
     
@@ -269,6 +278,17 @@ function changeFontSize(target) {
   
   
   </script>
+  
+  
+  <!-- Include the Quill library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- Initialize Quill editor -->
+    <script>
+      var quill = new Quill('#tb', {
+        theme: 'snow'
+      });
+    </script>
  
  
 </body>  
