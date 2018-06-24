@@ -49,7 +49,7 @@
                             <label for="username" class="icon-key"> Password
                                 <span class="required">*</span>
                             </label>
-                            <input type="password" class="form-control" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
+                            <input type="password" class="form-control" id="psw" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
                             <div class="row">
                                 <div class="col-sm-3" style="font-size:13px">
                                   [ Password format :
