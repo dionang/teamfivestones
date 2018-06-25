@@ -1,12 +1,15 @@
+<%@page import="scube.dao.CompanyDAO"%>
+<%@page import="java.util.ArrayList"%>
 <%@ include file="protect.jsp" %>
 <%@ page import="scube.entities.Account" %>
 <%@ page import="scube.entities.Manager" %>
 <%
     Account account = (Account) session.getAttribute("account");
-    //if (!(account instanceof Manager)){
-       // response.sendRedirect("/");
-       // return;
-    //}
+    if (!(account instanceof Manager)){
+        response.sendRedirect("/");
+        return;
+    }
+    Manager manager = (Manager) account;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -29,9 +32,22 @@
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <!-- page content -->
                 <div class="right_col">
-                    <a class="btn btn-success" href="createUser.jsp">Create User Account</a>
-                    <a class="btn btn-success" href="viewAllUsers.jsp">View All User Accounts</a>
+                    <h2>All users of <%= CompanyDAO.getCompanyNameFromId(manager.getCompanyId()) %></h2>
+                    <table class="table table-striped table-bordered">
+                        <tr><th>Name</th><th>Username</th><th>Account Type</th></tr>
+                        <%
+                            ArrayList<Account> accounts = manager.getAllUsers();
+                            for (Account acc : accounts) {
+                                out.println("<tr>");
+                                out.println("<td>" + acc.getName() + "</td>");
+                                out.println("<td>" + acc.getUsername() + "</td>");
+                                out.println("<td>" + acc.getAccountType() + "</td>");
+                                out.println("</tr>");
+                            }
+                        %>
+                    </table>
                 </div>
+                <!-- page content -->
             </div>
         </div>
         
@@ -39,8 +55,9 @@
         <script src="/assets/js/jquery.min.js"></script>
         <!-- Bootstrap -->
         <script src="/assets/js/bootstrap.min.js"></script>
-        <!-- Custom JS -->
+        <!-- Chart.js -->
+        <script src="/assets/js/chart.min.js"></script>
         <script src="/assets/js/dashboard.js"></script> 
-        <script  src="/assets/js/checkPassword.js"></script>
+        <script src="/assets/js/checkPassword.js"></script>
     </body>
 </html>

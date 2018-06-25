@@ -34,44 +34,47 @@ public class AccountController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
         String operation = request.getParameter("operation");
         if(operation.equals("createUser")){
             String name = request.getParameter("name");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            AccountDAO.addAccount(username, password, 1, "user", name);
-            sendRedirect(request, response);
+            boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), "user", name);
+            if (!status) {
+                response.sendRedirect("createUser.jsp?error=true");
+            }
         } else if (operation.equals("setDatasource")){
             String datasource = request.getParameter("datasource");
             int companyId = Integer.parseInt(request.getParameter("companyId"));
-            boolean success = CompanyDAO.setDatasource(datasource, companyId);
-            
-            if(success) {
-                sendRedirect(request, response);
-            }
-        } else if (operation.equals("register")){
-            // for testing purposes
-            AccountDAO.addAccount("test", "123", 1, "user", "Report Generator");
-            response.sendRedirect("login.jsp");
+            boolean status = CompanyDAO.setDatasource(datasource, companyId);
+            sendRedirect(request, response, status);
         }
         
     }
     
-    public void sendRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void sendRedirect(HttpServletRequest request, HttpServletResponse response, boolean status) throws IOException {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
+        String responseUrl = "";
         if (account == null){
-            response.sendRedirect("/");
+            responseUrl = "/";
         } else if (account instanceof Developer) {
-            response.sendRedirect("devHome.jsp");
+            responseUrl = "devHome.jsp";
         } else if (account instanceof Manager) {
-            response.sendRedirect("managerHome.jsp");
+            responseUrl = "managerHome.jsp";
         } else if (account instanceof User) {
-            response.sendRedirect("userHome.jsp");
+            responseUrl = "userHome.jsp";
         } else {
-            response.sendRedirect("dashboard.jsp");
+            responseUrl = "dashboard.jsp";
         }
+        
+        if(!status) {
+            responseUrl += "?error=true";
+        }
+        
+        response.sendRedirect(responseUrl);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

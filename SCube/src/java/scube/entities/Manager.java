@@ -5,6 +5,7 @@
  */
 package scube.entities;
 
+import java.util.ArrayList;
 import scube.dao.AccountDAO;
 
 /**
@@ -24,6 +25,10 @@ public class Manager extends Account {
     public boolean createUserAccount(String username, String password, String name){
         boolean status = AccountDAO.addAccount(username, password, getCompanyId(), "user", name);
         return status;
+    }
+    
+    public ArrayList<Account> getAllUsers(){
+        return AccountDAO.getAllUsersOfCompany(this.getCompanyId());
     }
     
     // will change later
