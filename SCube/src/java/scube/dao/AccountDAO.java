@@ -1,7 +1,6 @@
 package scube.dao;
 
 import java.sql.*;
-import java.util.ArrayList;
 import org.mindrot.jbcrypt.BCrypt;
 import scube.entities.*;
 
@@ -68,35 +67,6 @@ public class AccountDAO {
             } else {
                 return null;
             }
-        } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            return null;
-        } finally {
-            ConnectionManager.close(conn, stmt, rs);
-        }
-    }
-    
-    public static ArrayList<Account> getAccountsByCompanyId(int companyId) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT * FROM account WHERE companyId = ?");
-            stmt.setInt(1, companyId);
-            rs = stmt.executeQuery();
-
-            ArrayList<Account> accounts = new ArrayList<>();
-            while(rs.next()){
-                int accountId = rs.getInt("accountId");
-                String username = rs.getString("username");
-                String accountType = rs.getString("accountType");
-                String name = rs.getString("name");                
-
-                accounts.add(new Account(accountId, companyId, accountType, username, name));
-            }
-            return accounts;
         } catch (SQLException e) {
             e.printStackTrace(System.out);
             return null;
