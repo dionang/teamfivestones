@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2018 at 10:25 AM
+-- Generation Time: Jun 25, 2018 at 08:18 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -29,21 +29,23 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `account` (
   `accountId` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL COMMENT 'email',
-  `passwordHash` varchar(60) NOT NULL,
+  `passwordHash` varchar(70) NOT NULL,
   `companyId` int(11) NOT NULL,
   `accountType` varchar(10) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`accountId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `account`
 --
 
 INSERT INTO `account` (`accountId`, `username`, `passwordHash`, `companyId`, `accountType`, `name`) VALUES
-(1, 'admin@scube.com', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'admin', 'Admin'),
-(2, 'leo@scube.com', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'developer', 'Leo Tan'),
-(4, 'test', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'user', 'Report Generator');
+(1, 'admin', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'admin', 'Admin'),
+(2, 'leo', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'developer', 'Leo Tan'),
+(4, 'test', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'user', 'Report Generator'),
+(5, 'manager', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'manager', 'Manager'),
+(6, 'user', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'user', 'User');
 
 -- --------------------------------------------------------
 
@@ -53,6 +55,7 @@ INSERT INTO `account` (`accountId`, `username`, `passwordHash`, `companyId`, `ac
 
 CREATE TABLE IF NOT EXISTS `company` (
   `companyId` int(11) NOT NULL AUTO_INCREMENT,
+  `companyName` varchar(50) NOT NULL,
   `address` varchar(100) NOT NULL,
   `phoneNo` varchar(20) NOT NULL,
   `fax` varchar(20) DEFAULT NULL,
@@ -66,8 +69,8 @@ CREATE TABLE IF NOT EXISTS `company` (
 -- Dumping data for table `company`
 --
 
-INSERT INTO `company` (`companyId`, `address`, `phoneNo`, `fax`, `logoUrl`, `pocId`, `datasourceUrl`) VALUES
-(1, 'SCube Address', '12345678', '12345678', 'http://logo.url', 1, 'testsad');
+INSERT INTO `company` (`companyId`, `companyName`, `address`, `phoneNo`, `fax`, `logoUrl`, `pocId`, `datasourceUrl`) VALUES
+(1, 'SCube Pte Ltd', 'SCube Address', '12345678', '12345678', 'http://logo.url', 1, 'test');
 
 -- --------------------------------------------------------
 
@@ -79,7 +82,28 @@ CREATE TABLE IF NOT EXISTS `poc` (
   `companyId` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `phoneNo` varchar(20) NOT NULL,
-  `email` int(50) NOT NULL
+  `email` varchar(50) NOT NULL,
+  PRIMARY KEY (`companyId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `poc`
+--
+
+INSERT INTO `poc` (`companyId`, `name`, `phoneNo`, `email`) VALUES
+(1, 'Leo Tan', '+65 9172 3563', 'leo@scube.com');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `report`
+--
+
+CREATE TABLE IF NOT EXISTS `report` (
+  `reportId` int(11) NOT NULL,
+  `companyId` int(11) NOT NULL,
+  `createdBy` int(11) NOT NULL,
+  `reportName` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
