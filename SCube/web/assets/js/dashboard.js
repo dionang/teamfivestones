@@ -1,17 +1,5 @@
 $(document).ready(function () {
-    // Collapsible charts
-    $(".collapse-link").on("click", function () {
-        var a = $(this).closest(".x_panel"),
-            b = $(this).find("i"), 
-            c = a.find(".x_content");
-            a.attr("style") ? c.slideToggle(200, function () {
-            a.removeAttr("style")
-        }) : (c.slideToggle(200), a.css("height", "auto")), b.toggleClass("fa-chevron-up fa-chevron-down")
-    });
-    $(".close-link").click(function () {
-        var a = $(this).closest(".x_panel");
-        a.remove();
-    });
+    loadChartBoxes();
     
     // Toggle sidebar
     $('#options li').click(function () {
@@ -22,24 +10,45 @@ $(document).ready(function () {
         $('#logo').toggle();
         $('#logo2').toggle();
 
-        $('body').hasClass("nav-md") ? ($('#sidebar-menu').find("li.active ul").hide(), $('#sidebar-menu').find("li.active").addClass("active-sm").removeClass("active")) : ($('#sidebar-menu').find("li.active-sm ul").show(), $('#sidebar-menu').find("li.active-sm").addClass("active").removeClass("active-sm")), $('body').toggleClass("nav-md nav-sm")
+        $('body').hasClass("nav-md") ? ($('#sidebar-menu').find("li.active ul").hide(), $('#sidebar-menu').find("li.active").addClass("active-sm").removeClass("active")) : ($('#sidebar-menu').find("li.active-sm ul").show(), $('#sidebar-menu').find("li.active-sm").addClass("active").removeClass("active-sm")), $('body').toggleClass("nav-md nav-sm");
     });
-})
+});
+
+function loadChartBoxes(){
+    // Collapsible charts
+    $(".collapse-link").on("click", function () {
+        let a = $(this).closest(".x_panel"),
+            b = $(this).find("i"), 
+            c = a.find(".x_content");
+            a.attr("style") ? c.slideToggle(200, function () {
+            a.removeAttr("style");
+        }) : (c.slideToggle(200), a.css("height", "auto")), b.toggleClass("fa-chevron-up fa-chevron-down");
+    });
+    $(".close-link").click(function () {
+        let a = $(this).closest(".x_panel");
+        a.remove();
+    });
+}
 
 function initAllCharts(){
-    initLineChart();
-    initBarChart();
+    initLineCharts();
+    initBarCharts();
     initDoughnutChart();
     initRadarChart();
     initPolarChart();
-    initPieChart();
+    initPieCharts();
 }
     
-function initLineChart(){
-    var ctx = document.getElementById('lineChart').getContext('2d');
-    ctx.canvas.width = 1200;
-    ctx.canvas.height = 200;
-    var chart = new Chart(ctx, {
+function initLineCharts(){
+    let allLineCharts = document.getElementsByClassName('lineChart');
+    for(let lc of allLineCharts){
+        if(lc === undefined) { 
+            continue; 
+        }
+        let ctx = lc.getContext('2d');
+        ctx.canvas.width = 1200;
+        ctx.canvas.height = 200;
+        let chart = new Chart(ctx, {
 	    // The type of chart we want to create
 	    type: 'line',
 	
@@ -66,42 +75,49 @@ function initLineChart(){
 	                        pointHoverBackgroundColor: "#fff",
 	                        pointHoverBorderColor: "rgba(151,187,205,1)", 
 	                        pointBorderWidth: 1, 
-	                        data: [82, 23, 66, 9, 99, 4, 2],
+	                        data: [82, 23, 66, 9, 99, 4, 2]
 	        }]
 	    },
 	
 	    // Configuration options go here
 	    options: {}
 	});
+    }
 }
 
-function initBarChart(){
-	var ctx = document.getElementById('barChart').getContext('2d');
-    ctx.canvas.width = 600;
-    ctx.canvas.height = 200;
-    var chart = new Chart(ctx, {
-	    // The type of chart we want to create
-	    type: 'bar',
-	
-	    // The data for our dataset
-	    data: {labels: ["January", "February", "March", "April", "May", "June", "July"], 
-			datasets: [{label: "# of Votes", 
-			backgroundColor: "#26B99A", 
-			data: [51, 30, 40, 28, 92, 50, 45]}, 
-			{label: "# of Votes", 
-			backgroundColor: "#03586A", 
-			data: [41, 56, 25, 48, 72, 34, 12]}]},
-	
-	    // Configuration options go here
-	    options: {scales: {yAxes: [{ticks: {beginAtZero: !0}}]}}
-	});
+function initBarCharts(){
+    let allBarCharts = document.getElementsByClassName('barChart');
+    for(let bc of allBarCharts){
+        if(bc === undefined) { 
+            continue; 
+        }
+        let ctx = bc.getContext('2d');
+        ctx.canvas.width = 600;
+        ctx.canvas.height = 200;
+        let chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {labels: ["January", "February", "March", "April", "May", "June", "July"], 
+                        datasets: [{label: "# of Votes", 
+                        backgroundColor: "#26B99A", 
+                        data: [51, 30, 40, 28, 92, 50, 45]}, 
+                        {label: "# of Votes", 
+                        backgroundColor: "#03586A", 
+                        data: [41, 56, 25, 48, 72, 34, 12]}]},
+
+            // Configuration options go here
+            options: {scales: {yAxes: [{ticks: {beginAtZero: !0}}]}}
+        });
+    }
 }
 
 function initDoughnutChart(){
-	var ctx = document.getElementById('doughnut').getContext('2d');
+    let ctx = document.getElementById('doughnut').getContext('2d');
     ctx.canvas.width = 600;
     ctx.canvas.height = 200;
-    var chart = new Chart(ctx, {
+    let chart = new Chart(ctx, {
 	
 	    // The type of chart we want to create
 	    type: "doughnut",
@@ -110,8 +126,8 @@ function initDoughnutChart(){
 	    data: {labels: ["Dark Grey", "Purple Color", "Gray Color", "Green Color", "Blue Color"], 
 			datasets: [{ 
 			backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
-			data: [120, 50, 140, 180, 100]}, 
-			]},
+			data: [120, 50, 140, 180, 100]} 
+			]}
 	
 	    // Configuration options go here
 	   
@@ -119,10 +135,10 @@ function initDoughnutChart(){
 }
 
 function initRadarChart(){
-	var ctx = document.getElementById('radar').getContext('2d');
+    let ctx = document.getElementById('radar').getContext('2d');
     ctx.canvas.width = 350;
     ctx.canvas.height = 200;
-    var chart = new Chart(ctx, {
+    let chart = new Chart(ctx, {
 
     // The type of chart we want to create
     type: "radar",
@@ -146,7 +162,7 @@ function initRadarChart(){
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
                         data: [28, 48, 40, 19, 96, 27, 100]}
-		]},
+		]}
 
     // Configuration options go here
    
@@ -154,42 +170,42 @@ function initRadarChart(){
 }
 
 function initPolarChart(){
-	var ctx = document.getElementById('polarArea').getContext('2d');
+    let ctx = document.getElementById('polarArea').getContext('2d');
     ctx.canvas.width = 350;
     ctx.canvas.height = 200;
-    var chart = new Chart(ctx, {
+    let chart = new Chart(ctx, {
 
-    // The type of chart we want to create
-    type: 'polarArea',
+        // The type of chart we want to create
+        type: 'polarArea',
 
-    // The data for our dataset
-   data: {labels: ["Dark Gray", "Purple", "Gray", "Green", "Blue"], 
-		datasets: [{label: "My dataset", 
-		backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
-		data: [120, 50, 140, 180, 100]}, 
-		]},
-
+        // The data for our dataset
+        data: {labels: ["Dark Gray", "Purple", "Gray", "Green", "Blue"], 
+            datasets: [{label: "My dataset", 
+            backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
+            data: [120, 50, 140, 180, 100]} 
+        ]}
     // Configuration options go here
-    
     });
 }
 
-function initPieChart(){
-	var ctx = document.getElementById('pie').getContext('2d');
-    ctx.canvas.width = 350;
-    ctx.canvas.height = 200;
-    var chart = new Chart(ctx, {
+function initPieCharts(){
+    let allPieCharts = document.getElementsByClassName('pieChart');
+    for(let pc of allPieCharts){
+        let ctx = pc.getContext('2d');
+        ctx.canvas.width = 350;
+        ctx.canvas.height = 200;
+        let chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: "pie",
 
-    // The type of chart we want to create
-    type: "pie",
+            // The data for our dataset
+            data: {labels: ["Dark Grey", "Purple Color", "Gray Color", "Green Color", "Blue Color"], 
+                datasets: [{ 
+                 backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
+                data: [120, 50, 140, 180, 100]}
+            ]}
 
-    // The data for our dataset
-    data: {labels: ["Dark Grey", "Purple Color", "Gray Color", "Green Color", "Blue Color"], 
-		datasets: [{ 
-		 backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
-		data: [120, 50, 140, 180, 100]}, 
-		]},
-
-    // Configuration options go here
-    });
+            // Configuration options go here
+        });
+    }
 }

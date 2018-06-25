@@ -67,7 +67,7 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="x_content" >
-                                        <canvas id="lineChart"></canvas>
+                                        <canvas class="lineChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="x_content">
-                                        <canvas id="barChart"></canvas>
+                                        <canvas class="barChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
                             <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title">
-                                        <h2>Pie Area Chart </h2>
+                                        <h2>Polar Chart </h2>
                                         <ul class="nav navbar-right panel_toolbox">
                                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                             </li>
@@ -179,7 +179,7 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="x_content">
-                                        <canvas id="pie"></canvas>
+                                        <canvas class="pieChart"></canvas>
                                     </div>
                                 </div>
                             </div>
