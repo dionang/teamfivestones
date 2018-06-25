@@ -6,10 +6,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/assets/css/dashboard.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
         
         <style>
             
@@ -31,6 +33,26 @@
                 padding: 10px;
                 cursor: pointer;
             }
+            
+            .ui-widget-content{
+                 background: red;
+                width: fit-content;
+                height: fit-content;
+                padding: 10px;
+                cursor: pointer;
+            }
+            
+            #resizable{
+                background: blue;
+                width: fit-content;
+                height: fit-content;
+                padding: 10px;
+                cursor: pointer;
+            }
+            
+            
+
+            
         </style>
         <title>Report Template</title>
 
@@ -49,22 +71,32 @@
                         <div class="dragbox" id="textbox" style="background:whitesmoke; display:none;">
                             <textarea placeholder="Enter your text here" style="display: table-row"></textarea>
                         </div>
-                        <div id="lineChartBox" class="col-md-8 col-sm-8 col-xs-8" style="display:none;">
-                            <div class="x_panel" >
-                                <div class="x_title">
-                                    <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a></li>
-                                        <li><a class="close-link"><i class="fa fa-close"></i></a></li>
-                                    </ul>
-                                    <div class="clearfix"></div>
+                        
+                        
+                        <div id="resizable" class="ui-widget-content" style="display: none ">
+                                <div class="x_panel" >
+                                    <div class="x_title">
+                                        <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a></li>
+                                            <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content" >
+                                        <canvas class="lineChart"></canvas>
+                                    </div>
                                 </div>
-                                <div class="x_content" >
-                                    <canvas class="lineChart"></canvas>
-                                </div>
-                            </div>
                         </div>
+                            
+                            <div id="lineChartBox" class="col-md-8_col-sm-8_col-xs-8" style="display: none ">
+                                
+                            </div>
+                        
+                        
+                            
+                            
                         <div id="barChartBox" class="col-md-6 col-sm-6 col-xs-12" style="display:none;">
                             <div class="x_panel">
                                 <div class="x_title">
@@ -121,20 +153,31 @@
         <!-- Chart.js -->
         <script src="/assets/js/chart.min.js"></script>
         <script src="/assets/js/dashboard.js"></script> 
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
         <script>
+            $(function(){
+                $( "#lineChartBox" ).resizable();
+                
+               
+            })
+            
+            
+            
             $(function () {
                 $("#addTextbox").click(function () {
                     var textbox = $("#textbox").clone().draggable({containment: "#container", scroll: false});
                     $("#container").append(textbox.show());
                 });
-
+                
                 $("#addLineChart").click(function () {
-                    var lineChart = $("#lineChartBox").clone().draggable({containment: "#container", scroll: false});
-                    $("#container").append(lineChart.show());
-                    initLineCharts();
+                    var resizable = $("#resizable").clone().draggable({containment: "#container", scroll: false}).resizable();
+                    $("#container").append(resizable.show());
+                     initLineCharts();
                     loadChartBoxes();
                 });
+                
                 
                 $("#addBarChart").click(function () {
                     var barChart = $("#barChartBox").clone().draggable({containment: "#container", scroll: false});
@@ -149,6 +192,9 @@
                     initPieCharts();
                     loadChartBoxes();
                 });
+                
+                
+                
             });
 
         </script>
