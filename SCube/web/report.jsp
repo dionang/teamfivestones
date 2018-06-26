@@ -1,7 +1,12 @@
 <%@ include file="protect.jsp" %>
 <%@ page import="scube.entities.Account" %>
+<%@ page import="scube.entities.Manager"%>
 <%
     Account account = (Account) session.getAttribute("account");
+    if (!(account instanceof Manager)){
+        response.sendRedirect("/");
+        return;
+    }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -39,22 +44,15 @@
                 overflow: hidden;
                 position: relative;
             }
-                
-}
-           
-            
-            
-
             
         </style>
         <title>Report Template</title>
-
     </head>
 
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
-                <jsp:include page="reportSidebar.jsp"></jsp:include>
+                <jsp:include page="sidebarReport.jsp"></jsp:include>
                 <jsp:include page="navbar.jsp"></jsp:include>
 
                 <!-- page content -->
@@ -131,9 +129,6 @@
                             </div>
                         <!--</div>-->
                         
-                        
-                        
-                        
                     </div>
                 </div>
                 <!-- page content -->
@@ -155,7 +150,6 @@
         <script>
             
             $(document).ready(function() { $('div:empty').remove(); });
-            
             
             $(function () {
                 $("#addTextbox").click(function () {
@@ -183,11 +177,6 @@
                      initPieCharts();
                     loadChartBoxes();
                 });
-                
-
-                
-                
-                
                 
             });
 

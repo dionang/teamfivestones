@@ -1,8 +1,11 @@
 var myInput = document.getElementById("password");
+var confirm = document.getElementById("confirm");
 var letter = document.getElementById("letter");
 var capital = document.getElementById("capital");
 var number = document.getElementById("number");
 var length = document.getElementById("length");
+var space = document.getElementById("space");
+var match = document.getElementById("match");
 
 // When the user starts to type something inside the password field
 myInput.onkeyup = function() {
@@ -38,7 +41,7 @@ myInput.onkeyup = function() {
         capital.style.color = "#FF0004";
     }
 
-// Validate numbers
+    // Validate numbers
     var numbers = "[0-9]";
     if (myInput.value.match(numbers)) {
         number.classList.remove("invalid");
@@ -68,4 +71,82 @@ myInput.onkeyup = function() {
         length.classList.add("glyphicon-remove");
         length.style.color = "#FF0004";
     }
+    
+    // Validate special 
+    var special = /[^a-zA-Z0-9\-\/]/;
+    if (myInput.value.match(special)) {
+        space.classList.remove("invalid");
+        space.classList.add("valid");
+        space.classList.remove("glyphicon-remove");
+        space.classList.add("glyphicon-ok");
+        space.style.color = "#00A41E";
+    } else {
+        space.classList.remove("valid");
+        space.classList.add("invalid");
+        space.classList.remove("glyphicon-ok");
+        space.classList.add("glyphicon-remove");
+        space.style.color = "#FF0004";
+    }
+    
+    // Validate confirm password
+    if (myInput.value === confirm.value) {
+        match.classList.remove("invalid");
+        match.classList.add("valid");
+        match.classList.remove("glyphicon-remove");
+        match.classList.add("glyphicon-ok");
+        match.style.color = "#00A41E";
+        confirm.setCustomValidity("");
+    } else {
+        match.classList.remove("valid");
+        match.classList.add("invalid");
+        match.classList.remove("glyphicon-ok");
+        match.classList.add("glyphicon-remove");
+        match.style.color = "#FF0004";
+        confirm.setCustomValidity("Passwords Don't Match");
+    }
 }
+
+confirm.onkeyup = function () {
+    // Validate confirm password
+    if (myInput.value === confirm.value) {
+        match.classList.remove("invalid");
+        match.classList.add("valid");
+        match.classList.remove("glyphicon-remove");
+        match.classList.add("glyphicon-ok");
+        match.style.color = "#00A41E";
+        confirm.setCustomValidity("");
+    } else {
+        match.classList.remove("valid");
+        match.classList.add("invalid");
+        match.classList.remove("glyphicon-ok");
+        match.classList.add("glyphicon-remove");
+        match.style.color = "#FF0004";
+        confirm.setCustomValidity("Passwords Don't Match");
+    }
+}
+
+document.getElementById('submitForm').onsubmit = function (e) {
+    e.preventDefault();
+
+    swal({
+        title: "Confirmation",
+        text: "Are you sure you want to create this account?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((confirm) => {
+        if (confirm) {
+            swal(" Account has been created successfully!", {
+                icon: "success",
+            })
+            .then((confirm) => {
+                if (confirm) {
+                    document.getElementById('submitForm').submit();
+                }
+            });
+        }
+    });
+
+
+};

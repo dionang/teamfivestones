@@ -20,7 +20,7 @@ import scube.entities.*;
  *
  * @author Dion
  */
-@WebServlet(name = "AccountController", urlPatterns = {"/createUser", "/setDatasource"})
+@WebServlet(name = "AccountController", urlPatterns = {"/createAccount", "/setDatasource"})
 public class AccountController extends HttpServlet {
 
     /**
@@ -37,45 +37,51 @@ public class AccountController extends HttpServlet {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
         String operation = request.getParameter("operation");
-        if(operation.equals("createUser")){
+        if(operation.equals("createAccount")){
             String name = request.getParameter("name");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), "user", name);
-            if (!status) {
-                response.sendRedirect("createUser.jsp?error=true");
+            String accountType = request.getParameter("accountType");
+            boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
+            switch(accountType) {
+                case "developer" :  response.sendRedirect("createDevAccount.jsp" + (status ? "" : "?error=true"));
+                                    break;
+                case "manager"   :  response.sendRedirect("createManagerAccount.jsp" + (status ? "" : "?error=true"));
+                                    break;
+                case "user"      :  response.sendRedirect("createUserAccount.jsp" + (status ? "" : "?error=true"));
+                                    break;                    
             }
         } else if (operation.equals("setDatasource")){
             String datasource = request.getParameter("datasource");
             int companyId = Integer.parseInt(request.getParameter("companyId"));
             boolean status = CompanyDAO.setDatasource(datasource, companyId);
-            sendRedirect(request, response, status);
+            response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
         }
         
     }
     
-    public void sendRedirect(HttpServletRequest request, HttpServletResponse response, boolean status) throws IOException {
-        HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
-        String responseUrl = "";
-        if (account == null){
-            responseUrl = "/";
-        } else if (account instanceof Developer) {
-            responseUrl = "devHome.jsp";
-        } else if (account instanceof Manager) {
-            responseUrl = "managerHome.jsp";
-        } else if (account instanceof User) {
-            responseUrl = "userHome.jsp";
-        } else {
-            responseUrl = "dashboard.jsp";
-        }
-        
-        if(!status) {
-            responseUrl += "?error=true";
-        }
-        
-        response.sendRedirect(responseUrl);
-    }
+//    public void sendRedirect(HttpServletRequest request, HttpServletResponse response, boolean status) throws IOException {
+//        HttpSession session = request.getSession();
+//        Account account = (Account) session.getAttribute("account");
+//        String responseUrl = "";
+//        if (account == null){
+//            responseUrl = "/";
+//        } else if (account instanceof Developer) {
+//            responseUrl = "devHome.jsp";
+//        } else if (account instanceof Manager) {
+//            responseUrl = "managerHome.jsp";
+//        } else if (account instanceof User) {
+//            responseUrl = "userHome.jsp";
+//        } else {
+//            responseUrl = "dashboard.jsp";
+//        }
+//        
+//        if(!status) {
+//            responseUrl += "?error=true";
+//        }
+//        
+//        response.sendRedirect(responseUrl);
+//    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

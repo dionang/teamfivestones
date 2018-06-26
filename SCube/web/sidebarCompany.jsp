@@ -14,7 +14,6 @@
                     <li><a href="createDevAccount.jsp"><i class="fa fa-gears"></i>  Create Developer Account</a></li>
                     <li><a href="createManagerAccount.jsp"><i class="fa fa-user"></i>  Create Manager Account</a></li>
                     <li><a href="createUserAccount.jsp"><i class="fa fa-group"></i>  Create User Account</a></li> 
-                    
                 </ul>
             </div>
         </div>

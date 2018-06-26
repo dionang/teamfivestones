@@ -13,8 +13,7 @@
                 <ul class="nav side-menu" id="options">
                     <li><a href="dashboard.jsp"><i class="fa fa-bar-chart"></i>  View Dashboard</a></li>
                     <li><a href="createUserAccount.jsp"><i class="fa fa-group"></i>  Create User Account</a></li>
-                    <li><a href=""><i class="fa fa-file-image-o"></i>  Create Report Template</a></li> 
-                    
+                    <li><a href="report.jsp"><i class="fa fa-file-image-o"></i>  Create Report Template</a></li> 
                 </ul>
             </div>
         </div>

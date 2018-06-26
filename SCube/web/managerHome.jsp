@@ -3,10 +3,10 @@
 <%@ page import="scube.entities.Manager" %>
 <%
     Account account = (Account) session.getAttribute("account");
-    //if (!(account instanceof Manager)){
-       // response.sendRedirect("/");
-       // return;
-    //}
+    if (!(account instanceof Manager)){
+        response.sendRedirect("/");
+        return;
+    }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -50,7 +50,7 @@
                             </a>
                         </div>
                        <div class="col-sm-4 img">
-                           <a href="" style="text-decoration: none">
+                           <a href="report.jsp" style="text-decoration: none">
                                <div class="pic">
                                    <img  src="/assets/images/report.png"  class="image"/>
                                 </div>
@@ -59,14 +59,8 @@
                            </a>
                        </div>
                     </div>  
-                   
-
-                
                 <!-- page content -->
-
-                   
                 </div>
-
             </div>
         </div>
         
@@ -76,8 +70,5 @@
         <script src="/assets/js/bootstrap.min.js"></script>
         <!-- Custom JS -->
         <script src="/assets/js/dashboard.js"></script> 
-
-        <script  src="/assets/js/checkPassword.js"></script>
-
     </body>
 </html>
