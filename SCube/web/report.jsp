@@ -34,21 +34,7 @@
                 cursor: pointer;
             }
             
-            .ui-widget-content{
-                 background: red;
-                width: fit-content;
-                height: fit-content;
-                padding: 10px;
-                cursor: pointer;
-            }
-            
-            #resizable{
-                background: blue;
-                width: fit-content;
-                height: fit-content;
-                padding: 10px;
-                cursor: pointer;
-            }
+           
             
             
 
@@ -68,12 +54,18 @@
                 <div class="right_col" role="main" >
                     <h2>Build Your Report Template</h2>
                     <div class="reportArea" id="container">
+                        
+                        
                         <div class="dragbox" id="textbox" style="background:whitesmoke; display:none;">
                             <textarea placeholder="Enter your text here" style="display: table-row"></textarea>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a></li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                                </ul>
                         </div>
-                        
-                        
-                        <div id="resizable" class="ui-widget-content" style="display: none ">
+
+                            
+                            <div id="lineChartBox" class="col-md-8 col-sm-8 col-xs-8" style="display: none">
                                 <div class="x_panel" >
                                     <div class="x_title">
                                         <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
@@ -84,14 +76,10 @@
                                         </ul>
                                         <div class="clearfix"></div>
                                     </div>
-                                    <div class="x_content" >
+                                    <div class="x_content">
                                         <canvas class="lineChart"></canvas>
                                     </div>
                                 </div>
-                        </div>
-                            
-                            <div id="lineChartBox" class="col-md-8_col-sm-8_col-xs-8" style="display: none ">
-                                
                             </div>
                         
                         
@@ -102,14 +90,10 @@
                                 <div class="x_title">
                                     <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
                                     <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                        </li>
-                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                        </li>
-                                    </ul>
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a></li>
+                                            <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                                        </ul>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
@@ -117,20 +101,18 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        
+                        
                         <div id="pieChartBox" class="col-md-4 col-sm-6 col-xs-12" style="display:none;">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
                                     <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-
-                                        </li>
-                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                        </li>
-                                    </ul>
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a></li>
+                                            <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                                        </ul>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
@@ -157,12 +139,8 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
         <script>
-            $(function(){
-                $( "#lineChartBox" ).resizable();
-                
-               
-            })
             
+            $(document).ready(function() { $('div:empty').remove(); });
             
             
             $(function () {
@@ -172,26 +150,28 @@
                 });
                 
                 $("#addLineChart").click(function () {
-                    var resizable = $("#resizable").clone().draggable({containment: "#container", scroll: false}).resizable();
-                    $("#container").append(resizable.show());
+                    var lineChartBox = $("#lineChartBox").clone().draggable({containment: "#container", scroll: false}).resizable();
+                    $("#container").append(lineChartBox.show());
                      initLineCharts();
                     loadChartBoxes();
                 });
                 
-                
                 $("#addBarChart").click(function () {
-                    var barChart = $("#barChartBox").clone().draggable({containment: "#container", scroll: false});
-                    $("#container").append(barChart.show());
-                    initBarCharts();
+                    var barChartBox = $("#barChartBox").clone().draggable({containment: "#container", scroll: false}).resizable();
+                    $("#container").append(barChartBox.show());
+                     initBarCharts();
                     loadChartBoxes();
                 });
                 
                 $("#addPieChart").click(function () {
-                    var pieChart = $("#pieChartBox").clone().draggable({containment: "#container", scroll: false});
-                    $("#container").append(pieChart.show());
-                    initPieCharts();
+                    var pieChartBox = $("#pieChartBox").clone().draggable({containment: "#container", scroll: false}).resizable();
+                    $("#container").append(pieChartBox.show());
+                     initPieCharts();
                     loadChartBoxes();
                 });
+                
+
+                
                 
                 
                 
