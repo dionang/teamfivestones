@@ -29,7 +29,7 @@
                 <div class="right_col">
                     <div class="content">
                         <div class="col-sm-4 img">
-                            <a href="devHome.jsp" style="text-decoration: none" >
+                            <a href="createDevAccount.jsp" style="text-decoration: none" >
                                  <div class="pic">
                                     <img  src="/assets/images/dev.png" class="image"/>
                                 </div>
@@ -37,7 +37,7 @@
                             </a>
                         </div>
                         <div class="col-sm-4 img">
-                            <a href="managerHome.jsp" style="text-decoration: none">
+                            <a href="createManagerAccount.jsp" style="text-decoration: none">
                                 <div class="pic">
                                      <img  src="/assets/images/manager.png" class="image"/>
                                 </div>

@@ -77,7 +77,7 @@
                             <span class="required"> * </span>are required
                         </p>
                       
-                        <input type="submit" value="Create User" class="btn btn-success" />
+                        <input type="submit" value="Create Developer" class="btn btn-success" />
 
                         <br><br>
                     </form>

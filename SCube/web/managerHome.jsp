@@ -30,7 +30,6 @@
                 
                 
                 <div class="right_col">
-<<<<<<< HEAD
                     <div class="content">
                         <div class="col-sm-4 img">
                             <a href="dashboard.jsp" style="text-decoration: none">
