@@ -76,7 +76,7 @@
                             <span class="required"> * </span>are required
                         </p>
                       
-                        <input type="submit" value="Create User" class="btn btn-success" onclick="myFunction()"/>
+                        <input type="submit" value="Create User" class="btn btn-success"/>
                        
                    
                         <br><br>
