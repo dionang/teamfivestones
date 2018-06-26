@@ -13,10 +13,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/assets/css/dashboard.css">
-        <link rel="stylesheet" href="assets/css/createForm.css">
+        <link rel="stylesheet" href="/assets/css/home.css">
         <title>Manager Home</title>
         
     </head>
@@ -25,13 +24,50 @@
         <div class="container body">
             <div class="main_container">
                 
-                <jsp:include page="sidebar.jsp"></jsp:include>
+                <jsp:include page="sidebarManager.jsp"></jsp:include>
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <!-- page content -->
+                
+                
                 <div class="right_col">
-                    <a class="btn btn-success" href="createUser.jsp">Create User Account</a>
-                    <a class="btn btn-success" href="viewAllUsers.jsp">View All User Accounts</a>
+<<<<<<< HEAD
+                    <div class="content">
+                        <div class="col-sm-4 img">
+                            <a href="dashboard.jsp" style="text-decoration: none">
+                                <div class="pic">
+                                    <img  src="/assets/images/dashboard.png" class="image"  />
+                                </div>
+                           
+                            <h4>View Dashboard</h4>
+                            </a>
+                        </div>
+                        <div class="col-sm-4 img">
+                            <a href="createUserAccount.jsp" style="text-decoration: none">
+                                <div class="pic">
+                                   <img  src="/assets/images/userHome.png" class="image" />
+                                </div>
+                            
+                            <h4 >Create User Account</h4>
+                            </a>
+                        </div>
+                       <div class="col-sm-4 img">
+                           <a href="" style="text-decoration: none">
+                               <div class="pic">
+                                   <img  src="/assets/images/report.png"  class="image"/>
+                                </div>
+                            
+                            <h4 >Create Report Template</h4>
+                           </a>
+                       </div>
+                    </div>  
+                   
+
+                
+                <!-- page content -->
+
+                   
                 </div>
+
             </div>
         </div>
         
@@ -41,6 +77,8 @@
         <script src="/assets/js/bootstrap.min.js"></script>
         <!-- Custom JS -->
         <script src="/assets/js/dashboard.js"></script> 
+
         <script  src="/assets/js/checkPassword.js"></script>
+
     </body>
 </html>
