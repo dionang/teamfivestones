@@ -35,6 +35,13 @@
             }
             
            
+            .x_panel{
+                overflow: hidden;
+                position: relative;
+            }
+                
+}
+           
             
             
 
@@ -65,28 +72,30 @@
                         </div>
 
                             
-                            <div id="lineChartBox" class="col-md-8 col-sm-8 col-xs-8" style="display: none">
-                                <div class="x_panel" >
-                                    <div class="x_title">
+                            <!--<div id="lineChartBox" class="col-md-8 col-sm-8 col-xs-8" style="display: none">-->
+                                <div class="x_panel" id = "lineChartBox" style="display: none; width:900px; height: 200px">
+                                    <div class="x_title" >
                                         <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
                                         <ul class="nav navbar-right panel_toolbox">
                                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                                             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a></li>
                                             <li><a class="close-link"><i class="fa fa-close"></i></a></li>
                                         </ul>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div class="x_content">
+                                        <div class="clearfix" ></div>
+                                    
+                                    <div class="x_content" >
                                         <canvas class="lineChart"></canvas>
                                     </div>
+                                    </div>
                                 </div>
-                            </div>
+                                <!--</div>-->
+                            <!--</div>-->
                         
                         
                             
                             
-                        <div id="barChartBox" class="col-md-6 col-sm-6 col-xs-12" style="display:none;">
-                            <div class="x_panel">
+                        <!--<div id="barChartBox" class="col-md-6 col-sm-6 col-xs-12" style="display:none;">-->
+                            <div class="x_panel" id = "barChartBox" style="display: none; width:700px; height: 300px">
                                 <div class="x_title">
                                     <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
                                     <ul class="nav navbar-right panel_toolbox">
@@ -95,17 +104,18 @@
                                             <li><a class="close-link"><i class="fa fa-close"></i></a></li>
                                         </ul>
                                     <div class="clearfix"></div>
-                                </div>
+                                
                                 <div class="x_content">
                                     <canvas class="barChart"></canvas>
                                 </div>
+                                </div>
                             </div>
-                        </div>
+                        <!--</div>-->
                         
                         
                         
-                        <div id="pieChartBox" class="col-md-4 col-sm-6 col-xs-12" style="display:none;">
-                            <div class="x_panel">
+                        <!--<div id="pieChartBox" class="col-md-4 col-sm-6 col-xs-12" style="display:none;">-->
+                            <div class="x_panel" id="pieChartBox" style="display:none; width:500px; height: 300px">
                                 <div class="x_title">
                                     <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
                                     <ul class="nav navbar-right panel_toolbox">
@@ -116,10 +126,14 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <canvas class="pieChart"></canvas>
-                                </div>
+                                    <canvas class="pieChart" width="20px" height="20px" ></canvas>
+                                </div></div>
                             </div>
-                        </div>
+                        <!--</div>-->
+                        
+                        
+                        
+                        
                     </div>
                 </div>
                 <!-- page content -->
