@@ -10,36 +10,56 @@
         <title>Login Page</title>
     </head>
     <body>
+        
+        
+        
+  
         <div class="row" style="margin-top:250px">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-3">
+            <div class="col-md-1 col-xs-2"></div>
+            <div class="col-md-3 col-xs-10">
                 <img src="/assets/images/logo.png" />
             </div>
-            <div class="col-lg-3">
+            <div class="col-md-3">
                 <div class="vl"></div>    
             </div>
-            <div class="col-lg-3">
+            <div class="col-md-4 col-xs-12" >
+                <div class="row">
                 <%
                     String error = request.getParameter("error");
                     if (error != null) {
                         out.println("<h4 style=\"color:red\">Incorrect username/password!</h4>");
                     }
                 %>
-                <form name="loginForm" action="login" method="post">
-                    <div class="input-group" >
-                        <span class="input-group-addon" ><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="email" type="text" class="form-control" name="username" placeholder="User Name" required="true">
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-xs-offset-2 col-xs-8" >
+                        <form name="loginForm" action="login" method="post">
+                            <div class="row">
+                                <div class="input-group" >
+                                    <span class="input-group-addon" ><i class="glyphicon glyphicon-user"></i></span>
+                                    <input id="email" type="text" class="form-control" name="username" placeholder="User Name" required="true">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row" >
+                                <div class="input-group">
+                                    <span class="input-group-addon" ><i class="glyphicon glyphicon-lock" ></i></span>
+                                    <input id="password" type="password" class="form-control" name="password" placeholder="Password" required="true">
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row" >
+                                
+                                    <input class="btn btn-success btn-block" type="submit" value="Login" >
+                              
+                            </div>
+                            <br><br>  
+                            <div class="row">
+                                <label class="forget">Forget your password?</label>
+                            </div>
+                        </form> 
                     </div>
-                    <br>
-                    <div class="input-group">
-                        <span class="input-group-addon" ><i class="glyphicon glyphicon-lock" ></i></span>
-                        <input id="password" type="password" class="form-control" name="password" placeholder="Password" required="true">
-                    </div>
-                    <br><br>
-                    <input class="btn btn-primary" type="submit" value="Login">
-                    <br><br>    
-                    <label class="forget">Forget your password?</label>
-                </form>   
+                </div>
             </div>           
         </div>
     </body>

@@ -1,4 +1,4 @@
-<%@ include file="protect.jsp" %>
+ <%@ include file="protect.jsp" %>
 <%@ page import="scube.entities.Account" %>
 <%
     Account account = (Account) session.getAttribute("account");

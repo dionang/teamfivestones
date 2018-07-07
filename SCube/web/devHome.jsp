@@ -29,22 +29,43 @@
                 
                 <!-- set datasource -->
                 <div class="right_col">
-                    <div class="form">
-                         <h1>Set Datasource</h1><br/>
-                         <form action="/setDatasource" method="post">
-                          <p>
-                            <label for="username" class="icon-link"> Datasource URL
-                                <span class="required">*</span>
-                            </label>
-                            <input type="text" class="form-control" name="datasource" placeholder="Enter your datasource url" required="" />
-                        </p>
-                        <input type="hidden" name="companyId" value="<%= account.getCompanyId() %>">
-                        <input type="hidden" name="operation" value="setDatasource"/>
-                        <input type="submit" value="Set Datasource" class="btn btn-success"/>
+                    <div class="row">
+                        <div class="col-md-offset-1 col-md-10">
+                             <div class="form">
+                                 <form action="/setDatasource" method="post">
+                                     <div class="row">
+                                        <div class="col-md-10 ">
+                                            <h1>Set Datasource</h1>
+                                        </div>
+                                    </div>
+                                     <br>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <label for="username" class="icon-link"> Datasource URL
+                                                <span class="required">*</span>
+                                            </label> 
+                                        </div>
+                                     </div>
+                                     <div class="row">
+                                         <div class="col-md-10 col-xs-12 ">
+                                        <input type="text" class="form-control" name="datasource" placeholder="Enter your datasource url" required="" />
+                                        </div>
+                                     </div>
+                        
+                                     <br>
+                                    <input type="hidden" name="companyId" value="<%= account.getCompanyId() %>">
+                                    <input type="hidden" name="operation" value="setDatasource"/>
+                                    <div class="row">
+                                        <div class="col-md-5" >
+                                            <input type="submit" value="Set Datasource" class="btn btn-success"/>
+                                        </div>
+                                    </div>
+                            <br/>
+                        
                          </form>
-                         <br><br>
+                                   
                     </div>
-                    
+                     <br><br>
                 </div>
                 <!-- set datasource -->
 

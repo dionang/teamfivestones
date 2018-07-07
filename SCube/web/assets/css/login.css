@@ -33,18 +33,47 @@ body{
     height:50px;
     background-color: transparent;
     border:none;
+    color:white;
+    font-size:18px
 }
 .btn{
-    width:320px;
     height:50px;
-    background-color: #57BB59;
-    border-color:#57BB59;
+    background-color: #FFBF05;
+    border-color:#FFBF05;
     font-size:large;
     font-weight:bold;
+  
 
 }
 .forget{
     color:rgb(207, 207, 209, 0.8);
     font-size:medium;
 
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  
+  .vl {
+        visibility: hidden;
+    }
+  
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .vl {
+        visibility: hidden;
+    }
+ 
+  
+}
+
+
+
+@media (min-width: 320px) and (max-width: 480px) {
+  
+  .vl {
+        visibility: hidden;
+    }
+ 
+  
 }
