@@ -58,9 +58,12 @@
                 <!-- page content -->
                 <div class="right_col" role="main" >
                     <h2>Build Your Report Template</h2>
+                    
+                    
+                    
                     <div class="reportArea" id="container">
                         
-                        
+                                                
                         <div class="dragbox" id="textbox" style="background:whitesmoke; display:none;">
                             <textarea placeholder="Enter your text here" style="display: table-row"></textarea>
                                 <ul class="nav navbar-right panel_toolbox">
@@ -153,26 +156,49 @@
             
             $(function () {
                 $("#addTextbox").click(function () {
-                    var textbox = $("#textbox").clone().draggable({containment: "#container", scroll: false});
+                    var textbox = $("#textbox").clone().draggable({containment: "#container", scroll: false,
+                        drag: function(){
+                                var xPos = this.style.left;
+                                var yPos = this.style.top;
+                                console.log(xPos+","+yPos);
+                            }}).resizable();});
                     $("#container").append(textbox.show());
                 });
                 
                 $("#addLineChart").click(function () {
-                    var lineChartBox = $("#lineChartBox").clone().draggable({containment: "#container", scroll: false}).resizable();
-                    $("#container").append(lineChartBox.show());
+                    var lineChartBox = $("#lineChartBox").clone();
+                    lineChartBox.draggable({
+                        containment: "#container", 
+                        scroll: false,
+                        drag: function(){
+                                var xPos = this.style.left;
+                                var yPos = this.style.top;
+                                console.log(xPos+","+yPos);
+                            }}).resizable();
+                    $("#container").append(lineChartBox.show().resizable());
                      initLineCharts();
                     loadChartBoxes();
                 });
                 
                 $("#addBarChart").click(function () {
-                    var barChartBox = $("#barChartBox").clone().draggable({containment: "#container", scroll: false}).resizable();
+                    var barChartBox = $("#barChartBox").clone().draggable({containment: "#container", scroll: false,
+                        drag: function(){
+                                var xPos = this.style.left;
+                                var yPos = this.style.top;
+                                console.log(xPos+","+yPos);
+                            }}).resizable();}).resizable();
                     $("#container").append(barChartBox.show());
                      initBarCharts();
                     loadChartBoxes();
                 });
                 
                 $("#addPieChart").click(function () {
-                    var pieChartBox = $("#pieChartBox").clone().draggable({containment: "#container", scroll: false}).resizable();
+                    var pieChartBox = $("#pieChartBox").clone().draggable({containment: "#container", scroll: false,
+                        drag: function(){
+                                var xPos = this.style.left;
+                                var yPos = this.style.top;
+                                console.log(xPos+","+yPos);
+                            }}).resizable();}).resizable();
                     $("#container").append(pieChartBox.show());
                      initPieCharts();
                     loadChartBoxes();
