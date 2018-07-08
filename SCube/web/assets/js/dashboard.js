@@ -57,30 +57,32 @@ function initLineCharts(){
 	        labels: ["January", "February", "March", "April", "May", "June", "July"],
 	        datasets: [
 	            {
-	            label: "My First dataset",
-	            backgroundColor: "rgba(38, 185, 154, 0.31)",
-	            borderColor: "rgba(38, 185, 154, 0.7)",
-	            pointBorderColor: "rgba(38, 185, 154, 0.7)", 
-	            pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-	            pointHoverBackgroundColor: "#fff",
-	            pointHoverBorderColor: "rgba(220,220,220,1)", 
-	            pointBorderWidth: 1,
-	            data: [31, 74, 6, 39, 20, 85, 7]
+                        label: "My First dataset",
+                        backgroundColor: "rgba(38, 185, 154, 0.31)",
+                        borderColor: "rgba(38, 185, 154, 0.7)",
+                        pointBorderColor: "rgba(38, 185, 154, 0.7)", 
+                        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(220,220,220,1)", 
+                        pointBorderWidth: 1,
+                        data: [31, 74, 6, 39, 20, 85, 7]
 	            },
-	            {label: "My Second dataset", 
-	                        backgroundColor: "rgba(3, 88, 106, 0.3)", 
-	                        borderColor: "rgba(3, 88, 106, 0.70)",
-	                        pointBorderColor: "rgba(3, 88, 106, 0.70)", 
-	                        pointBackgroundColor: "rgba(3, 88, 106, 0.70)", 
-	                        pointHoverBackgroundColor: "#fff",
-	                        pointHoverBorderColor: "rgba(151,187,205,1)", 
-	                        pointBorderWidth: 1, 
-	                        data: [82, 23, 66, 9, 99, 4, 2]
-	        }]
+	            {
+                        label: "My Second dataset", 
+                        backgroundColor: "rgba(3, 88, 106, 0.3)", 
+                        borderColor: "rgba(3, 88, 106, 0.70)",
+                        pointBorderColor: "rgba(3, 88, 106, 0.70)", 
+                        pointBackgroundColor: "rgba(3, 88, 106, 0.70)", 
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)", 
+                        pointBorderWidth: 1, 
+                        data: [82, 23, 66, 9, 99, 4, 2]
+                    }
+                ]
 	    },
 	
 	    // Configuration options go here
-	    options: {}
+	    options: {responsive:true}
 	});
     }
 }
@@ -99,13 +101,21 @@ function initBarCharts(){
             type: 'bar',
 
             // The data for our dataset
-            data: {labels: ["January", "February", "March", "April", "May", "June", "July"], 
-                        datasets: [{label: "# of Votes", 
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June", "July"], 
+                datasets: [
+                    {
+                        label: "# of Votes", 
                         backgroundColor: "#26B99A", 
-                        data: [51, 30, 40, 28, 92, 50, 45]}, 
-                        {label: "# of Votes", 
+                        data: [51, 30, 40, 28, 92, 50, 45]
+                    }, 
+                    {
+                        label: "# of Votes", 
                         backgroundColor: "#03586A", 
-                        data: [41, 56, 25, 48, 72, 34, 12]}]},
+                        data: [41, 56, 25, 48, 72, 34, 12]
+                    }
+                ]
+            },
 
             // Configuration options go here
             options: {scales: {yAxes: [{ticks: {beginAtZero: !0}}]}}
@@ -118,20 +128,20 @@ function initDoughnutChart(){
     ctx.canvas.width = 600;
     ctx.canvas.height = 200;
     let chart = new Chart(ctx, {
-	
-	    // The type of chart we want to create
-	    type: "doughnut",
-	
-	    // The data for our dataset
-	    data: {labels: ["Dark Grey", "Purple Color", "Gray Color", "Green Color", "Blue Color"], 
-			datasets: [{ 
-			backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
-			data: [120, 50, 140, 180, 100]} 
-			]}
-	
-	    // Configuration options go here
-	   
-	});
+        // The type of chart we want to create
+        type: "doughnut",
+
+        // The data for our dataset
+        data: {
+            labels: ["Dark Grey", "Purple Color", "Gray Color", "Green Color", "Blue Color"], 
+            datasets: [{ 
+                backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
+                data: [120, 50, 140, 180, 100]
+            }]
+        }
+        // Configuration options go here
+
+    });
 }
 
 function initRadarChart(){
@@ -139,33 +149,36 @@ function initRadarChart(){
     ctx.canvas.width = 350;
     ctx.canvas.height = 200;
     let chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: "radar",
 
-    // The type of chart we want to create
-    type: "radar",
-
-    // The data for our dataset
-    data: {labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"], 
-		datasets: [{ 
-                        
-                        backgroundColor: "rgba(3, 88, 106, 0.2)",
-                        borderColor: "rgba(3, 88, 106, 0.80)", 
-                        pointBorderColor: "rgba(3, 88, 106, 0.80)",
-                        pointBackgroundColor: "rgba(3, 88, 106, 0.80)", 
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(220,220,220,1)", 
-                        data: [65, 59, 90, 81, 56, 55, 40]}, 
-                        {
-                        backgroundColor: "rgba(38, 185, 154, 0.2)",
-                        borderColor: "rgba(38, 185, 154, 0.85)", 
-                        pointColor: "rgba(38, 185, 154, 0.85)", 
-                        pointStrokeColor: "#fff", 
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: [28, 48, 40, 19, 96, 27, 100]}
-		]}
-
-    // Configuration options go here
-   
+        // The data for our dataset
+        data: {
+            labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"], 
+            datasets: [
+                { 
+                    label: "Person 1", 
+                    backgroundColor: "rgba(3, 88, 106, 0.2)",
+                    borderColor: "rgba(3, 88, 106, 0.80)", 
+                    pointBorderColor: "rgba(3, 88, 106, 0.80)",
+                    pointBackgroundColor: "rgba(3, 88, 106, 0.80)", 
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(220,220,220,1)", 
+                    data: [65, 59, 90, 81, 56, 55, 40]
+                }, 
+                {
+                    label: "Person 2", 
+                    backgroundColor: "rgba(38, 185, 154, 0.2)",
+                    borderColor: "rgba(38, 185, 154, 0.85)", 
+                    pointColor: "rgba(38, 185, 154, 0.85)", 
+                    pointStrokeColor: "#fff", 
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 96, 27, 100]
+                }
+            ]
+        },
+        // Configuration options go here
     });
 }
 
@@ -179,11 +192,14 @@ function initPolarChart(){
         type: 'polarArea',
 
         // The data for our dataset
-        data: {labels: ["Dark Gray", "Purple", "Gray", "Green", "Blue"], 
-            datasets: [{label: "My dataset", 
-            backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
-            data: [120, 50, 140, 180, 100]} 
-        ]}
+        data: {
+            labels: ["Dark Gray", "Purple", "Gray", "Green", "Blue"], 
+            datasets: [{
+                label: "My dataset", 
+                backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
+                data: [120, 50, 140, 180, 100]
+            }]
+        }
     // Configuration options go here
     });
 }
@@ -199,11 +215,13 @@ function initPieCharts(){
             type: "pie",
 
             // The data for our dataset
-            data: {labels: ["Dark Grey", "Purple Color", "Gray Color", "Green Color", "Blue Color"], 
+            data: {
+                labels: ["Dark Grey", "Purple Color", "Gray Color", "Green Color", "Blue Color"], 
                 datasets: [{ 
-                 backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
-                data: [120, 50, 140, 180, 100]}
-            ]}
+                    backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
+                    data: [120, 50, 140, 180, 100]
+                }]
+            }
 
             // Configuration options go here
         });

@@ -14,7 +14,7 @@
         
         
   
-        <div class="row" style="margin-top:250px">
+        <div class="row" style="margin-top:18%">
             <div class="col-md-1 col-xs-2"></div>
             <div class="col-md-3 col-xs-8" style="padding-left: 0px">
                 <img style="width: 100%; max-width: 300px" src="/assets/images/logo.png" />
@@ -49,9 +49,7 @@
                             </div>
                             <br><br>
                             <div class="row" >
-                                
-                                    <input class="btn btn-success btn-block" type="submit" value="Login" >
-                              
+                                <input class="btn btn-success btn-block" type="submit" value="Login" >
                             </div>
                             <br><br>  
                             <div class="row">

@@ -5,6 +5,11 @@
  */
 package scube.controller;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -20,7 +25,7 @@ import scube.entities.Component;
  *
  * @author Dion
  */
-@WebServlet(name = "ComponentController", urlPatterns = {"/saveTemplate"})
+@WebServlet(name = "ComponentController", urlPatterns = {"/saveComponents"})
 public class ComponentController extends HttpServlet {
 
     /**
@@ -34,33 +39,56 @@ public class ComponentController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try (PrintWriter out = response.getWriter()) {
+            // read the request, have to use BufferedReader because json data is binary
+            StringBuilder jb = new StringBuilder();
+            String line;
+            BufferedReader reader = request.getReader();
+            JsonObject json = new JsonParser().parse(reader).getAsJsonObject();
+            
+            String operation = json.get("operation").getAsString();
+            System.out.println(operation);
+            if(operation.equals("saveComponents")){
+                JsonArray arr = json.getAsJsonArray("components");
+                for(int i=0; i<arr.size();i++){
+                    System.out.println(arr.get(i));
+                }
+                ArrayList<Component> components = new ArrayList<>();
+                
+            }
+            
+            out.println("saved successfully");
+
+        }
+        
 //        String operation = request.getParameter("operation");
 //        if(operation.equals("saveComponents")){
-//            String name = request.getParameter("name");
-//            String username = request.getParameter("username");
-//            String password = request.getParameter("password");
-//            String accountType = request.getParameter("accountType");
-//            boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
-//            switch(accountType) {
-//                case "developer" :  response.sendRedirect("createDevAccount.jsp" + (status ? "" : "?error=true"));
-//                                    break;
-//                case "manager"   :  response.sendRedirect("createManagerAccount.jsp" + (status ? "" : "?error=true"));
-//                                    break;
-//                case "user"      :  response.sendRedirect("createUserAccount.jsp" + (status ? "" : "?error=true"));
-//                                    break;                    
-//            }
-//        } else if (operation.equals("setDatasource")){
-//            String datasource = request.getParameter("datasource");
-//            int companyId = Integer.parseInt(request.getParameter("companyId"));
-//            boolean status = CompanyDAO.setDatasource(datasource, companyId);
-//            response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
+////            String name = request.getParameter("name");
+////            String username = request.getParameter("username");
+////            String password = request.getParameter("password");
+////            String accountType = request.getParameter("accountType");
+////            boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
+////            switch(accountType) {
+////                case "developer" :  response.sendRedirect("createDevAccount.jsp" + (status ? "" : "?error=true"));
+////                                    break;
+////                case "manager"   :  response.sendRedirect("createManagerAccount.jsp" + (status ? "" : "?error=true"));
+////                                    break;
+////                case "user"      :  response.sendRedirect("createUserAccount.jsp" + (status ? "" : "?error=true"));
+////                                    break;                    
+////            }
+////        } else if (operation.equals("setDatasource")){
+////            String datasource = request.getParameter("datasource");
+////            int companyId = Integer.parseInt(request.getParameter("companyId"));
+////            boolean status = CompanyDAO.setDatasource(datasource, companyId);
+////            response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
+//            
 //        }
-        ArrayList<Component> components = new ArrayList<>();
-//            public Component(String id, String type, int page, double x, double y, double height, double width){
-        components.add(new Component("textbox1", "textbox",1,5.0,3.0,5.0,3.0));
-        components.add(new Component("textbox2", "textbox",1,4.0,3.0,5.4,3.0));
-        components.add(new Component("textbox3", "textbox",1,5.0,3.2,5.0,3.5));
-        ComponentDAO.saveComponents(components, 1);
+//        ArrayList<Component> components = new ArrayList<>();
+//        components.add(new Component("textbox1", "textbox",1,5.0,3.0,5.0,3.0));
+//        components.add(new Component("textbox2", "textbox",1,4.0,3.0,5.4,3.0));
+//        components.add(new Component("textbox3", "textbox",1,5.0,3.2,5.0,3.5));
+//        ComponentDAO.saveComponents(components, 1);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

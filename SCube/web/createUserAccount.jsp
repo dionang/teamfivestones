@@ -38,117 +38,111 @@
                 <div class="right_col">
                     <div class="row">
                         <div class="col-md-offset-1 col-md-10">
-                             <div class="form">
-                                 <form action="/createAccount" method="post" id="submitForm">
+                            <div class="form">
+                                <form action="/createAccount" method="post" id="submitForm">
                                     <div class="row">
                                         <div class="col-md-10">
                                             <h1>Create User Account</h1>
                                         </div>
                                     </div>
-                                     <br>
-                                     <div class="row">
+                                    <br>
+                                    <div class="row">
                                         <div class="col-md-5">
                                             <label for="name" class="icon-user"> Name
                                                 <span class="required">*</span>
                                             </label>  
                                         </div>
-                                     </div>
-                                     <div class="row">
-                                         <div class="col-md-10 col-xs-12 ">
-                                         <input type="text" class="form-control" name="name" placeholder="Enter your name" required="" />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10 col-xs-12 ">
+                                            <input type="text" class="form-control" name="name" placeholder="Enter your name" required="" />
                                         </div>
-                                     </div>
-                                     <br>
-                                     <div class="row">
+                                    </div>
+                                    <br>
+                                    <div class="row">
                                         <div class="col-md-5">
                                             <label for="username" class="icon-user"> User Name
                                                 <span class="required">*</span>
                                             </label>
                                         </div>
-                                     </div>
-                                     <div class="row">
-                                         <div class="col-md-10 col-xs-12">
-                                         <input class="form-control" name="username" placeholder="Enter your username" required="" />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10 col-xs-12">
+                                            <input class="form-control" name="username" placeholder="Enter your username" required="" />
                                         </div>
-                                     </div>
-                                     <br>
-                                     <div class="row">
+                                    </div>
+                                    <br>
+                                    <div class="row">
                                         <div class="col-md-5">
                                             <label for="password" class="icon-key"> Password
                                                 <span class="required">*</span>
                                             </label>
                                         </div>
-                                     </div>
-                                     <div class="row">
-                                         <div class="col-md-10 col-xs-12 ">
-                                        <input type="password" class="form-control" id="password" name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()?])[A-Za-z\d!@#$%^&*()?]{8,}" title="Must contain at least one number and one uppercase and lowercase letter and one special characters, and at least 8 or more characters" required/>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10 col-xs-12 ">
+                                            <input type="password" class="form-control" id="password" name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()?])[A-Za-z\d!@#$%^&*()?]{8,}" title="Must contain at least one number and one uppercase and lowercase letter and one special characters, and at least 8 or more characters" required/>
                                         </div>
-                                     </div>
-                                     <br>
-                                     <div class="row">
+                                    </div>
+                                    <br>
+                                    <div class="row">
                                         <div class="col-md-5">
                                             <label for="confirm" class="icon-key"> Confirm Password
                                                 <span class="required">*</span>
                                             </label>
                                         </div>
-                                     </div>
-                                     <div class="row">
-                                         <div class="col-md-10 col-xs-12 ">
-                                         <input type="password" class="form-control" id="confirm" required />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10 col-xs-12 ">
+                                            <input type="password" class="form-control" id="confirm" required />
                                         </div>
-                                     </div>
-                       
-                            
-                                     <br>
-                                <div class="row">
-                                    <div class="col-md-3 col-xs-12" style="font-size:13px">
-                                        [ Password format :
                                     </div>
-                                    <div class="col-md-4 col-xs-12" style="font-size:13px" >
-                                        <span class="glyphicon glyphicon-remove invalid" id="length"  style="color:#FF0004;"></span> At least 8 Characters Long
-                                        <br>
-                                        <span class="glyphicon glyphicon-remove invalid" id="capital" style="color:#FF0004;"></span> One Uppercase Letter
-                                        <br>
-                                        <span class="glyphicon glyphicon-remove invalid" id="space"   style="color:#FF0004;"></span> One Special Character
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-3 col-xs-12" style="font-size:13px">
+                                            [ Password format :
+                                        </div>
+                                        <div class="col-md-4 col-xs-6" style="font-size:13px" >
+                                            <span class="glyphicon glyphicon-remove invalid" id="length"  style="color:#FF0004;"></span> At least 8 Characters Long
+                                            <br>
+                                            <span class="glyphicon glyphicon-remove invalid" id="capital" style="color:#FF0004;"></span> One Uppercase Letter
+                                            <br>
+                                            <span class="glyphicon glyphicon-remove invalid" id="space"   style="color:#FF0004;"></span> One Special Character
+                                        </div>
+                                        <div class="col-md-4 col-xs-6" style="font-size: 13px">
+                                            <span class="glyphicon glyphicon-remove invalid" id="letter"  style="color:#FF0004;"></span> One Lowercase Letter
+                                            <br>
+                                            <span class="glyphicon glyphicon-remove invalid" id="number"  style="color:#FF0004;"></span> One Number 
+                                            <br>
+                                            <span class="glyphicon glyphicon-remove invalid" id="match"   style="color:#FF0004;"></span> Passwords Match ]
+                                        </div>
                                     </div>
-                                    <div class="col-md-4 col-xs-12" style="font-size: 13px">
-                                        <span class="glyphicon glyphicon-remove invalid" id="letter"  style="color:#FF0004;"></span> One Lowercase Letter
-                                        <br>
-                                        <span class="glyphicon glyphicon-remove invalid" id="number"  style="color:#FF0004;"></span> One Number 
-                                        <br>
-                                        <span class="glyphicon glyphicon-remove invalid" id="match"   style="color:#FF0004;"></span> Passwords Match ]
+                                    <br>
+                                    <input type="hidden" name="companyId" value="<%= account.getCompanyId()%>">
+                                    <input type="hidden" name="accountType" value="user">
+                                    <input type="hidden" name="operation" value="createAccount"/>
+                                    <div class="row">
+                                        <div class="col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
+                                            <label class="indication">Fields with
+                                                <span class="required"> * </span>are required</label>
+                                        </div>
                                     </div>
-                                </div>
-                            </p>
-                            <br>
-                            <input type="hidden" name="companyId" value="<%= account.getCompanyId()%>">
-                            <input type="hidden" name="accountType" value="user">
-                            <input type="hidden" name="operation" value="createAccount"/>
-                            <div class="row">
-                                <div class="col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
-                                    <label class="indication">Fields with
-                                        <span class="required"> * </span>are required</label>
-                                </div>
+                                    <%
+                                        String error = request.getParameter("error");
+                                        if(error != null){
+                                             out.print("<h5 class='col-lg-4' style='color:red'>Username already exists!</h5>");
+                                        }
+                                    %>
+                                    <div class="row">
+                                        <div class="col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
+                                            <input type="submit" value="Create User" class="btn btn-success" />
+                                        </div>
+                                    </div>
+                                    <br/>
+                                </form>
                             </div>
-                            
-                            
-                            <%
-                                String error = request.getParameter("error");
-                                if(error != null){
-                                     out.print("<h5 class='col-lg-4' style='color:red'>Username already exists!</h5>");
-                                }
-                            %>
-                            <div class="row">
-                                <div class="col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
-                                    <input type="submit" value="Create User" class="btn btn-success" />
-                                </div>
-                            </div>
-                            <br/>
-                        </form>
-                    </div>
                         </div>
                     </div>
-                   
                 </div>
                 <!-- page content -->
             </div>
