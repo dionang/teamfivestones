@@ -6,6 +6,7 @@
 package scube.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,27 +37,24 @@ public class AccountController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
+                    
         String operation = request.getParameter("operation");
-        if(operation.equals("createAccount")){
-            String name = request.getParameter("name");
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            String accountType = request.getParameter("accountType");
-            boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
-            switch(accountType) {
-                case "developer" :  response.sendRedirect("createDevAccount.jsp" + (status ? "" : "?error=true"));
-                                    break;
-                case "manager"   :  response.sendRedirect("createManagerAccount.jsp" + (status ? "" : "?error=true"));
-                                    break;
-                case "user"      :  response.sendRedirect("createUserAccount.jsp" + (status ? "" : "?error=true"));
-                                    break;                    
+        try(PrintWriter out = response.getWriter()){
+            if(operation.equals("createAccount")){
+                String name = request.getParameter("name");
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                String accountType = request.getParameter("accountType");
+                boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
+                out.print(status);                 
+            } else if (operation.equals("setDatasource")){
+                String datasource = request.getParameter("datasource");
+                int companyId = Integer.parseInt(request.getParameter("companyId"));
+                boolean status = CompanyDAO.setDatasource(datasource, companyId);
+                response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
             }
-        } else if (operation.equals("setDatasource")){
-            String datasource = request.getParameter("datasource");
-            int companyId = Integer.parseInt(request.getParameter("companyId"));
-            boolean status = CompanyDAO.setDatasource(datasource, companyId);
-            response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

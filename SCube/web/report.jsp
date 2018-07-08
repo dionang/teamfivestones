@@ -182,29 +182,41 @@
                 $("#saveTemplate").click(function () {
                     var components = [];
                     for(var component of $("#container").children()){
-                        // remove px, set to 0 if undefined
-                        var type = component.id;
-                        var x = parseInt(component.style.left || 0 , 10);
-                        var y = parseInt(component.style.top || 0 , 10);
-                        var height = parseInt(component.style.width || 0 , 10);
-                        var width = parseInt(component.style.height || 0 , 10);
+                        var componentObj = {};
                         
-                        if(type === "textbox"){
-                            //default padding on all sides is 10px
-                            height = parseInt(component.children[0].style.height || 0 , 10);
-                            width  = parseInt(component.children[0].style.width  || 0 , 10);
+                        // push default component properties first
+                        // change implementation of randomId and page at a later time
+                        componentObj.type = component.id;        
+                        componentObj.id = component.id + (Math.floor(Math.random() * 9999) + 1);
+                        componentObj.page = 1
+                        componentObj.x = parseInt(component.style.left || 0 , 10); // removes px, set to 0 if undefined
+                        componentObj.y = parseInt(component.style.top || 0 , 10);
+                        componentObj.height = parseInt(component.style.height || 0 , 10);
+                        componentObj.width = parseInt(component.style.width || 0 , 10);
+                        console.log(parseInt(component.style.height || 0 , 10));
+                        console.log(parseInt(component.style.width || 0 , 10));
+
+                        if(component.id === "textbox"){
+                            // default padding on all sides is 10px, use this to recreate the textbox
+                            componentObj.text = component.children[0].value;
+                            componentObj.height = parseInt(component.children[0].style.height || 0 , 10);
+                            componentObj.width = parseInt(component.children[0].style.width || 0 , 10);
+                        // complete properties of other components later
+                        } else {
+                            
                         }
                         
-                        components.push({type: type, x: x, y: y, height: height, width: width})
+                        components.push(componentObj);
                     }
                     
                     $.ajax({
                         type: "POST",
                         url: "/saveComponents",
                         // The key needs to match your method's input parameter (case-sensitive).
-                        data: JSON.stringify({operation: "saveComponents", components: components}),
+                        // hardcoded templateId to 1 for now
+                        data: JSON.stringify({operation: "saveComponents", components: components, templateId: 1}),
                         contentType: "application/json; charset=utf-8",
-                        success: function(data){alert(data)},
+                        success: function(data){alert(data);},
                         failure: function(errMsg) {
                             alert(errMsg);
                         }

@@ -19,7 +19,7 @@
             <div class="col-md-3 col-xs-8" style="padding-left: 0px">
                 <img style="width: 100%; max-width: 300px" src="/assets/images/logo.png" />
             </div>
-            <div class="col-md-3 col-xs-2">
+            <div class="col-md-2 col-xs-2">
                 <div class="vl col-sm-12 hidden-sm hidden-xs"></div>    
             </div>
             <div class="col-md-4 col-xs-12" >
@@ -27,7 +27,7 @@
                 <%
                     String error = request.getParameter("error");
                     if (error != null) {
-                        out.println("<h4 style=\"color:red\">Incorrect username/password!</h4>");
+                        out.println("<h4 class= 'col-md-10 col-xs-offset-2' style='color:red'>Incorrect username/password!</h4>");
                     }
                 %>
                 </div>

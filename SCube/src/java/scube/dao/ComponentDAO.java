@@ -3,6 +3,7 @@ package scube.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import scube.entities.Component;
+import scube.entities.Textbox;
 
 public class ComponentDAO {
     //Create operations
@@ -31,12 +32,38 @@ public class ComponentDAO {
                 stmt.setDouble(7, component.getHeight());
                 stmt.setDouble(8, component.getWidth());
                 stmt.addBatch();
+                
+                if(component.getType().equals("textbox")){
+                    Textbox textbox = (Textbox) component;
+                    addTextbox(component.getId(), templateId, textbox.getText());
+                }
             }
             stmt.executeBatch();
             return true;
         } catch (SQLException e) {
             e.printStackTrace(System.out);
             return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static void addTextbox(String componentId, int templateId, String text) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO textbox VALUES (?,?,?)");
+            stmt.setString(1, componentId);
+            stmt.setInt(2, templateId);            
+            stmt.setString(3, text);
+
+            stmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
         } finally {
             ConnectionManager.close(conn, stmt, rs);
         }
@@ -56,11 +83,43 @@ public class ComponentDAO {
             
             ArrayList<Component> components = new ArrayList<>();
             while(rs.next()){
-                Component component = new Component(rs.getString("componentId"), rs.getString("type"), rs.getInt("page"), 
+                String type = rs.getString("type");
+                Component component;
+                if(rs.getString("type").equals("textbox")){
+                    component = new Textbox(rs.getString("componentId"), rs.getString("type"), rs.getInt("page"), 
+                        rs.getDouble("x"), rs.getDouble("y"), rs.getDouble("height"), rs.getDouble("width"), 
+                        getTextboxText(rs.getString("componentId")));
+                } else {
+                    component = new Component(rs.getString("componentId"), rs.getString("type"), rs.getInt("page"), 
                         rs.getDouble("x"), rs.getDouble("y"), rs.getDouble("height"), rs.getDouble("width"));
+                }
                 components.add(component);
             }
             return components;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static String getTextboxText(String componentId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT * FROM textbox WHERE componentId = ?");
+            stmt.setString(1, componentId);
+            rs = stmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getString("text");
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace(System.out);
             return null;
@@ -100,6 +159,47 @@ public class ComponentDAO {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("DELETE FROM component WHERE componentId = ?");
             stmt.setString(1, componentId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static boolean deleteAllComponents(int templateId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM component WHERE templateId = ?");
+            stmt.setInt(1, templateId);
+            stmt.executeUpdate();
+            
+            //delete components from the other tables as well
+            deleteAllTextboxes(templateId);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static boolean deleteAllTextboxes(int templateId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM textbox WHERE templateId = ?");
+            stmt.setInt(1, templateId);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {

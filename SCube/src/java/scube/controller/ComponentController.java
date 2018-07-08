@@ -6,7 +6,6 @@
 package scube.controller;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.BufferedReader;
@@ -20,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import scube.dao.ComponentDAO;
 import scube.entities.Component;
+import scube.entities.Textbox;
 
 /**
  *
@@ -47,14 +47,31 @@ public class ComponentController extends HttpServlet {
             JsonObject json = new JsonParser().parse(reader).getAsJsonObject();
             
             String operation = json.get("operation").getAsString();
-            System.out.println(operation);
+            int templateId = json.get("templateId").getAsInt();
             if(operation.equals("saveComponents")){
                 JsonArray arr = json.getAsJsonArray("components");
-                for(int i=0; i<arr.size();i++){
-                    System.out.println(arr.get(i));
-                }
                 ArrayList<Component> components = new ArrayList<>();
+                for(int i=0; i<arr.size();i++){
+                    JsonObject componentObj = arr.get(i).getAsJsonObject();
+                    String id = componentObj.get("id").getAsString();
+                    String type = componentObj.get("type").getAsString();
+                    int page = componentObj.get("page").getAsInt();
+                    double x = componentObj.get("x").getAsDouble();
+                    double y = componentObj.get("y").getAsDouble();
+                    double height = componentObj.get("height").getAsDouble();
+                    double width = componentObj.get("width").getAsDouble();
+                    
+                    if (type.equals("textbox")){
+                        String text = componentObj.get("text").getAsString();
+                        components.add(new Textbox(id, type, page, x, y, height, width, text));
+                    } else {
+                        components.add(new Component(id, type, page, x, y, height, width));
+                    }
+                }
                 
+                // remove existing data of the template, if exists
+                ComponentDAO.deleteAllComponents(templateId);
+                ComponentDAO.saveComponents(components, templateId);
             }
             
             out.println("saved successfully");

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2018 at 03:40 AM
+-- Generation Time: Jul 08, 2018 at 03:00 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -33,8 +33,9 @@ CREATE TABLE IF NOT EXISTS `account` (
   `companyId` int(11) NOT NULL,
   `accountType` varchar(10) NOT NULL,
   `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`accountId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+  PRIMARY KEY (`accountId`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `account`
@@ -47,7 +48,9 @@ INSERT INTO `account` (`accountId`, `username`, `passwordHash`, `companyId`, `ac
 (5, 'manager', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'manager', 'Manager'),
 (6, 'user', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'user', 'User'),
 (7, 'company', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'company', 'Company Account'),
-(8, 'dion', '$2a$10$YwQxMJtBDbhFwj2v/uxnteTCeP2jkLeHscn7/r.o25FxNsepqfepW', 1, 'user', 'Dion');
+(8, 'dion', '$2a$10$YwQxMJtBDbhFwj2v/uxnteTCeP2jkLeHscn7/r.o25FxNsepqfepW', 1, 'user', 'Dion'),
+(22, 'P@ssw0rd', '$2a$10$shXMkrPYZzHqtFvS93S1zufLhZ4ZuFtLzfl8FuCQqV9Gmt7i6nkUW', 1, 'developer', 'P@ssw0rd'),
+(23, 'P@ssw0rd2', '$2a$10$09.0H0/CUEgt74OToX6aNOhy/VynU7VcUsyPfJfvwOrlGA.WX3F1S', 1, 'manager', 'P@ssw0rd2');
 
 -- --------------------------------------------------------
 
@@ -92,6 +95,16 @@ CREATE TABLE IF NOT EXISTS `component` (
   `width` double NOT NULL,
   PRIMARY KEY (`componentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `component`
+--
+
+INSERT INTO `component` (`componentId`, `templateId`, `type`, `page`, `x`, `y`, `height`, `width`) VALUES
+('barChartBox8585', 1, 'barChartBox', 1, 0, 115, 193, 503),
+('lineChartBox8447', 1, 'lineChartBox', 1, 0, 376, 127, 588),
+('pieChartBox3928', 1, 'pieChartBox', 1, 661, 107, 267, 402),
+('textbox9767', 1, 'textbox', 1, 114, 34, 50, 150);
 
 -- --------------------------------------------------------
 
@@ -141,7 +154,34 @@ CREATE TABLE IF NOT EXISTS `template` (
   `createdBy` int(11) NOT NULL,
   `createdOn` date NOT NULL,
   PRIMARY KEY (`templateId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `template`
+--
+
+INSERT INTO `template` (`templateId`, `templateName`, `createdBy`, `createdOn`) VALUES
+(1, 'My First Report Template', 5, '2018-08-07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `textbox`
+--
+
+CREATE TABLE IF NOT EXISTS `textbox` (
+  `componentId` varchar(20) NOT NULL,
+  `templateId` int(11) NOT NULL,
+  `text` varchar(500) NOT NULL,
+  PRIMARY KEY (`componentId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `textbox`
+--
+
+INSERT INTO `textbox` (`componentId`, `templateId`, `text`) VALUES
+('textbox9767', 1, 'My Personal Report');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

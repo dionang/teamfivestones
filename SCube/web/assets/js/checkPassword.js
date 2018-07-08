@@ -104,7 +104,7 @@ myInput.onkeyup = function() {
         match.style.color = "#FF0004";
         confirm.setCustomValidity("Passwords Don't Match");
     }
-}
+};
 
 confirm.onkeyup = function () {
     // Validate confirm password
@@ -123,7 +123,7 @@ confirm.onkeyup = function () {
         match.style.color = "#FF0004";
         confirm.setCustomValidity("Passwords Don't Match");
     }
-}
+};
 
 document.getElementById('submitForm').onsubmit = function (e) {
     e.preventDefault();
@@ -133,20 +133,33 @@ document.getElementById('submitForm').onsubmit = function (e) {
         text: "Are you sure you want to create this account?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
+        dangerMode: true
     })
     .then((confirm) => {
-        if (confirm) {
-            swal(" Account has been created successfully!", {
-                icon: "success",
-            })
-            .then((confirm) => {
-                if (confirm) {
-                    document.getElementById('submitForm').submit();
+        if(confirm){
+            var form = document.getElementById("submitForm");
+            $.ajax({
+                url: "/createAccount",
+                data: {
+                    name: form.elements[0].value,
+                    username: form.elements[1].value,
+                    password: form.elements[2].value,
+                    companyId: form.elements[4].value,
+                    accountType: form.elements[5].value,
+                    operation: form.elements[6].value
+                },
+                success: function(success){
+                    if(success === "true"){
+                        swal("Account has been created successfully!", {
+                            icon: "success"
+                        });
+                    } else {
+                        swal("Username already exists!", {
+                            icon: "error"
+                        });
+                    }
                 }
             });
         }
     });
-
-
 };
