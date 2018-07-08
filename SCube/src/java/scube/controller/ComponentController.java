@@ -6,22 +6,22 @@
 package scube.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import scube.dao.AccountDAO;
-import scube.dao.CompanyDAO;
-import scube.entities.*;
+import scube.dao.ComponentDAO;
+import scube.entities.Component;
 
 /**
  *
  * @author Dion
  */
-@WebServlet(name = "AccountController", urlPatterns = {"/createAccount", "/setDatasource"})
-public class AccountController extends HttpServlet {
+@WebServlet(name = "ComponentController", urlPatterns = {"/saveTemplate"})
+public class ComponentController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,29 +34,33 @@ public class AccountController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
-        String operation = request.getParameter("operation");
-        if(operation.equals("createAccount")){
-            String name = request.getParameter("name");
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            String accountType = request.getParameter("accountType");
-            boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
-            switch(accountType) {
-                case "developer" :  response.sendRedirect("createDevAccount.jsp" + (status ? "" : "?error=true"));
-                                    break;
-                case "manager"   :  response.sendRedirect("createManagerAccount.jsp" + (status ? "" : "?error=true"));
-                                    break;
-                case "user"      :  response.sendRedirect("createUserAccount.jsp" + (status ? "" : "?error=true"));
-                                    break;                    
-            }
-        } else if (operation.equals("setDatasource")){
-            String datasource = request.getParameter("datasource");
-            int companyId = Integer.parseInt(request.getParameter("companyId"));
-            boolean status = CompanyDAO.setDatasource(datasource, companyId);
-            response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
-        }
+//        String operation = request.getParameter("operation");
+//        if(operation.equals("saveComponents")){
+//            String name = request.getParameter("name");
+//            String username = request.getParameter("username");
+//            String password = request.getParameter("password");
+//            String accountType = request.getParameter("accountType");
+//            boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
+//            switch(accountType) {
+//                case "developer" :  response.sendRedirect("createDevAccount.jsp" + (status ? "" : "?error=true"));
+//                                    break;
+//                case "manager"   :  response.sendRedirect("createManagerAccount.jsp" + (status ? "" : "?error=true"));
+//                                    break;
+//                case "user"      :  response.sendRedirect("createUserAccount.jsp" + (status ? "" : "?error=true"));
+//                                    break;                    
+//            }
+//        } else if (operation.equals("setDatasource")){
+//            String datasource = request.getParameter("datasource");
+//            int companyId = Integer.parseInt(request.getParameter("companyId"));
+//            boolean status = CompanyDAO.setDatasource(datasource, companyId);
+//            response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
+//        }
+        ArrayList<Component> components = new ArrayList<>();
+//            public Component(String id, String type, int page, double x, double y, double height, double width){
+        components.add(new Component("textbox1", "textbox",1,5.0,3.0,5.0,3.0));
+        components.add(new Component("textbox2", "textbox",1,4.0,3.0,5.4,3.0));
+        components.add(new Component("textbox3", "textbox",1,5.0,3.2,5.0,3.5));
+        ComponentDAO.saveComponents(components, 1);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

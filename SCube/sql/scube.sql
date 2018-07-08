@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2018 at 06:23 PM
+-- Generation Time: Jul 08, 2018 at 03:40 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `accountType` varchar(10) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`accountId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `account`
@@ -46,7 +46,8 @@ INSERT INTO `account` (`accountId`, `username`, `passwordHash`, `companyId`, `ac
 (4, 'test', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'user', 'Report Generator'),
 (5, 'manager', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'manager', 'Manager'),
 (6, 'user', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'user', 'User'),
-(7, 'company', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'company', 'Company Account');
+(7, 'company', '$2a$10$1FqAeDh3N0e1wewHjwJBJ.XCWOqj5iEtB27LsjxwlpHbyV2ZASsfW', 1, 'company', 'Company Account'),
+(8, 'dion', '$2a$10$YwQxMJtBDbhFwj2v/uxnteTCeP2jkLeHscn7/r.o25FxNsepqfepW', 1, 'user', 'Dion');
 
 -- --------------------------------------------------------
 
@@ -77,6 +78,24 @@ INSERT INTO `company` (`companyId`, `companyName`, `address`, `phoneNo`, `fax`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `component`
+--
+
+CREATE TABLE IF NOT EXISTS `component` (
+  `componentId` varchar(20) NOT NULL,
+  `templateId` int(11) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `page` int(11) NOT NULL,
+  `x` double NOT NULL,
+  `y` double NOT NULL,
+  `height` double NOT NULL,
+  `width` double NOT NULL,
+  PRIMARY KEY (`componentId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `poc`
 --
 
@@ -102,11 +121,27 @@ INSERT INTO `poc` (`companyId`, `name`, `phoneNo`, `email`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `report` (
-  `reportId` int(11) NOT NULL,
-  `companyId` int(11) NOT NULL,
+  `reportId` int(11) NOT NULL AUTO_INCREMENT,
+  `reportName` varchar(50) NOT NULL,
+  `generatedBy` int(11) NOT NULL,
+  `createdOn` date NOT NULL,
+  `reportUrl` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`reportId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `template`
+--
+
+CREATE TABLE IF NOT EXISTS `template` (
+  `templateId` int(11) NOT NULL AUTO_INCREMENT,
+  `templateName` varchar(50) NOT NULL,
   `createdBy` int(11) NOT NULL,
-  `reportName` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `createdOn` date NOT NULL,
+  PRIMARY KEY (`templateId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

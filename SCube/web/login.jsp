@@ -16,11 +16,11 @@
   
         <div class="row" style="margin-top:250px">
             <div class="col-md-1 col-xs-2"></div>
-            <div class="col-md-3 col-xs-10">
-                <img src="/assets/images/logo.png" />
+            <div class="col-md-3 col-xs-8" style="padding-left: 0px">
+                <img style="width: 100%; max-width: 300px" src="/assets/images/logo.png" />
             </div>
-            <div class="col-md-3">
-                <div class="vl"></div>    
+            <div class="col-md-3 col-xs-2">
+                <div class="vl col-sm-12 hidden-sm hidden-xs"></div>    
             </div>
             <div class="col-md-4 col-xs-12" >
                 <div class="row">

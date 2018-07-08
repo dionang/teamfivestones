@@ -81,7 +81,6 @@ public class AccountDAO {
         }
     }
         
-    // Read operations
     public static ArrayList<Account> getAllUsersOfCompany(int companyId) {
         Connection conn = null;
         PreparedStatement stmt = null;
