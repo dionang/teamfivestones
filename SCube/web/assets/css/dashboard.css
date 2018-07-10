@@ -94,12 +94,20 @@ html,body,.container,.main_container {
     background:#3E5367;
     display:none
 }
+
 .nav-sm ul.nav.child_menu li{
     padding:0 10px
 }
 .nav-sm ul.nav.child_menu li a{
     text-align:left!important
 }
+.nav-sm ul.nav.child_menu li a i{
+    font-size:20px!important;
+    text-align:left;
+    width:20%!important;
+    margin-bottom:5px
+}
+
 .menu_section{
     margin-bottom:35px
 }

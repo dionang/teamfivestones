@@ -1,3 +1,4 @@
+
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" id="logo" style="border: 0;">
@@ -10,16 +11,19 @@
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-                <ul style="font-size: 14px" class="nav side-menu" id="options">
-                    <li><a style="font-size: 16px">Components</a></li>
+                <ul class="nav side-menu" id="options">
+                    <li id="title"><a style="font-weight:bold;font-size:16px"> Component</a></li>
+                    <li id="title1" style="display:none"><a style="font-weight:bold;font-size:11px;"> Component</a></li>
                     <li><a id="addTextbox"><i class="fa fa-font"></i> Textbox</a></li>
-                    <li><a><i class="fa fa-home"></i> Charts<span class="fa fa-chevron-down"></span></a>
+                    <li><a><i class="fa fa-bar-chart"></i> Charts <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a id="addBarChart"><i class="fa fa-bar-chart"></i> Bar</a></li>
-                            <li><a id="addPieChart"><i class="fa fa-pie-chart"></i> Pie</a></li>
-                            <li><a id="addLineChart"><i class="fa fa-line-chart"></i> Line</a></li>
+                            <li><a id="addBarChart"><i class="fa fa-bar-chart a"  ></i>Bar</a></li>
+                            <li><a id="addPieChart"><i class="fa fa-pie-chart a"></i> Pie</a></li>
+                            <li><a id="addLineChart"><i class="fa fa-line-chart a"></i>Line</a></li>
                         </ul>
-                    </li>
+                       
+                    </li> 
+                    
                 </ul>
             </div>
         </div>
