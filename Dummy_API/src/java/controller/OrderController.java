@@ -40,7 +40,9 @@ public class OrderController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String category = request.getParameter("category");
+            
+            //to retrieve the request entered from the URL
+            String category = request.getParameter("item");
             
             ArrayList<Order> furnitureList = OrderDAO.getOrdersByCategory(category);
             
