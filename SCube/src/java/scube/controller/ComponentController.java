@@ -41,8 +41,6 @@ public class ComponentController extends HttpServlet {
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
             // read the request, have to use BufferedReader because json data is binary
-            StringBuilder jb = new StringBuilder();
-            String line;
             BufferedReader reader = request.getReader();
             JsonObject json = new JsonParser().parse(reader).getAsJsonObject();
             
