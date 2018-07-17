@@ -85,7 +85,10 @@ function initLineCharts(){
 	    },
 	
 	    // Configuration options go here
-	    options: {responsive:true}
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+            }
 	});
     }
 }
@@ -121,7 +124,11 @@ function initBarCharts(){
             },
 
             // Configuration options go here
-            options: {scales: {yAxes: [{ticks: {beginAtZero: !0}}]}}
+            options: {
+                scales: {yAxes: [{ticks: {beginAtZero: !0}}]},
+                maintainAspectRatio: false,
+                responsive: true
+            }
         });
     }
 }
@@ -202,8 +209,12 @@ function initPolarChart(){
                 backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
                 data: [120, 50, 140, 180, 100]
             }]
+        },
+        // Configuration options go here
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
         }
-    // Configuration options go here
     });
 }
 
@@ -224,9 +235,13 @@ function initPieCharts(){
                     backgroundColor: ["#455C73", "#9B59B6", "#BDC3C7", "#26B99A", "#3498DB"], 
                     data: [120, 50, 140, 180, 100]
                 }]
-            }
+            },
 
             // Configuration options go here
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+            }
         });
     }
 }

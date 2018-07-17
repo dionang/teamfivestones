@@ -59,8 +59,8 @@
                             </ul>
                         </div>
                             
-                        <div class="x_panel" id = "lineChartBox" style="display: none; ">
-                            <div class="x_title" >
+                        <div class="x_panel" id = "lineChartBox" style="display: none; width:700px; height: 200px">
+                            <div class="x_title" style="height:90%">
                                 <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
@@ -68,14 +68,14 @@
                                     <li><a class="close-link"><i class="fa fa-close"></i></a></li>
                                 </ul>
                                 <div class="clearfix" ></div>
-                                <div class="x_content">
-                                    <canvas class="lineChart"></canvas>
+                                <div class="x_content" style="height:100%">
+                                    <canvas class="lineChart" ></canvas>
                                 </div>
                             </div>
                         </div>
                             
                         <div class="x_panel" id = "barChartBox" style="display: none; width:700px; height: 300px">
-                            <div class="x_title">
+                            <div class="x_title" style="height:90%">
                                 <textarea class="col-md-10 text-center" placeholder="Enter title here" style='font-family:"Helvetica Neue",sans-serif; font-size:13px;' rows="1"></textarea>
                                 <ul class="nav navbar-right panel_toolbox">
                                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
@@ -83,7 +83,7 @@
                                         <li><a class="close-link"><i class="fa fa-close"></i></a></li>
                                     </ul>
                                 <div class="clearfix"></div>
-                                <div class="x_content">
+                                <div class="x_content" style="height:100%">
                                     <canvas class="barChart"></canvas>
                                 </div>
                             </div>
@@ -99,8 +99,8 @@
                                 </ul>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="x_content">
-                                <canvas class="pieChart" width="20px" height="20px" ></canvas>
+                            <div class="x_content" style="height:80%">
+                                <canvas class="pieChart"></canvas>
                             </div>
                         </div>
                     <div id="container"></div>
