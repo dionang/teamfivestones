@@ -13,7 +13,6 @@ import dao.OrderDAO;
 import entities.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.time.Clock.system;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,7 +41,7 @@ public class OrderController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             //to retrieve the request entered from the URL
-            String category = request.getParameter("item");
+            String category = request.getParameter("category");
             
             ArrayList<Order> furnitureList = OrderDAO.getOrdersByCategory(category);
             
@@ -56,6 +55,7 @@ public class OrderController extends HttpServlet {
             JsonArray furnitureArr = new JsonArray();
             for(Order o : furnitureList) {
                 JsonObject furnitureObj = new JsonObject();
+                furnitureObj.addProperty("name", o.getProductName());
                 furnitureObj.addProperty("sales", o.getSales());
                 furnitureObj.addProperty("quantity", o.getQty());
                 furnitureObj.addProperty("discount", o.getDiscount());
@@ -66,7 +66,6 @@ public class OrderController extends HttpServlet {
             jsonOutput.addProperty("status", "success");
             jsonOutput.add("furnitures", furnitureArr);
             out.println(gson.toJson(jsonOutput));
-            return;
         }
     }
 

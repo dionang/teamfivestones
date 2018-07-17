@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2018 at 03:00 PM
+-- Generation Time: Jul 15, 2018 at 12:10 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -101,10 +101,8 @@ CREATE TABLE IF NOT EXISTS `component` (
 --
 
 INSERT INTO `component` (`componentId`, `templateId`, `type`, `page`, `x`, `y`, `height`, `width`) VALUES
-('barChartBox8585', 1, 'barChartBox', 1, 0, 115, 193, 503),
-('lineChartBox8447', 1, 'lineChartBox', 1, 0, 376, 127, 588),
-('pieChartBox3928', 1, 'pieChartBox', 1, 661, 107, 267, 402),
-('textbox9767', 1, 'textbox', 1, 114, 34, 50, 150);
+('barChartBox5889', 1, 'barChartBox', 1, 69, 215, 300, 700),
+('textbox9107', 1, 'textbox', 1, 218, 90, 50, 150);
 
 -- --------------------------------------------------------
 
@@ -150,9 +148,11 @@ CREATE TABLE IF NOT EXISTS `report` (
 
 CREATE TABLE IF NOT EXISTS `template` (
   `templateId` int(11) NOT NULL AUTO_INCREMENT,
+  `companyId` int(11) NOT NULL,
   `templateName` varchar(50) NOT NULL,
   `createdBy` int(11) NOT NULL,
   `createdOn` date NOT NULL,
+  `lastUpdatedOn` date DEFAULT NULL,
   PRIMARY KEY (`templateId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -160,8 +160,8 @@ CREATE TABLE IF NOT EXISTS `template` (
 -- Dumping data for table `template`
 --
 
-INSERT INTO `template` (`templateId`, `templateName`, `createdBy`, `createdOn`) VALUES
-(1, 'My First Report Template', 5, '2018-08-07');
+INSERT INTO `template` (`templateId`, `companyId`, `templateName`, `createdBy`, `createdOn`, `lastUpdatedOn`) VALUES
+(1, 1, 'My First Report Template', 5, '2018-08-07', '2018-08-07');
 
 -- --------------------------------------------------------
 
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `textbox` (
 --
 
 INSERT INTO `textbox` (`componentId`, `templateId`, `text`) VALUES
-('textbox9767', 1, 'My Personal Report');
+('textbox9107', 1, '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
