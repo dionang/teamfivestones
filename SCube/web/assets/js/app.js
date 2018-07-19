@@ -1,5 +1,4 @@
 const {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = Recharts;
-const Draggable = ReactDraggable;
 const data = [
     {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
     {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
@@ -30,9 +29,13 @@ class SimpleLineChart extends React.Component {
     
     render () {
   	return (
-            <Draggable>
-            <div>
-            <LineChart width={this.state.width} height={this.state.height} data={data} onClick={()=>this.toggleSize()}>
+            <Rnd default={{
+                x: 0,
+                y: 0,
+                width: 320,
+                height: 200,
+              }}>
+            <LineChart width={320} height={200} data={data} >
                 <XAxis dataKey="name"/>
                 <YAxis/>
                 <CartesianGrid strokeDasharray="3 3"/>
@@ -41,8 +44,7 @@ class SimpleLineChart extends React.Component {
                 <Line type="monotone" dataKey="pv" stroke="#8884d8" />
                 <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
             </LineChart>
-            </div>
-            </Draggable>
+            </Rnd>
         );
     }
 };

@@ -33,7 +33,9 @@
     <!-- Recharts -->
     <script src="https://npmcdn.com/recharts@1.0.1/umd/Recharts.min.js"></script>
     <!-- Draggable -->
-    <script src="assets/js/react-draggable.min.js"></script>
+    <script src="assets/js/react-draggable.js"></script>
+    <script src="assets/js/re-resizable.js"></script>
+    <script src="assets/js/react-rnd.js"></script>
     <!-- Custom React Script -->
     <script type="text/babel" src="assets/js/app.js"></script>
     
