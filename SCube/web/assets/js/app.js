@@ -10,12 +10,29 @@ const data = [
     {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
 ];
 
-const SimpleLineChart = React.createClass({
+class SimpleLineChart extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            width: 600,
+            height: 300
+        }
+    }
+    
+    toggleSize() {
+        console.log("clicked");
+        if(this.state.width === 600 && this.state.height === 300){
+            this.setState({width:400, height:200});
+        } else {
+            this.setState({width:600, height:300});
+        }
+    }
+    
     render () {
   	return (
             <Draggable>
             <div>
-            <LineChart width={600} height={300} data={data}>
+            <LineChart width={this.state.width} height={this.state.height} data={data} onClick={()=>this.toggleSize()}>
                 <XAxis dataKey="name"/>
                 <YAxis/>
                 <CartesianGrid strokeDasharray="3 3"/>
@@ -28,7 +45,7 @@ const SimpleLineChart = React.createClass({
             </Draggable>
         );
     }
-});
+};
 
 ReactDOM.render(
     <SimpleLineChart />,
