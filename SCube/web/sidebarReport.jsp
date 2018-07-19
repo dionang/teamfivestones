@@ -21,9 +21,7 @@
                             <li><a id="addPieChart"><i class="fa fa-pie-chart a"></i> Pie</a></li>
                             <li><a id="addLineChart"><i class="fa fa-line-chart a"></i>Line</a></li>
                         </ul>
-                       
                     </li> 
-                    
                 </ul>
             </div>
         </div>
