@@ -28,8 +28,9 @@ class SimpleLineChart extends React.Component {
     }
     
     render () {
-  	return (
-            <Rnd default={{
+  	const divStyle = {border: "1px solid"};
+        return (
+            <Rnd style={divStyle} default={{
                 x: 0,
                 y: 0,
                 width: 400,
