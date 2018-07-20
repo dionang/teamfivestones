@@ -1,3 +1,4 @@
+<%@ include file="protect.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,16 +23,16 @@
     <!-- Bootstrap -->
     <script src="/assets/js/bootstrap.min.js"></script>
     <!-- React -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js"></script>
-    <!-- use normal for development, min for debugging 
-    <script src="https://npmcdn.com/react@15.6.2/dist/react-with-addons.min.js"></script>
-    <script src="https://npmcdn.com/react-dom@15.6.2/dist/react-dom.min.js"></script>
+    <script src="assets/js/babel-core.min.js"></script>
+    <!-- use normal for development, min for production
+    <script src="assets/js/react-with-addons.min.js"></script>
+    <script src="assets/js/react-dom.min.js"></script>
     -->
-    <script src="https://npmcdn.com/react@15.6.2/dist/react-with-addons.js"></script>
-    <script src="https://npmcdn.com/react-dom@15.6.2/dist/react-dom.js"></script>
-    <script src="https://npmcdn.com/prop-types@15.6.2/prop-types.min.js"></script>
+    <script src="assets/js/react-with-addons.js"></script>
+    <script src="assets/js/react-dom.js"></script>
+    <script src="assets/js/prop-types.min.js"></script>
     <!-- Recharts -->
-    <script src="https://npmcdn.com/recharts@1.0.1/umd/Recharts.min.js"></script>
+    <script src="assets/js/recharts.min.js"></script>
     <!-- Draggable -->
     <script src="assets/js/react-draggable.js"></script>
     <script src="assets/js/re-resizable.js"></script>
