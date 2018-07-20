@@ -40,8 +40,11 @@
                         data = JSON.parse(data);
                         let processor = new JsonProcessor(data);
                         console.log(processor);
-                        console.log(processor.getDatasets());
+                        console.log(processor.getDatasetNames());
+                        console.log(processor.getDataset("furnitures"));
                         console.log(processor.getOptions("customers"));
+                        console.log(processor.getTypes("customers"));
+                        console.log(processor.getDetails("customers", "city"));
                         $("#processed").val(JSON.stringify(processor.result, null, 4));
                     },
                     failure: function(errMsg) {

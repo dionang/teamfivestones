@@ -112,7 +112,7 @@ function JsonProcessor(json) {
     }
 }
 
-JsonProcessor.prototype.getDatasets = function(){
+JsonProcessor.prototype.getDatasetNames = function(){
     let result = [];
     for (let datasetName in this.result.datasets){
         // get the name of the dataset and add it to result
@@ -121,8 +121,25 @@ JsonProcessor.prototype.getDatasets = function(){
     return result;
 };
 
+JsonProcessor.prototype.getDataset = function(datasetName){
+    return this.json[datasetName];
+};
+
 JsonProcessor.prototype.getOptions = function(dataset){
     return this.result.datasets[dataset].options;
+};
+
+JsonProcessor.prototype.getTypes = function(dataset){
+    let list = this.result.datasets[dataset];
+    let result = {};
+    for(let option of list.options){
+        result[option] = list[option].type;
+    }
+    return result;
+};
+
+JsonProcessor.prototype.getDetails = function(dataset, option){
+    return this.result.datasets[dataset][option];
 };
 
 function parseDate(dateString){
