@@ -30,11 +30,11 @@ class SimpleLineChart extends React.Component {
     render () {
   	const divStyle = {border: "1px solid"};
         return (
-            <Rnd style={divStyle} default={{
+            <Rnd id="lineChart" style={divStyle} default={{
                 x: 0,
                 y: 0,
                 width: 400,
-                height: 250,
+                height: 250
             }}>
                 <ResponsiveContainer width={"100%"} height="100%">
                     <LineChart width={"100%"} height={"100%"} data={data} >

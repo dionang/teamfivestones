@@ -733,7 +733,6 @@ function findDOMNode(draggable /*: Draggable | DraggableCore*/) /*: HTMLElement*
   if (!node) {
     throw new Error('<DraggableCore>: Unmounted during event!');
   }
-  // $FlowIgnore we can't assert on HTMLElement due to tests... FIXME
   return node;
 }
 
