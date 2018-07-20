@@ -375,8 +375,6 @@ var Resizable = function (_React$Component) {
           minWidth = _props2.minWidth,
           minHeight = _props2.minHeight;
 
-      // TODO: refactor
-
       var parentSize = this.getParentSize();
       if (maxWidth && typeof maxWidth === 'string' && endsWith(maxWidth, '%')) {
         var _ratio = Number(maxWidth.replace('%', '')) / 100;

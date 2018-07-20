@@ -43,7 +43,7 @@ public class OrderController extends HttpServlet {
             //to retrieve the request entered from the URL
             String category = request.getParameter("category");
             
-            ArrayList<Order> furnitureList = OrderDAO.getOrdersByCategory(category);
+            ArrayList<Order> orderList = OrderDAO.getOrdersByCategory(category);
             
             //stores the output Json object
             JsonObject jsonOutput = new JsonObject();
@@ -53,18 +53,30 @@ public class OrderController extends HttpServlet {
 
             
             JsonArray furnitureArr = new JsonArray();
-            for(Order o : furnitureList) {
-                JsonObject furnitureObj = new JsonObject();
+            JsonArray customerArr = new JsonArray();
+            for(Order o : orderList) {
+                JsonObject furnitureObj = new JsonObject();                
+                JsonObject customerObj = new JsonObject();
+
                 furnitureObj.addProperty("name", o.getProductName());
                 furnitureObj.addProperty("sales", o.getSales());
                 furnitureObj.addProperty("quantity", o.getQty());
                 furnitureObj.addProperty("discount", o.getDiscount());
                 furnitureObj.addProperty("profit", o.getProfit());
                 furnitureArr.add(furnitureObj);
+                
+                customerObj.addProperty("customer_id", o.getCustID());
+                customerObj.addProperty("customer_name", o.getCustName());
+                customerObj.addProperty("city", o.getCity());
+                customerObj.addProperty("order_id", o.getOrderID());
+                customerObj.addProperty("order_date", o.getOrderDate());
+                customerArr.add(customerObj);
             }
+
             
             jsonOutput.addProperty("status", "success");
-            jsonOutput.add("furnitures", furnitureArr);
+            jsonOutput.add("furnitures", furnitureArr);            
+            jsonOutput.add("customers", customerArr);
             out.println(gson.toJson(jsonOutput));
         }
     }

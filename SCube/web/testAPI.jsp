@@ -22,9 +22,10 @@
     <script src="/assets/js/jquery.min.js"></script>   
     <!-- Bootstrap -->
     <script src="/assets/js/bootstrap.min.js"></script>
-    
-    
+    <!-- JsonProcessor -->    
+    <script src="assets/js/jsonProcessor.js"></script>
     <script>
+//        let self = this;
         $(function () {
             $("#button").click(function () {
                 $.ajax({
@@ -36,77 +37,11 @@
                     success: function(data){
                         $("#result").val(data);
                         data = JSON.parse(data);
-                        
-                        // object to store result of processing data    
-                        let processed = {};
-                        
-                        for (let key in data) {
-                            let value = data[key];
-                            
-                            //props is an object that stores the properties of the particular key of the json data
-                            let props = {};
-
-                            // if value is an array
-                            if(typeof(value) === "object" && value.length !== undefined){
-                                
-                                props.type = "list";
-                                props.length = value.length;
-                                
-                                // get the first object of the list
-                                if (value.length > 0 && typeof(value[0]) === "object") {
-                                    let firstObj = value[0];
-                                    props.options = []
-                                    
-                                    // for each property in the first object
-                                    for (let objKey in firstObj){
-                                        let objValue = firstObj[objKey];
-                                        
-                                        // create an array of fields that are choosable
-                                        props.options.push(objKey);
-                                        props[objKey] = {type: typeof(objValue)}
-                                        if (typeof(objValue) === "number"){
-                                            props[objKey].min = objValue;
-                                            props[objKey].max = objValue;
-                                            props[objKey].total = 0;
-                                        }
-                                    }
-                                }
-                                
-                                // iterate through objects in the list
-                                for(let obj of value){
-                                    // for each option in the options list
-                                    for(let option of props.options) {
-                                        // update props min and max
-                                        let objectField = props[option];
-                                        if (objectField.type === "number")  {
-                                            let currValue = obj[option];
-                                            objectField.total += currValue;
-                                            if(currValue < objectField.min){
-                                                objectField.min = currValue;
-                                            } else if (currValue > objectField.max){
-                                                objectField.max = currValue;
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                // calculate the average of each props that is a number
-                                for(let option of props.options) {
-                                    // update props min and max
-                                    let objectField = props[option];
-                                    if (objectField.type === "number")  {
-                                        objectField.average = objectField.total / props.length;
-                                    }
-                                }
-                                
-                            } else {
-                                props.type = typeof(value);
-                            }
-                            
-                            //add object to processed
-                            processed[key] = props;
-                        }
-                        $("#processed").val(JSON.stringify(processed, null, 2));
+                        let processor = new JsonProcessor(data);
+                        console.log(processor);
+                        console.log(processor.getDatasets());
+                        console.log(processor.getOptions("customers"));
+                        $("#processed").val(JSON.stringify(processor.result, null, 4));
                     },
                     failure: function(errMsg) {
                         alert(errMsg);
@@ -115,4 +50,5 @@
             });
         });
     </script>   
+
 </html>
