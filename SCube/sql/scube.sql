@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
--- http://www.phpmyadmin.net
+-- version 4.6.4
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2018 at 12:10 PM
--- Server version: 5.6.17
--- PHP Version: 5.5.12
+-- Generation Time: Jul 21, 2018 at 09:28 AM
+-- Server version: 5.7.14
+-- PHP Version: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `scube`
@@ -26,16 +26,14 @@ SET time_zone = "+00:00";
 -- Table structure for table `account`
 --
 
-CREATE TABLE IF NOT EXISTS `account` (
-  `accountId` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `account` (
+  `accountId` int(11) NOT NULL,
   `username` varchar(50) NOT NULL COMMENT 'email',
   `passwordHash` varchar(70) NOT NULL,
   `companyId` int(11) NOT NULL,
   `accountType` varchar(10) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`accountId`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `account`
@@ -58,17 +56,16 @@ INSERT INTO `account` (`accountId`, `username`, `passwordHash`, `companyId`, `ac
 -- Table structure for table `company`
 --
 
-CREATE TABLE IF NOT EXISTS `company` (
-  `companyId` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `company` (
+  `companyId` int(11) NOT NULL,
   `companyName` varchar(50) NOT NULL,
   `address` varchar(100) NOT NULL,
   `phoneNo` varchar(20) NOT NULL,
   `fax` varchar(20) DEFAULT NULL,
   `logoUrl` varchar(100) DEFAULT NULL,
   `pocId` int(11) DEFAULT NULL,
-  `datasourceUrl` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`companyId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `datasourceUrl` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `company`
@@ -84,7 +81,7 @@ INSERT INTO `company` (`companyId`, `companyName`, `address`, `phoneNo`, `fax`, 
 -- Table structure for table `component`
 --
 
-CREATE TABLE IF NOT EXISTS `component` (
+CREATE TABLE `component` (
   `componentId` varchar(20) NOT NULL,
   `templateId` int(11) NOT NULL,
   `type` varchar(20) NOT NULL,
@@ -92,8 +89,7 @@ CREATE TABLE IF NOT EXISTS `component` (
   `x` double NOT NULL,
   `y` double NOT NULL,
   `height` double NOT NULL,
-  `width` double NOT NULL,
-  PRIMARY KEY (`componentId`)
+  `width` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -107,15 +103,36 @@ INSERT INTO `component` (`componentId`, `templateId`, `type`, `page`, `x`, `y`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `datasource`
+--
+
+CREATE TABLE `datasource` (
+  `datasourceId` int(11) NOT NULL,
+  `companyId` int(11) NOT NULL,
+  `datasourceUrl` varchar(500) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `datasource`
+--
+
+INSERT INTO `datasource` (`datasourceId`, `companyId`, `datasourceUrl`) VALUES
+(6, 1, 'http://localhost:8084/Dummy_API/getFurnituresByCategory'),
+(7, 1, 'http://localhost:8084/Dummy_API/getInformationByCategory'),
+(8, 1, 'http://localhost:8084/Dummy_API/getCustomerInformation'),
+(9, 1, 'http://localhost:8084/Dummy_API/getCustomerOrderLocation');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `poc`
 --
 
-CREATE TABLE IF NOT EXISTS `poc` (
+CREATE TABLE `poc` (
   `companyId` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `phoneNo` varchar(20) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  PRIMARY KEY (`companyId`)
+  `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -131,14 +148,13 @@ INSERT INTO `poc` (`companyId`, `name`, `phoneNo`, `email`) VALUES
 -- Table structure for table `report`
 --
 
-CREATE TABLE IF NOT EXISTS `report` (
-  `reportId` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `report` (
+  `reportId` int(11) NOT NULL,
   `reportName` varchar(50) NOT NULL,
   `generatedBy` int(11) NOT NULL,
   `createdOn` date NOT NULL,
-  `reportUrl` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`reportId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `reportUrl` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -146,15 +162,14 @@ CREATE TABLE IF NOT EXISTS `report` (
 -- Table structure for table `template`
 --
 
-CREATE TABLE IF NOT EXISTS `template` (
-  `templateId` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `template` (
+  `templateId` int(11) NOT NULL,
   `companyId` int(11) NOT NULL,
   `templateName` varchar(50) NOT NULL,
   `createdBy` int(11) NOT NULL,
   `createdOn` date NOT NULL,
-  `lastUpdatedOn` date DEFAULT NULL,
-  PRIMARY KEY (`templateId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `lastUpdatedOn` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `template`
@@ -169,11 +184,10 @@ INSERT INTO `template` (`templateId`, `companyId`, `templateName`, `createdBy`, 
 -- Table structure for table `textbox`
 --
 
-CREATE TABLE IF NOT EXISTS `textbox` (
+CREATE TABLE `textbox` (
   `componentId` varchar(20) NOT NULL,
   `templateId` int(11) NOT NULL,
-  `text` varchar(500) NOT NULL,
-  PRIMARY KEY (`componentId`)
+  `text` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -183,6 +197,89 @@ CREATE TABLE IF NOT EXISTS `textbox` (
 INSERT INTO `textbox` (`componentId`, `templateId`, `text`) VALUES
 ('textbox9107', 1, '');
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`accountId`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `company`
+--
+ALTER TABLE `company`
+  ADD PRIMARY KEY (`companyId`);
+
+--
+-- Indexes for table `component`
+--
+ALTER TABLE `component`
+  ADD PRIMARY KEY (`componentId`);
+
+--
+-- Indexes for table `datasource`
+--
+ALTER TABLE `datasource`
+  ADD PRIMARY KEY (`datasourceId`),
+  ADD UNIQUE KEY `datasourceUrl` (`datasourceUrl`);
+
+--
+-- Indexes for table `poc`
+--
+ALTER TABLE `poc`
+  ADD PRIMARY KEY (`companyId`);
+
+--
+-- Indexes for table `report`
+--
+ALTER TABLE `report`
+  ADD PRIMARY KEY (`reportId`);
+
+--
+-- Indexes for table `template`
+--
+ALTER TABLE `template`
+  ADD PRIMARY KEY (`templateId`);
+
+--
+-- Indexes for table `textbox`
+--
+ALTER TABLE `textbox`
+  ADD PRIMARY KEY (`componentId`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `account`
+--
+ALTER TABLE `account`
+  MODIFY `accountId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+--
+-- AUTO_INCREMENT for table `company`
+--
+ALTER TABLE `company`
+  MODIFY `companyId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `datasource`
+--
+ALTER TABLE `datasource`
+  MODIFY `datasourceId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `report`
+--
+ALTER TABLE `report`
+  MODIFY `reportId` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `template`
+--
+ALTER TABLE `template`
+  MODIFY `templateId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
