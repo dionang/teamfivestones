@@ -105,6 +105,7 @@
                         </div>
                     <div id="container"></div>
                     <button class="btn btn-success" id="saveTemplate" style="float:right">Save Template</button>
+                    <button class="btn btn-success" id="printPage" style="float:right">Screenshot</button>
                 </div>
                 <!-- page content -->
             </div>
@@ -121,9 +122,42 @@
         <script src="/assets/js/dashboard.js"></script> 
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <!-- HTML To Canvas -->
+        <!--<script src="/assets/js/html2canvas.js"></script>-->
+        <!-- JS PDF -->
+        <script src="/assets/js/jspdf.js"></script>
+        <script src="/assets/js/html2pdf.js"></script>
 
         <script>
             $(function () {
+                $("#printPage").click(function() {
+//                    html2canvas(container,{
+//                        onrendered: function(canvas) {         
+//                            var imgData = canvas.toDataURL(
+//                                'image/png');              
+//                            var doc = new jsPDF('p', 'mm');
+//                            doc.addImage(imgData, 'PNG', 10, 10);
+//                            doc.save('sample-file.pdf');
+//                        }
+//                    });
+                    var pdf = new jsPDF('p', 'pt', 'letter');
+                    var canvas = pdf.canvas;
+
+                    canvas.width = 8.5 * 72;
+
+                    html2canvas(document.body, {
+                        canvas:canvas,
+                        onrendered: function(canvas) {
+                            var iframe = document.createElement('iframe');
+                            iframe.setAttribute('style','position:absolute;right:0; top:0; bottom:0; height:100%; width:500px');
+                            document.body.appendChild(iframe);
+                            iframe.src = pdf.output('datauristring');
+
+                           //var div = document.createElement('pre');
+                           //div.innerText=pdf.output();
+                        }
+                    });
+                });
                 $("#addTextbox").click(function() {
                     var textbox = $("#textbox").clone();
                     textbox.draggable({

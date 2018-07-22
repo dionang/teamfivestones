@@ -38,12 +38,35 @@
     <script src="assets/js/re-resizable.js"></script>
     <script src="assets/js/react-rnd.js"></script>
     <!-- Custom React Script -->
-    <script type="text/babel" src="assets/js/app.js"></script>
-    
+    <script type="text/babel" src="assets/js/app.js"></script>    
+    <script src="assets/js/screenshot.js"></script>
+    <script src="/assets/js/jspdf.js"></script>
+    <script src="/assets/js/html2pdf.js"></script>
+
+
     <!-- Custom Dashboard Script -->
     <script>
         $(document).ready(function () {
             // Toggle sidebar
+            $('#screenshot').click(function () {
+                var pdf = new jsPDF('p', 'pt', 'letter');
+                var canvas = pdf.canvas;
+
+                canvas.width = 8.5 * 72;
+
+                html2canvas(document.body, {
+                    canvas:canvas,
+                    onrendered: function(canvas) {
+                        var iframe = document.createElement('iframe');
+//                        iframe.setAttribute('style','left:0; top:0; bottom:0; height:100%; width:500px');
+                        iframe.src = pdf.output('datauristring');
+                        pdf.save("test.pdf");
+
+                    }
+                });
+//                window.open(window.URL.createObjectURL(screenshotPage()));
+            });
+            
             $('#options li').click(function () {
                 $(this).find('ul').toggle();
             });
