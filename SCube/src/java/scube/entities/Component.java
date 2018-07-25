@@ -10,19 +10,18 @@ package scube.entities;
  * @author Dion
  */
 public class Component {
-    private String id;    
     private String type;
-    private int page;
-    private double x;
-    private double y;
-    private double height;
-    private double width;
+    private int x;
+    private int y;
+    private int height;
+    private int width;
     
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
+    public Component(String type, int x, int y, int height, int width){
+        this.type = type;
+        this.x = x;
+        this.y = y;
+        this.height = height;
+        this.width = width;
     }
     
     /**
@@ -33,76 +32,58 @@ public class Component {
     }
     
     /**
-     * @return the page
-     */
-    public int getPage() {
-        return page;
-    }
-
-    /**
      * @return the x
      */
-    public double getX() {
+    public int getX() {
         return x;
     }
 
     /**
      * @param x the x to set
      */
-    public void setX(double x) {
+    public void setX(int x) {
         this.x = x;
     }
 
     /**
      * @return the y
      */
-    public double getY() {
+    public int getY() {
         return y;
     }
 
     /**
      * @param y the y to set
      */
-    public void setY(double y) {
+    public void setY(int y) {
         this.y = y;
     }
 
     /**
      * @return the height
      */
-    public double getHeight() {
+    public int getHeight() {
         return height;
     }
 
     /**
      * @param height the height to set
      */
-    public void setHeight(double height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
     /**
      * @return the width
      */
-    public double getWidth() {
+    public int getWidth() {
         return width;
     }
 
     /**
      * @param width the width to set
      */
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
-
-    public Component(String id, String type, int page, double x, double y, double height, double width){
-        this.id = id;
-        this.type = type;
-        this.page = page;
-        this.x = x;
-        this.y = y;
-        this.height = height;
+    public void setWidth(int width) {
         this.width = width;
     }
 }

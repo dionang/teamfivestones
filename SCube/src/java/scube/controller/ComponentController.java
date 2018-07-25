@@ -25,7 +25,7 @@ import scube.entities.Textbox;
  *
  * @author Dion
  */
-@WebServlet(name = "ComponentController", urlPatterns = {"/saveComponents"})
+@WebServlet(name = "ComponentController", urlPatterns = {"/saveComponents", "/loadComponents"})
 public class ComponentController extends HttpServlet {
 
     /**
@@ -43,6 +43,7 @@ public class ComponentController extends HttpServlet {
             // read the request, have to use BufferedReader because json data is binary
             BufferedReader reader = request.getReader();
             JsonObject json = new JsonParser().parse(reader).getAsJsonObject();
+            JsonObject responseObj = new JsonObject();
             
             String operation = json.get("operation").getAsString();
             int templateId = json.get("templateId").getAsInt();
@@ -51,59 +52,54 @@ public class ComponentController extends HttpServlet {
                 ArrayList<Component> components = new ArrayList<>();
                 for(int i=0; i<arr.size();i++){
                     JsonObject componentObj = arr.get(i).getAsJsonObject();
-                    String id = componentObj.get("id").getAsString();
                     String type = componentObj.get("type").getAsString();
-                    int page = componentObj.get("page").getAsInt();
-                    double x = componentObj.get("x").getAsDouble();
-                    double y = componentObj.get("y").getAsDouble();
-                    double height = componentObj.get("height").getAsDouble();
-                    double width = componentObj.get("width").getAsDouble();
+                    int x = componentObj.get("x").getAsInt();
+                    int y = componentObj.get("y").getAsInt();
+                    int height = componentObj.get("height").getAsInt();
+                    int width = componentObj.get("width").getAsInt();
                     
-                    if (type.equals("textbox")){
-                        String text = componentObj.get("text").getAsString();
-                        components.add(new Textbox(id, type, page, x, y, height, width, text));
+                    if (type.equals("text")){
+                        JsonObject properties = componentObj.get("properties").getAsJsonObject();
+                        String text = properties.get("text").getAsString();
+                        components.add(new Textbox(type, x, y, height, width, text));
                     } else {
-                        components.add(new Component(id, type, page, x, y, height, width));
+                        components.add(new Component(type, x, y, height, width));
                     }
                 }
                 
                 // remove existing data of the template, if exists
                 ComponentDAO.deleteAllComponents(templateId);
-                ComponentDAO.saveComponents(components, templateId);
+                boolean status = ComponentDAO.saveComponents(components, templateId);
+                responseObj.addProperty("status", status);
+                out.println(responseObj.toString());
+                
+            } else if (operation.equals("loadComponents")) {
+                ArrayList<Component> components = ComponentDAO.loadComponentsFromTemplate(templateId);
+                JsonArray jsonArr = new JsonArray();
+                for(Component component : components){
+                    JsonObject componentObj = new JsonObject();
+                    componentObj.addProperty("type", component.getType());
+                    componentObj.addProperty("x", component.getX());
+                    componentObj.addProperty("y", component.getY());
+                    componentObj.addProperty("height", component.getHeight());
+                    componentObj.addProperty("width", component.getWidth());
+                    
+                    // if textbox
+                    if(component.getType().equals("text")){
+                        Textbox textbox = (Textbox) component;
+                        JsonObject properties = new JsonObject();
+                        properties.addProperty("text", textbox.getText());
+                        componentObj.add("properties", properties);
+                    }
+                    
+                    // add component to jsonArr
+                    jsonArr.add(componentObj);
+                }
+                
+                responseObj.add("components", jsonArr);
+                out.println(responseObj.toString());
             }
-            
-            out.println("saved successfully");
-
         }
-        
-//        String operation = request.getParameter("operation");
-//        if(operation.equals("saveComponents")){
-////            String name = request.getParameter("name");
-////            String username = request.getParameter("username");
-////            String password = request.getParameter("password");
-////            String accountType = request.getParameter("accountType");
-////            boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
-////            switch(accountType) {
-////                case "developer" :  response.sendRedirect("createDevAccount.jsp" + (status ? "" : "?error=true"));
-////                                    break;
-////                case "manager"   :  response.sendRedirect("createManagerAccount.jsp" + (status ? "" : "?error=true"));
-////                                    break;
-////                case "user"      :  response.sendRedirect("createUserAccount.jsp" + (status ? "" : "?error=true"));
-////                                    break;                    
-////            }
-////        } else if (operation.equals("setDatasource")){
-////            String datasource = request.getParameter("datasource");
-////            int companyId = Integer.parseInt(request.getParameter("companyId"));
-////            boolean status = CompanyDAO.setDatasource(datasource, companyId);
-////            response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
-//            
-//        }
-//        ArrayList<Component> components = new ArrayList<>();
-//        components.add(new Component("textbox1", "textbox",1,5.0,3.0,5.0,3.0));
-//        components.add(new Component("textbox2", "textbox",1,4.0,3.0,5.4,3.0));
-//        components.add(new Component("textbox3", "textbox",1,5.0,3.2,5.0,3.5));
-//        ComponentDAO.saveComponents(components, 1);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

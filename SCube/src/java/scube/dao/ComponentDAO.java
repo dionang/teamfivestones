@@ -19,23 +19,23 @@ public class ComponentDAO {
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO component VALUES (?,?,?,?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO component VALUES (?,?,?,?,?,?,?)");
             
             // repeat the adding of multiple components into a single batch execute
-            for(Component component : components) {
-                stmt.setString(1, component.getId());
-                stmt.setInt(2, templateId);
+            for(int i=0; i<components.size(); i++) {
+                Component component = components.get(i);
+                stmt.setInt(1, templateId);                
+                stmt.setInt(2, i);
                 stmt.setString(3, component.getType());
-                stmt.setInt(4, component.getPage());
-                stmt.setDouble(5, component.getX());
-                stmt.setDouble(6, component.getY());
-                stmt.setDouble(7, component.getHeight());
-                stmt.setDouble(8, component.getWidth());
+                stmt.setInt(4, component.getX());
+                stmt.setInt(5, component.getY());
+                stmt.setInt(6, component.getHeight());
+                stmt.setInt(7, component.getWidth());
                 stmt.addBatch();
                 
-                if(component.getType().equals("textbox")){
+                if(component.getType().equals("text")){
                     Textbox textbox = (Textbox) component;
-                    addTextbox(component.getId(), templateId, textbox.getText());
+                    addTextbox(templateId, i, textbox.getText());
                 }
             }
             stmt.executeBatch();
@@ -48,7 +48,7 @@ public class ComponentDAO {
         }
     }
     
-    public static void addTextbox(String componentId, int templateId, String text) {
+    public static void addTextbox(int templateId, int position, String text) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -56,8 +56,8 @@ public class ComponentDAO {
         try {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("INSERT INTO textbox VALUES (?,?,?)");
-            stmt.setString(1, componentId);
-            stmt.setInt(2, templateId);            
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);            
             stmt.setString(3, text);
 
             stmt.executeUpdate();
@@ -82,18 +82,18 @@ public class ComponentDAO {
             rs = stmt.executeQuery();
             
             ArrayList<Component> components = new ArrayList<>();
+            int position = 0;
             while(rs.next()){
-                String type = rs.getString("type");
                 Component component;
-                if(rs.getString("type").equals("textbox")){
-                    component = new Textbox(rs.getString("componentId"), rs.getString("type"), rs.getInt("page"), 
-                        rs.getDouble("x"), rs.getDouble("y"), rs.getDouble("height"), rs.getDouble("width"), 
-                        getTextboxText(rs.getString("componentId")));
+                if(rs.getString("type").equals("text")){
+                    component = new Textbox(rs.getString("type"), rs.getInt("x"), rs.getInt("y"), 
+                        rs.getInt("height"), rs.getInt("width"), getTextboxText(templateId, position));
                 } else {
-                    component = new Component(rs.getString("componentId"), rs.getString("type"), rs.getInt("page"), 
-                        rs.getDouble("x"), rs.getDouble("y"), rs.getDouble("height"), rs.getDouble("width"));
+                    component = new Component(rs.getString("type"), rs.getInt("x"), rs.getInt("y"), 
+                        rs.getInt("height"), rs.getInt("width"));
                 }
                 components.add(component);
+                position++;
             }
             return components;
         } catch (SQLException e) {
@@ -104,15 +104,16 @@ public class ComponentDAO {
         }
     }
     
-    public static String getTextboxText(String componentId) {
+    public static String getTextboxText(int templateId, int position) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT * FROM textbox WHERE componentId = ?");
-            stmt.setString(1, componentId);
+            stmt = conn.prepareStatement("SELECT text FROM textbox WHERE templateId = ? and position = ?");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);
             rs = stmt.executeQuery();
 
             if(rs.next()){
@@ -150,15 +151,16 @@ public class ComponentDAO {
 //    }
     
     // Delete operations
-    public static boolean deleteComponent(String componentId) {
+    public static boolean deleteComponent(int templateId, int position) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE FROM component WHERE componentId = ?");
-            stmt.setString(1, componentId);
+            stmt = conn.prepareStatement("DELETE FROM component WHERE templateId = ? and position = ?");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {

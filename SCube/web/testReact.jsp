@@ -22,21 +22,9 @@
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="/assets/js/bootstrap.min.js"></script>
-    <!-- React -->
-    <script src="assets/js/babel-core.min.js"></script>
-    <!-- use normal for development, min for production
-    <script src="assets/js/react-with-addons.min.js"></script>
-    <script src="assets/js/react-dom.min.js"></script>
-    -->
-    <script src="assets/js/react-with-addons.js"></script>
-    <script src="assets/js/react-dom.js"></script>
-    <script src="assets/js/prop-types.min.js"></script>
-    <!-- Recharts -->
-    <script src="assets/js/recharts.min.js"></script>
-    <!-- Draggable -->
-    <script src="assets/js/react-draggable.js"></script>
-    <script src="assets/js/re-resizable.js"></script>
-    <script src="assets/js/react-rnd.js"></script>
+    <!-- React modules-->
+    <script src="assets/js/babel.js"></script>
+    <script src="assets/js/bundle.js"></script>
     <!-- Custom React Script -->
     <script type="text/babel" src="assets/js/app.js"></script>    
     <script src="assets/js/screenshot.js"></script>

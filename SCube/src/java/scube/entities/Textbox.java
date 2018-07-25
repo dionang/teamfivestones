@@ -12,8 +12,8 @@ package scube.entities;
 public class Textbox extends Component {
     private String text;
 
-    public Textbox(String id, String type, int page, double x, double y, double height, double width, String text) {
-        super(id, type, page, x, y, height, width);
+    public Textbox(String type, int x, int y, int height, int width, String text) {
+        super(type, x, y, height, width);
         this.text = text;
     }
     
