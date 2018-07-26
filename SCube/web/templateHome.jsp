@@ -65,24 +65,68 @@
                                                              <img class="card-img-top" src="/assets/images/dummyReprot.png">
                                                          </div>
                                                          <div class="card-footer">
-                                                         <h4 class="card-title " style="text-align: right">Default Template</h4>
+                                                         <h4 class="card-title " style="text-align:center">Default Template</h4>
                                                          </div>
                                                      </div>
                                                  </a> 
                                             </div> 
                                             <div class="col-sm-1 "></div>
                                             <div class="col-sm-4 ">
-                                                <a href="report.jsp">
+                                                <a href="#" id="pageSize">
                                                      <div class="card card-inverse card-info">
                                                          <div class="card-block">
                                                              <img class="card-img-top" src="/assets/images/dummyReprot.png" style="opacity:0">
                                                          </div>
                                                          <div class="card-footer">
-                                                         <h4 class="card-title " style="text-align:right">Blank Template</h4>
+                                                         <h4 class="card-title " style="text-align:center">Blank Template</h4>
                                                          </div>
                                                      </div>
                                                  </a> 
                                              </div> 
+                                             <div id="size" class="modal">
+
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <form action="report.jsp" method="post">
+                                            <div class="row">
+                                                 <span class="close">&times;</span>
+                                            </div>
+                                             <div class="row">
+                                                 <div class="col-sm-offset-3 col-sm-4 ">
+                                                     <div class='title'>Please choose your report page size.</div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="size" value="A3">A3</label>
+                                                     </div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="size" value="A4" checked >A4</label>
+                                                     </div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="size" value="A5" >A5</label>
+                                                     </div> 
+                                                 </div> 
+
+                                             </div> 
+                                             <div class="row">
+                                                 <div class="col-sm-offset-3 col-sm-4 ">
+                                                     <div class='title'>Please choose your report layout.</div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="layout" value="Portrait" checked>Portrait</label>
+                                                     </div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="layout" value="Landscape">Landscape</label>
+                                                     </div>
+
+                                                 </div> 
+
+                                            </div> 
+                                            <div class="row">
+                                                <div class="col-sm-offset-7 col-sm-2 ">
+                                                    <input type="submit" value="Submit" class="btn btn-info">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                  </div>
                                         </div>                                
                                     </div>
                                   </div>
@@ -120,31 +164,46 @@
         <!-- Custom JS -->
         <script src="/assets/js/dashboard.js"></script> 
         <script>
-// Get the modal
-var modal = document.getElementById('myModal');
+            // Get the modal
+            var modal = document.getElementById('myModal');
+            var modal1 = document.getElementById('size');
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+             var btn1 = document.getElementById("pageSize");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+            var span1 = document.getElementsByClassName("close")[1];
+             
 
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-    modal.style.display = "block";
-}
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
+            // When the user clicks the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+            
+            btn1.onclick = function() {
+                modal1.style.display = "block";
+            }
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            span1.onclick = function() {
+                modal1.style.display = "none";
+            }
+           
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+                if (event.target == modal1) {
+                    modal1.style.display = "none";
+                }
+            }
 </script>
 
     </body>

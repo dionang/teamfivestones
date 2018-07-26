@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/assets/css/dashboard.css">
+         <link rel="stylesheet" href="/assets/css/template.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         
         <style>
@@ -50,7 +51,10 @@
 
                 <!-- page content -->
                 <div class="right_col">
+                   
                     <h2>Build Your Report Template</h2>
+                   
+                    
                         <div class="x_panel" id="textbox" style="background-color:whitesmoke; display:none;">
                             <textarea placeholder="Enter your text here" style="box-sizing: border-box; float:left; width:150px; height: 50px"></textarea>
                             <ul class="nav navbar-right panel_toolbox_short">
@@ -103,9 +107,80 @@
                                 <canvas class="pieChart"></canvas>
                             </div>
                         </div>
-                    <div id="container"></div>
-                    <button class="btn btn-success" id="saveTemplate" style="float:right">Save Template</button>
-                    <button class="btn btn-success" id="printPage" style="float:right">Screenshot</button>
+                     <%String size=request.getParameter("size");
+                      String layout=request.getParameter("layout");
+                      if (size.equals("A3")&&layout.equals("Portrait")){%>
+                      <div id="container" style="width: 29.7cm;height: 42cm;"></div>
+                       
+                    <% }
+                    else if (size.equals("A3")&&layout.equals("Landscape")){%>
+                    <div id="container" style="width: 42cm;height: 29.7cm; "></div>
+                      
+                    <%}
+                    else if (size.equals("A4")&&layout.equals("Portrait")){%>
+                    <div id="container" style="width: 21cm;height: 29.7cm;"></div>
+                                  
+                    <%}
+                    else if (size.equals("A4")&&layout.equals("Landscape")){%>
+                    <div id="container" style=" width: 29.7cm;height: 21cm; "></div>
+                        
+                    <%}
+                    else if (size.equals("A5")&&layout.equals("Portrait")){%>
+                    <div id="container" style=" width: 14.8cm;height: 21cm;"></div>
+                        
+                    <%}else if (size.equals("A5")&&layout.equals("Landscape")){%>
+                    <div id="container" style="width: 21cm;height: 14.8cm;"></div>
+                       
+                    <%}%>
+                    <br>
+                    <button class="btn btn-primary" id="changeSize" >Change Page Size</button>
+                    <button class="btn btn-success" id="saveTemplate" >Save Template</button>
+                    <button class="btn" id="printPage" style="color:black">Screenshot</button>
+                       <div id="size" class="modal">
+
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <form action="report.jsp" method="post">
+                                            <div class="row">
+                                                 <span class="close">&times;</span>
+                                            </div>
+                                             <div class="row">
+                                                 <div class="col-sm-offset-4 col-sm-3 ">
+                                                     <div class='title'>Please choose your report page size.</div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="size" value="A3">A3</label>
+                                                     </div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="size" value="A4" checked>A4</label>
+                                                     </div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="size" value="A5" >A5</label>
+                                                     </div> 
+                                                 </div> 
+
+                                             </div> 
+                                             <div class="row">
+                                                 <div class="col-sm-offset-4 col-sm-3 ">
+                                                     <div class='title'>Please choose your report layout.</div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="layout" value="Portrait" checked>Portrait</label>
+                                                     </div>
+                                                     <div class="radio">
+                                                         <label><input type="radio" name="layout" value="Landscape">Landscape</label>
+                                                     </div>
+
+                                                 </div> 
+
+                                            </div> 
+                                            <div class="row">
+                                                <div class="col-sm-offset-7 col-sm-2 ">
+                                                <input type="submit" value="Submit" class="btn btn-info">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                  </div>
+                    <br><br>
                 </div>
                 <!-- page content -->
             </div>
@@ -127,6 +202,32 @@
         <!-- JS PDF -->
         <script src="/assets/js/jspdf.js"></script>
         <script src="/assets/js/html2pdf.js"></script>
+        <script>
+            // Get the modal
+            var modal = document.getElementById('size');
+            // Get the button that opens the modal
+            var btn = document.getElementById("changeSize");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+
+            }
+</script>
 
         <script>
             $(function () {
