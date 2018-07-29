@@ -37,10 +37,11 @@ public class LocationController extends HttpServlet {
 
             //to retrieve the request entered from the URL
             String custName = request.getParameter("name");
+            
 
             //retrieve top 30 customer names arranged in ascending order
             ArrayList<String> custNamesList = OrderDAO.allCustomerNames();
-
+            
             //stores the output Json object
             JsonObject jsonOutput = new JsonObject();
 
@@ -51,7 +52,7 @@ public class LocationController extends HttpServlet {
 
                 //retrieve order details by using custName
                 ArrayList<Order> custOrderList = OrderDAO.getCustomerOrderDetails(custName);
-                
+                System.out.println(custOrderList);
                 //JsonArray to capture order details to print out
                 JsonArray CustArr = new JsonArray();
 

@@ -110,6 +110,8 @@ function JsonProcessor(json) {
             this.result[key] = props;
         }
     }
+    
+    console.log(this.result);
 }
 
 JsonProcessor.prototype.getDatasetNames = function(){

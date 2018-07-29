@@ -14,11 +14,11 @@ public class OrderDAO {
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT distinct Customer_Name from orders order by Customer_Name ASC limit 30");
+            stmt = conn.prepareStatement("SELECT distinct `Customer Name` from orders order by `Customer Name` ASC limit 200");
             rs = stmt.executeQuery();
             ArrayList<String> customerNameList = new ArrayList<>();
             while(rs.next()){
-                customerNameList.add(rs.getString("Customer_Name"));
+                customerNameList.add(rs.getString("Customer Name"));
             }
             return customerNameList;
         } catch (SQLException e) {
@@ -132,7 +132,7 @@ public class OrderDAO {
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT * FROM orders WHERE Customer_Name = ?");
+            stmt = conn.prepareStatement("SELECT * FROM orders WHERE `Customer Name` = ?");
             stmt.setString(1, custName);
             rs = stmt.executeQuery();
             ArrayList<Order> orders = new ArrayList<>();
