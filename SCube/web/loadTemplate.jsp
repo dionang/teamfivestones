@@ -30,9 +30,15 @@
                 
                 <div class="right_col">
                     <div class="content">
-                      <%int templateId=Integer.parseInt(request.getParameter("id"));
-                     
-                      out.print("<h4>"+templateId+"</h4>");
+                      <% String id=request.getParameter("templateId");
+                       int templateId;
+                         if(id==null){
+                              templateId=0;
+                         }else{
+                         templateId=Integer.parseInt(id);
+                         }
+                          
+                      
                      
                       %>
  

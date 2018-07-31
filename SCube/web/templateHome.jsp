@@ -45,7 +45,22 @@
                                                 <img class="card-img-top create" src="/assets/images/create.png">
                                             </div>
                                             <div class="card-footer">
-                                            <h4 class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Template</h4>
+                                            
+                                            <div class="row">
+                                                    <div class="col-sm-offset-1 col-sm-4">
+                                                        <h4 class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Template</h4>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style=" opacity: 0;" >
+                                                    <div class="col-md-5 edit">
+                                                     <h5><span class="glyphicon glyphicon-edit "></span></h5> 
+                                                    </div>
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col-sm-5 delete " >
+                                                   <h5><span class="glyphicon glyphicon-trash "></span></h5>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </a> 
@@ -59,7 +74,7 @@
                                        </div>
                                         <div class="row">
                                             <div class="col-sm-offset-2 col-sm-4 ">
-                                                <a href="loadTemplate.jsp?id=0">
+                                                <a href="loadTemplate.jsp">
                                                      <div class="card card-inverse card-info">
                                                          <div class="card-block">
                                                              <img class="card-img-top" src="/assets/images/dummyReprot.png">
@@ -133,22 +148,41 @@
 
                         <%for(int i=0;i<templateList.size();i++) {
                             Template template=templateList.get(i); %>
-      
+                            <form action="/templateControl" method="post" id="test">
+                                <input type=hidden name="templateId" value="<% out.print(template.getTemplateId());%>">
+                                 <input type=hidden name="operation" value="templateControl">
                                <div class="col-sm-3 ">
-                                   <a href="loadTemplate.jsp?id=<%=template.getTemplateId()%>">
+                                   
                                         <div class="card card-inverse card-info">
                                             <div class="card-block">
                                                 <img class="card-img-top" src="/assets/images/dummyReprot.png">
                                             </div>
                                             <div class="card-footer">
-                                            <h4 class="card-title"><span class="glyphicon glyphicon-eye-open "></span><%out.println(template.getTemplateName());%></h4>
+                                                <div class="row">
+                                                    <div class="col-sm-offset-1 col-sm-4">
+                                                        <h4 class="card-title"><%out.println(template.getTemplateName());%></h4>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row"  >
+                                                    <div class="col-md-5 ">
+                                                      
+                                                    <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
+                                                    </div>
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col-sm-5  " >
+                                                        <button class="btn delete" name="deleteBtn" value="delete" id="delete"><i class="fa fa-trash"></i> Delete</button>
+                   
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </a> 
+                                   
                                 </div>             
-                                    
+                            </form>      
                            
                         <% }%>
+                        
  
                        </div>
                     </div>  
@@ -163,6 +197,50 @@
         <script src="/assets/js/bootstrap.min.js"></script>
         <!-- Custom JS -->
         <script src="/assets/js/dashboard.js"></script> 
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="/assets/js/checkPassword.js"></script>
+        <script>
+            let template = document.getElementsByClassName('delete');
+            for(i = 0; i < template.length;i++) {
+                template[i].addEventListener('click', function(e){
+                    e.preventDefault();
+                    swal({
+                        title: "Confirmation",
+                        text: "Are you sure you want to delete this template?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true
+                    })
+                    .then((confirm) => {
+                        if(confirm){
+                            var form = document.getElementById("test");
+                            $.ajax({
+                                url: "/templateControl",
+                                data: {
+                                    id: form.elements["templateId"].value,
+                                   deleteBtn: form.elements["deleteBtn"].value,
+                                   operation:form.elements["operation"].value,
+                                },
+                                success: function(success){
+                                    if(success === "true"){
+                                        swal({icon: "success", text: "Template has been deleted successfully!!", type: 
+                                            "success"}).then(function(){ 
+                                               location.reload();
+                                               }
+                                            );    
+                                    } else {
+                                        swal("ERROR!", {
+                                            icon: "error"
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }); 
+                    });
+              }
+           
+        </script>
         <script>
             // Get the modal
             var modal = document.getElementById('myModal');

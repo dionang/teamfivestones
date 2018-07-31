@@ -1,12 +1,33 @@
 
 .glyphicon{
-    color:#EB6327;
-    padding-right:20px;
-    padding-left: 10px;
-    font-size: 1.2em;
+    color:#EFAD54;
+    padding-right:10px;
+    font-size: 1em;
+}
+.btn{
+    color:white;
+    font-weight: bold;
 }
 
+.edit{
+    background-color: #EFAD54;
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+    margin-left:10px;
+}
 
+.delete{
+    background-color:#DF514A;
+    padding-left: 10px;
+    padding-right:30px;
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+}
+
+.tbTemplate{
+   
+    width:300px;
+    margin-left:-30px;
+    font-size:medium;
+}
 .card {
     font-size: 1em;
     overflow: hidden;
@@ -98,9 +119,6 @@
     cursor: pointer;
 }
 
-a :hover{
-    text-decoration: none;
-}
 .title{
     font-weight:bold;
     font-size:large;

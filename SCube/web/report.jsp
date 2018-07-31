@@ -53,9 +53,53 @@
                 <div class="right_col">
                    
                     <h2>Build Your Report Template</h2>
-                   
+                    <button class="btn btn-primary" id="changeSize" >Change Page Size</button>
+                    <button class="btn btn-success" id="createTemplate" >Create Template</button>
+                    <button class="btn" id="printPage" style="color:black">Screenshot</button>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h4>Template Name: </h4>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" name="templateName" placeholder="Enter your template Name" class="tbTemplate"/>
+                        </div>
+                    </div>
                     
-                        <div class="x_panel" id="textbox" style="background-color:whitesmoke; display:none;">
+                    <input type="hidden" name="companyId" value="<%out.print(account.getCompanyId());%>"/>
+                     <input type="hidden" name="userName" value="<%out.print(account.getUsername());%>" />
+                   
+
+                     <%String size=request.getParameter("size");
+                      String layout=request.getParameter("layout");
+                       if(size!=null && layout!=null){%>
+                       <input type="hidden" name="size" value="<%out.print(size);%>"/>
+                     <input type="hidden" name="layout" value="<%out.print(layout);%>" />
+                     <% if (size.equals("A3")&&layout.equals("Portrait")){%>
+                      <div id="container" style="width: 29.7cm;height: 42cm;"></div>
+                       
+                    <% }
+                    else if (size.equals("A3")&&layout.equals("Landscape")){%>
+                    <div id="container" style="width: 42cm;height: 29.7cm; "></div>
+                      
+                    <%}
+                    else if (size.equals("A4")&&layout.equals("Portrait")){%>
+                    <div id="container" style="width: 21cm;height: 29.7cm;"></div>
+                                  
+                    <%}
+                    else if (size.equals("A4")&&layout.equals("Landscape")){%>
+                    <div id="container" style=" width: 29.7cm;height: 21cm; "></div>
+                        
+                    <%}
+                    else if (size.equals("A5")&&layout.equals("Portrait")){%>
+                    <div id="container" style=" width: 14.8cm;height: 21cm;"></div>
+                        
+                    <%}else if (size.equals("A5")&&layout.equals("Landscape")){%>
+                    <div id="container" style="width: 21cm;height: 14.8cm;"></div>
+                       
+                    <%}%>
+                    <br>
+                      <div class="x_panel" id="textbox" style="background-color:whitesmoke; display:none;">
                             <textarea placeholder="Enter your text here" style="box-sizing: border-box; float:left; width:150px; height: 50px"></textarea>
                             <ul class="nav navbar-right panel_toolbox_short">
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a></li>
@@ -107,35 +151,6 @@
                                 <canvas class="pieChart"></canvas>
                             </div>
                         </div>
-                     <%String size=request.getParameter("size");
-                      String layout=request.getParameter("layout");
-                      if (size.equals("A3")&&layout.equals("Portrait")){%>
-                      <div id="container" style="width: 29.7cm;height: 42cm;"></div>
-                       
-                    <% }
-                    else if (size.equals("A3")&&layout.equals("Landscape")){%>
-                    <div id="container" style="width: 42cm;height: 29.7cm; "></div>
-                      
-                    <%}
-                    else if (size.equals("A4")&&layout.equals("Portrait")){%>
-                    <div id="container" style="width: 21cm;height: 29.7cm;"></div>
-                                  
-                    <%}
-                    else if (size.equals("A4")&&layout.equals("Landscape")){%>
-                    <div id="container" style=" width: 29.7cm;height: 21cm; "></div>
-                        
-                    <%}
-                    else if (size.equals("A5")&&layout.equals("Portrait")){%>
-                    <div id="container" style=" width: 14.8cm;height: 21cm;"></div>
-                        
-                    <%}else if (size.equals("A5")&&layout.equals("Landscape")){%>
-                    <div id="container" style="width: 21cm;height: 14.8cm;"></div>
-                       
-                    <%}%>
-                    <br>
-                    <button class="btn btn-primary" id="changeSize" >Change Page Size</button>
-                    <button class="btn btn-success" id="saveTemplate" >Save Template</button>
-                    <button class="btn" id="printPage" style="color:black">Screenshot</button>
                        <div id="size" class="modal">
 
                                     <!-- Modal content -->
@@ -181,6 +196,7 @@
                                     </div>
                                   </div>
                     <br><br>
+                    <%}%>
                 </div>
                 <!-- page content -->
             </div>
@@ -197,6 +213,7 @@
         <script src="/assets/js/dashboard.js"></script> 
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <!-- HTML To Canvas -->
         <!--<script src="/assets/js/html2canvas.js"></script>-->
         <!-- JS PDF -->
@@ -314,49 +331,94 @@
                     loadChartBoxes();
                 });
                 
-                $("#saveTemplate").click(function () {
-                    var components = [];
-                    for(var component of $("#container").children()){
-                        var componentObj = {};
-                        
-                        // push default component properties first
-                        // change implementation of randomId and page at a later time
-                        componentObj.type = component.id;        
-                        componentObj.id = component.id + (Math.floor(Math.random() * 9999) + 1);
-                        componentObj.page = 1
-                        componentObj.x = parseInt(component.style.left || 0 , 10); // removes px, set to 0 if undefined
-                        componentObj.y = parseInt(component.style.top || 0 , 10);
-                        componentObj.height = parseInt(component.style.height || 0 , 10);
-                        componentObj.width = parseInt(component.style.width || 0 , 10);
-                        console.log(parseInt(component.style.height || 0 , 10));
-                        console.log(parseInt(component.style.width || 0 , 10));
+                 $("#createTemplate").click(function () {
+                     var name = $('input[name=templateName]').val();
+                    var size = $('input[name=size]').val();
+                    var layout = $('input[name=layout]').val();
+                    var company = $('input[name=companyId]').val();
+                   var user = $('input[name=userName]').val();
+                    
+                    if(name===""){
+                        swal({icon: "error", text: "Please enter a template name!!", type: "warning"}); 
+                    }else{
+                         $.ajax({
+                      url: "/createTemplate",
+                        data: {
+                           templateName: name,
+                           templatesize: size,
+                           templatelayout:layout,
+                           companyId:company,
+                           userName:user,
+                           operation:"createTemplate",
+                        },
+                        success: function(result){
+                          if(result===null){
+        
+                          } else{  
+                                var templateId=result;
+                                var components = [];
+                                for(var component of $("#container").children()){
+                                    var componentObj = {};
 
-                        if(component.id === "textbox"){
-                            // default padding on all sides is 10px, use this to recreate the textbox
-                            componentObj.text = component.children[0].value;
-                            componentObj.height = parseInt(component.children[0].style.height || 0 , 10);
-                            componentObj.width = parseInt(component.children[0].style.width || 0 , 10);
-                        // complete properties of other components later
-                        } else {
-                            
+                                    // push default component properties first
+                                    // change implementation of randomId and page at a later time
+                                    componentObj.type = component.id;        
+                                    componentObj.id = component.id + (Math.floor(Math.random() * 9999) + 1);
+                                    componentObj.page = 1
+                                    componentObj.x = parseInt(component.style.left || 0 , 10); // removes px, set to 0 if undefined
+                                    componentObj.y = parseInt(component.style.top || 0 , 10);
+                                    componentObj.height = parseInt(component.style.height || 0 , 10);
+                                    componentObj.width = parseInt(component.style.width || 0 , 10);
+                                    console.log(parseInt(component.style.height || 0 , 10));
+                                    console.log(parseInt(component.style.width || 0 , 10));
+
+                                    if(component.id === "textbox"){
+                                        // default padding on all sides is 10px, use this to recreate the textbox
+                                        componentObj.text = component.children[0].value;
+                                        componentObj.height = parseInt(component.children[0].style.height || 0 , 10);
+                                        componentObj.width = parseInt(component.children[0].style.width || 0 , 10);
+                                    // complete properties of other components later
+                                    } else {
+
+                                    }
+
+                                    components.push(componentObj);
+                                }
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/saveComponents",
+                                    // The key needs to match your method's input parameter (case-sensitive).
+                                    // hardcoded templateId to 1 for now
+                                    data: JSON.stringify({operation: "saveComponents", components: components, templateId: templateId}),
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function(data){
+                                        if(data!==null){
+                                            swal({icon: "success", text: "Template has been created successfully!!", type: 
+                                            "success"}).then(function(){ 
+                                               location.reload();
+                                               }
+                                            ); 
+                                        }
+                                       
+                                },
+                                    failure: function(errMsg) {
+                                        swal( errMsg, {
+                                            icon: "error"
+                                        });
+                                       
+                                    }
+                                });
+                                
+                            } 
                         }
                         
-                        components.push(componentObj);
+                    }); 
                     }
                     
-                    $.ajax({
-                        type: "POST",
-                        url: "/saveComponents",
-                        // The key needs to match your method's input parameter (case-sensitive).
-                        // hardcoded templateId to 1 for now
-                        data: JSON.stringify({operation: "saveComponents", components: components, templateId: 1}),
-                        contentType: "application/json; charset=utf-8",
-                        success: function(data){alert(data);},
-                        failure: function(errMsg) {
-                            alert(errMsg);
-                        }
-                    });
+                    
+                  
                 });
+               
             });
             
         </script>

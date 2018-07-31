@@ -44,10 +44,11 @@ public class ComponentController extends HttpServlet {
             BufferedReader reader = request.getReader();
             JsonObject json = new JsonParser().parse(reader).getAsJsonObject();
             JsonObject responseObj = new JsonObject();
-            
+             System.out.println("i am herererer");
             String operation = json.get("operation").getAsString();
             int templateId = json.get("templateId").getAsInt();
             if(operation.equals("saveComponents")){
+                System.out.println("i am saving component");
                 JsonArray arr = json.getAsJsonArray("components");
                 ArrayList<Component> components = new ArrayList<>();
                 for(int i=0; i<arr.size();i++){
