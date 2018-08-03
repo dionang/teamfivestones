@@ -1,3 +1,6 @@
+<%@page import="scube.entities.Datasource"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="scube.dao.DatasourceDAO"%>
 <%@ include file="protect.jsp" %>
 <%@ page import="scube.entities.Account" %>
 <%@ page import="scube.entities.Developer" %>
@@ -6,7 +9,11 @@
     //if (!(account instanceof Developer)){
         //response.sendRedirect("/");
         //return;
-   // }
+   // }else{**/
+        int companyId=account.getCompanyId();
+        DatasourceDAO datasource=new DatasourceDAO();
+        ArrayList<Datasource> dsList = DatasourceDAO.getAllDatasources(account.getCompanyId()); 
+            /**}**/
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -15,7 +22,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/assets/css/dashboard.css">
-         <link rel="stylesheet" href="assets/css/createForm.css">
+         <link rel="stylesheet" href="/assets/css/template.css">
         <title>Developer Home</title>
     </head>
 
@@ -29,49 +36,76 @@
                 
                 <!-- set datasource -->
                 <div class="right_col">
-                    <div class="row">
-                        <div class="col-md-offset-1 col-md-10">
-                             <div class="form">
-                                 <form action="/setDatasource" method="post">
-                                     <div class="row">
-                                        <div class="col-md-10 ">
-                                            <h1>Set Datasource</h1>
-                                        </div>
-                                    </div>
-                                     <br>
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <label for="username" class="icon-link"> Datasource URL
-                                                <span class="required">*</span>
-                                            </label> 
-                                        </div>
-                                     </div>
-                                     <div class="row">
-                                         <div class="col-md-10 col-xs-12 ">
-                                        <input type="text" class="form-control" name="datasource" placeholder="Enter your datasource url" required="" />
-                                        </div>
-                                     </div>
-                        
-                                     <br>
-                                    <input type="hidden" name="companyId" value="<%= account.getCompanyId() %>">
-                                    <input type="hidden" name="operation" value="setDatasource"/>
-                                    <div class="row">
-                                        <div class="col-md-5" >
-                                            <input type="submit" value="Set Datasource" class="btn btn-success"/>
-                                        </div>
-                                    </div>
-                            <br/>
-                        
-                         </form>
-                                   
-                    </div>
-                     <br><br>
-                </div>
-                <!-- set datasource -->
+                 <div class="content">
+                    <div class="col-sm-3 ">
+                              
+                        <a href="addDataSource.jsp" >
+                            <div class="card card-inverse card-info">
+                                 <div class="card-block">
+                                    <img class="card-img-top create" src="/assets/images/create.png">
+                                </div>
+                                <div class="card-footer">
 
-                
-                <!-- page content -->
-            </div>
+                                <div class="row">
+                                    <div class="col-sm-offset-1 col-sm-4">
+                                        <h4 class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Datasource</h4>
+                                    </div>
+                                </div>
+
+                                    <div class="row" style=" opacity: 0;" >
+                                        <div class="col-md-5 edit">
+                                         <h5><span class="glyphicon glyphicon-edit "></span></h5> 
+                                        </div>
+                                        <div class="col-sm-1"></div>
+                                        <div class="col-sm-5 delete " >
+                                       <h5><span class="glyphicon glyphicon-trash "></span></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a> 
+                           </div>  
+                               
+
+                        <%for(int i=0;i<dsList.size();i++) {
+                            Datasource datasourece=dsList.get(i); %>
+                            <form action="/getDatasources" method="post" id="test">
+                                <input type=hidden name="datasourceId" value="<%out.print(datasourece.getDatasourceId());%>">
+                                <input type=hidden name="operation" value="getDatasources">
+                               <div class="col-sm-3 ">
+                                   
+                                        <div class="card card-inverse card-info">
+                                            <div class="card-block">
+                                                <img class="card-img-top" src="/assets/images/download.png">
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="row">
+                                                    <div class="col-sm-offset-1 col-sm-4">
+                                                        <h4 class="card-title"><%out.println(datasourece.getDatasourceName());%></h4>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row"  >
+                                                    <div class="col-md-5 ">
+                                                      
+                                                    <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
+                                                    </div>
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col-sm-5  " >
+                                                        <button class="btn delete" name="deleteBtn" value="delete" ><i class="fa fa-trash"></i> Delete</button>
+                   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                   
+                                </div>             
+                            </form>      
+                           
+                        <% }%>
+                        
+ 
+                       </div>
         </div>
         
         <!-- jQuery -->
@@ -81,5 +115,49 @@
         <!-- Chart.js -->
         <script src="/assets/js/chart.min.js"></script>
         <script src="/assets/js/dashboard.js"></script> 
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+         <script>
+            let datasoure = document.getElementsByClassName('delete');
+            for(i = 0; i < datasoure.length;i++) {
+                datasoure[i].addEventListener('click', function(e){
+                    e.preventDefault();
+                    swal({
+                        title: "Confirmation",
+                        text: "Are you sure you want to delete this datasource?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true
+                    })
+                    .then((confirm) => {
+                        if(confirm){
+                            var form = document.getElementById("test");
+                            $.ajax({
+                                url: "/getDatasources",
+                                data: {
+                                    id: form.elements["datasourceId"].value,
+                                   deleteBtn: form.elements["deleteBtn"].value,
+                                   operation:form.elements["operation"].value,
+                                },
+                                success: function(success){
+                                    if(success === "true"){
+                                        swal({icon: "success", text: "Datasource has been deleted successfully!!", type: 
+                                            "success"}).then(function(){ 
+                                               location.reload();
+                                               }
+                                            );    
+                                    } else {
+                                        swal("ERROR!", {
+                                            icon: "error"
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }); 
+                    });
+              }
+           
+        </script>
+        
     </body>
 </html>

@@ -16,7 +16,7 @@ import scube.entities.*;
  *
  * @author HongYuan
  */
-@WebServlet(name = "DatasourceController", urlPatterns = {"/addDatasource", "/getDatasources"})
+@WebServlet(name = "DatasourceController", urlPatterns = {"/addDatasource", "/getDatasources","/updateDatasource"})
 public class DatasourceController extends HttpServlet {
 
     /**
@@ -34,16 +34,42 @@ public class DatasourceController extends HttpServlet {
         Account account = (Account) session.getAttribute("account");
                     
         String operation = request.getParameter("operation");
+       
         try(PrintWriter out = response.getWriter()){
             if(operation.equals("addDatasource")) {
+                 
                 String datasourceUrl = request.getParameter("datasourceUrl");
-                boolean status = DatasourceDAO.addDatasource(account.getCompanyId(),datasourceUrl);
+                String datasourceName = request.getParameter("datasourceName");
+                String remark = request.getParameter("remark");
+                boolean status = DatasourceDAO.addDatasource(account.getCompanyId(),datasourceUrl,datasourceName,remark);
                 out.print(status);                 
             } else if (operation.equals("getDatasources")){
-                ArrayList<Datasource> dsList = DatasourceDAO.getAllDatasources(account.getCompanyId()); 
-                for (Datasource ds : dsList) {
-                    out.println(ds.getDatasourceUrl());
+                String viewBtn=request.getParameter("viewBtn");
+                int id;
+                if(viewBtn!=null){
+                    id=Integer.parseInt(request.getParameter("datasourceId"));
+                    DatasourceDAO datasource=new DatasourceDAO();
+                    Datasource data=datasource.retrieveDatasourceById(id);
+                    request.setAttribute("datasource", data);
+                    request.getRequestDispatcher("loadDatasource.jsp").forward(request, response);
+                } 
+                String deleteBtn = request.getParameter("deleteBtn");
+                if(deleteBtn!=null){
+                    id=Integer.parseInt(request.getParameter("id"));
+                    DatasourceDAO datasource=new DatasourceDAO();
+                    boolean result=datasource.deleteDatasource(id);
+                    out.print(result);
+                   
                 }
+   
+            }else if(operation.equals("updateDatasource")){
+                
+                int id=Integer.parseInt(request.getParameter("id"));
+                String datasourceUrl = request.getParameter("datasourceUrl");
+                String datasourceName = request.getParameter("datasourceName");
+                String remark = request.getParameter("remark");
+                boolean status = DatasourceDAO.updateDatasource(id,account.getCompanyId(),datasourceUrl,datasourceName,remark);
+                out.print(status);                 
             }
         }
         

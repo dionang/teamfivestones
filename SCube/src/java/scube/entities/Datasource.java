@@ -13,11 +13,17 @@ public class Datasource {
     private int datasourceId;
     private int companyId;
     private String datasourceUrl;
+    private String datasourceName;
+    private String remark;
 
-    public Datasource(int datasourceId, int companyId, String datasourceUrl) {
+   
+    public Datasource(int datasourceId, int companyId, String datasourceUrl,String datasourceName,String remark) {
         this.datasourceId = datasourceId;
         this.companyId = companyId;
         this.datasourceUrl = datasourceUrl;
+        this.datasourceName = datasourceName;
+        this.remark=remark;
+        
     }
 
     public int getDatasourceId() {
@@ -40,7 +46,21 @@ public class Datasource {
         return datasourceUrl;
     }
 
-    public void setDatasourceUrl(String datasourceUrl) {
+    public void setDatasourceUrl(String datasourceName) {
         this.datasourceUrl = datasourceUrl;
+    }
+     public String getDatasourceName() {
+        return datasourceName;
+    }
+
+    public void setDatasourceName(String datasourceName) {
+        this.datasourceName = datasourceName;
+    }
+     public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

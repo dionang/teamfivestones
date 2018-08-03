@@ -11,9 +11,9 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <ul class="nav side-menu" id="options">
-                    <li><a><i class="fa fa-gears"></i> AA</a></li>
-                    <li><a><i class="fa fa-user"></i> BB</a></li>
-                    <li><a><i class="fa fa-group"></i> CC</a></li> 
+                    <li><a href="devHome.jsp"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="addDataSource.jsp"><i class="fa fa-link"></i> Create Datasource</a></li>
+                  
                     
                 </ul>
             </div>

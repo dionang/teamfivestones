@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 31, 2018 at 11:37 AM
+-- Generation Time: Aug 03, 2018 at 11:21 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -75,7 +75,7 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`companyId`, `companyName`, `address`, `phoneNo`, `fax`, `logoUrl`, `pocId`, `datasourceUrl`) VALUES
-(1, 'SCube Pte Ltd', 'SCube Address', '12345678', '12345678', 'http://logo.url', 1, 'test'),
+(1, 'SCube Pte Ltd', 'SCube Address', '12345678', '12345678', 'http://logo.url', 1, 'http://abc'),
 (2, 'Singapore Management University', '81 Victoria St, Singapore 188065', '+65 6828 0100', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -103,18 +103,18 @@ CREATE TABLE `component` (
 CREATE TABLE `datasource` (
   `datasourceId` int(11) NOT NULL,
   `companyId` int(11) NOT NULL,
-  `datasourceUrl` varchar(500) NOT NULL
+  `datasourceUrl` varchar(500) NOT NULL,
+  `datasourceName` varchar(50) NOT NULL,
+  `remark` varchar(500) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `datasource`
 --
 
-INSERT INTO `datasource` (`datasourceId`, `companyId`, `datasourceUrl`) VALUES
-(6, 1, 'http://localhost:8084/Dummy_API/getFurnituresByCategory'),
-(7, 1, 'http://localhost:8084/Dummy_API/getInformationByCategory'),
-(8, 1, 'http://localhost:8084/Dummy_API/getCustomerInformation'),
-(9, 1, 'http://localhost:8084/Dummy_API/getCustomerOrderLocation');
+INSERT INTO `datasource` (`datasourceId`, `companyId`, `datasourceUrl`, `datasourceName`, `remark`) VALUES
+(5, 1, 'http://123456789', 'Cost', 'Nothing'),
+(3, 1, 'http://123', 'Sales', '123');
 
 -- --------------------------------------------------------
 
@@ -253,6 +253,11 @@ ALTER TABLE `account`
 --
 ALTER TABLE `company`
   MODIFY `companyId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `datasource`
+--
+ALTER TABLE `datasource`
+  MODIFY `datasourceId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `report`
 --

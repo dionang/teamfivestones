@@ -171,7 +171,7 @@
                                                     </div>
                                                     <div class="col-sm-1"></div>
                                                     <div class="col-sm-5  " >
-                                                        <button class="btn delete" name="deleteBtn" value="delete" id="delete"><i class="fa fa-trash"></i> Delete</button>
+                                                        <button class="btn delete" name="deleteBtn" value="delete" ><i class="fa fa-trash"></i> Delete</button>
                    
                                                     </div>
                                                 </div>
