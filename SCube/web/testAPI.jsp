@@ -44,7 +44,7 @@
                         console.log(processor.getDataset("furnitures"));
                         console.log(processor.getOptions("customers"));
                         console.log(processor.getTypes("customers"));
-                        console.log(processor.getDetails("customers", "city"));
+                        console.log(processor.getDetails("customers", "City"));
 //                        console.log(processor.getDataset("furnitures"));
 //                        console.log(processor.getOptions("customers"));
 //                        console.log(processor.getTypes("customers"));

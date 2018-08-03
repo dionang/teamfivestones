@@ -50,7 +50,6 @@ public class OrderController extends HttpServlet {
 
             //used for pretty printing
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
             
             JsonArray furnitureArr = new JsonArray();
             JsonArray customerArr = new JsonArray();
@@ -58,18 +57,22 @@ public class OrderController extends HttpServlet {
                 JsonObject furnitureObj = new JsonObject();                
                 JsonObject customerObj = new JsonObject();
 
-                furnitureObj.addProperty("name", o.getProductName());
-                furnitureObj.addProperty("sales", o.getSales());
-                furnitureObj.addProperty("quantity", o.getQty());
-                furnitureObj.addProperty("discount", o.getDiscount());
-                furnitureObj.addProperty("profit", o.getProfit());
+                furnitureObj.addProperty("Name", o.getProductName());
+                furnitureObj.addProperty("Sales", o.getSales());
+                furnitureObj.addProperty("Quantity", o.getQty());
+                furnitureObj.addProperty("Discount", o.getDiscount());
+                furnitureObj.addProperty("Profit", o.getProfit());
+                furnitureObj.addProperty("Ship Mode", o.getShipMode());
+                furnitureObj.addProperty("Order Date", o.getOrderDate());
+                furnitureObj.addProperty("Region", o.getRegion());
                 furnitureArr.add(furnitureObj);
                 
-                customerObj.addProperty("customer_id", o.getCustID());
-                customerObj.addProperty("customer_name", o.getCustName());
-                customerObj.addProperty("city", o.getCity());
-                customerObj.addProperty("order_id", o.getOrderID());
-                customerObj.addProperty("order_date", o.getOrderDate());
+                customerObj.addProperty("Customer ID", o.getCustID());
+                customerObj.addProperty("Customer Name", o.getCustName());
+                customerObj.addProperty("City", o.getCity());
+                customerObj.addProperty("Ship Mode", o.getShipMode());
+                customerObj.addProperty("Order ID", o.getOrderID());
+                customerObj.addProperty("Order Date", o.getOrderDate());
                 customerArr.add(customerObj);
             }
 

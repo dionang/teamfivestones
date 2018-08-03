@@ -51,7 +51,6 @@ public class CustomerController extends HttpServlet {
 
                 //retrieve order details by using custName
                 ArrayList<Order> custOrderList = OrderDAO.getCustomerOrderDetails(custName);
-                System.out.println(custOrderList);
                 
                 //JsonArray to capture order details to print out
                 JsonArray CustArr = new JsonArray();

@@ -37,154 +37,145 @@
                 
                 <div class="right_col">
                     <div class="content">
-                         <div class="col-sm-3 ">
-                                    <!-- Trigger/Open The Modal -->
-                                    <a href="#" id="myBtn">
-                                        <div class="card card-inverse card-info">
-                                             <div class="card-block">
-                                                <img class="card-img-top create" src="/assets/images/create.png">
-                                            </div>
-                                            <div class="card-footer">
-                                            
-                                            <div class="row">
-                                                    <div class="col-sm-offset-1 col-sm-4">
-                                                        <h4 class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Template</h4>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="row" style=" opacity: 0;" >
-                                                    <div class="col-md-5 edit">
-                                                     <h5><span class="glyphicon glyphicon-edit "></span></h5> 
-                                                    </div>
-                                                    <div class="col-sm-1"></div>
-                                                    <div class="col-sm-5 delete " >
-                                                   <h5><span class="glyphicon glyphicon-trash "></span></h5>
-                                                    </div>
-                                                </div>
+                        <div class="col-lg-3 col-md-4">
+                            <!-- Trigger/Open The Modal -->
+                            <a href="#" id="myBtn">
+                                <div class="card card-inverse card-info">
+                                     <div class="card-block">
+                                        <img class="card-img-top create" src="/assets/images/create.png">
+                                    </div>
+                                    <div class="card-footer">
+
+                                    <div class="row">
+                                            <div class="col-sm-offset-1 col-sm-4">
+                                                <h4 class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Template</h4>
                                             </div>
                                         </div>
-                                    </a> 
-                                </div>  
-                                <div id="myModal" class="modal">
 
-                                    <!-- Modal content -->
-                                    <div class="modal-content">
-                                       <div class="row">
-                                      <span class="close">&times;</span>
-                                       </div>
-                                        <div class="row">
-                                            <div class="col-sm-offset-2 col-sm-4 ">
-                                                <a href="loadTemplate.jsp">
-                                                     <div class="card card-inverse card-info">
-                                                         <div class="card-block">
-                                                             <img class="card-img-top" src="/assets/images/dummyReprot.png">
-                                                         </div>
-                                                         <div class="card-footer">
-                                                         <h4 class="card-title " style="text-align:center">Default Template</h4>
-                                                         </div>
-                                                     </div>
-                                                 </a> 
-                                            </div> 
-                                            <div class="col-sm-1 "></div>
-                                            <div class="col-sm-4 ">
-                                                <a href="#" id="pageSize">
-                                                     <div class="card card-inverse card-info">
-                                                         <div class="card-block">
-                                                             <img class="card-img-top" src="/assets/images/dummyReprot.png" style="opacity:0">
-                                                         </div>
-                                                         <div class="card-footer">
-                                                         <h4 class="card-title " style="text-align:center">Blank Template</h4>
-                                                         </div>
-                                                     </div>
-                                                 </a> 
-                                             </div> 
-                                             <div id="size" class="modal">
-
-                                    <!-- Modal content -->
-                                    <div class="modal-content">
-                                        <form action="report.jsp" method="post">
-                                            <div class="row">
-                                                 <span class="close">&times;</span>
+                                        <div class="row" style=" opacity: 0;" >
+                                            <div class="col-md-5 edit">
+                                             <h5><span class="glyphicon glyphicon-edit "></span></h5> 
                                             </div>
-                                             <div class="row">
-                                                 <div class="col-sm-offset-3 col-sm-4 ">
-                                                     <div class='title'>Please choose your report page size.</div>
-                                                     <div class="radio">
-                                                         <label><input type="radio" name="size" value="A3">A3</label>
-                                                     </div>
-                                                     <div class="radio">
-                                                         <label><input type="radio" name="size" value="A4" checked >A4</label>
-                                                     </div>
-                                                     <div class="radio">
-                                                         <label><input type="radio" name="size" value="A5" >A5</label>
-                                                     </div> 
-                                                 </div> 
-
-                                             </div> 
-                                             <div class="row">
-                                                 <div class="col-sm-offset-3 col-sm-4 ">
-                                                     <div class='title'>Please choose your report layout.</div>
-                                                     <div class="radio">
-                                                         <label><input type="radio" name="layout" value="Portrait" checked>Portrait</label>
-                                                     </div>
-                                                     <div class="radio">
-                                                         <label><input type="radio" name="layout" value="Landscape">Landscape</label>
-                                                     </div>
-
-                                                 </div> 
-
-                                            </div> 
-                                            <div class="row">
-                                                <div class="col-sm-offset-7 col-sm-2 ">
-                                                    <input type="submit" value="Submit" class="btn btn-info">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-5 delete " >
+                                           <h5><span class="glyphicon glyphicon-trash "></span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a> 
+                        </div>  
+                        <div id="myModal" class="modal">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <div class="row">
+                                    <span class="close">&times;</span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-offset-2 col-sm-4 ">
+                                        <a href="loadTemplate.jsp">
+                                             <div class="card card-inverse card-info">
+                                                 <div class="card-block">
+                                                     <img class="card-img-top" src="/assets/images/dummyReprot.png">
+                                                 </div>
+                                                 <div class="card-footer">
+                                                 <h4 class="card-title " style="text-align:center">Default Template</h4>
+                                                 </div>
+                                             </div>
+                                         </a> 
+                                    </div> 
+                                    <div class="col-sm-1 "></div>
+                                    <div class="col-sm-4 ">
+                                        <a href="#" id="pageSize">
+                                             <div class="card card-inverse card-info">
+                                                 <div class="card-block">
+                                                     <img class="card-img-top" src="/assets/images/dummyReprot.png" style="opacity:0">
+                                                 </div>
+                                                 <div class="card-footer">
+                                                 <h4 class="card-title " style="text-align:center">Blank Template</h4>
+                                                 </div>
+                                             </div>
+                                         </a> 
+                                    </div> 
+                                    <div id="size" class="modal">
+                                        <!-- Modal content -->
+                                        <div class="modal-content">
+                                            <form action="report.jsp" method="post">
+                                                <div class="row">
+                                                     <span class="close">&times;</span>
                                                 </div>
-                                            </div>
-                                        </form>
+                                                 <div class="row">
+                                                     <div class="col-sm-offset-3 col-sm-4 ">
+                                                         <div class='title'>Please choose your report page size.</div>
+                                                         <div class="radio">
+                                                             <label><input type="radio" name="size" value="A3">A3</label>
+                                                         </div>
+                                                         <div class="radio">
+                                                             <label><input type="radio" name="size" value="A4" checked >A4</label>
+                                                         </div>
+                                                         <div class="radio">
+                                                             <label><input type="radio" name="size" value="A5" >A5</label>
+                                                         </div> 
+                                                     </div> 
+
+                                                </div> 
+                                                <div class="row">
+                                                    <div class="col-sm-offset-3 col-sm-4 ">
+                                                        <div class='title'>Please choose your report layout.</div>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="layout" value="Portrait" checked>Portrait</label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label><input type="radio" name="layout" value="Landscape">Landscape</label>
+                                                        </div>
+                                                    </div> 
+                                                </div> 
+                                                <div class="row">
+                                                    <div class="col-sm-offset-7 col-sm-2 ">
+                                                        <input type="submit" value="Submit" class="btn btn-info">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                  </div>
-                                        </div>                                
-                                    </div>
-                                  </div>
+                                </div>                                
+                            </div>
+                        </div>
 
                         <%for(int i=0;i<templateList.size();i++) {
                             Template template=templateList.get(i); %>
                             <form action="/templateControl" method="post" id="test">
                                 <input type=hidden name="templateId" value="<% out.print(template.getTemplateId());%>">
-                                 <input type=hidden name="operation" value="templateControl">
-                               <div class="col-sm-3 ">
-                                   
-                                        <div class="card card-inverse card-info">
-                                            <div class="card-block">
-                                                <img class="card-img-top" src="/assets/images/dummyReprot.png">
-                                            </div>
-                                            <div class="card-footer">
-                                                <div class="row">
-                                                    <div class="col-sm-offset-1 col-sm-4">
-                                                        <h4 class="card-title"><%out.println(template.getTemplateName());%></h4>
-                                                    </div>
+                                <input type=hidden name="operation" value="templateControl">
+                                <div class="col-lg-3 col-md-4">
+                                    <div class="card card-inverse card-info">
+                                        <div class="card-block">
+                                            <img class="card-img-top" src="/assets/images/dummyReprot.png">
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="row">
+                                                <div class="col-sm-offset-1 col-sm-4">
+                                                    <h4 class="card-title"><%out.println(template.getTemplateName());%></h4>
                                                 </div>
-                                                
-                                                <div class="row"  >
-                                                    <div class="col-md-5 ">
-                                                      
-                                                    <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
-                                                    </div>
-                                                    <div class="col-sm-1"></div>
-                                                    <div class="col-sm-5  " >
-                                                        <button class="btn delete" name="deleteBtn" value="delete" ><i class="fa fa-trash"></i> Delete</button>
-                   
-                                                    </div>
+                                            </div>
+
+                                            <div class="row"  >
+                                                <div class="col-md-5 ">
+
+                                                <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
+                                                </div>
+                                                <div class="col-sm-1"></div>
+                                                <div class="col-sm-5  " >
+                                                    <button class="btn delete" name="deleteBtn" value="delete" ><i class="fa fa-trash"></i> Delete</button>
+
                                                 </div>
                                             </div>
                                         </div>
-                                   
+                                    </div>
                                 </div>             
                             </form>      
-                           
                         <% }%>
-                        
- 
-                       </div>
+                        </div>
                     </div>  
                 <!-- page content -->
                 </div>
@@ -282,8 +273,7 @@
                     modal1.style.display = "none";
                 }
             }
-</script>
-
+        </script>
     </body>
 </html>
 
