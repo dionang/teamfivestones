@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import scube.dao.ComponentDAO;
 import scube.entities.Component;
 import scube.entities.Textbox;
+import scube.entities.Chart;
 
 /**
  *
@@ -44,11 +45,9 @@ public class ComponentController extends HttpServlet {
             BufferedReader reader = request.getReader();
             JsonObject json = new JsonParser().parse(reader).getAsJsonObject();
             JsonObject responseObj = new JsonObject();
-             System.out.println("i am herererer");
             String operation = json.get("operation").getAsString();
             int templateId = json.get("templateId").getAsInt();
             if(operation.equals("saveComponents")){
-                System.out.println("i am saving component");
                 JsonArray arr = json.getAsJsonArray("components");
                 ArrayList<Component> components = new ArrayList<>();
                 for(int i=0; i<arr.size();i++){
@@ -59,12 +58,21 @@ public class ComponentController extends HttpServlet {
                     int height = componentObj.get("height").getAsInt();
                     int width = componentObj.get("width").getAsInt();
                     
+                    JsonObject properties = componentObj.get("properties").getAsJsonObject();
                     if (type.equals("text")){
-                        JsonObject properties = componentObj.get("properties").getAsJsonObject();
                         String text = properties.get("text").getAsString();
                         components.add(new Textbox(type, x, y, height, width, text));
-                    } else {
-                        components.add(new Component(type, x, y, height, width));
+                    } else if (type.equals("bar") || type.equals("line")){
+                        boolean initialized = properties.get("initialized").getAsBoolean();                        
+                        String datasourceUrl = properties.get("datasourceUrl").getAsString();
+                        String dataset = properties.get("dataset").getAsString();
+                        String title = properties.get("title").getAsString();
+                        String xAxis = properties.get("xAxis").getAsString();
+                        String yAxis = properties.get("yAxis").getAsString();
+                        
+                        if(initialized){
+                            components.add(new Chart(type, x, y, height, width, datasourceUrl, dataset, title, xAxis, yAxis));
+                        }
                     }
                 }
                 
@@ -91,6 +99,16 @@ public class ComponentController extends HttpServlet {
                         JsonObject properties = new JsonObject();
                         properties.addProperty("text", textbox.getText());
                         componentObj.add("properties", properties);
+                    } else if (component.getType().equals("bar") || component.getType().equals("line")) {
+                        Chart chart = (Chart) component;
+                        JsonObject properties = new JsonObject();
+                        properties.addProperty("initialized", true);
+                        properties.addProperty("datasourceUrl", chart.getDatasourceUrl());
+                        properties.addProperty("dataset", chart.getDataset());
+                        properties.addProperty("title", chart.getTitle());
+                        properties.addProperty("xAxis", chart.getXAxis());
+                        properties.addProperty("yAxis", chart.getYAxis());
+                        componentObj.add("properties", properties);
                     }
                     
                     // add component to jsonArr
@@ -98,6 +116,7 @@ public class ComponentController extends HttpServlet {
                 }
                 
                 responseObj.add("components", jsonArr);
+                System.out.println(responseObj.toString());
                 out.println(responseObj.toString());
             }
         }

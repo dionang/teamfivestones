@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2018 at 08:38 PM
+-- Generation Time: Aug 04, 2018 at 05:44 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -53,6 +53,32 @@ INSERT INTO `account` (`accountId`, `username`, `passwordHash`, `companyId`, `ac
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `chart`
+--
+
+CREATE TABLE IF NOT EXISTS `chart` (
+  `templateId` int(11) NOT NULL,
+  `position` int(11) NOT NULL,
+  `datasourceUrl` varchar(500) NOT NULL,
+  `dataset` varchar(20) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `xAxis` varchar(20) NOT NULL,
+  `yAxis` varchar(20) NOT NULL,
+  PRIMARY KEY (`templateId`,`position`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `chart`
+--
+
+INSERT INTO `chart` (`templateId`, `position`, `datasourceUrl`, `dataset`, `title`, `xAxis`, `yAxis`) VALUES
+(1, 0, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', 'Furniture Sales By Region', 'Region', 'Sales'),
+(2, 0, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', '', 'Region', 'Sales'),
+(2, 1, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', '', 'Region', 'Sales');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `company`
 --
 
@@ -98,14 +124,10 @@ CREATE TABLE IF NOT EXISTS `component` (
 --
 
 INSERT INTO `component` (`templateId`, `position`, `type`, `x`, `y`, `height`, `width`) VALUES
-(1, 0, 'line', 170, 104, 200, 300),
-(1, 1, 'text', 578, 66, 50, 200),
-(1, 2, 'bar', 117, 392, 182, 404),
-(2, 0, 'line', 562, 376, 200, 300),
-(2, 1, 'text', 681, 24, 50, 200),
-(2, 2, 'bar', 117, 392, 182, 404),
-(2, 3, 'bar', 262, 136, 200, 300),
-(2, 4, 'text', 15, 19, 50, 200);
+(1, 0, 'bar', 320, 10, 300, 400),
+(2, 0, 'line', 467, 308, 303, 364),
+(2, 1, 'bar', 64, 306, 295, 323),
+(2, 2, 'text', 505, 83, 168, 299);
 
 -- --------------------------------------------------------
 
@@ -113,14 +135,14 @@ INSERT INTO `component` (`templateId`, `position`, `type`, `x`, `y`, `height`, `
 -- Table structure for table `datasource`
 --
 
-CREATE TABLE `datasource` (
+CREATE TABLE IF NOT EXISTS `datasource` (
   `datasourceId` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) NOT NULL,
   `datasourceUrl` varchar(500) NOT NULL,
   `datasourceName` varchar(50) NOT NULL,
   `remark` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`datasourceId`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=5;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `datasource`
@@ -174,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `report` (
 -- Table structure for table `template`
 --
 
-CREATE TABLE `template` (
+CREATE TABLE IF NOT EXISTS `template` (
   `templateId` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) NOT NULL,
   `templateName` varchar(50) NOT NULL,
@@ -184,14 +206,14 @@ CREATE TABLE `template` (
   `size` varchar(2) NOT NULL,
   `layout` varchar(20) NOT NULL,
   PRIMARY KEY (`templateId`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=2;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `template`
 --
 
 INSERT INTO `template` (`templateId`, `companyId`, `templateName`, `createdBy`, `createdOn`, `lastUpdatedOn`, `size`, `layout`) VALUES
-(1, 1, 'AA', 'admin', '2018-07-31', '2018-07-31', 'A4', 'Portrait');
+(2, 1, 'My Second Template', 'manager', '2018-08-03', '2018-08-03', 'A4', 'Portrait');
 
 -- --------------------------------------------------------
 
@@ -211,10 +233,7 @@ CREATE TABLE IF NOT EXISTS `textbox` (
 --
 
 INSERT INTO `textbox` (`templateId`, `position`, `text`) VALUES
-(1, 1, '<p>HelloWorld!</p>'),
-(2, 1, '<p>B<u><em>y</em></u><em>e!</em></p>'),
-(2, 4, '<p>He<em><strong>ll</strong></em><strong>o!</strong></p>');
-
+(2, 2, '<p><u>This is the </u><u><strong>Report</strong></u><u> Title</u></p>');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import scube.entities.Component;
 import scube.entities.Textbox;
+import scube.entities.Chart;
 
 public class ComponentDAO {
     //Create operations
@@ -36,6 +37,9 @@ public class ComponentDAO {
                 if(component.getType().equals("text")){
                     Textbox textbox = (Textbox) component;
                     addTextbox(templateId, i, textbox.getText());
+                } else if (component.getType().equals("bar") || component.getType().equals("line")) {
+                    Chart chart = (Chart) component;
+                    addChart(templateId, i, chart.getDatasourceUrl(), chart.getDataset(), chart.getTitle(), chart.getXAxis(), chart.getYAxis());
                 }
             }
             stmt.executeBatch();
@@ -43,6 +47,31 @@ public class ComponentDAO {
         } catch (SQLException e) {
             e.printStackTrace(System.out);
             return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static void addChart(int templateId, int position, String datasourceUrl, String dataset, String title, String xAxis, String yAxis) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO chart VALUES (?,?,?,?,?,?,?)");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);            
+            stmt.setString(3, datasourceUrl);            
+            stmt.setString(4, dataset);
+            stmt.setString(5, title);
+            stmt.setString(6, xAxis);
+            stmt.setString(7, yAxis);
+
+            stmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
         } finally {
             ConnectionManager.close(conn, stmt, rs);
         }
@@ -89,8 +118,9 @@ public class ComponentDAO {
                     component = new Textbox(rs.getString("type"), rs.getInt("x"), rs.getInt("y"), 
                         rs.getInt("height"), rs.getInt("width"), getTextboxText(templateId, position));
                 } else {
-                    component = new Component(rs.getString("type"), rs.getInt("x"), rs.getInt("y"), 
-                        rs.getInt("height"), rs.getInt("width"));
+                    ArrayList<String> props = getChartProps(templateId, position);
+                    component = new Chart(rs.getString("type"), rs.getInt("x"), rs.getInt("y"), 
+                        rs.getInt("height"), rs.getInt("width"), props.get(0), props.get(1), props.get(2), props.get(3), props.get(4));
                 }
                 components.add(component);
                 position++;
@@ -118,6 +148,37 @@ public class ComponentDAO {
 
             if(rs.next()){
                 return rs.getString("text");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static ArrayList<String> getChartProps(int templateId, int position) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        ArrayList<String> props = new ArrayList<>();
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT * FROM chart WHERE templateId = ? and position = ?");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);
+            rs = stmt.executeQuery();
+
+            if(rs.next()){
+                props.add(rs.getString("datasourceUrl"));
+                props.add(rs.getString("dataset"));
+                props.add(rs.getString("title"));
+                props.add(rs.getString("xAxis"));
+                props.add(rs.getString("yAxis"));
+                return props;
             } else {
                 return null;
             }
@@ -183,6 +244,7 @@ public class ComponentDAO {
             stmt.executeUpdate();
             
             //delete components from the other tables as well
+            deleteAllCharts(templateId);            
             deleteAllTextboxes(templateId);
             return true;
         } catch (SQLException e) {
@@ -201,6 +263,25 @@ public class ComponentDAO {
         try {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("DELETE FROM textbox WHERE templateId = ?");
+            stmt.setInt(1, templateId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static boolean deleteAllCharts(int templateId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM chart WHERE templateId = ?");
             stmt.setInt(1, templateId);
             stmt.executeUpdate();
             return true;
