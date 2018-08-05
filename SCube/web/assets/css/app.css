@@ -1,0 +1,4 @@
+/* to allow close button to be clickable */
+.recharts-responsive-container {
+  z-index: -1;
+}

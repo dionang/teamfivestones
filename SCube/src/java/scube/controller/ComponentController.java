@@ -116,7 +116,7 @@ public class ComponentController extends HttpServlet {
                 }
                 
                 responseObj.add("components", jsonArr);
-                System.out.println(responseObj.toString());
+//                System.out.println(responseObj.toString());
                 out.println(responseObj.toString());
             }
         }

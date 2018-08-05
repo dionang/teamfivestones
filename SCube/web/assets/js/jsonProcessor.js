@@ -110,8 +110,6 @@ function JsonProcessor(json) {
             this.result[key] = props;
         }
     }
-    
-    console.log(this.result);
 }
 
 JsonProcessor.prototype.getDatasetNames = function(){
@@ -128,7 +126,12 @@ JsonProcessor.prototype.getDataset = function(datasetName){
 };
 
 JsonProcessor.prototype.getOptions = function(dataset){
-    return this.result.datasets[dataset].options;
+    let ds = this.result.datasets[dataset];
+    if (ds === undefined){
+        return [];
+    } else {
+        return ds.options;
+    }
 };
 
 JsonProcessor.prototype.getTypes = function(dataset){
