@@ -466,14 +466,15 @@ class App extends Component {
                 // {type:"table", x:0, y:0, height:200, width:200}
                 // {type:"image", x:0, y:0, height:200, width:200, properties: {imageUrl:''}}
                 // {type:"line", x:10, y:10, height:200, width:300, data:lineChartData},
-                {type:"bar", x:320, y:10, height:300, width:400, 
+                {type:"bar", x:320, y:10, height:300, width:400, display:true,
                     properties:{
                         initialized:true, 
                         datasourceUrl:'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 
                         dataset:'furnitures',
                         title: 'Furniture Sales By Region',  
                         xAxis:'Region', 
-                        yAxis:'Sales'
+                        yAxis:'Sales',
+                        aggregate:'sum'
                     }
                 },
                 // {type:"text", x:10, y:310, height:100, width:150, properties:{text:"<p>Hello World!</p>"}},
@@ -485,7 +486,7 @@ class App extends Component {
     addTextbox = () => {
         let components = this.state.components;
         components.push(
-            {type:"text", x:0, y:0, height:50, width:200, properties:{text:"<p><br></p>"}}
+            {type:"text", x:0, y:0, height:50, width:200, display:true, properties:{text:"<p><br></p>"}}
         );
 
         this.setState({components});
@@ -495,7 +496,7 @@ class App extends Component {
         let components = this.state.components;
         // adds new component to state
         components.push(
-            {type:"bar", x:0, y:0, height:200, width:300, 
+            {type:"bar", x:0, y:0, height:200, width:300, display:true,
                 properties:{
                     initialized:false, 
                     datasourceUrl:'', 
@@ -514,13 +515,13 @@ class App extends Component {
     addLineChart = () => {
         let components = this.state.components;
         components.push(
-            {type:"line", x:0, y:0, height:200, width:300, 
+            {type:"line", x:0, y:0, height:200, width:300, display:true,
                 properties:{
                     initialized:false,
                     datasourceUrl:'', 
                     dataset:'', 
                     title: '', 
-                    xAxis:'', 
+                    xAxis:'',
                     yAxis:''
                 }
             }
@@ -533,32 +534,29 @@ class App extends Component {
     addTable = () => {
         let components = this.state.components;
         components.push(
-            {type:"table", x:0, y:0, height:200, width:300}
+            {type:"table", x:0, y:0, height:200, width:300, display:true}
         );
 
-        this.setState({components});
-    }
-
-
-    addForm = () =>{
-        let components = this.state.components;
-        components.push(
-            {type:"basic", x:0, y:0, height:200, width:200}
-        );
         this.setState({components});
     }
 
     addImage = () =>{
         let components = this.state.components;
         components.push(
-            {type:"image", x:0, y:0, height:200, width:200, properties: {imageUrl:''}}
+            {type:"image", x:0, y:0, height:200, width:200, display:true, properties: {imageUrl:''}}
         );
         this.setState({components});
     }
 
+    changeSettings(i) {
+        let components = this.state.components;
+        components[i].properties.initialized = false;
+        this.setState({components});
+    }
+    
     deleteComponent(i) {
         let components = this.state.components;
-        components.splice(i,1);
+        components[i].display = false;
         this.setState({components});
     }
 
@@ -630,47 +628,49 @@ class App extends Component {
                 <button onClick={this.addLineChart}>Add Line Chart</button>
                 <button onClick={this.addTable}>Add Table</button>
                 <button onClick={this.getComponentDetails}>Get Component Details</button>
-                <button onClick={this.addForm}>Show the form</button>
                 <button onClick={this.addImage}>Add Image</button>
                 <button onClick={this.saveTemplate}>Save Template</button>
                 <button onClick={this.loadTemplate}>Load Template</button>
-                <input type="number" id="template" defaultValue="0"/>
+                <input type="number" id="template" defaultValue="1"/>
                 <div id="container">
                     {/* map does a for loop over all the components in the state */}
-                    {this.state.components.map((item,i)=>
-                        <Rnd key={i} style={{border: "1px solid grey"}}
-                            // intialize components x,y,height and width
-                            position = {{x: item.x, y: item.y}}
-                            size = {{width: item.width, height: item.height}}
+                    {this.state.components.map((item,i)=>{
+                        if (item.display){
+                            return <Rnd key={i} style={{border: "1px solid grey"}}
+                                // intialize components x,y,height and width
+                                position = {{x: item.x, y: item.y}}
+                                size = {{width: item.width, height: item.height}}
 
-                            // min height and size
-                            minHeight={80} minWidth={120}
+                                // min height and size
+                                minHeight={80} minWidth={120}
 
-                            // to limit the drag area to a particular class
-                            cancel={".nonDraggable"}
-                            dragHandleClassName={"draggable"}
+                                // to limit the drag area to a particular class
+                                cancel={".nonDraggable"}
+                                dragHandleClassName={"draggable"}
 
-                            // update height and width onResizeStop
-                            // onResizeStop will activate a callback function containing these params
-                            // ref represents item that was resized
-                            onResize={(event, dir, ref, delta, pos)=>this.onResize(ref, pos, i)}
+                                // update height and width onResizeStop
+                                // onResizeStop will activate a callback function containing these params
+                                // ref represents item that was resized
+                                onResize={(event, dir, ref, delta, pos)=>this.onResize(ref, pos, i)}
 
-                            // update height and width onResizeStop
-                            // onDragStop will activate a callback function containing these params
-                            // ref represents item that was dragged
-                            onDragStop={(event, ref)=>this.onDragStop(ref,i)}
-                        >
-                            <div style={{float:"right"}}>
-                                <i style={{margin:2}} className="fa fa-wrench"></i>
-                                <i style={{margin:2}} className="fa fa-times"
-                                    onMouseDown={()=>this.deleteComponent(i)}></i>
-                            </div>
-                            <ReportComponent type={item.type} data={item.data} 
-                                properties={item.properties} i={i}
-                                updateProperties={this.updateProperties.bind(this)}    
-                            />
-                        </Rnd>
-                    )}  
+                                // update height and width onResizeStop
+                                // onDragStop will activate a callback function containing these params
+                                // ref represents item that was dragged
+                                onDragStop={(event, ref)=>this.onDragStop(ref,i)}
+                            >
+                                <div style={{float:"right"}}>
+                                    <i style={{margin:2}} className="fa fa-wrench"
+                                        onClick={()=>this.changeSettings(i)}></i>
+                                    <i style={{margin:2}} className="fa fa-times"
+                                        onMouseDown={()=>this.deleteComponent(i)}></i>
+                                </div>
+                                <ReportComponent type={item.type}
+                                    properties={item.properties} i={i}
+                                    updateProperties={this.updateProperties.bind(this)}    
+                                />
+                            </Rnd>
+                        }
+                    })}  
                 </div>
             </div>
         ) 
@@ -721,77 +721,69 @@ class Linechart extends Component {
             chartData:[]
         }
     }
+    
+    // update state of initialized when props change
+    componentWillReceiveProps(nextProps){
+        if (nextProps.properties.initialized != this.state.initialized){
+            this.setState({initialized: nextProps.properties.initialized});
+        }
+    }
 
+    // do API call to render chartData upon loading of component from DB
     componentWillMount(){
         let self = this;
         let url = this.props.properties.datasourceUrl;
+        let aggregate = this.props.properties.aggregate;
         if (url){
             request.get({
                 url: url,
             }, function(error, response, body){
                 let data = JSON.parse(body);
                 let chartData = data[self.props.properties.dataset];
+                let xAxis = self.props.properties.xAxis;
+                let yAxis = self.props.properties.yAxis;
+                if (aggregate === ""){
+                    chartData.sort((a, b) => a[xAxis] - b[xAxis]);
+                } else {
+                    chartData = new JsonProcessor().getAggregatedData(chartData, xAxis, yAxis, aggregate);
+                }
                 self.setState({chartData});
             });
         }
     }
 
     initializeChart = (values) => {
-        //set settings of linechart
+        //set settings of barchart
         let processor = values.processor;
         let datasourceUrl = values.datasourceUrl;
         let dataset = values.dataset;
+        let data = processor.getDataset(dataset);
+
         let title = values.title;
         let xAxis = values.xAxis;
         let yAxis = values.yAxis;
-        let data = processor.getDataset(dataset);
+        let aggregate = "";
 
-        let xDetails = processor.getDetails(dataset, xAxis);
-        let yDetails = processor.getDetails(dataset, xAxis);
-        
-        // if x-axis is of a type that can be sorted, 
+        // if x-axis is non-categorical, 
         // sort data in ascending order by x-axis
-        // if (xDetails.type !== "string"){
-        //     data.sort((a, b) => a[xAxis] - b[xAxis]);
-        //     this.setState({
-        //         initialized:true,
-        //         xAxis: values.xAxis,
-        //         yAxis: values.yAxis,
-        //         dataset: dataset,
-        //         chartData: data
-        //     });
-
-        // // combine values of a same category
-        // } else {
-        //     let summarizedData = {};
-        //     // initialize newData with total value 0
-        //     for (let category in xDetails.categories) {
-        //         summarizedData[category] = 0;
-        //     }
-
-        //     // add value to the appropriate categpry
-        //     for (let obj of data){
-        //         let category = obj[xAxis];
-        //         let value = obj[yAxis];
-        //         summarizedData[category] += value;
-        //     }
-
-        //     // replace data with new format
-        //     data = Object.keys(summarizedData).map((key) => {
-        //         return {x: key, y: summarizedData[key]};
-        //     });
-
-            this.setState({
-                initialized:true,
-                datasourceUrl: datasourceUrl,
-                dataset: dataset,
-                title: title,
-                xAxis: xAxis,
-                yAxis: yAxis,
-                chartData: data
-            });
-        // }
-
+        if (processor.getType(dataset, xAxis) !== "string"){
+            data.sort((a, b) => a[xAxis] - b[xAxis]);
+        } else {
+            aggregate = "sum";
+            data = processor.getAggregatedData(data, xAxis, yAxis, aggregate);
+        }
+        
+        this.setState({
+            initialized:true,
+            datasourceUrl: datasourceUrl,
+            dataset: dataset,
+            title: title,
+            xAxis: xAxis,
+            yAxis: yAxis,
+            aggregate: aggregate,
+            chartData: data
+        })
+        
         let {chartData, ...other} = this.state;
         this.props.updateProperties(other, this.props.i);
     }
@@ -803,10 +795,9 @@ class Linechart extends Component {
                     <XAxis dataKey={this.state.xAxis}/>
                     <YAxis dataKey={this.state.yAxis}/>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <Tooltip />
                     <Legend />
+                    <Tooltip />
                     <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
-                    {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
                 </LineChart>
             </ResponsiveContainer>
             :   <BasicForm initializeChart={this.initializeChart}/>
@@ -818,19 +809,35 @@ class Barchart extends Component {
         super(props);
         this.state = {
             ...this.props.properties,
-            chartData:[]
+            chartData:[],
+        }
+    }
+    
+    // update state of initialized when props change
+    componentWillReceiveProps(nextProps){
+        if (nextProps.properties.initialized != this.state.initialized){
+            this.setState({initialized: nextProps.properties.initialized});
         }
     }
 
+    // do API call to render chartData upon loading of component from DB
     componentWillMount(){
         let self = this;
         let url = this.props.properties.datasourceUrl;
+        let aggregate = this.props.properties.aggregate;
         if (url){
             request.get({
                 url: url,
             }, function(error, response, body){
                 let data = JSON.parse(body);
                 let chartData = data[self.props.properties.dataset];
+                let xAxis = self.props.properties.xAxis;
+                let yAxis = self.props.properties.yAxis;
+                if (aggregate === ""){
+                    chartData.sort((a, b) => a[xAxis] - b[xAxis]);
+                } else {
+                    chartData = new JsonProcessor().getAggregatedData(chartData, xAxis, yAxis, aggregate);
+                }
                 self.setState({chartData});
             });
         }
@@ -841,60 +848,32 @@ class Barchart extends Component {
         let processor = values.processor;
         let datasourceUrl = values.datasourceUrl;
         let dataset = values.dataset;
+        let data = processor.getDataset(dataset);
+
         let title = values.title;
         let xAxis = values.xAxis;
         let yAxis = values.yAxis;
-        let data = processor.getDataset(dataset);
+        let aggregate = "";
 
-        let xDetails = processor.getDetails(dataset, xAxis);
-        let yDetails = processor.getDetails(dataset, xAxis);
-        
-        // if x-axis is of a type that can be sorted, 
+        // if x-axis is non-categorical, 
         // sort data in ascending order by x-axis
-        // if (xDetails.type !== "string"){
-        //     data.sort((a, b) => a[xAxis] - b[xAxis]);
-        //     this.setState({
-        //         initialized:true,
-        //         xAxis: values.xAxis,
-        //         yAxis: values.yAxis,
-        //         data: data
-        //     });
-        // // combine values of a same category
-        // } else {
-        //     let summarizedData = {};
-        //     console.log(data);
-        //     // initialize newData with total value 0
-        //     for (let category in xDetails.categories) {
-        //         summarizedData[category] = 0;
-        //     }
-
-        //     // add value to the appropriate categpry
-        //     for (let obj of data){
-        //         let category = obj[xAxis];
-        //         let value = obj[yAxis];
-        //         summarizedData[category] += value;
-        //     }
-
-        //     // replace data with new format
-        //     data = Object.keys(summarizedData).map((key) => {
-        //         let obj = {};
-        //         obj[xAxis] = key;
-        //         obj[yAxis] = summarizedData[key];
-        //         console.log(obj);
-        //         return obj;
-        //     });
-
-            // console.log(data);
-            this.setState({
-                initialized:true,
-                datasourceUrl: datasourceUrl,
-                dataset: dataset,
-                title: title,
-                xAxis: xAxis,
-                yAxis: yAxis,
-                chartData: data
-            })
-        // }
+        if (processor.getType(dataset, xAxis) !== "string"){
+            data.sort((a, b) => a[xAxis] - b[xAxis]);
+        } else {
+            aggregate = "sum";
+            data = processor.getAggregatedData(data, xAxis, yAxis, aggregate);
+        }
+        
+        this.setState({
+            initialized:true,
+            datasourceUrl: datasourceUrl,
+            dataset: dataset,
+            title: title,
+            xAxis: xAxis,
+            yAxis: yAxis,
+            aggregate: aggregate,
+            chartData: data
+        })
         
         let {chartData, ...other} = this.state;
         this.props.updateProperties(other, this.props.i);
@@ -904,14 +883,14 @@ class Barchart extends Component {
         return this.state.initialized ?
             <ResponsiveContainer className="draggable" width="100%" height="100%">
                 <BarChart style={{width:"100%", height:"100%"}} data={this.state.chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey={this.state.xAxis} type="category" allowDuplicatedCategory={false}/>
-                    <YAxis dataKey={this.state.yAxis} name={this.state.yAxis} />
-                    <Tooltip />
+                    <CartesianGrid strokeDasharray="3 3"/>
+                    <XAxis dataKey={this.state.xAxis} />
+                    <YAxis dataKey={this.state.yAxis} />
                     <Bar dataKey={this.state.yAxis} fill="blue" />
                     {/* <Bar dataKey="neutral" fill="orange" /> */}
                     {/* <Bar dataKey="negative" fill="grey" /> */}
                     <Legend/>
+                    <Tooltip/>
                 </BarChart>
             </ResponsiveContainer>
             :   <BasicForm initializeChart={this.initializeChart}/>
@@ -923,7 +902,7 @@ class Image extends React.Component {
         super(props);
         this.state = { 
             file: '', 
-            imageUrl: this.props.properties.imageUrl, 
+            imageUrl: '', 
         };
     }
 
@@ -934,6 +913,7 @@ class Image extends React.Component {
         reader.onloadend = () => {
             this.setState({
                 file: file,
+                imageUrl: reader.result,
             });
             this.props.updateProperties({imageUrl: reader.result}, this.props.i);
         }

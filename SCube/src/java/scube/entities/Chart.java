@@ -15,14 +15,16 @@ public class Chart extends Component{
     public String title;
     public String xAxis;
     public String yAxis;
+    public String aggregate;
 
-    public Chart(String type, int x, int y, int height, int width, String datasourceUrl, String dataset, String title, String xAxis, String yAxis) {
+    public Chart(String type, int x, int y, int height, int width, String datasourceUrl, String dataset, String title, String xAxis, String yAxis, String aggregate) {
         super(type, x, y, height, width);
         this.datasourceUrl = datasourceUrl;
         this.dataset = dataset;
         this.title = title;
         this.xAxis = xAxis;
         this.yAxis = yAxis;
+        this.aggregate = aggregate;
     }
     
     public String getDatasourceUrl() {
@@ -63,5 +65,13 @@ public class Chart extends Component{
 
     public void setYAxis(String yAxis) {
         this.yAxis = yAxis;
+    }
+    
+    public String getAggregate() {
+        return aggregate;
+    }
+
+    public void setAggregate(String aggregate) {
+        this.aggregate = aggregate;
     }
 }

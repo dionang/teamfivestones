@@ -52,6 +52,12 @@ public class ComponentController extends HttpServlet {
                 ArrayList<Component> components = new ArrayList<>();
                 for(int i=0; i<arr.size();i++){
                     JsonObject componentObj = arr.get(i).getAsJsonObject();
+                    // "deleted" components that we do not need to save
+                    if (!componentObj.get("display").getAsBoolean()){
+                        System.out.println("don't save");
+                        continue;
+                    }
+                    
                     String type = componentObj.get("type").getAsString();
                     int x = componentObj.get("x").getAsInt();
                     int y = componentObj.get("y").getAsInt();
@@ -69,9 +75,10 @@ public class ComponentController extends HttpServlet {
                         String title = properties.get("title").getAsString();
                         String xAxis = properties.get("xAxis").getAsString();
                         String yAxis = properties.get("yAxis").getAsString();
+                        String aggregate = properties.get("aggregate").getAsString();
                         
                         if(initialized){
-                            components.add(new Chart(type, x, y, height, width, datasourceUrl, dataset, title, xAxis, yAxis));
+                            components.add(new Chart(type, x, y, height, width, datasourceUrl, dataset, title, xAxis, yAxis, aggregate));
                         }
                     }
                 }
@@ -87,11 +94,12 @@ public class ComponentController extends HttpServlet {
                 JsonArray jsonArr = new JsonArray();
                 for(Component component : components){
                     JsonObject componentObj = new JsonObject();
+                    componentObj.addProperty("display", true);
                     componentObj.addProperty("type", component.getType());
                     componentObj.addProperty("x", component.getX());
                     componentObj.addProperty("y", component.getY());
                     componentObj.addProperty("height", component.getHeight());
-                    componentObj.addProperty("width", component.getWidth());
+                    componentObj.addProperty("width", component.getWidth());                    
                     
                     // if textbox
                     if(component.getType().equals("text")){
@@ -107,7 +115,8 @@ public class ComponentController extends HttpServlet {
                         properties.addProperty("dataset", chart.getDataset());
                         properties.addProperty("title", chart.getTitle());
                         properties.addProperty("xAxis", chart.getXAxis());
-                        properties.addProperty("yAxis", chart.getYAxis());
+                        properties.addProperty("yAxis", chart.getYAxis());                        
+                        properties.addProperty("aggregate", chart.getAggregate());
                         componentObj.add("properties", properties);
                     }
                     

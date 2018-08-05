@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 04, 2018 at 05:44 PM
+-- Generation Time: Aug 05, 2018 at 03:59 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `chart` (
   `title` varchar(100) NOT NULL,
   `xAxis` varchar(20) NOT NULL,
   `yAxis` varchar(20) NOT NULL,
+  `aggregate` varchar(10) NOT NULL,
   PRIMARY KEY (`templateId`,`position`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -71,10 +72,13 @@ CREATE TABLE IF NOT EXISTS `chart` (
 -- Dumping data for table `chart`
 --
 
-INSERT INTO `chart` (`templateId`, `position`, `datasourceUrl`, `dataset`, `title`, `xAxis`, `yAxis`) VALUES
-(1, 0, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', 'Furniture Sales By Region', 'Region', 'Sales'),
-(2, 0, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', '', 'Region', 'Sales'),
-(2, 1, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', '', 'Region', 'Sales');
+INSERT INTO `chart` (`templateId`, `position`, `datasourceUrl`, `dataset`, `title`, `xAxis`, `yAxis`, `aggregate`) VALUES
+(1, 0, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', 'Furniture Sales By Region', 'Region', 'Sales', 'sum'),
+(2, 0, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', 'Furniture Sales By Region', 'Region', 'Sales', 'sum'),
+(2, 1, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', '', 'Quantity', 'Sales', ''),
+(2, 2, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', '', 'Quantity', 'Sales', ''),
+(3, 1, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', '', 'Ship Mode', 'Profit', 'sum'),
+(3, 2, 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 'furnitures', '', 'Quantity', 'Sales', 'sum');
 
 -- --------------------------------------------------------
 
@@ -125,9 +129,12 @@ CREATE TABLE IF NOT EXISTS `component` (
 
 INSERT INTO `component` (`templateId`, `position`, `type`, `x`, `y`, `height`, `width`) VALUES
 (1, 0, 'bar', 320, 10, 300, 400),
-(2, 0, 'line', 467, 308, 303, 364),
-(2, 1, 'bar', 64, 306, 295, 323),
-(2, 2, 'text', 505, 83, 168, 299);
+(2, 0, 'bar', 320, 10, 300, 400),
+(2, 1, 'line', 0, 0, 200, 300),
+(2, 2, 'bar', 71, 346, 200, 300),
+(3, 0, 'text', 155, 90, 133, 214),
+(3, 1, 'line', 426, 336, 231, 319),
+(3, 2, 'bar', 22, 377, 207, 373);
 
 -- --------------------------------------------------------
 
@@ -233,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `textbox` (
 --
 
 INSERT INTO `textbox` (`templateId`, `position`, `text`) VALUES
-(2, 2, '<p><u>This is the </u><u><strong>Report</strong></u><u> Title</u></p>');
+(3, 0, '<p>My Report</p>');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

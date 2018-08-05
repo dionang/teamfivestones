@@ -39,7 +39,7 @@ public class ComponentDAO {
                     addTextbox(templateId, i, textbox.getText());
                 } else if (component.getType().equals("bar") || component.getType().equals("line")) {
                     Chart chart = (Chart) component;
-                    addChart(templateId, i, chart.getDatasourceUrl(), chart.getDataset(), chart.getTitle(), chart.getXAxis(), chart.getYAxis());
+                    addChart(templateId, i, chart.getDatasourceUrl(), chart.getDataset(), chart.getTitle(), chart.getXAxis(), chart.getYAxis(), chart.getAggregate());
                 }
             }
             stmt.executeBatch();
@@ -52,21 +52,22 @@ public class ComponentDAO {
         }
     }
     
-    public static void addChart(int templateId, int position, String datasourceUrl, String dataset, String title, String xAxis, String yAxis) {
+    public static void addChart(int templateId, int position, String datasourceUrl, String dataset, String title, String xAxis, String yAxis, String aggregate) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO chart VALUES (?,?,?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO chart VALUES (?,?,?,?,?,?,?,?)");
             stmt.setInt(1, templateId);
             stmt.setInt(2, position);            
             stmt.setString(3, datasourceUrl);            
             stmt.setString(4, dataset);
             stmt.setString(5, title);
             stmt.setString(6, xAxis);
-            stmt.setString(7, yAxis);
+            stmt.setString(7, yAxis);            
+            stmt.setString(8, aggregate);
 
             stmt.executeUpdate();
             
@@ -113,14 +114,15 @@ public class ComponentDAO {
             ArrayList<Component> components = new ArrayList<>();
             int position = 0;
             while(rs.next()){
-                Component component;
-                if(rs.getString("type").equals("text")){
-                    component = new Textbox(rs.getString("type"), rs.getInt("x"), rs.getInt("y"), 
+                Component component = null;
+                String type = rs.getString("type");
+                if(type.equals("text")){
+                    component = new Textbox(type, rs.getInt("x"), rs.getInt("y"), 
                         rs.getInt("height"), rs.getInt("width"), getTextboxText(templateId, position));
-                } else {
+                } else if (type.equals("line") || type.equals("bar")){
                     ArrayList<String> props = getChartProps(templateId, position);
-                    component = new Chart(rs.getString("type"), rs.getInt("x"), rs.getInt("y"), 
-                        rs.getInt("height"), rs.getInt("width"), props.get(0), props.get(1), props.get(2), props.get(3), props.get(4));
+                    component = new Chart(type, rs.getInt("x"), rs.getInt("y"), 
+                        rs.getInt("height"), rs.getInt("width"), props.get(0), props.get(1), props.get(2), props.get(3), props.get(4), props.get(5));
                 }
                 components.add(component);
                 position++;
@@ -177,7 +179,8 @@ public class ComponentDAO {
                 props.add(rs.getString("dataset"));
                 props.add(rs.getString("title"));
                 props.add(rs.getString("xAxis"));
-                props.add(rs.getString("yAxis"));
+                props.add(rs.getString("yAxis"));                
+                props.add(rs.getString("aggregate"));
                 return props;
             } else {
                 return null;
