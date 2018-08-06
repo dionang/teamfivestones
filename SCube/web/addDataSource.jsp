@@ -16,8 +16,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/assets/css/dashboard.css">
-        <link rel="stylesheet" href="/assets/css/createForm.css">
+        <link rel="stylesheet" href="assets/css/dashboard.css">
+        <link rel="stylesheet" href="assets/css/createForm.css">
         <title>Add DataSource</title>
     </head>
 
@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-md-offset-1 col-md-10">
                              <div class="form">
-                                 <form action="/addDatasource" method="post" id="submitForm">
+                                 <form action="addDatasource" method="post" id="submitForm">
                                      <div class="row">
                                         <div class="col-md-10 ">
                                             <h1>Add Datasource</h1>
@@ -102,13 +102,13 @@
         </div>
         
         <!-- jQuery -->
-        <script src="/assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
         <!-- Bootstrap -->
-        <script src="/assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <!-- Chart.js -->
           <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script src="/assets/js/chart.min.js"></script>
-        <script src="/assets/js/dashboard.js"></script> 
+        <script src="assets/js/chart.min.js"></script>
+        <script src="assets/js/dashboard.js"></script> 
         <script >
             document.getElementById('submitForm').onsubmit = function (e) {
     e.preventDefault();

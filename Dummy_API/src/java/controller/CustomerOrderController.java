@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import dao.OrderDAO;
-import entities.Order;
+import dao.CustomerOrderDAO;
+import entities.CustomerOrder;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HongYuan
  */
-@WebServlet(name = "CustomerController", urlPatterns = {"/getCustomerInformation"})
-public class CustomerController extends HttpServlet {
+@WebServlet(name = "CustomerOrderController", urlPatterns = {"/getCustomerOrders"})
+public class CustomerOrderController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,12 +34,7 @@ public class CustomerController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
-            //to retrieve the request entered from the URL
-            String custName = request.getParameter("name");
-
-            //retrieve top 30 customer names arranged in ascending order
-            ArrayList<String> custNamesList = OrderDAO.allCustomerNames();
+            ArrayList<CustomerOrder> customerOrders = CustomerOrderDAO.allOrders();
 
             //stores the output Json object
             JsonObject jsonOutput = new JsonObject();
@@ -47,36 +42,24 @@ public class CustomerController extends HttpServlet {
             //used for pretty printing
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-            if (custNamesList.contains(custName)) {
+            //JsonArray to capture order details to print out
+            JsonArray arr = new JsonArray();
 
-                //retrieve order details by using custName
-                ArrayList<Order> custOrderList = OrderDAO.getCustomerOrderDetails(custName);
-                
-                //JsonArray to capture order details to print out
-                JsonArray CustArr = new JsonArray();
-
-                for (Order o : custOrderList) {
-                    JsonObject CustDetails = new JsonObject();
-
-                    CustDetails.addProperty("Order ID", o.getOrderID());
-                    CustDetails.addProperty("Product Name", o.getProductName());
-                    CustDetails.addProperty("Product ID", o.getProductID());
-                    CustDetails.addProperty("Category", o.getCategory());
-                    CustDetails.addProperty("Sub-Category", o.getCategory());
-                    CustDetails.addProperty("Quantity", o.getQty());
-                    CustDetails.addProperty("Sales", o.getSales());
-
-                    CustArr.add(CustDetails);
-                }
-
-                jsonOutput.addProperty("status", "success");
-                jsonOutput.add("Customer Order", CustArr);
-                out.println(gson.toJson(jsonOutput));
-            } else { //fail case
-                
-                jsonOutput.addProperty("status", "failed");
-                out.println(gson.toJson(jsonOutput));
+            for (CustomerOrder co : customerOrders) {
+                JsonObject obj = new JsonObject();
+                obj.addProperty("customerName", co.getCustomerName());
+                obj.addProperty("customerID", co.getCustomerID());
+                obj.addProperty("purchaseDate", co.getPurchaseDate().toString());
+                obj.addProperty("discount", co.getDiscount());
+                obj.addProperty("age", co.getAge());
+                obj.addProperty("gender", co.getGender());
+                obj.addProperty("noOfGoodsBought", co.getNoOfGoodsBought());                    
+                obj.addProperty("totalPayment", co.getTotalPayment());
+                arr.add(obj);
             }
+
+            jsonOutput.add("customerOrders", arr);
+            out.println(gson.toJson(jsonOutput));
         }
     }
 

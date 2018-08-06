@@ -21,8 +21,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/assets/css/dashboard.css">
-        <link rel="stylesheet" href="/assets/css/template.css">
+        <link rel="stylesheet" href="assets/css/dashboard.css">
+        <link rel="stylesheet" href="assets/css/template.css">
         <title>Template Home</title>
         
     </head>
@@ -42,7 +42,7 @@
                             <a href="#" id="myBtn">
                                 <div class="card card-inverse card-info">
                                      <div class="card-block">
-                                        <img class="card-img-top create" src="/assets/images/create.png">
+                                        <img class="card-img-top create" src="assets/images/create.png">
                                     </div>
                                     <div class="card-footer">
 
@@ -76,7 +76,7 @@
                                         <a href="loadTemplate.jsp">
                                              <div class="card card-inverse card-info">
                                                  <div class="card-block">
-                                                     <img class="card-img-top" src="/assets/images/dummyReprot.png">
+                                                     <img class="card-img-top" src="assets/images/dummyReprot.png">
                                                  </div>
                                                  <div class="card-footer">
                                                  <h4 class="card-title " style="text-align:center">Default Template</h4>
@@ -89,7 +89,7 @@
                                         <a href="#" id="pageSize">
                                              <div class="card card-inverse card-info">
                                                  <div class="card-block">
-                                                     <img class="card-img-top" src="/assets/images/dummyReprot.png" style="opacity:0">
+                                                     <img class="card-img-top" src="assets/images/dummyReprot.png" style="opacity:0">
                                                  </div>
                                                  <div class="card-footer">
                                                  <h4 class="card-title " style="text-align:center">Blank Template</h4>
@@ -144,13 +144,13 @@
 
                         <%for(int i=0;i<templateList.size();i++) {
                             Template template=templateList.get(i); %>
-                            <form action="/templateControl" method="post" id="test">
+                            <form action="templateControl" method="post" id="test">
                                 <input type=hidden name="templateId" value="<% out.print(template.getTemplateId());%>">
                                 <input type=hidden name="operation" value="templateControl">
                                 <div class="col-lg-3 col-md-4">
                                     <div class="card card-inverse card-info">
                                         <div class="card-block">
-                                            <img class="card-img-top" src="/assets/images/dummyReprot.png">
+                                            <img class="card-img-top" src="assets/images/dummyReprot.png">
                                         </div>
                                         <div class="card-footer">
                                             <div class="row">
@@ -183,13 +183,13 @@
         </div>
         
         <!-- jQuery -->
-        <script src="/assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
         <!-- Bootstrap -->
-        <script src="/assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <!-- Custom JS -->
-        <script src="/assets/js/dashboard.js"></script> 
+        <script src="assets/js/dashboard.js"></script> 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script src="/assets/js/checkPassword.js"></script>
+        <script src="assets/js/checkPassword.js"></script>
         <script>
             let template = document.getElementsByClassName('delete');
             for(i = 0; i < template.length;i++) {

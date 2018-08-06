@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/assets/css/dashboard.css">
+        <link rel="stylesheet" href="assets/css/dashboard.css">
         <link rel="stylesheet" href="assets/css/createForm.css">
         <title>Manager Home</title>
         
@@ -52,12 +52,12 @@
         </div>
         
         <!-- jQuery -->
-        <script src="/assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
         <!-- Bootstrap -->
-        <script src="/assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <!-- Chart.js -->
-        <script src="/assets/js/chart.min.js"></script>
-        <script src="/assets/js/dashboard.js"></script> 
-        <script src="/assets/js/checkPassword.js"></script>
+        <script src="assets/js/chart.min.js"></script>
+        <script src="assets/js/dashboard.js"></script> 
+        <script src="assets/js/checkPassword.js"></script>
     </body>
 </html>

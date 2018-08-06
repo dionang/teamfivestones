@@ -4,9 +4,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">   
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/assets/css/login.css">
-        <script src="/assets/js/jquery.min.js"></script>
-        <script src="/assets/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="assets/css/login.css">
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <title>Login Page</title>
     </head>
     <body>
@@ -17,7 +17,7 @@
         <div class="row" style="margin-top:18%">
             <div class="col-md-1 col-xs-2"></div>
             <div class="col-md-3 col-xs-8" style="padding-left: 0px">
-                <img style="width: 100%; max-width: 300px" src="/assets/images/logo.png" />
+                <img style="width: 100%; max-width: 300px" src="assets/images/logo.png" />
             </div>
             <div class="col-md-2 col-xs-2">
                 <div class="vl col-sm-12 hidden-sm hidden-xs"></div>    

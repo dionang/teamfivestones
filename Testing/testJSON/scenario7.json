@@ -1,0 +1,29 @@
+{
+  "scenarioID" : 7,
+  "x-axis": "ProductID",
+  "x-axis-type": "Categorical",
+  "y-axis": "Sales Amount",
+  "y-axis-type": "Numerical",
+  "dataset" : [
+    {
+      "ProductID": "A0000101",
+      "Sales Amount": 800
+    },
+    {
+      "ProductID": "A0000102",
+      "Sales Amount": 500
+    },
+    {
+      "ProductID": "A0000103",
+      "Sales Amount": 400
+    },
+    {
+      "ProductID": "A0000104",
+      "Sales Amount": 700
+    },
+    {
+      "ProductID": "A0000105",
+      "Sales Amount": 650
+    }
+  ]
+}

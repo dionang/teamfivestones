@@ -14,8 +14,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/assets/css/dashboard.css">
-         <link rel="stylesheet" href="/assets/css/template.css">
+        <link rel="stylesheet" href="assets/css/dashboard.css">
+         <link rel="stylesheet" href="assets/css/template.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         
         <style>
@@ -204,21 +204,21 @@
 <!--                            
         
         <!-- jQuery -->
-        <script src="/assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <!-- Bootstrap -->
-        <script src="/assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <!-- Chart.js -->
-        <script src="/assets/js/chart.min.js"></script>
-        <script src="/assets/js/dashboard.js"></script> 
+        <script src="assets/js/chart.min.js"></script>
+        <script src="assets/js/dashboard.js"></script> 
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
          <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <!-- HTML To Canvas -->
-        <!--<script src="/assets/js/html2canvas.js"></script>-->
+        <!--<script src="assets/js/html2canvas.js"></script>-->
         <!-- JS PDF -->
-        <script src="/assets/js/jspdf.js"></script>
-        <script src="/assets/js/html2pdf.js"></script>
+        <script src="assets/js/jspdf.js"></script>
+        <script src="assets/js/html2pdf.js"></script>
         <script>
             // Get the modal
             var modal = document.getElementById('size');

@@ -20,9 +20,9 @@
     </body>
     
     <!-- jQuery -->
-    <script src="/assets/js/jquery.min.js"></script>   
+    <script src="assets/js/jquery.min.js"></script>   
     <!-- Bootstrap -->
-    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
     <!-- JsonProcessor -->    
     <script src="assets/js/jsonProcessor.js"></script>
     <script>

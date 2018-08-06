@@ -1,0 +1,29 @@
+{
+  "scenarioID" : 1,
+  "x-axis": "Datetime",
+  "x-axis-type": "String",
+  "y-axis": "Sales Amount",
+  "y-axis-type": "Numerical",
+  "dataset" : [
+    {
+      "Datetime": "8/11/2016",
+      "Sales Amount": 1000
+    },
+    {
+      "Datetime": "9/11/2016",
+      "Sales Amount": 1050
+    },
+    {
+      "Datetime": "10/11/2016",
+      "Sales Amount": 980
+    },
+    {
+      "Datetime": "11/11/2016",
+      "Sales Amount": 1300
+    },
+    {
+      "Datetime": "12/11/2016",
+      "Sales Amount": 900
+    }
+  ]
+}

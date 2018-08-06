@@ -1,0 +1,29 @@
+{
+  "scenarioID" : 3,
+  "x-axis": "Month",
+  "x-axis-type": "String",
+  "y-axis": "Percentage of Sales",
+  "y-axis-type": "Numerical",
+  "dataset" : [
+    {
+      "Datetime": "January",
+      "Percentage": 23
+    },
+    {
+      "Datetime": "February",
+      "Percentage": 20
+    },
+    {
+      "Datetime": "March",
+      "Percentage": 17
+    },
+    {
+      "Datetime": "April",
+      "Percentage": 26
+    },
+    {
+      "Datetime": "May",
+      "Percentage": 14
+    }
+  ]
+}

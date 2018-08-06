@@ -12,8 +12,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/assets/css/dashboard.css">
-        <link rel="stylesheet" href="/assets/css/home.css">
+        <link rel="stylesheet" href="assets/css/dashboard.css">
+        <link rel="stylesheet" href="assets/css/home.css">
         <title>Company Home</title>
     </head>
 
@@ -31,7 +31,7 @@
                         <div class="col-sm-4 img">
                             <a href="createDevAccount.jsp" style="text-decoration: none" >
                                  <div class="pic">
-                                    <img  src="/assets/images/dev.png" class="image"/>
+                                    <img  src="assets/images/dev.png" class="image"/>
                                 </div>
                             <h4>Create Developer Account</h4>
                             </a>
@@ -39,7 +39,7 @@
                         <div class="col-sm-4 img">
                             <a href="createManagerAccount.jsp" style="text-decoration: none">
                                 <div class="pic">
-                                     <img  src="/assets/images/manager.png" class="image"/>
+                                     <img  src="assets/images/manager.png" class="image"/>
                                 </div>
                             <h4 >Create Manager Account</h4>
                             </a>
@@ -47,7 +47,7 @@
                        <div class="col-sm-4 img">
                            <a href="createUserAccount.jsp" style="text-decoration: none">
                                <div class="pic">
-                                   <img  src="/assets/images/userHome.png" class="image"/>
+                                   <img  src="assets/images/userHome.png" class="image"/>
                                 </div>
                            
                             <h4 >Create User Account</h4>
@@ -62,11 +62,11 @@
         </div>
         
         <!-- jQuery -->
-        <script src="/assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
         <!-- Bootstrap -->
-        <script src="/assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <!-- Chart.js -->
-        <script src="/assets/js/chart.min.js"></script>
-        <script src="/assets/js/dashboard.js"></script> 
+        <script src="assets/js/chart.min.js"></script>
+        <script src="assets/js/dashboard.js"></script> 
     </body>
 </html>

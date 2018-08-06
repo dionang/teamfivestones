@@ -1,0 +1,29 @@
+{
+  "scenarioID" : 5,
+  "x-axis": "ProductID",
+  "x-axis-type": "Numerical",
+  "y-axis": "No. of stocks",
+  "y-axis-type": "Numerical",
+  "dataset" : [
+    {
+      "ProductID": 101,
+      "No. of stocks": 100
+    },
+    {
+      "ProductID": 102,
+      "No. of stocks": 90
+    },
+    {
+      "ProductID": 103,
+      "No. of stocks": 95
+    },
+    {
+      "ProductID": 104,
+      "No. of stocks": 80
+    },
+    {
+      "ProductID": 105,
+      "No. of stocks": 70
+    }
+  ]
+}

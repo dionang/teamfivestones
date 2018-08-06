@@ -14,7 +14,7 @@ public class OrderDAO {
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT distinct `Customer Name` from orders order by `Customer Name` ASC limit 200");
+            stmt = conn.prepareStatement("SELECT distinct `Customer Name` from orders order by `Customer Name`");
             rs = stmt.executeQuery();
             ArrayList<String> customerNameList = new ArrayList<>();
             while(rs.next()){

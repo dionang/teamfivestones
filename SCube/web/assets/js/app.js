@@ -1019,8 +1019,8 @@ class BasicForm extends Component {
                         <br/><br/>
                         <label>Choose the Y-Axis</label> 
                         <Field component="select" name="yAxis">
-                            {jsonProcessor.getOptions(formProps.values.dataset)
-                            .map((option)=>
+                            {jsonProcessor.getNumericalOptions(formProps.values.dataset)
+                            .map((option)=> 
                                 <option key={option}>{option}</option>
                             )}
                         </Field>

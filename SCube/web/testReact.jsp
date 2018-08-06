@@ -6,8 +6,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/assets/css/dashboard.css">
-        <link rel="stylesheet" href="/assets/css/app.css">
+        <link rel="stylesheet" href="assets/css/dashboard.css">
+        <link rel="stylesheet" href="assets/css/app.css">
     </head>
     <body class="nav-md">
         <div class="container body">
@@ -20,9 +20,9 @@
             </div>
         </div>
     <!-- jQuery -->
-    <script src="/assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
     <!-- React modules-->
     <script src="assets/js/babel.js"></script>
     <script src="assets/js/bundle.js"></script>
@@ -31,8 +31,8 @@
     <!-- Custom React Script -->
     <script type="text/babel" src="assets/js/app.js"></script>    
     <script src="assets/js/screenshot.js"></script>
-    <script src="/assets/js/jspdf.js"></script>
-    <script src="/assets/js/html2pdf.js"></script>
+    <script src="assets/js/jspdf.js"></script>
+    <script src="assets/js/html2pdf.js"></script>
 
 
     <!-- Custom Dashboard Script -->

@@ -1,0 +1,29 @@
+{
+  "scenarioID" : 11,
+  "x-axis": "Price Range",
+  "x-axis-type": "Categorical",
+  "y-axis": "Sales Amount",
+  "y-axis-type": "Numerical",
+  "dataset" : [
+    {
+      "Price Range": "Less than $250",
+      "Sales Quantity": 9000
+    },
+    {
+      "Price Range": "$250 - $500 ",
+      "Sales Quantity": 13000
+    },
+    {
+      "Price Range": "$500 - $750",
+      "Sales Quantity": 15000
+    },
+    {
+      "Price Range": "$750 - $1000",
+      "Sales Quantity": 25000
+    },
+    {
+      "Price Range": "More than $1000",
+      "Sales Quantity": 7100
+    }
+  ]
+}

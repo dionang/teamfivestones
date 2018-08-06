@@ -21,8 +21,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/assets/css/dashboard.css">
-         <link rel="stylesheet" href="/assets/css/template.css">
+        <link rel="stylesheet" href="assets/css/dashboard.css">
+         <link rel="stylesheet" href="assets/css/template.css">
         <title>Developer Home</title>
     </head>
 
@@ -42,7 +42,7 @@
                         <a href="addDataSource.jsp" >
                             <div class="card card-inverse card-info">
                                  <div class="card-block">
-                                    <img class="card-img-top create" src="/assets/images/create.png">
+                                    <img class="card-img-top create" src="assets/images/create.png">
                                 </div>
                                 <div class="card-footer">
 
@@ -69,14 +69,14 @@
 
                         <%for(int i=0;i<dsList.size();i++) {
                             Datasource datasourece=dsList.get(i); %>
-                            <form action="/getDatasources" method="post" id="test">
+                            <form action="getDatasources" method="post" id="test">
                                 <input type=hidden name="datasourceId" value="<%out.print(datasourece.getDatasourceId());%>">
                                 <input type=hidden name="operation" value="getDatasources">
                                <div class="col-sm-3 ">
                                    
                                         <div class="card card-inverse card-info">
                                             <div class="card-block">
-                                                <img class="card-img-top" src="/assets/images/download.png">
+                                                <img class="card-img-top" src="assets/images/download.png">
                                             </div>
                                             <div class="card-footer">
                                                 <div class="row">
@@ -109,12 +109,12 @@
         </div>
         
         <!-- jQuery -->
-        <script src="/assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
         <!-- Bootstrap -->
-        <script src="/assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         <!-- Chart.js -->
-        <script src="/assets/js/chart.min.js"></script>
-        <script src="/assets/js/dashboard.js"></script> 
+        <script src="assets/js/chart.min.js"></script>
+        <script src="assets/js/dashboard.js"></script> 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
          <script>
             let datasoure = document.getElementsByClassName('delete');

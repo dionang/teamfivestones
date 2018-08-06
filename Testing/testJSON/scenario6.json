@@ -1,0 +1,29 @@
+{
+  "scenarioID" : 6,
+  "x-axis": "ProductID",
+  "x-axis-type": "Numerical",
+  "y-axis": "Percentage of sales",
+  "y-axis-type": "Numerical",
+  "dataset" : [
+    {
+      "ProductID": 101,
+      "Percentage of sales": 21
+    },
+    {
+      "ProductID": 102,
+      "Percentage of sales": 19
+    },
+    {
+      "ProductID": 103,
+      "Percentage of sales": 24
+    },
+    {
+      "ProductID": 104,
+     "Percentage of sales": 17
+    },
+    {
+      "ProductID": 105,
+      "Percentage of sales": 19
+    }
+  ]
+}

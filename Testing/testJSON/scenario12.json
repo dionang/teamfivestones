@@ -1,0 +1,29 @@
+{
+  "scenarioID" : 12,
+  "x-axis": "Price Range",
+  "x-axis-type": "Categorical",
+  "y-axis": "Percentage of sales",
+  "y-axis-type": "Numerical",
+  "dataset" : [
+    {
+      "Price Range": "Less than $250",
+      "Percentage of sales": 13
+    },
+    {
+      "Price Range": "$250 - $500 ",
+      "Percentage of sales": 19
+    },
+    {
+      "Price Range": "$500 - $750",
+      "Percentage of sales": 22
+    },
+    {
+      "Price Range": "$750 - $1000",
+      "Percentage of sales": 36
+    },
+    {
+      "Price Range": "More than $1000",
+      "Percentage of sales": 10
+    }
+  ]
+}

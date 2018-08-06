@@ -1,0 +1,29 @@
+{
+  "scenarioID" : 2,
+  "x-axis": "Datetime",
+  "x-axis-type": "String",
+  "y-axis": "No. of occurence",
+  "y-axis-type": "Numerical",
+  "dataset" : [
+    {
+      "Datetime": "8/11/2016",
+      "No. of occurence": 40
+    },
+    {
+      "Datetime": "9/11/2016",
+      "No. of occurence": 23
+    },
+    {
+      "Datetime": "10/11/2016",
+      "No. of occurence": 35
+    },
+    {
+      "Datetime": "11/11/2016",
+      "No. of occurence": 20
+    },
+    {
+      "Datetime": "12/11/2016",
+      "No. of occurence": 45
+    }
+  ]
+}
