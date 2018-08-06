@@ -10,446 +10,851 @@ import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, L
 import { Formik, Form, Field } from 'formik';
 
 const Component = React.Component;
-const api = 'http://localhost:8084/';
-const datasourceUrl = 'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture';
+const api = 'http://localhost:8080/';
+const datasourceUrl = 'http://localhost:8080/Dummy_API/getCustomerOrders';
 
 const apiData = 
 {
-  "status": "success",
-  "furnitures": [
+  "customerOrders": [
     {
-      "Name": "Bush Somerset Collection Bookcase",
-      "Sales": 261.96,
-      "Quantity": 2,
-      "Discount": 0.0,
-      "Profit": 41.9136,
-      "Ship Mode": "Second Class",
-      "Order Date": "8/11/2016",
-      "Region": "South"
+      "customerName": "A",
+      "customerID": 110100,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.3,
+      "age": 29,
+      "gender": "M",
+      "noOfGoodsBought": 18,
+      "totalPayment": 126
     },
     {
-      "Name": "Hon Deluxe Fabric Upholstered Stacking Chairs, Rounded Back",
-      "Sales": 731.94,
-      "Quantity": 3,
-      "Discount": 0.0,
-      "Profit": 219.582,
-      "Ship Mode": "Second Class",
-      "Order Date": "8/11/2016",
-      "Region": "South"
+      "customerName": "A",
+      "customerID": 110100,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.3,
+      "age": 29,
+      "gender": "M",
+      "noOfGoodsBought": 18,
+      "totalPayment": 126
     },
     {
-      "Name": "Bretford CR4500 Series Slim Rectangular Table",
-      "Sales": 957.5775,
-      "Quantity": 5,
-      "Discount": 0.45,
-      "Profit": -383.031,
-      "Ship Mode": "Standard Class",
-      "Order Date": "11/10/2015",
-      "Region": "South"
+      "customerName": "A",
+      "customerID": 110100,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.3,
+      "age": 29,
+      "gender": "M",
+      "noOfGoodsBought": 18,
+      "totalPayment": 126
     },
     {
-      "Name": "Eldon Expressions Wood and Plastic Desk Accessories, Cherry Wood",
-      "Sales": 48.86,
-      "Quantity": 7,
-      "Discount": 0.0,
-      "Profit": 14.1694,
-      "Ship Mode": "Standard Class",
-      "Order Date": "9/6/2014",
-      "Region": "West"
+      "customerName": "A",
+      "customerID": 110100,
+      "purchaseDate": "2017-12-14",
+      "discount": 0.3,
+      "age": 29,
+      "gender": "M",
+      "noOfGoodsBought": 18,
+      "totalPayment": 126
     },
     {
-      "Name": "Chromcraft Rectangular Conference Tables",
-      "Sales": 1706.184,
-      "Quantity": 9,
-      "Discount": 0.2,
-      "Profit": 85.3092,
-      "Ship Mode": "Standard Class",
-      "Order Date": "9/6/2014",
-      "Region": "West"
+      "customerName": "AA",
+      "customerID": 110123,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.4,
+      "age": 60,
+      "gender": "M",
+      "noOfGoodsBought": 15,
+      "totalPayment": 90
     },
     {
-      "Name": "Global Deluxe Stacking Chair, Gray",
-      "Sales": 71.372,
-      "Quantity": 2,
-      "Discount": 0.3,
-      "Profit": -1.0196,
-      "Ship Mode": "Second Class",
-      "Order Date": "16/7/2017",
-      "Region": "East"
+      "customerName": "AA",
+      "customerID": 110123,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.4,
+      "age": 60,
+      "gender": "M",
+      "noOfGoodsBought": 15,
+      "totalPayment": 90
     },
     {
-      "Name": "Bretford CR4500 Series Slim Rectangular Table",
-      "Sales": 1044.63,
-      "Quantity": 3,
-      "Discount": 0.0,
-      "Profit": 240.2649,
-      "Ship Mode": "Standard Class",
-      "Order Date": "25/9/2015",
-      "Region": "West"
+      "customerName": "AA",
+      "customerID": 110123,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.4,
+      "age": 60,
+      "gender": "M",
+      "noOfGoodsBought": 15,
+      "totalPayment": 90
     },
     {
-      "Name": "Riverside Palais Royal Lawyers Bookcase, Royale Cherry Finish",
-      "Sales": 3083.43,
-      "Quantity": 7,
-      "Discount": 0.5,
-      "Profit": -1665.0522,
-      "Ship Mode": "Standard Class",
-      "Order Date": "17/9/2015",
-      "Region": "East"
+      "customerName": "B",
+      "customerID": 110101,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.3,
+      "age": 28,
+      "gender": "F",
+      "noOfGoodsBought": 2,
+      "totalPayment": 14
     },
     {
-      "Name": "Howard Miller 13-3/4\" Diameter Brushed Chrome Round Wall Clock",
-      "Sales": 124.2,
-      "Quantity": 3,
-      "Discount": 0.2,
-      "Profit": 15.525,
-      "Ship Mode": "Standard Class",
-      "Order Date": "17/9/2015",
-      "Region": "East"
+      "customerName": "B",
+      "customerID": 110101,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.3,
+      "age": 28,
+      "gender": "F",
+      "noOfGoodsBought": 2,
+      "totalPayment": 14
     },
     {
-      "Name": "Electrix Architect\u0027s Clamp-On Swing Arm Lamp, Black",
-      "Sales": 190.92,
-      "Quantity": 5,
-      "Discount": 0.6,
-      "Profit": -147.963,
-      "Ship Mode": "First Class",
-      "Order Date": "8/12/2016",
-      "Region": "Central"
+      "customerName": "B",
+      "customerID": 110101,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.3,
+      "age": 28,
+      "gender": "F",
+      "noOfGoodsBought": 2,
+      "totalPayment": 14
     },
     {
-      "Name": "Atlantic Metals Mobile 3-Shelf Bookcases, Custom Colors",
-      "Sales": 532.3992,
-      "Quantity": 3,
-      "Discount": 0.32,
-      "Profit": -46.9764,
-      "Ship Mode": "Standard Class",
-      "Order Date": "27/12/2015",
-      "Region": "Central"
+      "customerName": "B",
+      "customerID": 110101,
+      "purchaseDate": "2017-12-14",
+      "discount": 0.3,
+      "age": 28,
+      "gender": "F",
+      "noOfGoodsBought": 2,
+      "totalPayment": 14
     },
     {
-      "Name": "Global Fabric Manager\u0027s Chair, Dark Gray",
-      "Sales": 212.058,
-      "Quantity": 3,
-      "Discount": 0.3,
-      "Profit": -15.147,
-      "Ship Mode": "Standard Class",
-      "Order Date": "27/12/2015",
-      "Region": "Central"
+      "customerName": "BB",
+      "customerID": 110124,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.2,
+      "age": 53,
+      "gender": "F",
+      "noOfGoodsBought": 11,
+      "totalPayment": 88
     },
     {
-      "Name": "Longer-Life Soft White Bulbs",
-      "Sales": 6.16,
-      "Quantity": 2,
-      "Discount": 0.0,
-      "Profit": 2.9568,
-      "Ship Mode": "Standard Class",
-      "Order Date": "18/4/2015",
-      "Region": "Central"
+      "customerName": "BB",
+      "customerID": 110124,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.2,
+      "age": 53,
+      "gender": "F",
+      "noOfGoodsBought": 11,
+      "totalPayment": 88
     },
     {
-      "Name": "Global Leather Task Chair, Black",
-      "Sales": 89.99,
-      "Quantity": 1,
-      "Discount": 0.0,
-      "Profit": 17.0981,
-      "Ship Mode": "Standard Class",
-      "Order Date": "18/4/2015",
-      "Region": "Central"
+      "customerName": "BB",
+      "customerID": 110124,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.2,
+      "age": 53,
+      "gender": "F",
+      "noOfGoodsBought": 11,
+      "totalPayment": 88
     },
     {
-      "Name": "Novimex Turbo Task Chair",
-      "Sales": 319.41,
-      "Quantity": 5,
-      "Discount": 0.1,
-      "Profit": 7.098,
-      "Ship Mode": "First Class",
-      "Order Date": "17/6/2016",
-      "Region": "East"
+      "customerName": "BB",
+      "customerID": 110124,
+      "purchaseDate": "2017-12-14",
+      "discount": 0.2,
+      "age": 53,
+      "gender": "F",
+      "noOfGoodsBought": 11,
+      "totalPayment": 88
     },
     {
-      "Name": "Luxo Economy Swing Arm Lamp",
-      "Sales": 79.76,
-      "Quantity": 4,
-      "Discount": 0.0,
-      "Profit": 22.3328,
-      "Ship Mode": "Standard Class",
-      "Order Date": "24/11/2015",
-      "Region": "West"
+      "customerName": "C",
+      "customerID": 110102,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.3,
+      "age": 57,
+      "gender": "F",
+      "noOfGoodsBought": 6,
+      "totalPayment": 42
     },
     {
-      "Name": "Global Value Mid-Back Manager\u0027s Chair, Gray",
-      "Sales": 213.115,
-      "Quantity": 5,
-      "Discount": 0.3,
-      "Profit": -15.2225,
-      "Ship Mode": "Standard Class",
-      "Order Date": "30/4/2015",
-      "Region": "Central"
+      "customerName": "C",
+      "customerID": 110102,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.3,
+      "age": 57,
+      "gender": "F",
+      "noOfGoodsBought": 6,
+      "totalPayment": 42
     },
     {
-      "Name": "High-Back Leather Manager\u0027s Chair",
-      "Sales": 831.936,
-      "Quantity": 8,
-      "Discount": 0.2,
-      "Profit": -114.3912,
-      "Ship Mode": "Standard Class",
-      "Order Date": "26/4/2015",
-      "Region": "South"
+      "customerName": "CC",
+      "customerID": 110125,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.1,
+      "age": 46,
+      "gender": "F",
+      "noOfGoodsBought": 8,
+      "totalPayment": 72
     },
     {
-      "Name": "Tenex Traditional Chairmats for Medium Pile Carpet, Standard Lip, 36\" x 48\"",
-      "Sales": 97.04,
-      "Quantity": 2,
-      "Discount": 0.2,
-      "Profit": 1.213,
-      "Ship Mode": "Standard Class",
-      "Order Date": "26/4/2015",
-      "Region": "South"
+      "customerName": "CC",
+      "customerID": 110125,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.1,
+      "age": 46,
+      "gender": "F",
+      "noOfGoodsBought": 8,
+      "totalPayment": 72
     },
     {
-      "Name": "6\" Cubicle Wall Clock, Black",
-      "Sales": 9.708,
-      "Quantity": 3,
-      "Discount": 0.6,
-      "Profit": -5.8248,
-      "Ship Mode": "First Class",
-      "Order Date": "9/12/2017",
-      "Region": "Central"
+      "customerName": "CC",
+      "customerID": 110125,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.1,
+      "age": 46,
+      "gender": "F",
+      "noOfGoodsBought": 8,
+      "totalPayment": 72
     },
     {
-      "Name": "Eldon Expressions Desk Accessory, Wood Pencil Holder, Oak",
-      "Sales": 19.3,
-      "Quantity": 5,
-      "Discount": 0.6,
-      "Profit": -14.475,
-      "Ship Mode": "Second Class",
-      "Order Date": "26/11/2014",
-      "Region": "Central"
+      "customerName": "CC",
+      "customerID": 110125,
+      "purchaseDate": "2017-12-14",
+      "discount": 0.1,
+      "age": 46,
+      "gender": "F",
+      "noOfGoodsBought": 8,
+      "totalPayment": 72
     },
     {
-      "Name": "Novimex Swivel Fabric Task Chair",
-      "Sales": 301.96,
-      "Quantity": 2,
-      "Discount": 0.0,
-      "Profit": 33.2156,
-      "Ship Mode": "Second Class",
-      "Order Date": "28/5/2017",
-      "Region": "South"
+      "customerName": "D",
+      "customerID": 110103,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.5,
+      "age": 51,
+      "gender": "M",
+      "noOfGoodsBought": 6,
+      "totalPayment": 30
     },
     {
-      "Name": "Seth Thomas 13 1/2\" Wall Clock",
-      "Sales": 53.34,
-      "Quantity": 3,
-      "Discount": 0.0,
-      "Profit": 16.5354,
-      "Ship Mode": "Second Class",
-      "Order Date": "31/1/2015",
-      "Region": "Central"
+      "customerName": "D",
+      "customerID": 110103,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.5,
+      "age": 51,
+      "gender": "M",
+      "noOfGoodsBought": 6,
+      "totalPayment": 30
     },
     {
-      "Name": "9-3/4 Diameter Round Wall Clock",
-      "Sales": 96.53,
-      "Quantity": 7,
-      "Discount": 0.0,
-      "Profit": 40.5426,
-      "Ship Mode": "Second Class",
-      "Order Date": "9/11/2017",
-      "Region": "East"
-    }
-  ],
-  "customers": [
-    {
-      "Customer ID": "CG-12520",
-      "Customer Name": "Claire Gute",
-      "City": "Henderson",
-      "Ship Mode": "Second Class",
-      "Order ID": "CA-2016-152156",
-      "Order Date": "8/11/2016"
+      "customerName": "DD",
+      "customerID": 110126,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.1,
+      "age": 34,
+      "gender": "M",
+      "noOfGoodsBought": 13,
+      "totalPayment": 117
     },
     {
-      "Customer ID": "CG-12520",
-      "Customer Name": "Claire Gute",
-      "City": "Henderson",
-      "Ship Mode": "Second Class",
-      "Order ID": "CA-2016-152156",
-      "Order Date": "8/11/2016"
+      "customerName": "DD",
+      "customerID": 110126,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.1,
+      "age": 34,
+      "gender": "M",
+      "noOfGoodsBought": 13,
+      "totalPayment": 117
     },
     {
-      "Customer ID": "SO-20335",
-      "Customer Name": "Sean O\u0027Donnell",
-      "City": "Fort Lauderdale",
-      "Ship Mode": "Standard Class",
-      "Order ID": "US-2015-108966",
-      "Order Date": "11/10/2015"
+      "customerName": "DD",
+      "customerID": 110126,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.1,
+      "age": 34,
+      "gender": "M",
+      "noOfGoodsBought": 13,
+      "totalPayment": 117
     },
     {
-      "Customer ID": "BH-11710",
-      "Customer Name": "Brosina Hoffman",
-      "City": "Los Angeles",
-      "Ship Mode": "Standard Class",
-      "Order ID": "CA-2014-115812",
-      "Order Date": "9/6/2014"
+      "customerName": "DD",
+      "customerID": 110126,
+      "purchaseDate": "2017-12-14",
+      "discount": 0.1,
+      "age": 34,
+      "gender": "M",
+      "noOfGoodsBought": 13,
+      "totalPayment": 117
     },
     {
-      "Customer ID": "BH-11710",
-      "Customer Name": "Brosina Hoffman",
-      "City": "Los Angeles",
-      "Ship Mode": "Standard Class",
-      "Order ID": "CA-2014-115812",
-      "Order Date": "9/6/2014"
+      "customerName": "E",
+      "customerID": 110104,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.1,
+      "age": 37,
+      "gender": "M",
+      "noOfGoodsBought": 9,
+      "totalPayment": 81
     },
     {
-      "Customer ID": "SF-20065",
-      "Customer Name": "Sandra Flanagan",
-      "City": "Philadelphia",
-      "Ship Mode": "Second Class",
-      "Order ID": "US-2017-156909",
-      "Order Date": "16/7/2017"
+      "customerName": "E",
+      "customerID": 110104,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.1,
+      "age": 37,
+      "gender": "M",
+      "noOfGoodsBought": 9,
+      "totalPayment": 81
     },
     {
-      "Customer ID": "EB-13870",
-      "Customer Name": "Emily Burns",
-      "City": "Orem",
-      "Ship Mode": "Standard Class",
-      "Order ID": "CA-2015-106320",
-      "Order Date": "25/9/2015"
+      "customerName": "EE",
+      "customerID": 110127,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.4,
+      "age": 20,
+      "gender": "F",
+      "noOfGoodsBought": 2,
+      "totalPayment": 12
     },
     {
-      "Customer ID": "TB-21520",
-      "Customer Name": "Tracy Blumstein",
-      "City": "Philadelphia",
-      "Ship Mode": "Standard Class",
-      "Order ID": "US-2015-150630",
-      "Order Date": "17/9/2015"
+      "customerName": "EE",
+      "customerID": 110127,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.4,
+      "age": 20,
+      "gender": "F",
+      "noOfGoodsBought": 2,
+      "totalPayment": 12
     },
     {
-      "Customer ID": "TB-21520",
-      "Customer Name": "Tracy Blumstein",
-      "City": "Philadelphia",
-      "Ship Mode": "Standard Class",
-      "Order ID": "US-2015-150630",
-      "Order Date": "17/9/2015"
+      "customerName": "EE",
+      "customerID": 110127,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.4,
+      "age": 20,
+      "gender": "F",
+      "noOfGoodsBought": 2,
+      "totalPayment": 12
     },
     {
-      "Customer ID": "GH-14485",
-      "Customer Name": "Gene Hale",
-      "City": "Richardson",
-      "Ship Mode": "First Class",
-      "Order ID": "CA-2016-117590",
-      "Order Date": "8/12/2016"
+      "customerName": "EE",
+      "customerID": 110127,
+      "purchaseDate": "2017-12-14",
+      "discount": 0.4,
+      "age": 20,
+      "gender": "F",
+      "noOfGoodsBought": 2,
+      "totalPayment": 12
     },
     {
-      "Customer ID": "SN-20710",
-      "Customer Name": "Steve Nguyen",
-      "City": "Houston",
-      "Ship Mode": "Standard Class",
-      "Order ID": "CA-2015-117415",
-      "Order Date": "27/12/2015"
+      "customerName": "F",
+      "customerID": 110105,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.2,
+      "age": 42,
+      "gender": "M",
+      "noOfGoodsBought": 9,
+      "totalPayment": 72
     },
     {
-      "Customer ID": "SN-20710",
-      "Customer Name": "Steve Nguyen",
-      "City": "Houston",
-      "Ship Mode": "Standard Class",
-      "Order ID": "CA-2015-117415",
-      "Order Date": "27/12/2015"
+      "customerName": "F",
+      "customerID": 110105,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.2,
+      "age": 42,
+      "gender": "M",
+      "noOfGoodsBought": 9,
+      "totalPayment": 72
     },
     {
-      "Customer ID": "DP-13000",
-      "Customer Name": "Darren Powers",
-      "City": "New Albany",
-      "Ship Mode": "Standard Class",
-      "Order ID": "CA-2015-115742",
-      "Order Date": "18/4/2015"
+      "customerName": "FF",
+      "customerID": 110128,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.5,
+      "age": 31,
+      "gender": "M",
+      "noOfGoodsBought": 6,
+      "totalPayment": 30
     },
     {
-      "Customer ID": "DP-13000",
-      "Customer Name": "Darren Powers",
-      "City": "New Albany",
-      "Ship Mode": "Standard Class",
-      "Order ID": "CA-2015-115742",
-      "Order Date": "18/4/2015"
+      "customerName": "FF",
+      "customerID": 110128,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.5,
+      "age": 31,
+      "gender": "M",
+      "noOfGoodsBought": 6,
+      "totalPayment": 30
     },
     {
-      "Customer ID": "TB-21055",
-      "Customer Name": "Ted Butterfield",
-      "City": "Troy",
-      "Ship Mode": "First Class",
-      "Order ID": "CA-2016-111682",
-      "Order Date": "17/6/2016"
+      "customerName": "FF",
+      "customerID": 110128,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.5,
+      "age": 31,
+      "gender": "M",
+      "noOfGoodsBought": 6,
+      "totalPayment": 30
     },
     {
-      "Customer ID": "KM-16720",
-      "Customer Name": "Kunst Miller",
-      "City": "Los Angeles",
-      "Ship Mode": "Standard Class",
-      "Order ID": "CA-2015-135545",
-      "Order Date": "24/11/2015"
+      "customerName": "FF",
+      "customerID": 110128,
+      "purchaseDate": "2017-12-14",
+      "discount": 0.5,
+      "age": 31,
+      "gender": "M",
+      "noOfGoodsBought": 6,
+      "totalPayment": 30
     },
     {
-      "Customer ID": "PS-18970",
-      "Customer Name": "Paul Stevenson",
-      "City": "Chicago",
-      "Ship Mode": "Standard Class",
-      "Order ID": "US-2015-164175",
-      "Order Date": "30/4/2015"
+      "customerName": "G",
+      "customerID": 110106,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.5,
+      "age": 47,
+      "gender": "M",
+      "noOfGoodsBought": 8,
+      "totalPayment": 40
     },
     {
-      "Customer ID": "JE-15745",
-      "Customer Name": "Joel Eaton",
-      "City": "Memphis",
-      "Ship Mode": "Standard Class",
-      "Order ID": "US-2015-134026",
-      "Order Date": "26/4/2015"
+      "customerName": "G",
+      "customerID": 110106,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.5,
+      "age": 47,
+      "gender": "M",
+      "noOfGoodsBought": 8,
+      "totalPayment": 40
     },
     {
-      "Customer ID": "JE-15745",
-      "Customer Name": "Joel Eaton",
-      "City": "Memphis",
-      "Ship Mode": "Standard Class",
-      "Order ID": "US-2015-134026",
-      "Order Date": "26/4/2015"
+      "customerName": "GG",
+      "customerID": 110129,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.5,
+      "age": 20,
+      "gender": "M",
+      "noOfGoodsBought": 5,
+      "totalPayment": 25
     },
     {
-      "Customer ID": "KB-16600",
-      "Customer Name": "Ken Brennan",
-      "City": "Houston",
-      "Ship Mode": "First Class",
-      "Order ID": "US-2017-118038",
-      "Order Date": "9/12/2017"
+      "customerName": "GG",
+      "customerID": 110129,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.5,
+      "age": 20,
+      "gender": "M",
+      "noOfGoodsBought": 5,
+      "totalPayment": 25
     },
     {
-      "Customer ID": "JE-15745",
-      "Customer Name": "Joel Eaton",
-      "City": "Houston",
-      "Ship Mode": "Second Class",
-      "Order ID": "US-2014-147606",
-      "Order Date": "26/11/2014"
+      "customerName": "GG",
+      "customerID": 110129,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.5,
+      "age": 20,
+      "gender": "M",
+      "noOfGoodsBought": 5,
+      "totalPayment": 25
     },
     {
-      "Customer ID": "PO-18865",
-      "Customer Name": "Patrick O\u0027Donnell",
-      "City": "Columbia",
-      "Ship Mode": "Second Class",
-      "Order ID": "CA-2017-140088",
-      "Order Date": "28/5/2017"
+      "customerName": "GG",
+      "customerID": 110129,
+      "purchaseDate": "2017-12-14",
+      "discount": 0.5,
+      "age": 20,
+      "gender": "M",
+      "noOfGoodsBought": 5,
+      "totalPayment": 25
     },
     {
-      "Customer ID": "KB-16315",
-      "Customer Name": "Karl Braun",
-      "City": "Minneapolis",
-      "Ship Mode": "Second Class",
-      "Order ID": "CA-2015-149587",
-      "Order Date": "31/1/2015"
+      "customerName": "H",
+      "customerID": 110107,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.2,
+      "age": 47,
+      "gender": "F",
+      "noOfGoodsBought": 10,
+      "totalPayment": 80
     },
     {
-      "Customer ID": "PN-18775",
-      "Customer Name": "Parhena Norris",
-      "City": "New York City",
-      "Ship Mode": "Second Class",
-      "Order ID": "CA-2017-161018",
-      "Order Date": "9/11/2017"
+      "customerName": "H",
+      "customerID": 110107,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.2,
+      "age": 47,
+      "gender": "F",
+      "noOfGoodsBought": 10,
+      "totalPayment": 80
+    },
+    {
+      "customerName": "H",
+      "customerID": 110107,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.2,
+      "age": 47,
+      "gender": "F",
+      "noOfGoodsBought": 10,
+      "totalPayment": 80
+    },
+    {
+      "customerName": "I",
+      "customerID": 110108,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.5,
+      "age": 43,
+      "gender": "M",
+      "noOfGoodsBought": 5,
+      "totalPayment": 25
+    },
+    {
+      "customerName": "I",
+      "customerID": 110108,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.5,
+      "age": 43,
+      "gender": "M",
+      "noOfGoodsBought": 5,
+      "totalPayment": 25
+    },
+    {
+      "customerName": "I",
+      "customerID": 110108,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.5,
+      "age": 43,
+      "gender": "M",
+      "noOfGoodsBought": 5,
+      "totalPayment": 25
+    },
+    {
+      "customerName": "J",
+      "customerID": 110109,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.2,
+      "age": 53,
+      "gender": "F",
+      "noOfGoodsBought": 17,
+      "totalPayment": 136
+    },
+    {
+      "customerName": "J",
+      "customerID": 110109,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.2,
+      "age": 53,
+      "gender": "F",
+      "noOfGoodsBought": 17,
+      "totalPayment": 136
+    },
+    {
+      "customerName": "J",
+      "customerID": 110109,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.2,
+      "age": 53,
+      "gender": "F",
+      "noOfGoodsBought": 17,
+      "totalPayment": 136
+    },
+    {
+      "customerName": "K",
+      "customerID": 110110,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.3,
+      "age": 31,
+      "gender": "F",
+      "noOfGoodsBought": 15,
+      "totalPayment": 105
+    },
+    {
+      "customerName": "K",
+      "customerID": 110110,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.3,
+      "age": 31,
+      "gender": "F",
+      "noOfGoodsBought": 15,
+      "totalPayment": 105
+    },
+    {
+      "customerName": "O",
+      "customerID": 110111,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.5,
+      "age": 33,
+      "gender": "M",
+      "noOfGoodsBought": 9,
+      "totalPayment": 45
+    },
+    {
+      "customerName": "O",
+      "customerID": 110111,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.5,
+      "age": 33,
+      "gender": "M",
+      "noOfGoodsBought": 9,
+      "totalPayment": 45
+    },
+    {
+      "customerName": "P",
+      "customerID": 110112,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.2,
+      "age": 60,
+      "gender": "M",
+      "noOfGoodsBought": 12,
+      "totalPayment": 96
+    },
+    {
+      "customerName": "P",
+      "customerID": 110112,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.2,
+      "age": 60,
+      "gender": "M",
+      "noOfGoodsBought": 12,
+      "totalPayment": 96
+    },
+    {
+      "customerName": "Q",
+      "customerID": 110113,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.3,
+      "age": 22,
+      "gender": "M",
+      "noOfGoodsBought": 4,
+      "totalPayment": 28
+    },
+    {
+      "customerName": "Q",
+      "customerID": 110113,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.3,
+      "age": 22,
+      "gender": "M",
+      "noOfGoodsBought": 4,
+      "totalPayment": 28
+    },
+    {
+      "customerName": "R",
+      "customerID": 110114,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.5,
+      "age": 24,
+      "gender": "M",
+      "noOfGoodsBought": 10,
+      "totalPayment": 50
+    },
+    {
+      "customerName": "R",
+      "customerID": 110114,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.5,
+      "age": 24,
+      "gender": "M",
+      "noOfGoodsBought": 10,
+      "totalPayment": 50
+    },
+    {
+      "customerName": "S",
+      "customerID": 110115,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.1,
+      "age": 29,
+      "gender": "M",
+      "noOfGoodsBought": 6,
+      "totalPayment": 54
+    },
+    {
+      "customerName": "S",
+      "customerID": 110115,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.1,
+      "age": 29,
+      "gender": "M",
+      "noOfGoodsBought": 6,
+      "totalPayment": 54
+    },
+    {
+      "customerName": "T",
+      "customerID": 110116,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.1,
+      "age": 50,
+      "gender": "F",
+      "noOfGoodsBought": 20,
+      "totalPayment": 180
+    },
+    {
+      "customerName": "T",
+      "customerID": 110116,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.1,
+      "age": 50,
+      "gender": "F",
+      "noOfGoodsBought": 20,
+      "totalPayment": 180
+    },
+    {
+      "customerName": "U",
+      "customerID": 110117,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.3,
+      "age": 50,
+      "gender": "M",
+      "noOfGoodsBought": 13,
+      "totalPayment": 91
+    },
+    {
+      "customerName": "U",
+      "customerID": 110117,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.3,
+      "age": 50,
+      "gender": "M",
+      "noOfGoodsBought": 13,
+      "totalPayment": 91
+    },
+    {
+      "customerName": "V",
+      "customerID": 110118,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.3,
+      "age": 29,
+      "gender": "M",
+      "noOfGoodsBought": 14,
+      "totalPayment": 98
+    },
+    {
+      "customerName": "V",
+      "customerID": 110118,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.3,
+      "age": 29,
+      "gender": "M",
+      "noOfGoodsBought": 14,
+      "totalPayment": 98
+    },
+    {
+      "customerName": "W",
+      "customerID": 110119,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.5,
+      "age": 57,
+      "gender": "F",
+      "noOfGoodsBought": 17,
+      "totalPayment": 85
+    },
+    {
+      "customerName": "W",
+      "customerID": 110119,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.5,
+      "age": 57,
+      "gender": "F",
+      "noOfGoodsBought": 17,
+      "totalPayment": 85
+    },
+    {
+      "customerName": "W",
+      "customerID": 110119,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.5,
+      "age": 57,
+      "gender": "F",
+      "noOfGoodsBought": 17,
+      "totalPayment": 85
+    },
+    {
+      "customerName": "X",
+      "customerID": 110120,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.3,
+      "age": 50,
+      "gender": "F",
+      "noOfGoodsBought": 14,
+      "totalPayment": 98
+    },
+    {
+      "customerName": "X",
+      "customerID": 110120,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.3,
+      "age": 50,
+      "gender": "F",
+      "noOfGoodsBought": 14,
+      "totalPayment": 98
+    },
+    {
+      "customerName": "X",
+      "customerID": 110120,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.3,
+      "age": 50,
+      "gender": "F",
+      "noOfGoodsBought": 14,
+      "totalPayment": 98
+    },
+    {
+      "customerName": "Y",
+      "customerID": 110121,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.4,
+      "age": 31,
+      "gender": "F",
+      "noOfGoodsBought": 17,
+      "totalPayment": 102
+    },
+    {
+      "customerName": "Y",
+      "customerID": 110121,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.4,
+      "age": 31,
+      "gender": "F",
+      "noOfGoodsBought": 17,
+      "totalPayment": 102
+    },
+    {
+      "customerName": "Y",
+      "customerID": 110121,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.4,
+      "age": 31,
+      "gender": "F",
+      "noOfGoodsBought": 17,
+      "totalPayment": 102
+    },
+    {
+      "customerName": "Z",
+      "customerID": 110122,
+      "purchaseDate": "2017-12-11",
+      "discount": 0.5,
+      "age": 22,
+      "gender": "M",
+      "noOfGoodsBought": 11,
+      "totalPayment": 55
+    },
+    {
+      "customerName": "Z",
+      "customerID": 110122,
+      "purchaseDate": "2017-12-12",
+      "discount": 0.5,
+      "age": 22,
+      "gender": "M",
+      "noOfGoodsBought": 11,
+      "totalPayment": 55
+    },
+    {
+      "customerName": "Z",
+      "customerID": 110122,
+      "purchaseDate": "2017-12-13",
+      "discount": 0.5,
+      "age": 22,
+      "gender": "M",
+      "noOfGoodsBought": 11,
+      "totalPayment": 55
     }
   ]
 };
@@ -466,17 +871,17 @@ class App extends Component {
                 // {type:"table", x:0, y:0, height:200, width:200}
                 // {type:"image", x:0, y:0, height:200, width:200, properties: {imageUrl:''}}
                 // {type:"line", x:10, y:10, height:200, width:300, data:lineChartData},
-                {type:"bar", x:320, y:10, height:300, width:400, display:true,
-                    properties:{
-                        initialized:true, 
-                        datasourceUrl:'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 
-                        dataset:'furnitures',
-                        title: 'Furniture Sales By Region',  
-                        xAxis:'Region', 
-                        yAxis:'Sales',
-                        aggregate:'sum'
-                    }
-                },
+                // {type:"bar", x:320, y:10, height:300, width:400, display:true,
+                //     properties:{
+                //         initialized:true, 
+                //         datasourceUrl:'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 
+                //         dataset:'furnitures',
+                //         title: 'Furniture Sales By Region',  
+                //         xAxis:'Region', 
+                //         yAxis:'Sales',
+                //         aggregate:'sum'
+                //     }
+                // },
                 // {type:"text", x:10, y:310, height:100, width:150, properties:{text:"<p>Hello World!</p>"}},
                 // {type:"basic", x:0, y:0, height:300, width:200}
             ]
@@ -553,7 +958,7 @@ class App extends Component {
         components[i].properties.initialized = false;
         this.setState({components});
     }
-    
+
     deleteComponent(i) {
         let components = this.state.components;
         components[i].display = false;
@@ -662,7 +1067,7 @@ class App extends Component {
                                     <i style={{margin:2}} className="fa fa-wrench"
                                         onClick={()=>this.changeSettings(i)}></i>
                                     <i style={{margin:2}} className="fa fa-times"
-                                        onMouseDown={()=>this.deleteComponent(i)}></i>
+                                        onClick={()=>this.deleteComponent(i)}></i>
                                 </div>
                                 <ReportComponent type={item.type}
                                     properties={item.properties} i={i}
@@ -673,7 +1078,7 @@ class App extends Component {
                     })}  
                 </div>
             </div>
-        ) 
+        );
     }
 }
 
@@ -721,7 +1126,7 @@ class Linechart extends Component {
             chartData:[]
         }
     }
-    
+
     // update state of initialized when props change
     componentWillReceiveProps(nextProps){
         if (nextProps.properties.initialized != this.state.initialized){
@@ -812,7 +1217,7 @@ class Barchart extends Component {
             chartData:[],
         }
     }
-    
+
     // update state of initialized when props change
     componentWillReceiveProps(nextProps){
         if (nextProps.properties.initialized != this.state.initialized){
@@ -829,6 +1234,7 @@ class Barchart extends Component {
             request.get({
                 url: url,
             }, function(error, response, body){
+                console.log(body);
                 let data = JSON.parse(body);
                 let chartData = data[self.props.properties.dataset];
                 let xAxis = self.props.properties.xAxis;
@@ -975,10 +1381,6 @@ class Textbox extends Component {
 }
 
 class BasicForm extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <Formik 
@@ -988,7 +1390,7 @@ class BasicForm extends Component {
                     dataset: datasets[0],
                     datasourceUrl: datasourceUrl,
                     xAxis: jsonProcessor.getOptions(datasets[0])[0], 
-                    yAxis: jsonProcessor.getOptions(datasets[0])[0], 
+                    yAxis: jsonProcessor.getNumericalOptions(datasets[0])[0], 
                     processor:jsonProcessor
                 }}
 
@@ -999,7 +1401,7 @@ class BasicForm extends Component {
                 render={formProps=>(
                     <Form className="draggable" style={{textAlign: "center", zIndex: -1}}>
                         <label>Chart Title</label>
-                        <Field className="nonDraggable" type="text" name="title" placeholder="Chart Title"/>
+                        <Field type="text" name="title" placeholder="Chart Title"/>
                         <br/><br/>
                         <label>Choose the dataset</label>
                         <Field component="select" name="dataset">
