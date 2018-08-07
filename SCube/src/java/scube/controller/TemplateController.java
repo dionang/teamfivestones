@@ -19,7 +19,7 @@ import scube.dao.ReportDAO;
  *
  * @author ZhenDan
  */
-@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate","/templateControl"})
+@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate", "/templateControl"})
 public class TemplateController extends HttpServlet {
 
     /**
@@ -34,48 +34,39 @@ public class TemplateController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         try (PrintWriter out = response.getWriter()) {
-         String operation=request.getParameter("operation");
-         int id;
-         if(operation.equals("templateControl")){
-            String viewBtn=request.getParameter("viewBtn");
-            if(viewBtn!=null){
-                id=Integer.parseInt(request.getParameter("templateId"));
-                request.setAttribute("templateId", id);
-                request.getRequestDispatcher("loadTemplate.jsp").forward(request, response);
-            } 
-            String deleteBtn = request.getParameter("deleteBtn");
-            if(deleteBtn!=null){
-                
-                id=Integer.parseInt(request.getParameter("id"));
-                ComponentDAO component=new ComponentDAO();
-                ReportDAO report=new ReportDAO();
-                boolean resultComponent=component.deleteAllComponents(id);
-                boolean resultTemplate=report.deleteTemplate(id);
-                boolean result=true;
-                if(resultComponent&&resultTemplate){
-                  out.print(result);
-               }
-            }
+        try (PrintWriter out = response.getWriter()) {
+            String operation=request.getParameter("operation");
+            int id;
+            if(operation.equals("templateControl")){
+                String viewBtn = request.getParameter("viewBtn");
+                if(viewBtn != null){
+                    id=Integer.parseInt(request.getParameter("templateId"));
+                    request.setAttribute("templateId", id);
+                    request.getRequestDispatcher("loadTemplate.jsp").forward(request, response);
+                } 
 
-        }else if(operation.equals("createTemplate")){
-            
-            String templateName=request.getParameter("templateName");
-            String templateSize=request.getParameter("templatesize");
-            String templateLayout=request.getParameter("templatelayout");
-            int companyId=Integer.parseInt(request.getParameter("companyId"));
-            String userName=request.getParameter("userName");
-            ReportDAO report=new ReportDAO();
-            boolean result=report.createTemplate(companyId, templateName, userName, templateSize, templateLayout);
-            String templateId=null;
-            if (result){
-               templateId=report.retrieveTemplateId();
-             
-            }
-            out.print(templateId);
-    
-        }  
-         }
+                String deleteBtn = request.getParameter("deleteBtn");
+                if(deleteBtn != null){
+                    id=Integer.parseInt(request.getParameter("id"));
+                    boolean deleteComponents = ComponentDAO.deleteAllComponents(id);
+                    boolean deleteTemplate  = ReportDAO.deleteTemplate(id);
+                    out.print(deleteComponents && deleteTemplate);
+                }
+
+            } else if(operation.equals("createTemplate")){
+                String templateName   = request.getParameter("templateName");
+                String templateSize   = request.getParameter("templatesize");
+                String templateLayout = request.getParameter("templatelayout");
+                int companyId = Integer.parseInt(request.getParameter("companyId"));
+                String userName = request.getParameter("userName");
+                boolean result=ReportDAO.createTemplate(companyId, templateName, userName, templateSize, templateLayout);
+                String templateId=null;
+                if (result){
+                   templateId=ReportDAO.retrieveTemplateId();
+                }
+                out.print(templateId);
+            }  
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -25,8 +25,8 @@
     <script src="assets/js/bootstrap.min.js"></script>
     <!-- React modules-->
     <script src="assets/js/babel.js"></script>
-    <script src="assets/js/bundle.js"></script>
-    <!-- React modules-->
+    <script src="assets/js/compressed.js"></script>
+    <!-- JsonProcessor -->
     <script src="assets/js/jsonProcessor.js"></script>
     <!-- Custom React Script -->
     <script type="text/babel" src="assets/js/app.js"></script>    

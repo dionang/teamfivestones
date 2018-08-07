@@ -1,6 +1,6 @@
 <%
     if(session.getAttribute("account") == null) {
-        response.sendRedirect("/");
+        response.sendRedirect("login.jsp");
         return;
     }
 %>

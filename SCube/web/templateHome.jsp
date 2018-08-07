@@ -11,11 +11,10 @@
         return;
     }else{**/
         int companyId=account.getCompanyId();
-        ReportDAO report=new ReportDAO();
-        ArrayList<Template> templateList=report.retrieveAllTemplatesByCompany(companyId);
+        ArrayList<Template> templateList=ReportDAO.retrieveAllTemplatesByCompany(companyId);
             /**}**/
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -39,9 +38,9 @@
                     <div class="content">
                         <div class="col-lg-3 col-md-4">
                             <!-- Trigger/Open The Modal -->
-                            <a href="#" id="myBtn">
+                            <a id="myBtn">
                                 <div class="card card-inverse card-info">
-                                     <div class="card-block">
+                                    <div class="card-block">
                                         <img class="card-img-top create" src="assets/images/create.png">
                                     </div>
                                     <div class="card-footer">
@@ -76,7 +75,7 @@
                                         <a href="loadTemplate.jsp">
                                              <div class="card card-inverse card-info">
                                                  <div class="card-block">
-                                                     <img class="card-img-top" src="assets/images/dummyReprot.png">
+                                                     <img class="card-img-top" src="assets/images/dummyReport.png">
                                                  </div>
                                                  <div class="card-footer">
                                                  <h4 class="card-title " style="text-align:center">Default Template</h4>
@@ -86,10 +85,10 @@
                                     </div> 
                                     <div class="col-sm-1 "></div>
                                     <div class="col-sm-4 ">
-                                        <a href="#" id="pageSize">
+                                        <a id="pageSize">
                                              <div class="card card-inverse card-info">
                                                  <div class="card-block">
-                                                     <img class="card-img-top" src="assets/images/dummyReprot.png" style="opacity:0">
+                                                     <img class="card-img-top" src="assets/images/dummyReport.png" style="opacity:0">
                                                  </div>
                                                  <div class="card-footer">
                                                  <h4 class="card-title " style="text-align:center">Blank Template</h4>
@@ -142,15 +141,14 @@
                             </div>
                         </div>
 
-                        <%for(int i=0;i<templateList.size();i++) {
-                            Template template=templateList.get(i); %>
+                        <% for(Template template : templateList) { %>
                             <form action="templateControl" method="post" id="test">
                                 <input type=hidden name="templateId" value="<% out.print(template.getTemplateId());%>">
                                 <input type=hidden name="operation" value="templateControl">
                                 <div class="col-lg-3 col-md-4">
                                     <div class="card card-inverse card-info">
                                         <div class="card-block">
-                                            <img class="card-img-top" src="assets/images/dummyReprot.png">
+                                            <img class="card-img-top" src="assets/images/dummyReport.png">
                                         </div>
                                         <div class="card-footer">
                                             <div class="row">
@@ -160,14 +158,12 @@
                                             </div>
 
                                             <div class="row"  >
-                                                <div class="col-md-5 ">
-
-                                                <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
+                                                <div class="col-md-5">
+                                                    <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
                                                 </div>
                                                 <div class="col-sm-1"></div>
-                                                <div class="col-sm-5  " >
-                                                    <button class="btn delete" name="deleteBtn" value="delete" ><i class="fa fa-trash"></i> Delete</button>
-
+                                                <div class="col-sm-5">
+                                                    <button class="btn delete" name="deleteBtn" value="delete"><i class="fa fa-trash"></i> Delete</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,7 +185,6 @@
         <!-- Custom JS -->
         <script src="assets/js/dashboard.js"></script> 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script src="assets/js/checkPassword.js"></script>
         <script>
             let template = document.getElementsByClassName('delete');
             for(i = 0; i < template.length;i++) {
@@ -209,8 +204,8 @@
                                 url: "/templateControl",
                                 data: {
                                     id: form.elements["templateId"].value,
-                                   deleteBtn: form.elements["deleteBtn"].value,
-                                   operation:form.elements["operation"].value,
+                                    deleteBtn: form.elements["deleteBtn"].value,
+                                    operation:form.elements["operation"].value,
                                 },
                                 success: function(success){
                                     if(success === "true"){
@@ -239,14 +234,12 @@
 
             // Get the button that opens the modal
             var btn = document.getElementById("myBtn");
-             var btn1 = document.getElementById("pageSize");
+            var btn1 = document.getElementById("pageSize");
 
             // Get the <span> element that closes the modal
             var span = document.getElementsByClassName("close")[0];
             var span1 = document.getElementsByClassName("close")[1];
              
-
-
             // When the user clicks the button, open the modal 
             btn.onclick = function() {
                 modal.style.display = "block";
@@ -266,10 +259,10 @@
            
             // When the user clicks anywhere outside of the modal, close it
             window.onclick = function(event) {
-                if (event.target == modal) {
+                if (event.target === modal) {
                     modal.style.display = "none";
                 }
-                if (event.target == modal1) {
+                if (event.target === modal1) {
                     modal1.style.display = "none";
                 }
             }

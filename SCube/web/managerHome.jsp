@@ -50,7 +50,7 @@
                             </a>
                         </div>
                        <div class="col-sm-4 img">
-                           <a href="report.jsp" style="text-decoration: none">
+                           <a href="templateHome.jsp" style="text-decoration: none">
                                <div class="pic">
                                    <img  src="assets/images/report.png"  class="image"/>
                                 </div>
