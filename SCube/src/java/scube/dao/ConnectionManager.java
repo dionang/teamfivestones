@@ -42,8 +42,18 @@ public class ConnectionManager {
             String port = props.getProperty("db.port"); //get from connection properties file
             String dbName = props.getProperty("db.name"); //get from connection properties file
             dbUser = props.getProperty("db.user");
-            dbPassword = props.getProperty("db.password");
+            
+            String osName = System.getProperty("os.name");
+            if (osName.equals("Linux")) {
+                // in production environment, use aws.db.password
+                dbPassword = props.getProperty("aws.db.password");
+            } else {
+                // in local environment, use db.password
+                dbPassword = props.getProperty("db.password");
+            }
+            
             dbURL = "jdbc:mysql://" + host + ":" + port + "/" + dbName;
+            System.out.print(dbURL);
         } catch (Exception ex) {
             // unable to load properties file
             String message = "Unable to load '" + PROPS_FILENAME + "'.";

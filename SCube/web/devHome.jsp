@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/dashboard.css">
-         <link rel="stylesheet" href="assets/css/template.css">
+        <link rel="stylesheet" href="assets/css/template.css">
         <title>Developer Home</title>
     </head>
 
@@ -36,7 +36,7 @@
                 
                 <!-- set datasource -->
                 <div class="right_col">
-                 <div class="content">
+                <div class="content">
                     <div class="col-sm-3 ">
                               
                         <a href="addDataSource.jsp" >
@@ -64,15 +64,14 @@
                                 </div>
                             </div>
                         </a> 
-                           </div>  
+                    </div>  
                                
-
-                        <%for(int i=0;i<dsList.size();i++) {
+                        <% for(int i=0;i<dsList.size();i++) {
                             Datasource datasourece=dsList.get(i); %>
                             <form action="getDatasources" method="post" id="test">
                                 <input type=hidden name="datasourceId" value="<%out.print(datasourece.getDatasourceId());%>">
                                 <input type=hidden name="operation" value="getDatasources">
-                               <div class="col-sm-3 ">
+                                <div class="col-sm-3">
                                    
                                         <div class="card card-inverse card-info">
                                             <div class="card-block">

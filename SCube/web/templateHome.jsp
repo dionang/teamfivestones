@@ -47,7 +47,7 @@
 
                                     <div class="row">
                                             <div class="col-sm-offset-1 col-sm-4">
-                                                <h4 class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Template</h4>
+                                                <h4 style="cursor:pointer" class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Template</h4>
                                             </div>
                                         </div>
 
