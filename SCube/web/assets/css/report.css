@@ -930,3 +930,8 @@ page {
     margin-left:-30px;
     font-size:medium;
 }
+
+/* to allow close button to be clickable */
+.recharts-responsive-container {
+  z-index: -2;
+}

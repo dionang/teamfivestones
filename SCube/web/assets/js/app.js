@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import request from 'request';
 import RichTextEditor from 'react-rte';
 import Rnd from 'react-rnd';
-import { Navbar, Button } from 'react-bootstrap';
+import { Button, ButtonToolbar, SplitButton, MenuItem, Navbar } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
@@ -989,14 +989,16 @@ class App extends Component {
     loadTemplate = () => {
         let self = this;
         let templateId = parseInt(document.getElementById("templateId").value, 10);
-        request.post({
-            url: api + 'loadComponents',
-            json: true,
-            body: { operation: "loadComponents", templateId: templateId }
-        }, function (error, response, body) {
-            let components = body.components;
-            self.setState({components});
-        });
+        if (templateId !== 0){
+            request.post({
+                url: api + 'loadComponents',
+                json: true,
+                body: { operation: "loadComponents", templateId: templateId }
+            }, function (error, response, body) {
+                let components = body.components;
+                self.setState({components});
+            });
+        }
     }
 
     renameTemplate = (e) => {
@@ -1009,6 +1011,7 @@ class App extends Component {
         //let companyId = parseInt(document.getElementById("companyId").value, 10);
         //let userName =document.getElementById("userName").value;
         if(templateId===0){
+            console.log(self.state.templateName)
             request.post({
                 url: api + 'createTemplate',
                 form: { 
@@ -1021,6 +1024,7 @@ class App extends Component {
                     userName: 'aa'
                 }
             }, function (error, response, body) {
+                console.log(body);
                 if(body === "false") {
                     alert("Failed to create template!");
                 } else {
@@ -1045,21 +1049,6 @@ class App extends Component {
         }
     }
 
-    // saveTemplate = () => {
-    //     let templateId = parseInt(document.getElementById("templateId").value, 10);
-    //     request.post({
-    //         url: api + 'saveComponents',
-    //         json: true,
-    //         body: { operation: "saveComponents", templateId: templateId, components: this.state.components }
-    //     }, function (error, response, body) {
-    //         if(body.status) {
-    //             alert("Saved successfully!");
-    //         } else {
-    //             alert("Failed to save!");
-    //         }
-    //     });
-    // }
-
     // i represents index of current item in this.state.components
     // convert style data to integer. e.g. 10px -> 10
     onResize(ref, pos, i) {
@@ -1078,6 +1067,15 @@ class App extends Component {
         this.setState({ components });
     }
 
+    toggleChartMenu = () => {
+        let chartMenu = document.getElementById("chartMenu");
+        if (chartMenu.style.display === "block") {
+            chartMenu.style.display = "none";
+        } else {
+            chartMenu.style.display = "block";
+        }
+    }
+    
     toggleEditMode = () => {
         this.setState({editMode: !this.state.editMode})
     }
@@ -1126,7 +1124,7 @@ class App extends Component {
             <div>
                 <input type="hidden" id="templateId" value="1"/>
                 <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
-                    <div className="container body" style={{margin:0}}>
+                    <div className="container body">
                         <div className="main_container">
                             <div className="col-md-3 left_col">
                                 <div className="left_col scroll-view">
@@ -1150,11 +1148,14 @@ class App extends Component {
                                                     }}>Component</a>
                                                 </li>
                                                 <li><a id="addTextbox" onClick={this.addTextbox}><i className="fa fa-font"/> Textbox</a></li>
-                                                <li><a><i className="fa fa-bar-chart"/> Charts <span className="fa fa-chevron-down"></span></a>
-                                                    <ul className="nav child_menu">
-                                                        <li><a id="addBarChart" onClick={this.addBarChart}><i className="fa fa-bar-chart a"/>Bar</a></li>
-                                                        <li><a id="addPieChart" onClick={this.addLineChart}><i className="fa fa-pie-chart a"/> Pie</a></li>
-                                                        <li><a id="addLineChart" onClick={this.addLineChart}><i className="fa fa-line-chart a"/>Line</a></li>
+                                                <li>
+                                                    <a onClick={this.toggleChartMenu}>
+                                                        <i className="fa fa-bar-chart"/> Charts <span className="fa fa-chevron-down"></span>
+                                                    </a>
+                                                    <ul className="nav child_menu" id="chartMenu">
+                                                        <li><a onClick={this.addBarChart}><i className="fa fa-bar-chart a"/>Bar</a></li>
+                                                        <li><a onClick={this.addLineChart}><i className="fa fa-pie-chart a"/> Pie</a></li>
+                                                        <li><a onClick={this.addLineChart}><i className="fa fa-line-chart a"/>Line</a></li>
                                                     </ul>
                                                 </li>
                                                 <li><a id="addTable" onClick={this.addTable}><i className="fa fa-table"/> Table</a></li>
@@ -1172,8 +1173,8 @@ class App extends Component {
 
                                         <ul className="nav navbar-nav navbar-right">
                                             <li>
-                                                <a href="javascript:;" className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <img src="/assets/images/user.png" />
+                                                <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <img src="assets/images/user.png" />
                                                     <span className=" fa fa-angle-down"></span>
                                                 </a>
                                                 <ul className="dropdown-menu dropdown-usermenu pull-right">
@@ -1317,10 +1318,6 @@ class ReportComponent extends Component {
                 <Textbox i={this.props.i} text={this.props.properties.text} editMode={this.props.editMode}
                     updateProperties={this.props.updateProperties} />
             );
-        } else if (this.props.type === "basic"){
-            return(
-                <BasicForm/>
-            )
         } else if (this.props.type ==="image"){
             return(
                 <Image i={this.props.i}  
@@ -1329,9 +1326,7 @@ class ReportComponent extends Component {
             )
         } else if (this.props.type ==="table"){
             return(
-            <ResponsiveContainer className="draggable" height="100%" width="100%" boarder="none">
-                <BasicTable/>
-            </ResponsiveContainer>
+                <Table/>
             )
         }
     }
@@ -1424,7 +1419,7 @@ class Linechart extends Component {
                     <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
                 </LineChart>
             </ResponsiveContainer>
-            :   <BasicForm initializeChart={this.initializeChart}/>
+            :   <ChartForm initializeChart={this.initializeChart}/>
     }
 }
 
@@ -1517,7 +1512,7 @@ class Barchart extends Component {
                     <Tooltip/>
                 </BarChart>
             </ResponsiveContainer>
-            :   <BasicForm initializeChart={this.initializeChart}/>
+            :   <ChartForm initializeChart={this.initializeChart}/>
     }
 }
 
@@ -1525,8 +1520,7 @@ class Image extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            file: '', 
-            imageUrl: '', 
+            imageUrl: this.props.properties.imageUrl, 
         };
     }
 
@@ -1535,10 +1529,7 @@ class Image extends React.Component {
         let file = e.target.files[0];
 
         reader.onloadend = () => {
-            this.setState({
-                file: file,
-                imageUrl: reader.result,
-            });
+            this.setState({imageUrl: reader.result});
             this.props.updateProperties({imageUrl: reader.result}, this.props.i);
         }
 
@@ -1546,7 +1537,6 @@ class Image extends React.Component {
     }
 
     render() {
-        console.log(this.state.imageUrl);
         return (
             <div className="draggable" style={{height:"100%", width:"100%"}}>
                 {this.state.imageUrl ? 
@@ -1610,7 +1600,126 @@ class Textbox extends Component {
     }
 }
 
-class BasicForm extends Component {
+class Table extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            ...this.props.properties,
+            chartData: [],
+            columns: [{
+                dataField: 'id',
+                text: 'Product ID',
+                sort: true
+            }],
+        }
+    }
+
+    // update state of initialized when props change
+    /*componentWillReceiveProps(nextProps){
+        if (nextProps.properties.initialized != this.state.initialized){
+            this.setState({initialized: nextProps.properties.initialized});
+        }
+    }*/
+
+    initializeTable = (values) => {
+        //set settings of barchart
+        console.log("init table")
+        let processor = values.processor;
+        let datasourceUrl = values.datasourceUrl;
+        let dataset = values.dataset;
+        let data = processor.getDataset(dataset);
+
+        this.setState({
+            initialized: true,
+            datasourceUrl: datasourceUrl,
+            dataset: dataset,
+            chartData: data
+        })
+
+        // sending all data to app2 other than chartData
+        //let {chartData, ...other} = this.state;
+        //this.props.updateProperties(other, this.props.i);
+    }
+
+    addCol = (e) => {
+        let col = this.state.columns;
+        if (e === "name") {
+            col.push({
+                dataField: 'name',
+                text: 'Product Name',
+                sort: true
+
+            });
+
+        } else if(e==="price") {
+            col.push({
+                dataField: 'price',
+                text: 'Product Price',
+                sort: true
+
+            });
+        } else {
+            col.push({
+                dataField: 'id',
+                text: 'Product ID',
+                sort: true
+
+            });
+        }
+
+        this.setState({ col });
+    }
+
+
+    render() {
+        var products = [{
+            id: 1,
+            name: "Product1",
+            price: 120
+        }, {
+            id: 2,
+            name: "Product2",
+            price: 80
+        }, {
+            id: 3,
+            name: "Product1",
+            price: 120
+        }, {
+            id: 4,
+            name: "Product2",
+            price: 80
+        }, {
+            id: 5,
+            name: "Product1",
+            price: 120
+        }];
+
+        const rowStyle = { backgroundColor: '#c8e6c9' };
+        return this.state.initialized ?
+            <div>
+                <ButtonToolbar>
+                    <SplitButton title="Add a Column" bsStyle="info" dropup id="split-button-dropup" onSelect={this.addCol}>
+                        Categories
+                        <MenuItem eventKey="id">Product ID</MenuItem>
+                        <MenuItem eventKey="name">Product Name</MenuItem>
+                        <MenuItem eventKey="price">Product Price</MenuItem>
+                    </SplitButton>
+                </ButtonToolbar>
+
+                <BootstrapTable keyField='id' data={products}
+                    columns={this.state.columns}
+                    cellEdit={cellEditFactory({ mode: 'dbclick' })}
+                    rowStyle={rowStyle}>
+                </BootstrapTable>
+
+
+
+            </div>
+            : <TableForm initializeTable={this.initializeTable} />
+    }
+}
+
+class ChartForm extends Component {
     render() {
         return (
             <Formik 
@@ -1629,7 +1738,7 @@ class BasicForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="draggable" style={{textAlign: "center", zIndex: -1}}>
+                    <Form className="draggable" style={{textAlign: "center", zIndex: -1,height:"100%",width:"100%"}}>
                         <label>Chart Title</label>
                         <Field type="text" name="title" placeholder="Chart Title"/>
                         <br/><br/>
@@ -1657,7 +1766,7 @@ class BasicForm extends Component {
                             )}
                         </Field>
                         <br/><br/>
-                        <button type="submit">Submit</button>
+                        <Button type="submit">Submit</Button>
                         {/* <DisplayFormikState {...this.props}/> */}
                     </Form>
                 )}
@@ -1666,58 +1775,39 @@ class BasicForm extends Component {
     }
 }
 
-class BasicTable extends React.Component {
+class TableForm extends Component {
     render() {
-        const columns = [{
-            dataField: 'id',
-            text: 'Product ID',
-            sort: true
-
-        }, {
-            dataField: 'name',
-            text: 'Product Name',
-            sort: true
-
-        }, {
-            dataField: 'price',
-            text: 'Product Price',
-            sort: true
-
-        }];
-
-        var products = [{
-            id: 1,
-            name: "Product1",
-            price: 120
-        }, {
-            id: 2,
-            name: "Product2",
-            price: 80
-        }, {
-            id: 3,
-            name: "Product1",
-            price: 120
-        }, {
-            id: 4,
-            name: "Product2",
-            price: 80
-        },{
-            id: 5,
-            name: "Product1",
-            price: 120
-        }];
-        
-        const rowStyle = { backgroundColor: '#c8e6c9' };
-
         return (
-            <div>
-                <BootstrapTable keyField='id' data={products}
-                    columns={columns}
-                    cellEdit={cellEditFactory({ mode: 'dbclick' })}
-                    rowStyle={ rowStyle }>
-                </BootstrapTable>
-            </div>
-        )
+            <Formik 
+                // initialize values to use in form
+                initialValues={{
+                    title:'', 
+                    dataset: datasets[0],
+                    datasourceUrl: datasourceUrl,
+                    processor:jsonProcessor
+                }}
+
+                // pass values to the charts
+                onSubmit={this.props.initializeTable}
+
+                // render form
+                render={formProps=>(
+                    <Form className="draggable" style={{textAlign: "center", zIndex: -1,height:"100%",width:"100%"}}>
+                        <label>Chart Title</label>
+                        <Field type="text" name="title" placeholder="Chart Title"/>
+                        <br/><br/>
+                        <label>Choose the dataset</label>
+                        <Field component="select" name="dataset">
+                            {datasets.map((dataset)=>
+                                <option key={dataset}>{dataset}</option>
+                            )}
+                        </Field>
+                        <br/><br/>
+                        <Button bsStyle="default" type="submit">Submit</Button>
+                    </Form>
+                )}
+            />
+        );
     }
 }
 

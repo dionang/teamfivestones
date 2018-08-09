@@ -14,7 +14,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/bootstrap.css">
-        <link rel="stylesheet" href="assets/css/app.css">
+        <link rel="stylesheet" href="assets/css/report.css">        
+
         <title>Load Template</title>
     </head>
 
@@ -40,10 +41,5 @@
         <script src="assets/js/jsonProcessor.js"></script>
         <!-- Custom React Script -->
         <script type="text/babel" src="assets/js/app.js"></script> 
-        <script>
-            $('#options li').click(function () {
-                $(this).find('ul').toggle();
-            });
-        </script>
     </body>
 </html>
