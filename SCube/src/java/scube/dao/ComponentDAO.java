@@ -161,6 +161,31 @@ public class ComponentDAO {
         }
     }
     
+    public static String getImageUrl(int templateId, int position) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT text FROM textbox WHERE templateId = ? and position = ?");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);
+            rs = stmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getString("text");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
     public static ArrayList<String> getChartProps(int templateId, int position) {
         Connection conn = null;
         PreparedStatement stmt = null;

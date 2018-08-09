@@ -80,6 +80,9 @@ public class ComponentController extends HttpServlet {
                         if(initialized){
                             components.add(new Chart(type, x, y, height, width, datasourceUrl, dataset, title, xAxis, yAxis, aggregate));
                         }
+                    } else if (type.equals("image")) {
+                        String imageUrl = properties.get("imageUrl").getAsString();
+                        
                     }
                 }
                 
