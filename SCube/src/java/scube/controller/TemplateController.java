@@ -59,12 +59,13 @@ public class TemplateController extends HttpServlet {
                 String templateLayout = request.getParameter("templatelayout");
                 int companyId = Integer.parseInt(request.getParameter("companyId"));
                 String userName = request.getParameter("userName");
-                boolean result=ReportDAO.createTemplate(companyId, templateName, userName, templateSize, templateLayout);
-                String templateId=null;
+
+                boolean result = ReportDAO.createTemplate(companyId, templateName, userName, templateSize, templateLayout);
                 if (result){
-                   templateId=ReportDAO.retrieveTemplateId();
+                    out.print(ReportDAO.retrieveTemplateId());
+                } else {
+                    out.print("false");
                 }
-                out.print(templateId);
             }  
         }
     }
