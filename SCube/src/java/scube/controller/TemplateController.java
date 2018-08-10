@@ -19,7 +19,7 @@ import scube.dao.ReportDAO;
  *
  * @author ZhenDan
  */
-@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate", "/templateControl"})
+@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate", "/loadDefault"})
 public class TemplateController extends HttpServlet {
 
     /**
@@ -37,7 +37,7 @@ public class TemplateController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String operation=request.getParameter("operation");
             int id;
-            if(operation.equals("templateControl")){
+            if(operation.equals("loadTemplate")){
                 String viewBtn = request.getParameter("viewBtn");
                 if(viewBtn != null){
                     id=Integer.parseInt(request.getParameter("templateId"));
@@ -66,7 +66,11 @@ public class TemplateController extends HttpServlet {
                 } else {
                     out.print("false");
                 }
-            }  
+            } else if(operation.equals("loadDefault")){
+                id=Integer.parseInt(request.getParameter("templateId"));
+                request.setAttribute("templateId", id);
+                request.getRequestDispatcher("loadTemplate.jsp").forward(request, response);
+            }
         }
     }
 
