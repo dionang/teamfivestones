@@ -10,18 +10,18 @@ package scube.entities;
  * @author Dion
  */
 public class Image extends Component {
-    public String imageUrl;    
+    public byte[] imageData;    
 
-    public Image(String type, int x, int y, int height, int width, String imageUrl) {
+    public Image(String type, int x, int y, int height, int width, byte[] imageData) {
         super(type, x, y, height, width);
-        this.imageUrl = imageUrl;
+        this.imageData = imageData;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public byte[] getImageData() {
+        return imageData;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 }

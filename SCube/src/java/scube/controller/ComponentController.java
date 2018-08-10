@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Base64;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +22,7 @@ import scube.dao.ComponentDAO;
 import scube.entities.Component;
 import scube.entities.Textbox;
 import scube.entities.Chart;
+import scube.entities.Image;
 
 /**
  *
@@ -54,7 +56,6 @@ public class ComponentController extends HttpServlet {
                     JsonObject componentObj = arr.get(i).getAsJsonObject();
                     // "deleted" components that we do not need to save
                     if (!componentObj.get("display").getAsBoolean()){
-                        System.out.println("don't save");
                         continue;
                     }
                     
@@ -82,7 +83,9 @@ public class ComponentController extends HttpServlet {
                         }
                     } else if (type.equals("image")) {
                         String imageUrl = properties.get("imageUrl").getAsString();
-                        
+                        byte[] imageData = Base64.getDecoder().decode(imageUrl);
+//                        components.add(new Image(type, x, y, height, width, imageData));
+                        System.out.println(imageData);
                     }
                 }
                 
@@ -121,7 +124,7 @@ public class ComponentController extends HttpServlet {
                         properties.addProperty("yAxis", chart.getYAxis());                        
                         properties.addProperty("aggregate", chart.getAggregate());
                         componentObj.add("properties", properties);
-                    }
+                    } 
                     
                     // add component to jsonArr
                     jsonArr.add(componentObj);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import scube.entities.Component;
 import scube.entities.Textbox;
 import scube.entities.Chart;
+import scube.entities.Image;
 
 public class ComponentDAO {
     //Create operations
@@ -40,6 +41,9 @@ public class ComponentDAO {
                 } else if (component.getType().equals("bar") || component.getType().equals("line")) {
                     Chart chart = (Chart) component;
                     addChart(templateId, i, chart.getDatasourceUrl(), chart.getDataset(), chart.getTitle(), chart.getXAxis(), chart.getYAxis(), chart.getAggregate());
+                } else if (component.getType().equals("image")) {
+                    Image image = (Image) component;
+                    addImage(templateId, i, image.getImageData());
                 }
             }
             stmt.executeBatch();
@@ -69,6 +73,26 @@ public class ComponentDAO {
             stmt.setString(7, yAxis);            
             stmt.setString(8, aggregate);
 
+            stmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static void addImage(int templateId, int position, byte[] imageData) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO image VALUES (?,?,?)");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);            
+            stmt.setBytes(3, imageData);
             stmt.executeUpdate();
             
         } catch (SQLException e) {
@@ -161,7 +185,7 @@ public class ComponentDAO {
         }
     }
     
-    public static String getImageUrl(int templateId, int position) {
+    public static String getImageData(int templateId, int position) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
