@@ -6,14 +6,15 @@
 <%@ page import="scube.entities.Developer" %>
 <%
     Account account = (Account) session.getAttribute("account");
-    //if (!(account instanceof Developer)){
-        //response.sendRedirect("/");
-        //return;
-   // }else{**/
+    ArrayList<Datasource> dsList;
+    if (!(account instanceof Developer)){
+        response.sendRedirect("login.jsp");
+        return;
+   }else{
         int companyId=account.getCompanyId();
         DatasourceDAO datasource=new DatasourceDAO();
-        ArrayList<Datasource> dsList = DatasourceDAO.getAllDatasources(account.getCompanyId()); 
-            /**}**/
+        dsList = DatasourceDAO.getAllDatasources(account.getCompanyId()); 
+            }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -37,7 +38,12 @@
                 <!-- set datasource -->
                 <div class="right_col">
                 <div class="content">
-                    <div class="col-sm-3 ">
+                    
+                               
+                        <% for(int i=0;i<dsList.size();i++) {
+                            Datasource datasourece=dsList.get(i); 
+                            if(i==0){%>
+                            <div class="col-md-3 ">
                               
                         <a href="addDataSource.jsp" >
                             <div class="card card-inverse card-info">
@@ -48,26 +54,26 @@
 
                                 <div class="row">
                                     <div class="col-sm-offset-1 col-sm-4">
-                                        <h4 class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Datasource</h4>
+                                        <h5 class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Datasource</h5>
                                     </div>
                                 </div>
 
                                     <div class="row" style=" opacity: 0;" >
-                                        <div class="col-md-5 edit">
-                                         <h5><span class="glyphicon glyphicon-edit "></span></h5> 
+                                        <div class="col-md-5 ">
+
+                                        <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
                                         </div>
-                                        <div class="col-sm-1"></div>
-                                        <div class="col-sm-5 delete " >
-                                       <h5><span class="glyphicon glyphicon-trash "></span></h5>
+                                        <div class="col-xs-1  " ></div>
+                                        <div class="col-md-5  " >
+                                            <button class="btn delete" name="deleteBtn" value="delete" ><i class="fa fa-trash"></i> Delete</button>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </a> 
                     </div>  
-                               
-                        <% for(int i=0;i<dsList.size();i++) {
-                            Datasource datasourece=dsList.get(i); %>
+                           <% }%>
                             <form action="getDatasources" method="post" id="test">
                                 <input type=hidden name="datasourceId" value="<%out.print(datasourece.getDatasourceId());%>">
                                 <input type=hidden name="operation" value="getDatasources">
@@ -80,7 +86,7 @@
                                             <div class="card-footer">
                                                 <div class="row">
                                                     <div class="col-sm-offset-1 col-sm-4">
-                                                        <h4 class="card-title"><%out.println(datasourece.getDatasourceName());%></h4>
+                                                        <h5 class="card-title"><%out.println(datasourece.getDatasourceName());%></h5>
                                                     </div>
                                                 </div>
                                                 
@@ -89,8 +95,8 @@
                                                       
                                                     <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
                                                     </div>
-                                                    <div class="col-sm-1"></div>
-                                                    <div class="col-sm-5  " >
+                                                    <div class="col-xs-1  " ></div>
+                                                    <div class="col-md-5  " >
                                                         <button class="btn delete" name="deleteBtn" value="delete" ><i class="fa fa-trash"></i> Delete</button>
                    
                                                     </div>

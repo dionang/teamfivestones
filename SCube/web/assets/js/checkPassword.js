@@ -150,9 +150,12 @@ document.getElementById('submitForm').onsubmit = function (e) {
                 },
                 success: function(success){
                     if(success === "true"){
-                        swal("Account has been created successfully!", {
-                            icon: "success"
-                        });
+                        swal({icon: "success", text: "Account has been created successfully!", type: 
+                                            "success"}).then(function(){ 
+                                               location.reload();
+                                               }
+                                            ); 
+                       
                     } else {
                         swal("Username already exists!", {
                             icon: "error"

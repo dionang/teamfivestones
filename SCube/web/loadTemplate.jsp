@@ -3,10 +3,10 @@
 <%@ page import="scube.entities.Manager" %>
 <%
     Account account = (Account) session.getAttribute("account");
-    /**if (!(account instanceof Manager)){
-        response.sendRedirect("/");
+    if (!(account instanceof Manager)){
+        response.sendRedirect("login.jsp");
         return;
-    }**/
+    }
         
 %>
 <html>
@@ -30,9 +30,7 @@
                 <div class="right_col">
                     <div class="content">-->
                         <%  String templateId = request.getParameter("templateId");
-                            if(templateId == null){
-                                templateId = "0";
-                            }
+                            
                             out.println("<input type='hidden' id='templateId' value='" + templateId +  "'/>");
                         %>
                         <input type="hidden" name="companyId" value="<%out.print(account.getCompanyId());%>"/>
@@ -42,8 +40,7 @@
                 </div>  
                 <!-- page content 
             </div>
-        </div>
-        
+        </div>       
         <!-- jQuery -->
         <script src="assets/js/jquery.min.js"></script>
         <!-- Bootstrap -->
