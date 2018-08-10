@@ -156,7 +156,7 @@ html,body,.root,.container,.main_container {
     position:fixed
 }
 .nav-md .container.body .right_col{
-    background:#F7F7F7;
+    background:white;
     
 }
 .nav-md .container.body .right_col{
@@ -216,7 +216,7 @@ html,body,.root,.container,.main_container {
     background:#D9DEE4
 }
 .nav-md{
-    color:#73879C;
+    color: black;
     background:#2A3F54;
     font-family:"Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
     font-size:13px;
@@ -933,5 +933,5 @@ page {
 
 /* to allow close button to be clickable */
 .recharts-responsive-container {
-  z-index: -2;
+    z-index: -1;
 }

@@ -3,10 +3,10 @@
 <%@ page import="scube.entities.CompanyAccount" %>
 <%  
     Account account = (Account) session.getAttribute("account");
-    /**if (!(account instanceof CompanyAccount)) {
-        response.sendRedirect("/");
+    if (!(account instanceof CompanyAccount)) {
+        response.sendRedirect("login.jsp");
         return;
-    }**/
+    }
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -128,7 +128,7 @@
                                     %>
                                     <div class="row">
                                         <div class="col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
-                                            <input type="submit" value="Create Developer" class="btn btn-success" />
+                                            <input type="submit" value="Create Developer" class="btn btn-success" style="width: 70% !important"/>
                                         </div>
                                     </div>
                                     <br/>

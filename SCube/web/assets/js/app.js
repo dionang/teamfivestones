@@ -1139,7 +1139,7 @@ class App extends Component {
             <div>
                 <input type="hidden" id="templateId" value="1" />
                 <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
-                    <div className="container body">
+                    <div className="container body" style={{margin:0, padding:0, width:"100%"}}>
                         <div className="main_container">
                             <div className="col-md-3 left_col">
                                 <div className="left_col scroll-view">
@@ -1174,7 +1174,7 @@ class App extends Component {
                                         <ul className="nav navbar-nav navbar-right">
                                             <li>
                                                 <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <img src="/assets/images/user.png" />
+                                                    <img src="assets/images/user.png" />
                                                     <span className=" fa fa-angle-down"></span>
                                                 </a>
                                                 <ul className="dropdown-menu dropdown-usermenu pull-right">
@@ -1286,7 +1286,7 @@ class App extends Component {
                                                 // ref represents item that was dragged
                                                 onDragStop={(event, ref) => this.onDragStop(ref, i)}
                                             >
-                                                <div style={{ float: "right" }}>
+                                                <div style={{ height:27.5, float:"right" }}>
                                                     <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
                                                         onClick={() => this.changeSettings(i)}></i>
                                                     <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"

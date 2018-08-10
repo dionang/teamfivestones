@@ -10,11 +10,21 @@ package scube.entities;
  * @author Dion
  */
 public class Image extends Component {
+    public String imagePrefix;        
     public byte[] imageData;    
 
-    public Image(String type, int x, int y, int height, int width, byte[] imageData) {
+    public Image(String type, int x, int y, int height, int width, String imagePrefix, byte[] imageData) {
         super(type, x, y, height, width);
+        this.imagePrefix = imagePrefix;
         this.imageData = imageData;
+    }
+
+    public String getImagePrefix() {
+        return imagePrefix;
+    }
+
+    public void setImagePrefix(String imagePrefix) {
+        this.imagePrefix = imagePrefix;
     }
 
     public byte[] getImageData() {

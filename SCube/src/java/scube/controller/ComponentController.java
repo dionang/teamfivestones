@@ -83,9 +83,11 @@ public class ComponentController extends HttpServlet {
                         }
                     } else if (type.equals("image")) {
                         String imageUrl = properties.get("imageUrl").getAsString();
-                        byte[] imageData = Base64.getDecoder().decode(imageUrl);
-//                        components.add(new Image(type, x, y, height, width, imageData));
-                        System.out.println(imageData);
+                        int comma = imageUrl.indexOf(",");
+                        String imagePrefix = imageUrl.substring(0,comma);  
+                        byte[] imageData = Base64.getMimeDecoder().decode(imageUrl.substring(comma));
+
+                        components.add(new Image(type, x, y, height, width, imagePrefix, imageData));
                     }
                 }
                 
@@ -97,6 +99,7 @@ public class ComponentController extends HttpServlet {
                 
             } else if (operation.equals("loadComponents")) {
                 ArrayList<Component> components = ComponentDAO.loadComponentsFromTemplate(templateId);
+                System.out.println("successfully retrieved from DB");
                 JsonArray jsonArr = new JsonArray();
                 for(Component component : components){
                     JsonObject componentObj = new JsonObject();
@@ -107,15 +110,12 @@ public class ComponentController extends HttpServlet {
                     componentObj.addProperty("height", component.getHeight());
                     componentObj.addProperty("width", component.getWidth());                    
                     
-                    // if textbox
+                    JsonObject properties = new JsonObject();
                     if(component.getType().equals("text")){
                         Textbox textbox = (Textbox) component;
-                        JsonObject properties = new JsonObject();
                         properties.addProperty("text", textbox.getText());
-                        componentObj.add("properties", properties);
                     } else if (component.getType().equals("bar") || component.getType().equals("line")) {
                         Chart chart = (Chart) component;
-                        JsonObject properties = new JsonObject();
                         properties.addProperty("initialized", true);
                         properties.addProperty("datasourceUrl", chart.getDatasourceUrl());
                         properties.addProperty("dataset", chart.getDataset());
@@ -123,9 +123,14 @@ public class ComponentController extends HttpServlet {
                         properties.addProperty("xAxis", chart.getXAxis());
                         properties.addProperty("yAxis", chart.getYAxis());                        
                         properties.addProperty("aggregate", chart.getAggregate());
-                        componentObj.add("properties", properties);
-                    } 
+                    } else if (component.getType().equals("image")){
+                        Image image = (Image) component;
+                        String imageUrl = image.getImagePrefix() + "," + Base64.getMimeEncoder().encodeToString(image.getImageData());
+                        properties.addProperty("imageUrl", imageUrl);
+                    }
                     
+                    componentObj.add("properties", properties);
+
                     // add component to jsonArr
                     jsonArr.add(componentObj);
                 }

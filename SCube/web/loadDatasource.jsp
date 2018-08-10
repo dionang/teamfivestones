@@ -4,16 +4,20 @@
 <%@ page import="scube.entities.Developer" %>
 <%
     Account account = (Account) session.getAttribute("account");
-    //if (!(account instanceof Developer)){
-        //response.sendRedirect("/");
-        //return;
-   // }else{
+    int id;
+    String url;
+    String name;
+    String remark;
+    if (!(account instanceof Developer)){
+        response.sendRedirect("login.jsp");
+        return;
+    }else{
         Datasource data=(Datasource)request.getAttribute("datasource");
-        int id=data.getDatasourceId();
-        String url=data.getDatasourceUrl();
-        String name=data.getDatasourceName();
-        String remark=data.getRemark();
-   //}
+        id=data.getDatasourceId();
+        url=data.getDatasourceUrl();
+        name=data.getDatasourceName();
+        remark=data.getRemark();
+   }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -24,7 +28,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/dashboard.css">
         <link rel="stylesheet" href="assets/css/createForm.css">
-        <title>Load DataSource</title>
+        <title>Load Datasource</title>
     </head>
 
     <body class="nav-md">
