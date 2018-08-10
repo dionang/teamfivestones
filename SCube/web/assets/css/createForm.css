@@ -60,10 +60,6 @@ label:hover {
    
 }
 
-input[type=submit] {
-    padding:10px 35px;
-   
-}
 .required {
     color:#E5224C;
 }
