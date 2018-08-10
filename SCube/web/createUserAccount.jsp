@@ -135,7 +135,7 @@
                                     %>
                                     <div class="row">
                                         <div class="col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
-                                            <input type="submit" value="Create User" class="btn btn-success" />
+                                            <input type="submit" value="Create User" class="btn btn-success" style="width: 70% !important"/>
                                         </div>
                                     </div>
                                     <br/>

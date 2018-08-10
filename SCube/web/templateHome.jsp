@@ -36,6 +36,9 @@
                 
                 <div class="right_col">
                     <div class="content">
+                    <% for(int i=0;i<templateList.size();i++) { 
+                       Template template=templateList.get(i);
+                        if(i==0){%>
                         <div class="col-lg-3 col-md-4">
                             <!-- Trigger/Open The Modal -->
                             <a id="myBtn">
@@ -72,7 +75,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-offset-2 col-sm-4 ">
-                                        <a href="loadTemplate.jsp">
+                                        <a href="loadTemplate.jsp?templateId=9 ">
                                              <div class="card card-inverse card-info">
                                                  <div class="card-block">
                                                      <img class="card-img-top" src="assets/images/dummyReport.png">
@@ -85,7 +88,8 @@
                                     </div> 
                                     <div class="col-sm-1 "></div>
                                     <div class="col-sm-4 ">
-                                        <a id="pageSize">
+                                       <!-- <a id="pageSize">-->
+                                       <a href="loadTemplate.jsp?templateId=0">
                                              <div class="card card-inverse card-info">
                                                  <div class="card-block">
                                                      <img class="card-img-top" src="assets/images/dummyReport.png" style="opacity:0">
@@ -96,8 +100,8 @@
                                              </div>
                                          </a> 
                                     </div> 
-                                    <div id="size" class="modal">
-                                        <!-- Modal content -->
+                                   <!-- <div id="size" class="modal">
+                                       
                                         <div class="modal-content">
                                             <form action="report.jsp" method="post">
                                                 <div class="row">
@@ -136,15 +140,15 @@
                                                 </div>
                                             </form>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>                                
                             </div>
                         </div>
-
-                        <% for(Template template : templateList) { %>
-                            <form action="templateControl" method="post" id="test">
+                        <%}%>
+                        
+                            <form action="loadTemplate" method="post" id="test">
                                 <input type=hidden name="templateId" value="<% out.print(template.getTemplateId());%>">
-                                <input type=hidden name="operation" value="templateControl">
+                                <input type=hidden name="operation" value="loadTemplate">
                                 <div class="col-lg-3 col-md-4">
                                     <div class="card card-inverse card-info">
                                         <div class="card-block">
@@ -161,8 +165,8 @@
                                                 <div class="col-md-5">
                                                     <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
                                                 </div>
-                                                <div class="col-sm-1"></div>
-                                                <div class="col-sm-5">
+                                                <div class="col-xs-1"></div>
+                                                <div class="col-md-5">
                                                     <button class="btn delete" name="deleteBtn" value="delete"><i class="fa fa-trash"></i> Delete</button>
                                                 </div>
                                             </div>

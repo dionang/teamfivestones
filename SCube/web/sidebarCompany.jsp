@@ -11,6 +11,7 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <ul class="nav side-menu" id="options">
+                    <li><a href="companyHome.jsp"><i class="fa fa-home"></i>  Home</a></li>
                     <li><a href="createDevAccount.jsp"><i class="fa fa-gears"></i>  Create Developer Account</a></li>
                     <li><a href="createManagerAccount.jsp"><i class="fa fa-user"></i>  Create Manager Account</a></li>
                     <li><a href="createUserAccount.jsp"><i class="fa fa-group"></i>  Create User Account</a></li> 
