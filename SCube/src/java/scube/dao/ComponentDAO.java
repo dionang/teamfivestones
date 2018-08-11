@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import scube.entities.Component;
 import scube.entities.Textbox;
 import scube.entities.Chart;
+import scube.entities.Image;
 
 public class ComponentDAO {
     //Create operations
@@ -40,6 +41,9 @@ public class ComponentDAO {
                 } else if (component.getType().equals("bar") || component.getType().equals("line")) {
                     Chart chart = (Chart) component;
                     addChart(templateId, i, chart.getDatasourceUrl(), chart.getDataset(), chart.getTitle(), chart.getXAxis(), chart.getYAxis(), chart.getAggregate());
+                } else if (component.getType().equals("image")) {
+                    Image image = (Image) component;
+                    addImage(templateId, i, image.getImagePrefix(), image.getImageData());
                 }
             }
             stmt.executeBatch();
@@ -70,6 +74,27 @@ public class ComponentDAO {
             stmt.setString(8, aggregate);
 
             stmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static void addImage(int templateId, int position, String imagePrefix, byte[] imageData) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO image VALUES (?,?,?,?)");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);            
+            stmt.setString(3, imagePrefix);
+            stmt.setBytes(4, imageData);
+            System.out.println(stmt.executeUpdate());
             
         } catch (SQLException e) {
             e.printStackTrace(System.out);
@@ -123,6 +148,9 @@ public class ComponentDAO {
                     ArrayList<String> props = getChartProps(templateId, position);
                     component = new Chart(type, rs.getInt("x"), rs.getInt("y"), 
                         rs.getInt("height"), rs.getInt("width"), props.get(0), props.get(1), props.get(2), props.get(3), props.get(4), props.get(5));
+                } else if (type.equals("image")) {
+                    component = new Image(type, rs.getInt("x"), rs.getInt("y"), 
+                        rs.getInt("height"), rs.getInt("width"), getImagePrefix(templateId, position), getImageData(templateId, position));
                 }
                 components.add(component);
                 position++;
@@ -150,6 +178,56 @@ public class ComponentDAO {
 
             if(rs.next()){
                 return rs.getString("text");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static String getImagePrefix(int templateId, int position) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT imagePrefix FROM image WHERE templateId = ? and position = ?");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);
+            rs = stmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getString("imagePrefix");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static byte[] getImageData(int templateId, int position) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT imageData FROM image WHERE templateId = ? and position = ?");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, position);
+            rs = stmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getBytes("imageData");
             } else {
                 return null;
             }
@@ -215,26 +293,6 @@ public class ComponentDAO {
 //    }
     
     // Delete operations
-    public static boolean deleteComponent(int templateId, int position) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE FROM component WHERE templateId = ? and position = ?");
-            stmt.setInt(1, templateId);
-            stmt.setInt(2, position);
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            return false;
-        } finally {
-            ConnectionManager.close(conn, stmt, rs);
-        }
-    }
-    
     public static boolean deleteAllComponents(int templateId) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -248,7 +306,9 @@ public class ComponentDAO {
             
             //delete components from the other tables as well
             deleteAllCharts(templateId);            
-            deleteAllTextboxes(templateId);
+            deleteAllTextboxes(templateId);            
+            deleteAllImages(templateId);
+
             return true;
         } catch (SQLException e) {
             e.printStackTrace(System.out);
@@ -285,6 +345,25 @@ public class ComponentDAO {
         try {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("DELETE FROM chart WHERE templateId = ?");
+            stmt.setInt(1, templateId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static boolean deleteAllImages(int templateId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM image WHERE templateId = ?");
             stmt.setInt(1, templateId);
             stmt.executeUpdate();
             return true;

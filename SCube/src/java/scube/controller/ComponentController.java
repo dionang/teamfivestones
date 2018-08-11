@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Base64;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +22,7 @@ import scube.dao.ComponentDAO;
 import scube.entities.Component;
 import scube.entities.Textbox;
 import scube.entities.Chart;
+import scube.entities.Image;
 
 /**
  *
@@ -54,7 +56,6 @@ public class ComponentController extends HttpServlet {
                     JsonObject componentObj = arr.get(i).getAsJsonObject();
                     // "deleted" components that we do not need to save
                     if (!componentObj.get("display").getAsBoolean()){
-                        System.out.println("don't save");
                         continue;
                     }
                     
@@ -80,6 +81,13 @@ public class ComponentController extends HttpServlet {
                         if(initialized){
                             components.add(new Chart(type, x, y, height, width, datasourceUrl, dataset, title, xAxis, yAxis, aggregate));
                         }
+                    } else if (type.equals("image")) {
+                        String imageUrl = properties.get("imageUrl").getAsString();
+                        int comma = imageUrl.indexOf(",");
+                        String imagePrefix = imageUrl.substring(0,comma);  
+                        byte[] imageData = Base64.getMimeDecoder().decode(imageUrl.substring(comma));
+
+                        components.add(new Image(type, x, y, height, width, imagePrefix, imageData));
                     }
                 }
                 
@@ -91,6 +99,7 @@ public class ComponentController extends HttpServlet {
                 
             } else if (operation.equals("loadComponents")) {
                 ArrayList<Component> components = ComponentDAO.loadComponentsFromTemplate(templateId);
+                System.out.println("successfully retrieved from DB");
                 JsonArray jsonArr = new JsonArray();
                 for(Component component : components){
                     JsonObject componentObj = new JsonObject();
@@ -101,15 +110,12 @@ public class ComponentController extends HttpServlet {
                     componentObj.addProperty("height", component.getHeight());
                     componentObj.addProperty("width", component.getWidth());                    
                     
-                    // if textbox
+                    JsonObject properties = new JsonObject();
                     if(component.getType().equals("text")){
                         Textbox textbox = (Textbox) component;
-                        JsonObject properties = new JsonObject();
                         properties.addProperty("text", textbox.getText());
-                        componentObj.add("properties", properties);
                     } else if (component.getType().equals("bar") || component.getType().equals("line")) {
                         Chart chart = (Chart) component;
-                        JsonObject properties = new JsonObject();
                         properties.addProperty("initialized", true);
                         properties.addProperty("datasourceUrl", chart.getDatasourceUrl());
                         properties.addProperty("dataset", chart.getDataset());
@@ -117,9 +123,14 @@ public class ComponentController extends HttpServlet {
                         properties.addProperty("xAxis", chart.getXAxis());
                         properties.addProperty("yAxis", chart.getYAxis());                        
                         properties.addProperty("aggregate", chart.getAggregate());
-                        componentObj.add("properties", properties);
+                    } else if (component.getType().equals("image")){
+                        Image image = (Image) component;
+                        String imageUrl = image.getImagePrefix() + "," + Base64.getMimeEncoder().encodeToString(image.getImageData());
+                        properties.addProperty("imageUrl", imageUrl);
                     }
                     
+                    componentObj.add("properties", properties);
+
                     // add component to jsonArr
                     jsonArr.add(componentObj);
                 }

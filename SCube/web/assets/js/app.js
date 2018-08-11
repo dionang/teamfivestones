@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import request from 'request';
 import RichTextEditor from 'react-rte';
 import Rnd from 'react-rnd';
-import { Navbar, Button } from 'react-bootstrap';
+import { Button, ButtonToolbar, SplitButton, MenuItem, Navbar } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
-import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
 const Component = React.Component;
@@ -870,47 +870,29 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // initial state has two line charts
-            components: [
-                // {type:"table", x:0, y:0, height:200, width:200}
-                // {type:"image", x:0, y:0, height:200, width:200, properties: {imageUrl:''}}
-                // {type:"line", x:10, y:10, height:200, width:300, data:lineChartData},
-                /*{type:"bar", x:320, y:10, height:300, width:400, display:true,
-                    properties:{
-                        initialized:true, 
-                        datasourceUrl:'http://localhost:8084/Dummy_API/getFurnituresByCategory?category=Furniture', 
-                        dataset:'furnitures',
-                        title: 'Furniture Sales By Region',  
-                        xAxis:'Region', 
-                        yAxis:'Sales',
-                        aggregate:'sum'
-                    }
-                },*/
-                // {type:"text", x:10, y:310, height:100, width:150, properties:{text:"<p>Hello World!</p>"}},
-                // {type:"basic", x:0, y:0, height:300, width:200}
-            ],
-            border: "dotted",
-            visibility: "",
-            editButtonValue: "Leave Edit Mode",
+            components: [],
+            editMode: true,
             selectedSize: 'A4',
-            selectedLayout:'Portrait',
-            w : 21*37.795276,
-            h : 29.7*37.795276,
+            selectedLayout: 'Portrait',
+            // w : 21*37.795276,
+            // h : 29.7*37.795276,
             formVisibility: "hidden",
-            templateName:""
-
+            templateName: "Template Name",
+            sidebar: false
         }
-
     }
 
+    componentDidMount() {
+        this.loadTemplate();
+    }
 
     addTextbox = () => {
         let components = this.state.components;
         components.push(
-            { type: "text", x: 0, y: 0, height: 50, width: 200, display: true, properties: { text: "<p><br></p>" } }
+            { type: "text", x: 0, y: 0, height: 120, width: 200, display: true, properties: { text: "<p><br></p>" } }
         );
 
-        this.setState({ components });
+        this.setState({ components, editMode: true });
     }
 
     addBarChart = () => {
@@ -918,7 +900,7 @@ class App extends Component {
         // adds new component to state
         components.push(
             {
-                type: "bar", x: 0, y: 0, height: 200, width: 300, display: true,
+                type: "bar", x: 0, y: 0, height: 250, width: 300, display: true,
                 properties: {
                     initialized: false,
                     datasourceUrl: '',
@@ -931,14 +913,14 @@ class App extends Component {
         );
 
         // updates state
-        this.setState({ components });
+        this.setState({ components, editMode: true });
     }
 
     addLineChart = () => {
         let components = this.state.components;
         components.push(
             {
-                type: "line", x: 0, y: 0, height: 200, width: 300, display: true,
+                type: "line", x: 0, y: 0, height: 250, width: 300, display: true,
                 properties: {
                     initialized: false,
                     datasourceUrl: '',
@@ -950,17 +932,17 @@ class App extends Component {
             }
         );
 
-        this.setState({ components });
+        this.setState({ components, editMode: true });
     }
 
 
     addTable = () => {
         let components = this.state.components;
         components.push(
-            { type: "table", x: 0, y: 0, height: 200, width: 300, display: true }
+            { type: "table", x: 0, y: 0, height: 300, width: 300, display: true }
         );
 
-        this.setState({ components });
+        this.setState({ components, editMode: true });
     }
 
     addImage = () => {
@@ -970,42 +952,16 @@ class App extends Component {
         );
         this.setState({ components });
     }
-    componentDidMount() {
-
-        // Toggle sidebar
-        $('#options li').click(function () {
-            $(this).find('ul').toggle();
-        });
-
-        $('#menu_toggle').click(function () {
-            $('#logo').toggle();
-            $('#logo2').toggle();
-            $('#title').toggle();
-            $('#title1').toggle();
-            if ($('div').hasClass('nav-md')) {
-                //$('#sidebar-menu').find('li.active ul').hide();
-                $('#sidebar-menu').find('li.active').addClass('active-sm').removeClass('active');
-            } else {
-                // $('#sidebar-menu').find('li.active-sm ul').show();
-                $('#sidebar-menu').find('li.active-sm').addClass('active').removeClass('active-sm');
-            }
-
-            $('#main').toggleClass('nav-md nav-sm');
-        });
-
-    }
-
-    
-    closeModal = () => {
-        var modal = document.getElementById('size');
-        modal.style.display = "none";
-    }
-
 
     changeSettings(i) {
         let components = this.state.components;
         components[i].properties.initialized = false;
         this.setState({ components });
+    }
+
+    closeModal = () => {
+        var modal = document.getElementById('size');
+        modal.style.display = "none";
     }
 
     deleteComponent(i) {
@@ -1018,111 +974,95 @@ class App extends Component {
         console.log(this.state.components);
     }
 
-    
-    handleSizeChange= (changeEvent) => {
+    handleSizeChange = (changeEvent) => {
         this.setState({
-          selectedSize: changeEvent.target.value
+            selectedSize: changeEvent.target.value
         });
-      }
-      handleLayoutChange= (changeEvent) => {
+    }
+
+    handleLayoutChange = (changeEvent) => {
         this.setState({
-          selectedLayout: changeEvent.target.value
+            selectedLayout: changeEvent.target.value
         });
-      }
-
-      handleFormSubmit= (formSubmitEvent) => {
-        formSubmitEvent.preventDefault();
-        var size=this.state.selectedSize;
-        var layout=this.state.selectedLayout;
-        var h;
-        var w;
-        if (size==="A3" && layout==="Portrait") {
-            this.setState({w : 29.7 *37.795276,
-                h : 42*37.795276});
-            
-        }
-        else if (size==="A3" && layout==="Landscape") {
-            this.setState({h : 29.7 *37.795276,
-                w : 42*37.795276});
-
-        }
-        else if (size==="A4" && layout==="Portrait") {
-            this.setState({h : 29.7 *37.795276,
-                w : 21*37.795276});
-
-        }
-        else if (size==="A4" && layout==="Landscape") {
-            this.setState({w : 29.7 *37.795276,
-                h : 21*37.795276});
-
-        }
-        else if (size==="A5" && layout==="Portrait") {
-            
-            this.setState({w : 14.8*37.795276,
-                h : 21*37.795276}); 
-
-        } else if (size==="A5" && layout==="Landscape") {
-            this.setState({w : 21*37.795276,
-                h : 14.8*37.795276});
-        }
-
-        this.setState({formVisibility:"hidden"});
-       
-        var modal = document.getElementById('size');
-        modal.style.display = "none";
-      }
-      handleTemplateName = (changeEvent) => {
-        this.setState({
-            value: changeEvent.target.value
-        });
-      }
+    }
 
     loadTemplate = () => {
         let self = this;
-        let templateId = parseInt(document.getElementById("template").value, 10);
-        request.post({
-            url: api + 'loadComponents',
-            json: true,
-            body: { operation: "loadComponents", templateId: templateId }
-        }, function (error, response, body) {
-            let components = body.components;
-            // for (let component of components){
-            //     if (component.type === "bar") {
-            //         component.data = barChartData;
-            //     } else if (component.type === "line") {
-            //         component.data = lineChartData;
-            //     }
-            // }
-            // console.log(body);
-            self.setState({ components });
-        });
+        let templateId = parseInt(document.getElementById("templateId").value, 10);
+        if (templateId !== 0) {
+            request.post({
+                url: api + 'loadComponents',
+                json: true,
+                body: { operation: "loadComponents", templateId: templateId }
+            }, function (error, response, body) {
+                if(body){
+                    let components = body.components;
+                    self.setState({ components });
+                }
+            });
+        }
+    }
+
+    renameTemplate = (e) => {
+        this.setState({ templateName: e.target.value });
     }
 
     saveTemplate = () => {
-        let templateId = parseInt(document.getElementById("template").value, 10);
-        let companyId = parseInt(document.getElementById("companyId").value, 10);
-        let userName =document.getElementById("userName").value;
-        if(templateId===0){
+        let self = this;
+        let templateId = parseInt(document.getElementById("templateId").value, 10);
+        //let companyId = parseInt(document.getElementById("companyId").value, 10);
+        //let userName =document.getElementById("userName").value;
+        if (templateId === 0) {
             request.post({
                 url: api + 'createTemplate',
-             
-                body: { templateName: this.state.templateName,templatesize: this.state.selectedSize,templatelayout:this.state.selectedLayout,companyId:companyId,userName:userName,operation: "createTemplate" }
-            }, function (error, response, body) {
-                if(body.status) {
-                    alert("Saved successfully!");
-                } else {
-                    alert("Failed to save!");
+                form: {
+                    operation: "createTemplate",
+                    templateId: templateId,
+                    templateName: self.state.templateName,
+                    templatesize: self.state.selectedSize,
+                    templatelayout: self.state.selectedLayout,
+                    companyId: 1,
+                    userName: 'aa'
                 }
-            });  
+            }, function (error, response, body) {
+                if (body === "false") {
+                    alert("Failed to create template!");
+                } else {
+                    templateId = parseInt(body, 10);
+                    request.post({
+                        url: api + 'saveComponents',
+                        json: true,
+                        body: { operation: "saveComponents", templateId: templateId, components: self.state.components }
+                    }, function (error, response, body) {
+                        console.log(body);
+                    });
+                }
+            });
+        } else {
+            request.post({
+                url: api + 'saveComponents',
+                json: true,
+                body: { operation: "saveComponents", templateId: templateId, components: self.state.components }
+            }, function (error, response, body) {
+                console.log(body);
+            });
         }
-        request.post({
-            url: api + 'saveComponents',
-            json: true,
-            body: { operation: "saveComponents", templateId: templateId, components: this.state.components }
-        }, function (error, response, body) {
-            console.log(body);
-        });
     }
+
+    // saveTemplate = () => {
+    //     let templateId = parseInt(document.getElementById("templateId").value, 10);
+    //     request.post({
+    //         url: api + 'saveComponents',
+    //         json: true,
+    //         body: { operation: "saveComponents", templateId: templateId, components: this.state.components }
+    //     }, function (error, response, body) {
+    //         if(body.status) {
+    //             alert("Saved successfully!");
+    //         } else {
+    //             alert("Failed to save!");
+    //         }
+    //     });
+    // }
 
     // i represents index of current item in this.state.components
     // convert style data to integer. e.g. 10px -> 10
@@ -1141,12 +1081,23 @@ class App extends Component {
         components[i].y = ref.y;
         this.setState({ components });
     }
-    openModal = () => {
-        var modal = document.getElementById('size');
-        modal.style.display = "block";
-        this.setState({formVisibility:""});
+
+    toggleChartMenu = () => {
+        let chartMenu = document.getElementById("chartMenu");
+        if (chartMenu.style.display === "block") {
+            chartMenu.style.display = "none";
+        } else {
+            chartMenu.style.display = "block";
+        }
     }
 
+    toggleEditMode = () => {
+        this.setState({ editMode: !this.state.editMode })
+    }
+
+    toggleSidebar = () => {
+        this.setState({ sidebar: !this.state.sidebar });
+    }
 
     updateProperties = (properties, i) => {
         let components = this.state.components;
@@ -1154,47 +1105,60 @@ class App extends Component {
         this.setState({ properties });
     }
 
+    // handleFormSubmit= (formSubmitEvent) => {
+    //     formSubmitEvent.preventDefault();
+    //     var size=this.state.selectedSize;
+    //     var layout=this.state.selectedLayout;
+    //     if (size==="A3" && layout==="Portrait") {
+    //         this.setState({w : 29.7 *37.795276, h : 42*37.795276});
+    //     } else if (size==="A3" && layout==="Landscape") {
+    //         this.setState({h : 29.7 *37.795276, w : 42*37.795276});
+    //     } else if (size==="A4" && layout==="Portrait") {
+    //         this.setState({h : 29.7 *37.795276, w : 21*37.795276});
+    //     } else if (size==="A4" && layout==="Landscape") {
+    //         this.setState({w : 29.7 *37.795276, h : 21*37.795276});
+    //     } else if (size==="A5" && layout==="Portrait") {
+    //         this.setState({w : 14.8*37.795276, h : 21*37.795276}); 
+    //     } else if (size==="A5" && layout==="Landscape") {
+    //         this.setState({w : 21*37.795276, h : 14.8*37.795276});
+    //     }
 
+    //     this.setState({formVisibility:"hidden"});
+    //     var modal = document.getElementById('size');
+    //     modal.style.display = "none";
+    // }
 
-    leaveEditMode = () => {
-        if (this.state.border === "dotted") {
-            this.setState({ border: "hidden", visibility: "hidden", editButtonValue: "Edit the View" })
-        } else {
-            this.setState({ border: "dotted", visibility: "", editButtonValue: "Leave Edit Mode" })
-        }
-
-    }
-   
+    // openModal = () => {
+    //     var modal = document.getElementById('size');
+    //     modal.style.display = "block";
+    //     this.setState({formVisibility:""});
+    // }
 
     render() {
         return (
             <div>
-                <div className="nav-md" id="main">
-                    <div className="container body" >
+                <input type="hidden" id="templateId" value="1" />
+                <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
+                    <div className="container body" style={{margin:0, padding:0, width:"100%"}}>
                         <div className="main_container">
                             <div className="col-md-3 left_col">
                                 <div className="left_col scroll-view">
-                                    <div className="navbar nav_title" id="logo" style={{ border: 0 }}>
-                                        <a href="" className="site_title"><img src="/assets/images/logo.png" style={{ height: 90, width: 200 }} /></a>
-                                    </div>
-                                    <div className="navbar nav_title" id="logo2" style={{ border: 0, display: 'none' }}>
-                                        <a href="" className="site_title"><img src="/assets/images/logo1_1.png" style={{ height: 80, width: 50 }} /></a>
+                                    <div className="navbar nav_title" style={{ border: 0 }}>
+                                        <a className="site_title">
+                                            <img src={this.state.sidebar ? "assets/images/logo.png" : "assets/images/logo1_1.png"}
+                                                style={{
+                                                    height: this.state.sidebar ? 90 : 80,
+                                                    width: this.state.sidebar ? 200 : 50,
+                                                }} />
+                                        </a>
                                     </div>
                                     <div className="clearfix"></div><br />
                                     <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
                                         <div className="menu_section">
                                             <ul className="nav side-menu" id="options">
-                                                <li id="title"><a style={{ fontSize: 16, fontWeight: 'bold' }}>Component</a></li>
-                                                <li id="title1" style={{ display: 'none' }}><a style={{ fontWeight: 'bold', fontSize: 11 }}> Component</a></li>
-                                                <li><a id="addTextbox" onClick={this.addTextbox}><i className="fa fa-font"></i> Textbox</a></li>
-                                                <li><a><i className="fa fa-bar-chart"></i> Charts <span className="fa fa-chevron-down"></span></a>
-                                                    <ul className="nav child_menu">
-                                                        <li><a id="addBarChart" onClick={this.addBarChart}><i className="fa fa-bar-chart a"  ></i>Bar</a></li>
-                                                        <li><a id="addPieChart" onClick={this.addLineChart}><i className="fa fa-pie-chart a"></i> Pie</a></li>
-                                                        <li><a id="addLineChart" onClick={this.addLineChart}><i className="fa fa-line-chart a"></i>Line</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a id="addTable" onClick={this.addTable}><i className="fa fa-table"></i> Table</a></li>
+                                                <li><a href="dashboard.jsp"><i className="fa fa-bar-chart"></i>  View Dashboard</a></li>
+                                                <li><a href="createUserAccount.jsp"><i className="fa fa-group"></i>  Create User Account</a></li>
+                                                <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"></i>  Template</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1203,14 +1167,14 @@ class App extends Component {
                             <div className="top_nav" >
                                 <div className="nav_menu">
                                     <nav>
-                                        <div className="nav toggle">
+                                        <div className="nav toggle" onClick={this.toggleSidebar}>
                                             <a id="menu_toggle"><i className="fa fa-bars"></i></a>
                                         </div>
 
                                         <ul className="nav navbar-nav navbar-right">
                                             <li>
-                                                <a href="javascript:;" className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <img src="/assets/images/user.png" />
+                                                <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <img src="assets/images/user.png" />
                                                     <span className=" fa fa-angle-down"></span>
                                                 </a>
                                                 <ul className="dropdown-menu dropdown-usermenu pull-right">
@@ -1222,23 +1186,24 @@ class App extends Component {
                                     </nav>
                                 </div>
                             </div>
+
                             <div className="right_col">
-                                <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button>
-                                <button className="btn btn-success" id="createTemplate" onClick={this.saveTemplate}>Save Template</button>
-                                <button className="btn" id="printPage" >Screenshot</button>
-                                <br /><br />
-                                <div className="row">
-                                    <div className="col-md-2">
-                                        <h4>Template Name: </h4>
-                                    </div>
-                                    <div className="col-md-5">
-                                        <input type="text" name="templateName" className="tbTemplate" value={this.state. templateName} onChange={this.handleTemplateName}/>
-                                    </div>
+                                <div className="col-md-6 col-xs-6">
+                                    <label style={{ fontSize:15, marginRight:2 }}>Template Name:</label>
+                                    <input style={{ fontSize:15 }} value={this.state.templateName} onChange={this.renameTemplate} />
                                 </div>
+                                    {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
+                                    {/* <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> */}
+                                <Button className="col-md-2 col-xs-3" style={{ float:"right" }} bsStyle="info" onClick={this.saveTemplate}>
+                                    <i className="fa fa-save" /> Save Template
+                                </Button>
+                                <Button className="col-md-2 col-xs-3" style={{ float:"right"}} bsStyle="success" onClick={this.toggleEditMode}>
+                                    <i className="fa fa-edit" style={{ marginRight: 2 }} />
+                                    {this.state.editMode ? "Leave Edit Mode" : "Enter Edit Mode"}
+                                </Button>
 
-                                <div id="size" className="modal">
 
-                                    /* Modal content */
+                                {/* <div id="size" className="modal">
                                     <div className="modal-content">
                                         <form onSubmit={this.handleFormSubmit} id="myform" visibility= {this.state.formVisibility}>
                                             <div className="row">
@@ -1251,7 +1216,7 @@ class App extends Component {
                                                         <label><input type="radio" name="size" value="A3" checked={this.state.selectedSize === 'A3'} onChange={this.handleSizeChange}  />A3</label>
                                                     </div>
                                                     <div className="radio">
-                                                        <label><input type="radio" name="size" value="A4" checked={this.state.selectedSize === 'A4'} onChange={this.handleSizetChange} />A4</label>
+                                                        <label><input type="radio" name="size" value="A4" checked={this.state.selectedSize === 'A4'} onChange={this.handleSizeChange} />A4</label>
                                                     </div>
                                                     <div className="radio">
                                                         <label><input type="radio" name="size" value="A5" checked={this.state.selectedSize === 'A5'} onChange={this.handleSizeChange} />A5</label>
@@ -1268,9 +1233,7 @@ class App extends Component {
                                                     <div className="radio">
                                                         <label><input type="radio" name="layout" value="Landscape" checked={this.state.selectedLayout === 'Landscape'}  onChange={this.handleLayoutChange} />Landscape</label>
                                                     </div>
-
                                                 </div>
-
                                             </div>
                                             <div className="row">
                                                 <div className="col-sm-offset-7 col-sm-2 ">
@@ -1279,27 +1242,35 @@ class App extends Component {
                                             </div>
                                         </form>
                                     </div>
+                                </div> */}
+
+
+                                <div className="col-sm-12 col-xs-12" style={{ paddingTop:10, paddingBottom:10, backgroundColor:'white', borderBottom:'7px solid #EB6B2A' }}>
+                                    <Button bsStyle="primary" onClick={this.addTextbox}   style={{ marginRight:5 }}><i className="fa fa-font"/> Add Textbox</Button>
+                                    <Button bsStyle="warning" onClick={this.addBarChart}  style={{ marginRight:5 }}><i className="fa fa-bar-chart"/> Add Bar Chart</Button>
+                                    <Button bsStyle="success" onClick={this.addLineChart} style={{ marginRight:5 }}><i className="fa fa-line-chart"/> Add Line Chart</Button>
+                                    <Button bsStyle="danger"  onClick={this.addTable}     style={{ marginRight:5 }}><i className="fa fa-table"/> Add Table</Button>
+                                    <Button onClick={this.addImage} style={{ backgroundColor:"#31B0D5", color:"white", border: "1px solid #31B0D5"}}><i className="fa fa-image"/> Add Image</Button>
                                 </div>
-
-
-                                <Button bsStyle="info" onClick={this.getComponentDetails} style={{ marginTop: 10 }}>Get Component Details</Button>
-                                <Button bsStyle="info" onClick={this.loadTemplate} style={{ marginTop: 10 }}>Load Template</Button>
-                                <Button bsStyle="success" onClick={this.leaveEditMode} style={{ marginTop: 10 }}>{this.state.editButtonValue}</Button>
-
-                                <input type="number" id="template" defaultValue="1" />
-                                <div style={{maxWidth:70 , maxHeight:100}}>
-                                <div id="container" style={{width:this.state.w, height:this.state.h, backgroundColor:'white',overflow:'auto'}}>
+                                <div id="container" className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', overflow: 'auto', height:"100%", marginTop: -5 }}>
                                     {/* map does a for loop over all the components in the state */}
+
                                     {this.state.components.map((item, i) => {
                                         if (item.display) {
-                                            return <Rnd key={i} style={{ padding: 10, "borderStyle": this.state.border, "borderWidth": 2 }}
+                                            return <Rnd key={i}
+                                                style={{
+                                                    borderStyle: this.state.editMode ? "dotted" : "hidden",
+                                                    borderWidth: 2,
+                                                    backgroundColor: "white",
+                                                    borderColor: 'grey'
+                                                }}
 
                                                 // intialize components x,y,height and width
                                                 position={{ x: item.x, y: item.y }}
                                                 size={{ width: item.width, height: item.height }}
 
                                                 // min height and size
-                                                minHeight={80} minWidth={120}
+                                                minHeight={10} minWidth={10}
 
                                                 // to limit the drag area to a particular class
                                                 cancel={".nonDraggable"}
@@ -1315,13 +1286,13 @@ class App extends Component {
                                                 // ref represents item that was dragged
                                                 onDragStop={(event, ref) => this.onDragStop(ref, i)}
                                             >
-                                                <div style={{ float: "right" }}>
-                                                    <i style={{ "marginTop": 10, "marginRight": 6, visibility: this.state.visibility }} className="fa fa-wrench"
+                                                <div style={{ height:27.5, float:"right" }}>
+                                                    <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
                                                         onClick={() => this.changeSettings(i)}></i>
-                                                    <i style={{ "marginTop": 10, "marginRight": 10, visibility: this.state.visibility }} className="fa fa-times"
+                                                    <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
                                                         onClick={() => this.deleteComponent(i)}></i>
                                                 </div>
-                                                <ReportComponent type={item.type}
+                                                <ReportComponent type={item.type} editMode={this.state.editMode}
                                                     properties={item.properties} i={i}
                                                     updateProperties={this.updateProperties.bind(this)}
                                                 />
@@ -1329,16 +1300,10 @@ class App extends Component {
                                         }
                                     })}
                                 </div>
-                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
-
-
-
             </div>
         );
     }
@@ -1360,10 +1325,6 @@ class ReportComponent extends Component {
                 <Textbox i={this.props.i} text={this.props.properties.text} editMode={this.props.editMode}
                     updateProperties={this.props.updateProperties} />
             );
-        } else if (this.props.type === "basic"){
-            return(
-                <BasicForm/>
-            )
         } else if (this.props.type ==="image"){
             return(
                 <Image i={this.props.i}  
@@ -1372,102 +1333,9 @@ class ReportComponent extends Component {
             )
         } else if (this.props.type ==="table"){
             return(
-            <ResponsiveContainer className="draggable" height="100%" width="100%" boarder="none">
-                <BasicTable/>
-            </ResponsiveContainer>
+                <Table/>
             )
         }
-    }
-}
-
-class Linechart extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            ...this.props.properties,
-            chartData:[]
-        }
-    }
-
-    // update state of initialized when props change
-    componentWillReceiveProps(nextProps){
-        if (nextProps.properties.initialized != this.state.initialized){
-            this.setState({initialized: nextProps.properties.initialized});
-        }
-    }
-
-    // do API call to render chartData upon loading of component from DB
-    componentWillMount(){
-        let self = this;
-        let url = this.props.properties.datasourceUrl;
-        let aggregate = this.props.properties.aggregate;
-        if (url){
-            request.get({
-                url: url,
-            }, function(error, response, body){
-                let data = JSON.parse(body);
-                let chartData = data[self.props.properties.dataset];
-                let xAxis = self.props.properties.xAxis;
-                let yAxis = self.props.properties.yAxis;
-                if (aggregate === ""){
-                    chartData.sort((a, b) => a[xAxis] - b[xAxis]);
-                } else {
-                    chartData = new JsonProcessor().getAggregatedData(chartData, xAxis, yAxis, aggregate);
-                }
-                self.setState({chartData});
-            });
-        }
-    }
-
-    initializeChart = (values) => {
-        //set settings of barchart
-        let processor = values.processor;
-        let datasourceUrl = values.datasourceUrl;
-        let dataset = values.dataset;
-        let data = processor.getDataset(dataset);
-
-        let title = values.title;
-        let xAxis = values.xAxis;
-        let yAxis = values.yAxis;
-        let aggregate = "";
-
-        // if x-axis is non-categorical, 
-        // sort data in ascending order by x-axis
-        if (processor.getType(dataset, xAxis) !== "string"){
-            data.sort((a, b) => a[xAxis] - b[xAxis]);
-        } else {
-            aggregate = "sum";
-            data = processor.getAggregatedData(data, xAxis, yAxis, aggregate);
-        }
-        
-        this.setState({
-            initialized:true,
-            datasourceUrl: datasourceUrl,
-            dataset: dataset,
-            title: title,
-            xAxis: xAxis,
-            yAxis: yAxis,
-            aggregate: aggregate,
-            chartData: data
-        })
-        
-        let {chartData, ...other} = this.state;
-        this.props.updateProperties(other, this.props.i);
-    }
-
-    render() {
-        return this.state.initialized ?
-            <ResponsiveContainer className="draggable" width="100%" height="100%">
-                <LineChart style={{width:"100%", height:"100%"}} data={this.state.chartData}>
-                    <XAxis dataKey={this.state.xAxis}/>
-                    <YAxis dataKey={this.state.yAxis}/>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <Legend />
-                    <Tooltip />
-                    <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
-                </LineChart>
-            </ResponsiveContainer>
-            :   <BasicForm initializeChart={this.initializeChart}/>
     }
 }
 
@@ -1548,19 +1416,118 @@ class Barchart extends Component {
 
     render() {
         return this.state.initialized ?
-            <ResponsiveContainer className="draggable" width="100%" height="100%">
-                <BarChart style={{width:"100%", height:"100%"}} data={this.state.chartData}>
+            <ResponsiveContainer className="draggable" width="95%" height="90%">
+                <BarChart style={{width:"100%", height:"calc(100% + 20px)"}} data={this.state.chartData}>
                     <CartesianGrid strokeDasharray="3 3"/>
-                    <XAxis dataKey={this.state.xAxis} />
-                    <YAxis dataKey={this.state.yAxis} />
+                    <XAxis dataKey={this.state.xAxis}>
+                        <Label value={this.state.xAxis} offset={-5} position="insideBottomRight" />
+                    </XAxis>
+                    <YAxis dataKey={this.state.yAxis}>
+                        <Label value={this.state.yAxis} position="outside" angle={-90}/>
+                    </YAxis>
                     <Bar dataKey={this.state.yAxis} fill="blue" />
                     {/* <Bar dataKey="neutral" fill="orange" /> */}
                     {/* <Bar dataKey="negative" fill="grey" /> */}
-                    <Legend/>
+                    <Legend verticalAlign="bottom"/>
                     <Tooltip/>
                 </BarChart>
             </ResponsiveContainer>
-            :   <BasicForm initializeChart={this.initializeChart}/>
+            :   <ChartForm initializeChart={this.initializeChart}/>
+    }
+}
+
+class Linechart extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            ...this.props.properties,
+            chartData:[]
+        }
+    }
+
+    // update state of initialized when props change
+    componentWillReceiveProps(nextProps){
+        if (nextProps.properties.initialized != this.state.initialized){
+            this.setState({initialized: nextProps.properties.initialized});
+        }
+    }
+
+    // do API call to render chartData upon loading of component from DB
+    componentWillMount(){
+        let self = this;
+        let url = this.props.properties.datasourceUrl;
+        let aggregate = this.props.properties.aggregate;
+        if (url){
+            request.get({
+                url: url,
+            }, function(error, response, body){
+                let data = JSON.parse(body);
+                let chartData = data[self.props.properties.dataset];
+                let xAxis = self.props.properties.xAxis;
+                let yAxis = self.props.properties.yAxis;
+                if (aggregate === ""){
+                    chartData.sort((a, b) => a[xAxis] - b[xAxis]);
+                } else {
+                    chartData = new JsonProcessor().getAggregatedData(chartData, xAxis, yAxis, aggregate);
+                }
+                self.setState({chartData});
+            });
+        }
+    }
+
+    initializeChart = (values) => {
+        //set settings of barchart
+        let processor = values.processor;
+        let datasourceUrl = values.datasourceUrl;
+        let dataset = values.dataset;
+        let data = processor.getDataset(dataset);
+
+        let title = values.title;
+        let xAxis = values.xAxis;
+        let yAxis = values.yAxis;
+        let aggregate = "";
+
+        // if x-axis is non-categorical, 
+        // sort data in ascending order by x-axis
+        if (processor.getType(dataset, xAxis) !== "string"){
+            data.sort((a, b) => a[xAxis] - b[xAxis]);
+        } else {
+            aggregate = "sum";
+            data = processor.getAggregatedData(data, xAxis, yAxis, aggregate);
+        }
+        
+        this.setState({
+            initialized:true,
+            datasourceUrl: datasourceUrl,
+            dataset: dataset,
+            title: title,
+            xAxis: xAxis,
+            yAxis: yAxis,
+            aggregate: aggregate,
+            chartData: data
+        })
+        
+        let {chartData, ...other} = this.state;
+        this.props.updateProperties(other, this.props.i);
+    }
+
+    render() {
+        return this.state.initialized ?
+            <ResponsiveContainer className="draggable" width="95%" height="90%">
+                <LineChart style={{width:"100%", height:"calc(100% + 20px)"}} data={this.state.chartData}>
+                    <XAxis dataKey={this.state.xAxis}>
+                        <Label value={this.state.xAxis} offset={-5} position="insideBottomRight" />
+                    </XAxis>
+                    <YAxis dataKey={this.state.yAxis}>
+                        <Label value={this.state.yAxis} position="outside" angle={-90}/>
+                    </YAxis>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <Legend />
+                    <Tooltip />
+                    <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
+                </LineChart>
+            </ResponsiveContainer>
+            :   <ChartForm initializeChart={this.initializeChart}/>
     }
 }
 
@@ -1568,8 +1535,7 @@ class Image extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            file: '', 
-            imageUrl: '', 
+            imageUrl: this.props.properties.imageUrl, 
         };
     }
 
@@ -1578,10 +1544,7 @@ class Image extends React.Component {
         let file = e.target.files[0];
 
         reader.onloadend = () => {
-            this.setState({
-                file: file,
-                imageUrl: reader.result,
-            });
+            this.setState({imageUrl: reader.result});
             this.props.updateProperties({imageUrl: reader.result}, this.props.i);
         }
 
@@ -1589,7 +1552,6 @@ class Image extends React.Component {
     }
 
     render() {
-        console.log(this.state.imageUrl);
         return (
             <div className="draggable" style={{height:"100%", width:"100%"}}>
                 {this.state.imageUrl ? 
@@ -1653,7 +1615,126 @@ class Textbox extends Component {
     }
 }
 
-class BasicForm extends Component {
+class Table extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            ...this.props.properties,
+            chartData: [],
+            columns: [{
+                dataField: 'id',
+                text: 'Product ID',
+                sort: true
+            }],
+        }
+    }
+
+    // update state of initialized when props change
+    /*componentWillReceiveProps(nextProps){
+        if (nextProps.properties.initialized != this.state.initialized){
+            this.setState({initialized: nextProps.properties.initialized});
+        }
+    }*/
+
+    initializeTable = (values) => {
+        //set settings of barchart
+        console.log("init table")
+        let processor = values.processor;
+        let datasourceUrl = values.datasourceUrl;
+        let dataset = values.dataset;
+        let data = processor.getDataset(dataset);
+
+        this.setState({
+            initialized: true,
+            datasourceUrl: datasourceUrl,
+            dataset: dataset,
+            chartData: data
+        })
+
+        // sending all data to app2 other than chartData
+        //let {chartData, ...other} = this.state;
+        //this.props.updateProperties(other, this.props.i);
+    }
+
+    addCol = (e) => {
+        let col = this.state.columns;
+        if (e === "name") {
+            col.push({
+                dataField: 'name',
+                text: 'Product Name',
+                sort: true
+
+            });
+
+        } else if(e==="price") {
+            col.push({
+                dataField: 'price',
+                text: 'Product Price',
+                sort: true
+
+            });
+        } else {
+            col.push({
+                dataField: 'id',
+                text: 'Product ID',
+                sort: true
+
+            });
+        }
+
+        this.setState({ col });
+    }
+
+
+    render() {
+        var products = [{
+            id: 1,
+            name: "Product1",
+            price: 120
+        }, {
+            id: 2,
+            name: "Product2",
+            price: 80
+        }, {
+            id: 3,
+            name: "Product1",
+            price: 120
+        }, {
+            id: 4,
+            name: "Product2",
+            price: 80
+        }, {
+            id: 5,
+            name: "Product1",
+            price: 120
+        }];
+
+        const rowStyle = { backgroundColor: '#c8e6c9' };
+        return this.state.initialized ?
+            <div>
+                <ButtonToolbar>
+                    <SplitButton title="Add a Column" bsStyle="info" dropup id="split-button-dropup" onSelect={this.addCol}>
+                        Categories
+                        <MenuItem eventKey="id">Product ID</MenuItem>
+                        <MenuItem eventKey="name">Product Name</MenuItem>
+                        <MenuItem eventKey="price">Product Price</MenuItem>
+                    </SplitButton>
+                </ButtonToolbar>
+
+                <BootstrapTable keyField='id' data={products}
+                    columns={this.state.columns}
+                    cellEdit={cellEditFactory({ mode: 'dbclick' })}
+                    rowStyle={rowStyle}>
+                </BootstrapTable>
+
+
+
+            </div>
+            : <TableForm initializeTable={this.initializeTable} />
+    }
+}
+
+class ChartForm extends Component {
     render() {
         return (
             <Formik 
@@ -1672,7 +1753,7 @@ class BasicForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="draggable" style={{textAlign: "center", zIndex: -1}}>
+                    <Form className="draggable" style={{textAlign: "center", zIndex: -1,height:"100%",width:"100%"}}>
                         <label>Chart Title</label>
                         <Field type="text" name="title" placeholder="Chart Title"/>
                         <br/><br/>
@@ -1700,7 +1781,7 @@ class BasicForm extends Component {
                             )}
                         </Field>
                         <br/><br/>
-                        <button type="submit">Submit</button>
+                        <Button type="submit">Submit</Button>
                         {/* <DisplayFormikState {...this.props}/> */}
                     </Form>
                 )}
@@ -1709,58 +1790,39 @@ class BasicForm extends Component {
     }
 }
 
-class BasicTable extends React.Component {
+class TableForm extends Component {
     render() {
-        const columns = [{
-            dataField: 'id',
-            text: 'Product ID',
-            sort: true
-
-        }, {
-            dataField: 'name',
-            text: 'Product Name',
-            sort: true
-
-        }, {
-            dataField: 'price',
-            text: 'Product Price',
-            sort: true
-
-        }];
-
-        var products = [{
-            id: 1,
-            name: "Product1",
-            price: 120
-        }, {
-            id: 2,
-            name: "Product2",
-            price: 80
-        }, {
-            id: 3,
-            name: "Product1",
-            price: 120
-        }, {
-            id: 4,
-            name: "Product2",
-            price: 80
-        },{
-            id: 5,
-            name: "Product1",
-            price: 120
-        }];
-        
-        const rowStyle = { backgroundColor: '#c8e6c9' };
-
         return (
-            <div>
-                <BootstrapTable keyField='id' data={products}
-                    columns={columns}
-                    cellEdit={cellEditFactory({ mode: 'dbclick' })}
-                    rowStyle={ rowStyle }>
-                </BootstrapTable>
-            </div>
-        )
+            <Formik 
+                // initialize values to use in form
+                initialValues={{
+                    title:'', 
+                    dataset: datasets[0],
+                    datasourceUrl: datasourceUrl,
+                    processor:jsonProcessor
+                }}
+
+                // pass values to the charts
+                onSubmit={this.props.initializeTable}
+
+                // render form
+                render={formProps=>(
+                    <Form className="draggable" style={{textAlign: "center", zIndex: -1,height:"100%",width:"100%"}}>
+                        <label>Chart Title</label>
+                        <Field type="text" name="title" placeholder="Chart Title"/>
+                        <br/><br/>
+                        <label>Choose the dataset</label>
+                        <Field component="select" name="dataset">
+                            {datasets.map((dataset)=>
+                                <option key={dataset}>{dataset}</option>
+                            )}
+                        </Field>
+                        <br/><br/>
+                        <Button bsStyle="default" type="submit">Submit</Button>
+                    </Form>
+                )}
+            />
+        );
     }
 }
 
