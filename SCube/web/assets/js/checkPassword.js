@@ -151,8 +151,8 @@ document.getElementById('submitForm').onsubmit = function (e) {
                 success: function(success){
                     if(success === "true"){
                         swal({icon: "success", text: "Account has been created successfully!", type: 
-                                            "success"}).then(function(){ 
-                                               location.reload();
+                                            "success"}).then(function(){
+                                                    window.history.back().back();
                                                }
                                             ); 
                        
@@ -165,4 +165,6 @@ document.getElementById('submitForm').onsubmit = function (e) {
             });
         }
     });
+    
 };
+

@@ -10,12 +10,12 @@ import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Leg
 import { Formik, Form, Field } from 'formik';
 
 const Component = React.Component;
-//const api = 'http://localhost:8084/';
-//const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
+const api = 'http://localhost:8084/';
+const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
 //const api = 'http://103.3.61.39:8080/SCube/';
 //const datasourceUrl = 'http://103.3.61.39:8080/Dummy_API/getCustomerOrders';
-const api = 'http://18.222.28.50/SCube/';
-const datasourceUrl = 'http://18.222.28.50/Dummy_API/getCustomerOrders';
+//const api = 'http://18.222.28.50/SCube/';
+//const datasourceUrl = 'http://18.222.28.50/Dummy_API/getCustomerOrders';
 
 const apiData = 
 {

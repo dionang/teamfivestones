@@ -146,7 +146,7 @@
                                                 if (success === "true") {
                                                     swal({icon: "success", text: "Datasource has been updated successfully!!", type:
                                                                 "success"}).then(function () {
-                                                        location.reload();
+                                                        window.location = "devHome.jsp";
                                                     }
                                                     );
                                                 } else {
