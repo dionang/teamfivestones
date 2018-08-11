@@ -37,7 +37,7 @@
                     <!-- set datasource -->
                     <div class="right_col">
                         <div class="content">
-                            <div class="col-md-3 ">
+                            <div class="col-lg-3 col-md-4 " style="margin-bottom: 15px">
 
                                 <a href="addDataSource.jsp" >
                                     <div class="card card-inverse card-info">
@@ -74,7 +74,7 @@
                         <form action="getDatasources" method="post" id="test">
                             <input type=hidden name="datasourceId" value="<%out.print(datasourece.getDatasourceId());%>">
                             <input type=hidden name="operation" value="getDatasources">
-                            <div class="col-sm-3">
+                            <div class="col-lg-3 col-md-4" style="margin-bottom: 15px">
 
                                 <div class="card card-inverse card-info">
                                     <div class="card-block">
