@@ -139,7 +139,7 @@ document.getElementById('submitForm').onsubmit = function (e) {
         if(confirm){
             var form = document.getElementById("submitForm");
             $.ajax({
-                url: "/createAccount",
+                url: "createAccount",
                 data: {
                     name: form.elements[0].value,
                     username: form.elements[1].value,

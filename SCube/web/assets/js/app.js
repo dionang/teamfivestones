@@ -878,7 +878,7 @@ class App extends Component {
             // h : 29.7*37.795276,
             formVisibility: "hidden",
             templateName: "Template Name",
-            sidebar: false
+            sidebar: true
         }
     }
 
@@ -1156,6 +1156,7 @@ class App extends Component {
                                     <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
                                         <div className="menu_section">
                                             <ul className="nav side-menu" id="options">
+                                                <li><a href="managerHome.jsp"><i className="fa fa-home"></i>  Home</a></li>        
                                                 <li><a href="dashboard.jsp"><i className="fa fa-bar-chart"></i>  View Dashboard</a></li>
                                                 <li><a href="createUserAccount.jsp"><i className="fa fa-group"></i>  Create User Account</a></li>
                                                 <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"></i>  Template</a></li>

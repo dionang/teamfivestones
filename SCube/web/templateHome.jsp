@@ -6,13 +6,14 @@
 <%@ page import="scube.entities.Manager" %>
 <%
     Account account = (Account) session.getAttribute("account");
-    /**if (!(account instanceof Manager)){
+    ArrayList<Template> templateList;
+    if (!(account instanceof Manager)){
         response.sendRedirect("/");
         return;
-    }else{**/
+    }else{
         int companyId=account.getCompanyId();
-        ArrayList<Template> templateList=ReportDAO.retrieveAllTemplatesByCompany(companyId);
-            /**}**/
+        templateList=ReportDAO.retrieveAllTemplatesByCompany(companyId);
+          }
 %>
 
 <html>
@@ -36,9 +37,6 @@
                 
                 <div class="right_col">
                     <div class="content">
-                    <% for(int i=0;i<templateList.size();i++) { 
-                       Template template=templateList.get(i);
-                        if(i==0){%>
                         <div class="col-lg-3 col-md-4">
                             <!-- Trigger/Open The Modal -->
                             <a id="myBtn">
@@ -66,7 +64,10 @@
                                     </div>
                                 </div>
                             </a> 
-                        </div>  
+                        </div> 
+                    <% for(int i=0;i<templateList.size();i++) { 
+                       Template template=templateList.get(i);%>
+                         
                         <div id="myModal" class="modal">
                             <!-- Modal content -->
                             <div class="modal-content">
@@ -144,7 +145,7 @@
                                 </div>                                
                             </div>
                         </div>
-                        <%}%>
+                        
                         
                             <form action="loadTemplate" method="post" id="test">
                                 <input type=hidden name="templateId" value="<% out.print(template.getTemplateId());%>">
@@ -205,7 +206,7 @@
                         if(confirm){
                             var form = document.getElementById("test");
                             $.ajax({
-                                url: "/templateControl",
+                                url: "templateControl",
                                 data: {
                                     id: form.elements["templateId"].value,
                                     deleteBtn: form.elements["deleteBtn"].value,

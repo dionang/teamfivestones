@@ -124,7 +124,7 @@
         if(confirm){
             var form = document.getElementById("submitForm");
             $.ajax({
-                url: "/addDatasource",
+                url: "addDatasource",
                 data: {
                     datasourceUrl: form.elements["datasourceUrl"].value,
                     datasourceName: form.elements["datasourceName"].value,
