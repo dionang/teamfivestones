@@ -149,7 +149,7 @@
         <!-- Chart.js -->
         <script src="assets/js/chart.min.js"></script>
         <!--Sweet alert -->
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="assets/js/sweetalert.min.js"></script>
         <!-- Custom JS -->
         <script src="assets/js/dashboard.js"></script> 
         <script src="assets/js/checkPassword.js"></script>

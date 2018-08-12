@@ -41,7 +41,7 @@
                     <!-- set datasource -->
                     <div class="right_col">
                         <div class="row">
-                            <div class="col-md-offset-1 col-md-10">
+                            <div class="col-xs-10 col-xs-offset-1">
                                 <div class="form">
                                     <form action="updateDatasource" method="post" id="submitForm">
                                         <input type="hidden" name="id" value="<%= id%>" />
@@ -115,8 +115,9 @@
                 <script src="assets/js/jquery.min.js"></script>
                 <!-- Bootstrap -->
                 <script src="assets/js/bootstrap.min.js"></script>
+                <!-- Sweet alert -->
+                <script src="assets/js/sweetalert.min.js"></script>
                 <!-- Chart.js -->
-                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
                 <script src="assets/js/chart.min.js"></script>
                 <script src="assets/js/dashboard.js"></script> 
                 <script >

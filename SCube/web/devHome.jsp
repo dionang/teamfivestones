@@ -37,8 +37,7 @@
                     <!-- set datasource -->
                     <div class="right_col">
                         <div class="content">
-                            <div class="col-lg-3 col-md-4 " style="margin-bottom: 15px">
-
+                            <div class="col-lg-3 col-sm-4 col-xs-6" style="margin-bottom: 15px">
                                 <a href="addDataSource.jsp" >
                                     <div class="card card-inverse card-info">
                                         <div class="card-block">
@@ -52,14 +51,16 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row" style=" opacity: 0;" >
-                                                <div class="col-md-5 " >
-                                                    <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
+                                            <div class="row" style="opacity:0">
+                                                <div class="col-xs-5" style="margin-left:10px; padding:0px">
+                                                    <button class="btn" name="viewBtn" value="view" style="width:100%">
+                                                        <i class="fa fa-edit"></i> View/Edit
+                                                    </button>
                                                 </div>
-                                                <div class="col-xs-1  " ></div>
-                                                <div class="col-md-5  " >
-                                                    <button class="btn delete" name="deleteBtn" value="delete" ><i class="fa fa-trash"></i> Delete</button>
-
+                                                <div class="col-xs-5" style="padding:0px">
+                                                    <button class="btn" name="deleteBtn" value="delete" style="width:100%">
+                                                        <i class="fa fa-trash"></i> Delete
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -67,45 +68,40 @@
                                 </a> 
                             </div> 
 
-                        <% for (int i = 0; i < dsList.size(); i++) {
-                                Datasource datasourece = dsList.get(i); %>
-
-                        <form action="getDatasources" method="post" id="test">
-                            <input type=hidden name="datasourceId" value="<%out.print(datasourece.getDatasourceId());%>">
-                            <input type=hidden name="operation" value="getDatasources">
-                            <div class="col-lg-3 col-md-4" style="margin-bottom: 15px">
-
-                                <div class="card card-inverse card-info">
-                                    <div class="card-block">
-                                        <img class="card-img-top" src="assets/images/download.png">
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="row">
-                                            <div class="col-sm-offset-1 col-sm-4">
-                                                <h5 class="card-title"><%out.println(datasourece.getDatasourceName());%></h5>
+                        <% for (int i=0 ; i<dsList.size(); i++) { 
+                            Datasource datasource = dsList.get(i); %>
+                            <form action="getDatasources" method="post" id="form<%=i%>">
+                                <input type=hidden name="datasourceId" value="<%out.print(datasource.getDatasourceId());%>">
+                                <input type=hidden name="operation" value="getDatasources">
+                                <div class="col-lg-3 col-sm-4 col-xs-6" style="margin-bottom: 15px">
+                                    <div class="card card-inverse card-info">
+                                        <div class="card-block">
+                                            <img class="card-img-top" src="assets/images/download.png">
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="row" style="margin-left:10px;">
+                                                <div class="col-sm-offset-1 col-sm-4">
+                                                    <h5 class="card-title"><%out.println(datasource.getDatasourceName());%></h5>
+                                                </div>
+                                            </div>
+                                            <div class="row"  >
+                                                <div class="col-xs-5" style="margin-left:10px; padding:0px">
+                                                    <button class="btn edit" name="viewBtn" value="view" style="width:100%">
+                                                        <i class="fa fa-edit"></i> View/Edit
+                                                    </button>
+                                                </div>
+                                                <div class="col-xs-5" style="padding:0px">
+                                                    <button class="btn delete" name="deleteBtn" value="delete" style="width:100%">
+                                                        <i class="fa fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <div class="row"  >
-                                            <div class="col-md-5 ">
-
-                                                <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
-                                            </div>
-                                            <div class="col-xs-1  " ></div>
-                                            <div class="col-md-5  " >
-                                                <button class="btn delete" name="deleteBtn" value="delete" ><i class="fa fa-trash"></i> Delete</button>
-
-                                            </div>
-                                        </div>
                                     </div>
-                                </div>
 
-                            </div>             
-                        </form>      
-
-                        <% }%>
-
-
+                                </div>             
+                            </form>      
+                        <% } %>
                     </div>
                 </div>
 
@@ -114,13 +110,14 @@
                 <!-- Bootstrap -->
                 <script src="assets/js/bootstrap.min.js"></script>
                 <!-- Chart.js -->
-                <script src="assets/js/chart.min.js"></script>
-                <script src="assets/js/dashboard.js"></script> 
-                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                <script src="assets/js/sweetalert.min.js"></script>
                 <script>
-                    let datasoure = document.getElementsByClassName('delete');
-                    for (i = 0; i < datasoure.length; i++) {
-                        datasoure[i].addEventListener('click', function (e) {
+                    let datasources = document.getElementsByClassName('delete');
+                    for (let i = 0; i < datasources.length; i++) {
+                         
+                        datasources[i].addEventListener('click', function (e) {
+                            var form = document.getElementById("form" + i);
+                                    alert(form.elements["datasourceId"].value);
                             e.preventDefault();
                             swal({
                                 title: "Confirmation",
@@ -129,32 +126,31 @@
                                 buttons: true,
                                 dangerMode: true
                             })
-                                    .then((confirm) => {
-                                        if (confirm) {
-                                            var form = document.getElementById("test");
-                                            $.ajax({
-                                                url: "getDatasources",
-                                                data: {
-                                                    id: form.elements["datasourceId"].value,
-                                                    deleteBtn: form.elements["deleteBtn"].value,
-                                                    operation: form.elements["operation"].value,
-                                                },
-                                                success: function (success) {
-                                                    if (success === "true") {
-                                                        swal({icon: "success", text: "Datasource has been deleted successfully!!", type:
-                                                                    "success"}).then(function () {
-                                                            location.reload();
-                                                        }
-                                                        );
-                                                    } else {
-                                                        swal("ERROR!", {
-                                                            icon: "error"
-                                                        });
-                                                    }
-                                                }
-                                            });
+                            .then((confirm) => {
+                                if (confirm) {
+                                   
+                                    $.ajax({
+                                        url: "getDatasources",
+                                        data: {
+                                            id: form.elements["datasourceId"].value,
+                                            deleteBtn: form.elements["deleteBtn"].value,
+                                            operation: form.elements["operation"].value,
+                                        },
+                                        success: function (success) {
+                                            if (success === "true") {
+                                                swal({icon: "success", text: "Datasource has been deleted successfully!!", type:"success"})
+                                                .then(function () {
+                                                    location.reload();
+                                                });
+                                            } else {
+                                                swal("ERROR!", {
+                                                    icon: "error"
+                                                });
+                                            }
                                         }
                                     });
+                                }
+                            });
                         });
                     }
 

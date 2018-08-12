@@ -10,10 +10,10 @@
     if (!(account instanceof Manager)){
         response.sendRedirect("/");
         return;
-    }else{
+    } else {
         int companyId=account.getCompanyId();
         templateList=ReportDAO.retrieveAllTemplatesByCompany(companyId);
-          }
+    }
 %>
 
 <html>
@@ -37,7 +37,7 @@
                 
                 <div class="right_col">
                     <div class="content">
-                        <div class="col-lg-3 col-md-4" style="margin-bottom: 15px">
+                        <div class="col-lg-3 col-sm-4 col-xs-6" style="margin-bottom: 15px">
                             <!-- Trigger/Open The Modal -->
                             <a id="myBtn">
                                 <div class="card card-inverse card-info">
@@ -53,22 +53,22 @@
                                         </div>
 
                                         <div class="row" style=" opacity: 0;" >
-                                            <div class="col-md-5 edit">
-                                             <h5><span class="glyphicon glyphicon-edit "></span></h5> 
+                                            <div class="col-xs-5" style="margin-left:10px; padding:0px">
+                                                <button class="btn" name="viewBtn" value="view" style="width:100%">
+                                                    <i class="fa fa-edit"></i> View/Edit
+                                                </button>
                                             </div>
-                                            <div class="col-sm-1"></div>
-                                            <div class="col-sm-5 delete " >
-                                           <h5><span class="glyphicon glyphicon-trash "></span></h5>
+                                            <div class="col-xs-5" style="padding:0px">
+                                                <button class="btn" name="deleteBtn" value="delete" style="width:100%">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </button>
                                             </div>
-                                            <br/>
                                         </div>
                                     </div>
                                 </div>
                             </a> 
                         </div> 
                      
-                        
-                        
                         <div id="myModal" class="modal">
                             <!-- Modal content -->
                             <div class="modal-content">
@@ -76,31 +76,31 @@
                                     <span class="close">&times;</span>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-offset-2 col-md-4  col-xs-12">
+                                    <div class="col-md-offset-2 col-md-4 col-xs-12">
                                         <a href="loadTemplate.jsp?templateId=9 ">
                                              <div class="card card-inverse card-info">
-                                                 <div class="card-block">
+                                                <div class="card-block">
                                                      <img class="card-img-top" src="assets/images/dummyReport.png">
-                                                 </div>
-                                                 <div class="card-footer">
-                                                 <h4 class="card-title " style="text-align:center">Default Template</h4>
-                                                 </div>
-                                             </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <h4 class="card-title " style="width:100%; text-align:center">Default Template</h4>
+                                                </div>
+                                            </div>
                                          </a> 
                                     </div> 
-                                    <div class="col-md-1 col-xs-12"></div>
+                                    <div class="col-md-1 col-xs-12"><br/></div>
                                     <div class="col-md-4 col-xs-12">
-                                       <!-- <a id="pageSize">-->
-                                       <a href="loadTemplate.jsp?templateId=0">
-                                             <div class="card card-inverse card-info">
-                                                 <div class="card-block">
-                                                     <img class="card-img-top" src="assets/images/dummyReport.png" style="opacity:0">
-                                                 </div>
-                                                 <div class="card-footer">
-                                                 <h4 class="card-title " style="text-align:center">Blank Template</h4>
-                                                 </div>
-                                             </div>
-                                         </a> 
+                                        <!-- <a id="pageSize">-->
+                                        <a href="loadTemplate.jsp?templateId=0">
+                                            <div class="card card-inverse card-info">
+                                                <div class="card-block">
+                                                    <img class="card-img-top" src="assets/images/dummyReport.png" style="opacity:0">
+                                                </div>
+                                                <div class="card-footer">
+                                                    <h4 class="card-title " style="width:100%; text-align:center">Blank Template</h4>
+                                                </div>
+                                            </div>
+                                        </a> 
                                     </div> 
                                    <!-- <div id="size" class="modal">
                                        
@@ -146,13 +146,13 @@
                                 </div>                                
                             </div>
                         </div>
-                    <% for(int i=0;i<templateList.size();i++) { 
-                       Template template=templateList.get(i);%>
-
-                            <form action="loadTemplate" method="post" id="test">
-                                <input type=hidden name="templateId" value="<% out.print(template.getTemplateId());%>">
+                    <% for (int i=0 ; i<templateList.size(); i++) { 
+                            Template template = templateList.get(i); %>
+                            <form action="loadTemplate" method="post" id="form<%=i%>">
+                                <input type=hidden name="templateId" value="<%= template.getTemplateId() %>">
+                                <input type=hidden name="templateName" value="<%= template.getTemplateName() %>">
                                 <input type=hidden name="operation" value="loadTemplate">
-                                <div class="col-lg-3 col-md-4" style="margin-bottom: 15px">
+                                <div class="col-lg-3 col-sm-4 col-xs-6" style="margin-bottom: 15px">
                                     <div class="card card-inverse card-info" >
                                         <div class="card-block">
                                             <img class="card-img-top" src="assets/images/dummyReport.png">
@@ -160,21 +160,22 @@
                                         <div class="card-footer">
                                             <div class="row">
                                                 <div class="col-sm-offset-1 col-sm-4">
-                                                    <h4 class="card-title"><%out.println(template.getTemplateName());%></h4>
+                                                    <h4 class="card-title"><%= template.getTemplateName() %></h4>
                                                 </div>
                                             </div>
 
                                             <div class="row"  >
-                                                <div class="col-md-5">
-                                                    <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
+                                                <div class="col-xs-5" style="margin-left:10px; padding:0px">
+                                                    <button class="btn edit" name="viewBtn" value="view" style="width:100%">
+                                                        <i class="fa fa-edit"></i> View/Edit
+                                                    </button>
                                                 </div>
-                                                <div class="col-xs-1"></div>
-                                                <div class="col-md-5">
-                                                    <button class="btn delete" name="deleteBtn" value="delete"><i class="fa fa-trash"></i> Delete</button>
+                                                <div class="col-xs-5" style="padding:0px">
+                                                    <button class="btn delete" name="deleteBtn" value="delete" style="width:100%">
+                                                        <i class="fa fa-trash"></i> Delete
+                                                    </button>
                                                 </div>
-                                                
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>             
@@ -191,12 +192,13 @@
         <script src="assets/js/jquery.min.js"></script>
         <!-- Bootstrap -->
         <script src="assets/js/bootstrap.min.js"></script>
+        <!--Sweet alert -->
+        <script src="assets/js/sweetalert.min.js"></script>
         <!-- Custom JS -->
         <script src="assets/js/dashboard.js"></script> 
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
             let template = document.getElementsByClassName('delete');
-            for(i = 0; i < template.length;i++) {
+            for(let i = 0; i < template.length;i++) {
                 template[i].addEventListener('click', function(e){
                     e.preventDefault();
                     swal({
@@ -208,9 +210,9 @@
                     })
                     .then((confirm) => {
                         if(confirm){
-                            var form = document.getElementById("test");
+                            var form = document.getElementById("form" + i);
                             $.ajax({
-                                url: "templateControl",
+                                url: "loadTemplate",
                                 data: {
                                     id: form.elements["templateId"].value,
                                     deleteBtn: form.elements["deleteBtn"].value,
@@ -232,9 +234,8 @@
                             });
                         }
                     }); 
-                    });
-              }
-           
+                });
+            }
         </script>
         <script>
             // Get the modal

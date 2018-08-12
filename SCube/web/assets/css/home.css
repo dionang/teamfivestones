@@ -2,18 +2,15 @@
     margin-top:90px;
 }
 
-.img{
-    padding: 74px;
-}
 .image{
     width:150px;
     height:150px;
     margin: auto;
 }
 .pic{
-    
     width: 200px;
     height: 200px;
+    margin: auto;
     border: 2px solid #2A3F54;
     border-radius: 300px;
     box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;

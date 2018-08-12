@@ -19,7 +19,7 @@ import scube.dao.ReportDAO;
  *
  * @author ZhenDan
  */
-@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate", "/loadDefault"})
+@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate", "/updateTemplate", "/loadDefault"})
 public class TemplateController extends HttpServlet {
 
     /**
@@ -53,19 +53,26 @@ public class TemplateController extends HttpServlet {
                     out.print(deleteComponents && deleteTemplate);
                 }
 
-            } else if(operation.equals("createTemplate")){
+            } else if(operation.equals("createTemplate") || operation.equals("updateTemplate")){
                 String templateName   = request.getParameter("templateName");
                 String templateSize   = request.getParameter("templatesize");
                 String templateLayout = request.getParameter("templatelayout");
-                int companyId = Integer.parseInt(request.getParameter("companyId"));
                 String userName = request.getParameter("userName");
+                int companyId = Integer.parseInt(request.getParameter("companyId"));                
+                int templateId = Integer.parseInt(request.getParameter("templateId"));
 
-                boolean result = ReportDAO.createTemplate(companyId, templateName, userName, templateSize, templateLayout);
-                if (result){
-                    out.print(ReportDAO.retrieveTemplateId());
+
+                if (operation.equals("createTemplate")){
+                    if(ReportDAO.createTemplate(companyId, templateName, userName, templateSize, templateLayout)){
+                        out.print(ReportDAO.retrieveTemplateId());
+                    } else {
+                        out.print("false");
+                    }
                 } else {
-                    out.print("false");
+                    boolean result = ReportDAO.updateTemplate(templateId, templateName, templateSize, templateLayout);
+                    out.print(result+"");
                 }
+ 
             } else if(operation.equals("loadDefault")){
                 id=Integer.parseInt(request.getParameter("templateId"));
                 request.setAttribute("templateId", id);

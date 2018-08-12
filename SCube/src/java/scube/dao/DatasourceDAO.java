@@ -19,38 +19,11 @@ public class DatasourceDAO {
         try {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("INSERT INTO datasource VALUES (?,?,?,?,?)");
-            
             stmt.setNull(1, Types.INTEGER);
             stmt.setInt(2, companyId);
             stmt.setString(3, datasourceUrl);
             stmt.setString(4, datasourceName);
             stmt.setString(5, remark);
-            
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            return false;
-        } finally {
-            ConnectionManager.close(conn, stmt, rs);
-        }
-    } 
-    public static boolean updateDatasource(int datasourceId,int companyId, String datasourceUrl,String datasourceName,String remark) {       
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update datasource set datasourceUrl=?, datasourceName=?,remark=? where datasourceId=? and companyId=?");
-            
-           
-            stmt.setString(1, datasourceUrl);
-            stmt.setString(2, datasourceName);
-            stmt.setString(3, remark);
-            stmt.setInt(4, datasourceId);
-            stmt.setInt(5, companyId);
-            
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -88,25 +61,6 @@ public class DatasourceDAO {
         }
     }
     
-    public static boolean deleteDatasource(int datasourceId) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        
-          try {
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE FROM datasource WHERE datasourceId = ?");
-            stmt.setInt(1, datasourceId);
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            return false;
-        } finally {
-            ConnectionManager.close(conn, stmt, rs);
-        }
-
-    }
     public static Datasource retrieveDatasourceById(int datasourceId) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -131,5 +85,49 @@ public class DatasourceDAO {
         } finally {
             ConnectionManager.close(conn, stmt, rs);
         }
+    }
+    
+    public static boolean updateDatasource(int datasourceId,int companyId, String datasourceUrl,String datasourceName,String remark) {       
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("UPDATE datasource SET datasourceUrl=?, datasourceName=?,remark=? where datasourceId=? and companyId=?");
+            stmt.setString(1, datasourceUrl);
+            stmt.setString(2, datasourceName);
+            stmt.setString(3, remark);
+            stmt.setInt(4, datasourceId);
+            stmt.setInt(5, companyId);
+            
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    } 
+    
+    public static boolean deleteDatasource(int datasourceId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+          try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM datasource WHERE datasourceId = ?");
+            stmt.setInt(1, datasourceId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+
     }
 }

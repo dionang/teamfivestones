@@ -105,49 +105,50 @@
         <script src="assets/js/jquery.min.js"></script>
         <!-- Bootstrap -->
         <script src="assets/js/bootstrap.min.js"></script>
+        <!-- Sweet Alert -->
+        <script src="assets/js/sweetalert.min.js"></script>
         <!-- Chart.js -->
-          <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="assets/js/chart.min.js"></script>
         <script src="assets/js/dashboard.js"></script> 
-        <script >
+        <script>
             document.getElementById('submitForm').onsubmit = function (e) {
-    e.preventDefault();
+                e.preventDefault();
 
-    swal({
-        title: "Confirmation",
-        text: "Are you sure you want to add this datasource?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true
-    })
-    .then((confirm) => {
-        if(confirm){
-            var form = document.getElementById("submitForm");
-            $.ajax({
-                url: "addDatasource",
-                data: {
-                    datasourceUrl: form.elements["datasourceUrl"].value,
-                    datasourceName: form.elements["datasourceName"].value,
-                    remark: form.elements["remark"].value,
-                    operation:form.elements["operation"].value,
-                },
-                success: function(success){
-                    if(success === "true"){
-                        swal({icon: "success", text: "Datasource has been added successfully!!", type: 
-                            "success"}).then(function(){ 
-                               window.location = "devHome.jsp";
-                               }
-                            );    
-                    } else {
-                        swal("Error!", {
-                            icon: "error"
+                swal({
+                    title: "Confirmation",
+                    text: "Are you sure you want to add this datasource?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                })
+                .then((confirm) => {
+                    if(confirm){
+                        var form = document.getElementById("submitForm");
+                        $.ajax({
+                            url: "addDatasource",
+                            data: {
+                                datasourceUrl: form.elements["datasourceUrl"].value,
+                                datasourceName: form.elements["datasourceName"].value,
+                                remark: form.elements["remark"].value,
+                                operation:form.elements["operation"].value,
+                            },
+                            success: function(success){
+                                if(success === "true"){
+                                    swal({icon: "success", text: "Datasource has been added successfully!!", type: 
+                                        "success"}).then(function(){ 
+                                           window.location = "devHome.jsp";
+                                           }
+                                        );    
+                                } else {
+                                    swal("Error!", {
+                                        icon: "error"
+                                    });
+                                }
+                            }
                         });
                     }
-                }
-            });
-        }
-    });
-};
+                });
+            };
         </script>
     </body>
 </html>

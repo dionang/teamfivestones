@@ -99,7 +99,6 @@ public class ComponentController extends HttpServlet {
                 
             } else if (operation.equals("loadComponents")) {
                 ArrayList<Component> components = ComponentDAO.loadComponentsFromTemplate(templateId);
-                System.out.println("successfully retrieved from DB");
                 JsonArray jsonArr = new JsonArray();
                 for(Component component : components){
                     JsonObject componentObj = new JsonObject();

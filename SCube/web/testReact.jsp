@@ -15,7 +15,8 @@
                 <jsp:include page="sidebarReport.jsp"></jsp:include>
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <div class="right_col" style="overflow-x: hidden">
-                    <div id="container"></div>
+<!--                    <div id="container"></div>-->
+                    <iframe src="http://18.222.28.50/SCube/"></iframe>
                 </div>
             </div>
         </div>
@@ -29,7 +30,7 @@
     <!-- JsonProcessor -->
     <script src="assets/js/jsonProcessor.js"></script>
     <!-- Custom React Script -->
-    <script type="text/babel" src="assets/js/app.js"></script>    
+    <!--<script type="text/babel" src="assets/js/app.js"></script>-->    
     <script src="assets/js/screenshot.js"></script>
     <script src="assets/js/jspdf.js"></script>
     <script src="assets/js/html2pdf.js"></script>

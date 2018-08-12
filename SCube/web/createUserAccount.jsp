@@ -37,7 +37,7 @@
                 <!-- page content -->
                 <div class="right_col">
                     <div class="row">
-                        <div class="col-md-offset-1 col-md-10">
+                        <div class="col-xs-offset-1 col-xs-10">
                             <div class="form">
                                 <form action="createAccount" method="post" id="submitForm">
                                     <div class="row">
@@ -123,8 +123,9 @@
                                     <input type="hidden" name="operation" value="createAccount"/>
                                     <%if (account.getAccountType().equals("manager")){%>
                                          <input type="hidden" name="type" value="managerHome.jsp" id="type"/>
-                                   <% }%>
+                                    <% } else { %>
                                         <input type="hidden" name="type" value="companyHome.jsp" id="type"/>
+                                    <% } %>
                                     <div class="row">
                                         <div class="col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
                                             <label class="indication">Fields with
@@ -159,7 +160,7 @@
         <!-- Chart.js -->
         <script src="assets/js/chart.min.js"></script>
         <!--Sweet alert -->
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="assets/js/sweetalert.min.js"></script>
         <!-- Custom JS -->
         <script src="assets/js/dashboard.js"></script> 
         <script src="assets/js/checkPassword.js"></script>

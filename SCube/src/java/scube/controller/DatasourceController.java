@@ -16,7 +16,7 @@ import scube.entities.*;
  *
  * @author HongYuan
  */
-@WebServlet(name = "DatasourceController", urlPatterns = {"/addDatasource", "/getDatasources","/updateDatasource"})
+@WebServlet(name = "DatasourceController", urlPatterns = {"/addDatasource", "/getDatasources", "/updateDatasource"})
 public class DatasourceController extends HttpServlet {
 
     /**
@@ -48,16 +48,14 @@ public class DatasourceController extends HttpServlet {
                 int id;
                 if(viewBtn!=null){
                     id=Integer.parseInt(request.getParameter("datasourceId"));
-                    DatasourceDAO datasource=new DatasourceDAO();
-                    Datasource data=datasource.retrieveDatasourceById(id);
+                    Datasource data = DatasourceDAO.retrieveDatasourceById(id);
                     request.setAttribute("datasource", data);
                     request.getRequestDispatcher("loadDatasource.jsp").forward(request, response);
                 } 
                 String deleteBtn = request.getParameter("deleteBtn");
                 if(deleteBtn!=null){
                     id=Integer.parseInt(request.getParameter("id"));
-                    DatasourceDAO datasource=new DatasourceDAO();
-                    boolean result=datasource.deleteDatasource(id);
+                    boolean result = DatasourceDAO.deleteDatasource(id);
                     out.print(result);
                    
                 }

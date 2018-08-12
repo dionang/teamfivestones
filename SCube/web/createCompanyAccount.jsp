@@ -127,7 +127,7 @@
                                         }
                                     %>
                                     <div class="row">
-                                        <div class="col-md-offset-9 col-sm-offset-8 col-xs-offset-7" >
+                                        <div class="col-sm-offset-8 col-xs-offset-7" >
                                             <input type="submit" value="Create Company Account" class="btn btn-success" style="width: 100% !important"/>
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@
         <!-- Chart.js -->
         <script src="assets/js/chart.min.js"></script>
         <!--Sweet alert -->
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="assets/js/sweetalert.min.js"></script>
         <!-- Custom JS -->
         <script src="assets/js/dashboard.js"></script> 
         <script src="assets/js/checkPassword.js"></script>

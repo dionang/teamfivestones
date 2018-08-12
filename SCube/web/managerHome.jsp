@@ -34,7 +34,7 @@
                         <div class="col-sm-4 img">
                             <a href="dashboard.jsp" style="text-decoration: none">
                                 <div class="pic">
-                                    <img  src="assets/images/dashboard.png" class="image"  />
+                                    <img src="assets/images/dashboard.png" class="image"  />
                                 </div>
                            
                             <h4>View Dashboard</h4>
@@ -43,18 +43,17 @@
                         <div class="col-sm-4 img">
                             <a href="createUserAccount.jsp" style="text-decoration: none">
                                 <div class="pic">
-                                   <img  src="assets/images/userHome.png" class="image" />
+                                   <img src="assets/images/userHome.png" class="image" />
                                 </div>
                             
                             <h4 >Create User Account</h4>
                             </a>
                         </div>
                        <div class="col-sm-4 img">
-                           <a href="templateHome.jsp" style="text-decoration: none">
+                            <a href="templateHome.jsp" style="text-decoration: none">
                                <div class="pic">
-                                   <img  src="assets/images/report.png"  class="image"/>
+                                   <img src="assets/images/report.png"  class="image"/>
                                 </div>
-                            
                             <h4 >Create Report Template</h4>
                            </a>
                        </div>
