@@ -1179,7 +1179,6 @@ class App extends Component {
                                                     <span className=" fa fa-angle-down"></span>
                                                 </a>
                                                 <ul className="dropdown-menu dropdown-usermenu pull-right">
-                                                    <li><a href="javascript:;"> Profile</a></li>
                                                     <li><a href="logout.jsp"><i className="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                                 </ul>
                                             </li>
@@ -1202,7 +1201,7 @@ class App extends Component {
                                     <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                     {this.state.editMode ? "Leave Edit Mode" : "Enter Edit Mode"}
                                 </Button>
-
+                                <br/>
 
                                 {/* <div id="size" className="modal">
                                     <div className="modal-content">
@@ -1246,12 +1245,15 @@ class App extends Component {
                                 </div> */}
 
 
-                                <div className="col-sm-12 col-xs-12" style={{ paddingTop:10, paddingBottom:10, backgroundColor:'white', borderBottom:'7px solid #EB6B2A' }}>
-                                    <Button bsStyle="primary" onClick={this.addTextbox}   style={{ marginRight:5 }}><i className="fa fa-font"/> Add Textbox</Button>
-                                    <Button bsStyle="warning" onClick={this.addBarChart}  style={{ marginRight:5 }}><i className="fa fa-bar-chart"/> Add Bar Chart</Button>
-                                    <Button bsStyle="success" onClick={this.addLineChart} style={{ marginRight:5 }}><i className="fa fa-line-chart"/> Add Line Chart</Button>
-                                    <Button bsStyle="danger"  onClick={this.addTable}     style={{ marginRight:5 }}><i className="fa fa-table"/> Add Table</Button>
-                                    <Button onClick={this.addImage} style={{ backgroundColor:"#31B0D5", color:"white", border: "1px solid #31B0D5"}}><i className="fa fa-image"/> Add Image</Button>
+                                <div className="col-sm-12 col-xs-12" style={{ paddingTop:20, paddingBottom:10, backgroundColor:'white', borderBottom:'7px solid #EB6B2A' }}>
+                                   
+                                    <label> Add Component: </label>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary" onClick={this.addTextbox}   style={{ marginRight:5,marginLeft:6 }}><i className="fa fa-font"/></Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsStyle="warning" onClick={this.addBarChart}  style={{ marginRight:5 }}><i className="fa fa-bar-chart"/> </Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart"bsStyle="success" onClick={this.addLineChart} style={{ marginRight:5 }}><i className="fa fa-line-chart"/> </Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Table"bsStyle="danger"  onClick={this.addTable}     style={{ marginRight:5 }}><i className="fa fa-table"/> </Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Image"onClick={this.addImage} style={{ backgroundColor:"#31B0D5", color:"white", border: "1px solid #31B0D5"}}><i className="fa fa-image"/> </Button>
+                                     
                                 </div>
                                 <div id="container" className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', overflow: 'auto', height:"100%", marginTop: -5 }}>
                                     {/* map does a for loop over all the components in the state */}

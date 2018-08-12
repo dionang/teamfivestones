@@ -2,7 +2,7 @@
 .glyphicon{
     color:#EFAD54;
     padding-right:10px;
-    font-size: 1em;
+    font-size: 0.8em;
 }
 .btn{
     color:white;
@@ -35,7 +35,7 @@
     border: none;
     border-radius: .28571429rem;
     box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-    height:235px;
+    
 }
 
 .card-block {
@@ -71,7 +71,7 @@
     position: static;
     top: 0;
     left: 0;
-    padding-bottom: 12px;
+    padding:0.5em 0.5em;
     color: #4D889C;
     border-top: 1px solid rgba(0, 0, 0, .05) !important;
     background: #fff;

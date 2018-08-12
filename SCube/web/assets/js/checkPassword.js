@@ -127,7 +127,7 @@ confirm.onkeyup = function () {
 
 document.getElementById('submitForm').onsubmit = function (e) {
     e.preventDefault();
-
+    var account=document.getElementById('type');
     swal({
         title: "Confirmation",
         text: "Are you sure you want to create this account?",
@@ -151,8 +151,9 @@ document.getElementById('submitForm').onsubmit = function (e) {
                 success: function(success){
                     if(success === "true"){
                         swal({icon: "success", text: "Account has been created successfully!", type: 
-                                            "success"}).then(function(){
-                                                    window.history.back().back();
+                                            "success"}).then(function(){ 
+                                                var account=document.getElementById('type').value;
+                                                window.location = account;   
                                                }
                                             ); 
                        

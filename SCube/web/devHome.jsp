@@ -44,17 +44,16 @@
                                         <div class="card-block">
                                             <img class="card-img-top create" src="assets/images/create.png">
                                         </div>
-                                        <div class="card-footer">
+                                        <div class="card-footer" >
 
                                             <div class="row">
-                                                <div class="col-sm-offset-1 col-sm-4">
+                                                <div class="col-sm-offset-1 col-sm-4" >
                                                     <h5 class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Datasource</h5>
                                                 </div>
                                             </div>
 
                                             <div class="row" style=" opacity: 0;" >
-                                                <div class="col-md-5 ">
-
+                                                <div class="col-md-5 " >
                                                     <button class="btn edit" name="viewBtn" value="view"><i class="fa fa-edit"></i> View/Edit</button>
                                                 </div>
                                                 <div class="col-xs-1  " ></div>

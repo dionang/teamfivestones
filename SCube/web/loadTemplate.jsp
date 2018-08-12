@@ -34,6 +34,7 @@
                         %>
                         <input type="hidden" name="companyId" value="<%out.print(account.getCompanyId());%>"/>
                         <input type="hidden" name="userName" value="<%out.print(account.getUsername());%>" />
+                        <input type="hidden" name="name" value="<%out.print(account.getName());%>" />
                         <div id="container"></div>
                      <!--</div>
                 </div>  

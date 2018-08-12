@@ -113,6 +113,7 @@
                                     <input type="hidden" name="companyId" value="<%= account.getCompanyId()%>">
                                     <input type="hidden" name="accountType" value="company">
                                     <input type="hidden" name="operation" value="createAccount"/>
+                                    <input type="hidden" name="type" value="createCompanyAccount.jsp" id="type"/>
                                     <div class="row">
                                         <div class="col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
                                             <label class="indication">Fields with
