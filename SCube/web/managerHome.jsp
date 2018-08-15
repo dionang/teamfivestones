@@ -31,14 +31,16 @@
                 
                 <div class="right_col">
                     <div class="content">
-                        <div class="col-sm-4 img">
+                        <div class="col-sm-4 outer">
+                        <div class="img">
                             <a href="dashboard.jsp" style="text-decoration: none">
-                                <div class="pic">
+                                <div class="pic"style=" padding-top:30px;">
                                     <img src="assets/images/dashboard.png" class="image"  />
                                 </div>
                            
                             <h4>View Dashboard</h4>
                             </a>
+                        </div>
                         </div>
                         <div class="col-sm-4 img">
                             <a href="createUserAccount.jsp" style="text-decoration: none">
