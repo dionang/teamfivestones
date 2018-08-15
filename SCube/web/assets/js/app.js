@@ -967,7 +967,7 @@ class App extends Component {
             }
         );
 
-        this.setState({ components, editMode: true });
+        this.setState({ components, editMode:true });
     }
 
 
@@ -977,15 +977,20 @@ class App extends Component {
             { type: "table", x: 0, y: 0, height: 300, width: 300, display: true }
         );
 
-        this.setState({ components, editMode: true });
+        this.setState({ components, editMode:true });
     }
 
     addImage = () => {
         let components = this.state.components;
         components.push(
-            { type: "image", x: 0, y: 0, height: 200, width: 200, display: true, properties: { imageUrl: '' } }
+            { type: "image", x: 0, y: 0, height: 200, width: 200, display: true, 
+                properties: { 
+                    imageUrl: '', 
+                    initialized: false,
+                } 
+            } 
         );
-        this.setState({ components });
+        this.setState({ components, editMode:true });
     }
 
     changeSettings(i) {
@@ -1052,9 +1057,11 @@ class App extends Component {
             if (body && body.status){
 //                alert("Saved succesfully");
                 swal("Success", "Template saved", "success");
+                self.setState({editMode:false});
             } else {
 //                alert("Error in saving");
                 swal("Error", "Template failed to save", "error");
+                self.setState({editMode:false});
             }
             
         });
@@ -1065,7 +1072,7 @@ class App extends Component {
         let templateId = parseInt(document.getElementById("templateId").value, 10);
         let companyId = parseInt(document.getElementById("companyId").value, 10);
         let userName = document.getElementById("userName").value;
-        if (templateId === 0) {
+        if (templateId === 0 || templateId === 9) {
             request.post({
                 url: api + 'createTemplate',
                 form: {
@@ -1076,6 +1083,7 @@ class App extends Component {
                     templatelayout: self.state.selectedLayout,
                     companyId: companyId,
                     userName: userName
+                    
                 }
             }, function (error, response, body) {
                 if (body === "false") {
@@ -1669,12 +1677,17 @@ class Table extends Component {
         super(props);
         this.state = {
             ...this.props.properties,
-            chartData: [],
-            columns: [{
+            columns: 
+            [{
                 dataField: 'id',
-                text: 'Product ID',
+                text: 
+                <SplitButton title="Product ID" bsStyle="default" dropup id="split-button-dropup" onSelect={(i)=>this.delete(i)}>
+                <MenuItem eventKey={1}>Delete</MenuItem>
+            </SplitButton>,
                 sort: true
             }],
+            order: 1,
+            aggregateType: 'Sum'
         }
     }
 
@@ -1687,7 +1700,6 @@ class Table extends Component {
 
     initializeTable = (values) => {
         //set settings of barchart
-        console.log("init table")
         let processor = values.processor;
         let datasourceUrl = values.datasourceUrl;
         let dataset = values.dataset;
@@ -1704,36 +1716,53 @@ class Table extends Component {
         //let {chartData, ...other} = this.state;
         //this.props.updateProperties(other, this.props.i);
     }
-
+    
     addCol = (e) => {
-        let col = this.state.columns;
+        let columns = this.state.columns;
+        let order = this.state.order+1;
+
         if (e === "name") {
-            col.push({
+            columns.push({
                 dataField: 'name',
-                text: 'Product Name',
-                sort: true
-
+                text: 
+            <SplitButton title="Product Name" bsStyle="default" dropup id="split-button-dropup" onSelect={(i)=>this.delete(i)}>
+                <MenuItem eventKey={order}>Delete</MenuItem>
+            </SplitButton>,
+                sort: true,
             });
-
-        } else if(e==="price") {
-            col.push({
+        } else if (e === "price") {
+            columns.push({
                 dataField: 'price',
-                text: 'Product Price',
+                text: 
+                <SplitButton title="Product Price" bsStyle="default" dropup id="split-button-dropup" onSelect={this.delete}>
+                <MenuItem eventKey={order}>Delete</MenuItem>
+            </SplitButton>,
                 sort: true
 
             });
         } else {
-            col.push({
+            columns.push({
                 dataField: 'id',
-                text: 'Product ID',
+                text: 
+                <SplitButton title="Product ID" bsStyle="default" dropup id="split-button-dropup" onSelect={this.delete}>
+                <MenuItem eventKey={order}>Delete</MenuItem>
+            </SplitButton>,
                 sort: true
 
             });
         }
 
-        this.setState({ col });
+        this.setState({ columns,order });
+        
     }
 
+    delete(e){
+        console.log(e);
+        const columns = this.state.columns ;
+        delete columns[(e-1)];
+        //console.log(col);
+        this.setState({columns});
+    }
 
     render() {
         var products = [{
@@ -1759,10 +1788,21 @@ class Table extends Component {
         }];
 
         const rowStyle = { backgroundColor: '#c8e6c9' };
+        const { value, onUpdate, ...rest } = this.props;
+        
+        // loop through the columns to remove the empty items
+        const actualTitle = [];
+        for (var i=0; i < this.state.columns.length; i++) {
+            if(this.state.columns[i] !== undefined){
+                actualTitle.push(this.state.columns[i]);
+            }
+        }
+
         return this.state.initialized ?
-            <div>
-                <ButtonToolbar>
-                    <SplitButton title="Add a Column" bsStyle="info" dropup id="split-button-dropup" onSelect={this.addCol}>
+        
+            <div className="draggable">
+                <ButtonToolbar >
+                    <SplitButton title="Add a Column" bsStyle="info" pullRight id="split-button-pull-right" onSelect={this.addCol}>
                         Categories
                         <MenuItem eventKey="id">Product ID</MenuItem>
                         <MenuItem eventKey="name">Product Name</MenuItem>
@@ -1771,13 +1811,11 @@ class Table extends Component {
                 </ButtonToolbar>
 
                 <BootstrapTable keyField='id' data={products}
-                    columns={this.state.columns}
-                    cellEdit={cellEditFactory({ mode: 'dbclick' })}
+                    columns={actualTitle}
+                    //cellEdit={cellEditFactory({ mode: 'dbclick' })}
                     rowStyle={rowStyle}>
+                    
                 </BootstrapTable>
-
-
-
             </div>
             : <TableForm initializeTable={this.initializeTable} />
     }
