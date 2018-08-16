@@ -32,7 +32,7 @@
                 <!-- set datasource -->
                 <div class="right_col">
                     <div class="row">
-                        <div class="col-md-offset-1 col-md-10">
+                        <div class="col-sm-offset-1 col-sm-10">
                              <div class="form">
                                  <form action="addDatasource" method="post" id="submitForm">
                                      <div class="row">
@@ -82,17 +82,19 @@
                                     <input type="hidden" name="companyId" value="<%= account.getCompanyId() %>">
                                     <input type="hidden" name="operation" value="addDatasource"/>
                                     <div class="row">
-                                        <div class="col-md-5" >
+                                        <div class="col-sm-5">
                                             <input type="submit" value="Create Datasource" class="btn btn-success"/>
                                         </div>
-                                       
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-5">
+                                            <a class="btn btn-primary" style="float:right" href="devHome.jsp"><i class="fa fa-home"></i> Back</a>
+                                        </div>
                                     </div>
-                            <br/>
+                                <br/>
                         
-                         </form>
+                            </form>
                                    
-                    </div>
-                     <br><br>
+                        </div>
                 </div>
                 <!-- set datasource -->
 

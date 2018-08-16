@@ -916,11 +916,7 @@ class App extends Component {
         // updates state
         this.setState({ components, editMode: true });
     }
-
-    componentDidMount() {
-        this.loadTemplate();
-    }
-
+    
     addTextbox = () => {
         let components = this.state.components;
         components.push(
@@ -1680,10 +1676,7 @@ class Table extends Component {
             columns: 
             [{
                 dataField: 'id',
-                text: 
-                <SplitButton title="Product ID" bsStyle="default" dropup id="split-button-dropup" onSelect={(i)=>this.delete(i)}>
-                <MenuItem eventKey={1}>Delete</MenuItem>
-            </SplitButton>,
+                text:<div>Product ID <i style={{marginTop:10, marginRight:10, marginRight:4}} className="fa fa-times" onClick={() => this.delete(1)}></i></div>,
                 sort: true
             }],
             order: 1,
@@ -1716,6 +1709,7 @@ class Table extends Component {
         //let {chartData, ...other} = this.state;
         //this.props.updateProperties(other, this.props.i);
     }
+
     
     addCol = (e) => {
         let columns = this.state.columns;
@@ -1724,29 +1718,25 @@ class Table extends Component {
         if (e === "name") {
             columns.push({
                 dataField: 'name',
-                text: 
-            <SplitButton title="Product Name" bsStyle="default" dropup id="split-button-dropup" onSelect={(i)=>this.delete(i)}>
-                <MenuItem eventKey={order}>Delete</MenuItem>
-            </SplitButton>,
+                text:
+                <div>Product Name <i style={{marginTop:10, marginRight:10, marginRight:4}} className="fa fa-times" onClick={() => this.delete(order)}></i></div>,
                 sort: true,
             });
+            
+
         } else if (e === "price") {
             columns.push({
                 dataField: 'price',
                 text: 
-                <SplitButton title="Product Price" bsStyle="default" dropup id="split-button-dropup" onSelect={this.delete}>
-                <MenuItem eventKey={order}>Delete</MenuItem>
-            </SplitButton>,
+                <div>Price <i style={{marginTop:10, marginRight:10, marginRight:4}} className="fa fa-times" onClick={() => this.delete(order)}></i></div>,
                 sort: true
 
             });
         } else {
             columns.push({
                 dataField: 'id',
-                text: 
-                <SplitButton title="Product ID" bsStyle="default" dropup id="split-button-dropup" onSelect={this.delete}>
-                <MenuItem eventKey={order}>Delete</MenuItem>
-            </SplitButton>,
+                text:  
+                <div>Product ID <i style={{marginTop:10, marginRight:10, marginRight:4}} className="fa fa-times" onClick={() => this.delete(order)}></i></div>,
                 sort: true
 
             });
@@ -1763,6 +1753,7 @@ class Table extends Component {
         //console.log(col);
         this.setState({columns});
     }
+
 
     render() {
         var products = [{
@@ -1800,7 +1791,7 @@ class Table extends Component {
 
         return this.state.initialized ?
         
-            <div className="draggable">
+            <div  className="draggable">
                 <ButtonToolbar >
                     <SplitButton title="Add a Column" bsStyle="info" pullRight id="split-button-pull-right" onSelect={this.addCol}>
                         Categories
@@ -1816,68 +1807,30 @@ class Table extends Component {
                     rowStyle={rowStyle}>
                     
                 </BootstrapTable>
+
+
+
             </div>
             : <TableForm initializeTable={this.initializeTable} />
     }
 }
 
-class ChartForm extends Component {
-    render() {
-        return (
-            <Formik 
-                // initialize values to use in form
-                initialValues={{
-                    title:'', 
-                    dataset: datasets[0],
-                    datasourceUrl: datasourceUrl,
-                    xAxis: jsonProcessor.getOptions(datasets[0])[0], 
-                    yAxis: jsonProcessor.getNumericalOptions(datasets[0])[0], 
-                    processor:jsonProcessor
-                }}
-
-                // pass values to the charts
-                onSubmit={this.props.initializeChart}
-
-                // render form
-                render={formProps=>(
-                    <Form className="draggable" style={{textAlign: "center", zIndex: -1,height:"100%",width:"100%"}}>
-                        <label>Chart Title</label>
-                        <Field type="text" name="title" placeholder="Chart Title"/>
-                        <br/><br/>
-                        <label>Choose the dataset</label>
-                        <Field component="select" name="dataset">
-                            {datasets.map((dataset)=>
-                                <option key={dataset}>{dataset}</option>
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the X-Axis</label> 
-                        <Field component="select" name="xAxis">
-                            {/* gets the option based on selected dataset */}
-                            {jsonProcessor.getOptions(formProps.values.dataset)
-                            .map((option)=>
-                                <option key={option}>{option}</option>
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the Y-Axis</label> 
-                        <Field component="select" name="yAxis">
-                            {jsonProcessor.getNumericalOptions(formProps.values.dataset)
-                            .map((option)=> 
-                                <option key={option}>{option}</option>
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <Button type="submit">Submit</Button>
-                        {/* <DisplayFormikState {...this.props}/> */}
-                    </Form>
-                )}
-            />
-        );
-    }
-}
-
 class TableForm extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            aggregateType: 'Sum'
+        }
+    }
+
+    changeAggregate = (e)=>{
+        console.log("hiii" +e);
+        let aggregateType = this.state.aggregateType;
+        aggregateType = e;
+        this.setState(aggregateType);
+    }
+
     render() {
         return (
             <Formik 
@@ -1886,7 +1839,8 @@ class TableForm extends Component {
                     title:'', 
                     dataset: datasets[0],
                     datasourceUrl: datasourceUrl,
-                    processor:jsonProcessor
+                    primaryCol: jsonProcessor.getOptions(datasets[0])[0], 
+                    processor:jsonProcessor,
                 }}
 
                 // pass values to the charts
@@ -1895,15 +1849,33 @@ class TableForm extends Component {
                 // render form
                 render={formProps=>(
                     <Form className="draggable" style={{textAlign: "center", zIndex: -1,height:"100%",width:"100%"}}>
-                        <label>Chart Title</label>
+                        <label style={{marginRight:5}}>Chart Title</label>
                         <Field type="text" name="title" placeholder="Chart Title"/>
                         <br/><br/>
-                        <label>Choose the dataset</label>
+                        <label style={{marginRight:5}}>Choose the dataset</label>
                         <Field component="select" name="dataset">
                             {datasets.map((dataset)=>
                                 <option key={dataset}>{dataset}</option>
                             )}
                         </Field>
+                        <br/><br/>
+                        <label style={{marginRight:5}}>Type of Calculation</label> 
+                        <select name="tableAggregate">
+                            {/* gets the option based on selected dataset */}
+                            <option key = "Sum" onClick={this.changeAggregate}>Sum</option>
+                            <option key = "Average"  onClick={this.changeAggregate}>Average</option>
+                            <option key = "Medium"  onClick={this.changeAggregate}>Medium</option>
+                        </select>
+                        <br/><br/>
+                        <label style={{marginRight:5}}>Choose the category for {this.state.aggregateType}</label>   
+                        <Field component="select" name="tableCat">
+                            {/* gets the option based on selected dataset */}
+                            {jsonProcessor.getOptions(formProps.values.dataset)
+                            .map((option)=>
+                                <option key={option}>{option}</option>
+                            )}
+                        </Field>
+
                         <br/><br/>
                         <Button bsStyle="default" type="submit">Submit</Button>
                     </Form>

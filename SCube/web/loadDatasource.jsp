@@ -2,7 +2,8 @@
 <%@ include file="protect.jsp" %>
 <%@ page import="scube.entities.Account" %>
 <%@ page import="scube.entities.Developer" %>
-<%    Account account = (Account) session.getAttribute("account");
+<%    
+    Account account = (Account) session.getAttribute("account");
     int id;
     String url;
     String name;
@@ -92,15 +93,16 @@
                                     <input type="hidden" name="companyId" value="<%= account.getCompanyId()%>">
                                     <input type="hidden" name="operation" value="updateDatasource"/>
                                     <div class="row">
-                                        <div class="col-md-5" >
+                                        <div class="col-sm-5">
                                             <input type="submit" value="Update Datasource" class="btn btn-success"/>
                                         </div>
-
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-5">
+                                            <a class="btn btn-primary" style="float:right" href="devHome.jsp"><i class="fa fa-home"></i> Back</a>
+                                        </div>
                                     </div>
                                     <br/>
-
                                 </form>
-
                             </div>
                             <br><br>
                         </div>

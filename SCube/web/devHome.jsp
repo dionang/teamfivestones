@@ -117,7 +117,6 @@
                          
                         datasources[i].addEventListener('click', function (e) {
                             var form = document.getElementById("form" + i);
-                                    alert(form.elements["datasourceId"].value);
                             e.preventDefault();
                             swal({
                                 title: "Confirmation",
