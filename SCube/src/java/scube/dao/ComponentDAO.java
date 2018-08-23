@@ -9,41 +9,52 @@ import scube.entities.Image;
 
 public class ComponentDAO {
     //Create operations
-    public static boolean saveComponents(ArrayList<Component> components, int templateId) {
+    public static boolean saveComponents(ArrayList<ArrayList<Component>> allComponents, int templateId) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         // if no components to save
-        if(components.isEmpty()){
+        if(allComponents.isEmpty()){
             return false;
         }
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO component VALUES (?,?,?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO component VALUES (?,?,?,?,?,?,?,?)");
             
             // repeat the adding of multiple components into a single batch execute
-            for(int i=0; i<components.size(); i++) {
-                Component component = components.get(i);
-                stmt.setInt(1, templateId);                
-                stmt.setInt(2, i);
-                stmt.setString(3, component.getType());
-                stmt.setInt(4, component.getX());
-                stmt.setInt(5, component.getY());
-                stmt.setInt(6, component.getHeight());
-                stmt.setInt(7, component.getWidth());
-                stmt.addBatch();
-                
-                if(component.getType().equals("text")){
-                    Textbox textbox = (Textbox) component;
-                    addTextbox(templateId, i, textbox.getText());
-                } else if (component.getType().equals("bar") || component.getType().equals("line")) {
-                    Chart chart = (Chart) component;
-                    addChart(templateId, i, chart.getDatasourceUrl(), chart.getDataset(), chart.getTitle(), chart.getXAxis(), chart.getYAxis(), chart.getAggregate());
-                } else if (component.getType().equals("image")) {
-                    Image image = (Image) component;
-                    addImage(templateId, i, image.getImagePrefix(), image.getImageData());
+            for(int page=0; page<allComponents.size(); page++) {
+                ArrayList<Component> components = allComponents.get(page);
+                for(int i=0; i<components.size(); i++) {
+                    Component component = components.get(i);
+                    stmt.setInt(1, templateId);                
+                    stmt.setInt(2, page);                    
+                    stmt.setInt(3, i);
+                    stmt.setString(4, component.getType());
+                    stmt.setInt(5, component.getX());
+                    stmt.setInt(6, component.getY());
+                    stmt.setInt(7, component.getHeight());
+                    stmt.setInt(8, component.getWidth());
+                    stmt.addBatch();
+
+                    switch (component.getType()) {
+                        case "text":
+                            Textbox textbox = (Textbox) component;
+                            addTextbox(templateId, page, i, textbox.getText());
+                            break;
+                        case "bar":
+                        case "line":
+                            Chart chart = (Chart) component;
+                            addChart(templateId, page, i, chart.getDatasourceUrl(), chart.getDataset(), chart.getTitle(), chart.getXAxis(), chart.getYAxis(), chart.getAggregate());
+                            break;
+                        case "image":
+                            Image image = (Image) component;
+                            addImage(templateId, page, i, image.getImagePrefix(), image.getImageData());
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
             stmt.executeBatch();
@@ -56,25 +67,25 @@ public class ComponentDAO {
         }
     }
     
-    public static void addChart(int templateId, int position, String datasourceUrl, String dataset, String title, String xAxis, String yAxis, String aggregate) {
+    public static void addChart(int templateId, int page, int position, String datasourceUrl, String dataset, String title, String xAxis, String yAxis, String aggregate) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO chart VALUES (?,?,?,?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO chart VALUES (?,?,?,?,?,?,?,?,?)");
             stmt.setInt(1, templateId);
-            stmt.setInt(2, position);            
-            stmt.setString(3, datasourceUrl);            
-            stmt.setString(4, dataset);
-            stmt.setString(5, title);
-            stmt.setString(6, xAxis);
-            stmt.setString(7, yAxis);            
-            stmt.setString(8, aggregate);
+            stmt.setInt(2, page);            
+            stmt.setInt(3, position);            
+            stmt.setString(4, datasourceUrl);            
+            stmt.setString(5, dataset);
+            stmt.setString(6, title);
+            stmt.setString(7, xAxis);
+            stmt.setString(8, yAxis);            
+            stmt.setString(9, aggregate);
 
             stmt.executeUpdate();
-            
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         } finally {
@@ -82,20 +93,21 @@ public class ComponentDAO {
         }
     }
     
-    public static void addImage(int templateId, int position, String imagePrefix, byte[] imageData) {
+    public static void addImage(int templateId, int page, int position, String imagePrefix, byte[] imageData) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO image VALUES (?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO image VALUES (?,?,?,?,?)");
             stmt.setInt(1, templateId);
-            stmt.setInt(2, position);            
-            stmt.setString(3, imagePrefix);
-            stmt.setBytes(4, imageData);
-            System.out.println(stmt.executeUpdate());
-            
+            stmt.setInt(2, page);            
+            stmt.setInt(3, position);            
+            stmt.setString(4, imagePrefix);
+            stmt.setBytes(5, imageData);
+                        
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         } finally {
@@ -103,20 +115,20 @@ public class ComponentDAO {
         }
     }
     
-    public static void addTextbox(int templateId, int position, String text) {
+    public static void addTextbox(int templateId, int page, int position, String text) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO textbox VALUES (?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO textbox VALUES (?,?,?,?)");
             stmt.setInt(1, templateId);
-            stmt.setInt(2, position);            
-            stmt.setString(3, text);
+            stmt.setInt(2, page);            
+            stmt.setInt(3, position);            
+            stmt.setString(4, text);
 
             stmt.executeUpdate();
-            
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         } finally {
@@ -125,37 +137,52 @@ public class ComponentDAO {
     }
         
     // Read operations
-    public static ArrayList<Component> loadComponentsFromTemplate(int templateId) {
+    public static ArrayList<ArrayList<Component>> loadComponentsFromTemplate(int templateId) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT * from component WHERE templateId = ?");
+            stmt = conn.prepareStatement("SELECT * from component WHERE templateId = ? ORDER BY page, position");
             stmt.setInt(1, templateId);
             rs = stmt.executeQuery();
             
+            // counter to keep track of the page of the previous component
+            // upon page change, create a new arraylist
+            int prevPage = -1;
+            ArrayList<ArrayList<Component>> allComponents = new ArrayList<>();
             ArrayList<Component> components = new ArrayList<>();
-            int position = 0;
             while(rs.next()){
                 Component component = null;
+                int page = rs.getInt("page");
+                int position = rs.getInt("position");
                 String type = rs.getString("type");
                 if(type.equals("text")){
                     component = new Textbox(type, rs.getInt("x"), rs.getInt("y"), 
-                        rs.getInt("height"), rs.getInt("width"), getTextboxText(templateId, position));
+                        rs.getInt("height"), rs.getInt("width"), getTextboxText(templateId, page, position));
                 } else if (type.equals("line") || type.equals("bar")){
-                    ArrayList<String> props = getChartProps(templateId, position);
+                    ArrayList<String> props = getChartProps(templateId, page, position);
                     component = new Chart(type, rs.getInt("x"), rs.getInt("y"), 
                         rs.getInt("height"), rs.getInt("width"), props.get(0), props.get(1), props.get(2), props.get(3), props.get(4), props.get(5));
                 } else if (type.equals("image")) {
-                    component = new Image(type, rs.getInt("x"), rs.getInt("y"), 
-                        rs.getInt("height"), rs.getInt("width"), getImagePrefix(templateId, position), getImageData(templateId, position));
+                    component = new Image(type, rs.getInt("x"), rs.getInt("y"), rs.getInt("height"), rs.getInt("width"), 
+                        getImagePrefix(templateId, page, position), getImageData(templateId, page, position));
                 }
+                
+                // if next page, add existing list to allComponents and reset the components list
+                if (prevPage != page && prevPage != -1) {
+                    allComponents.add(components);
+                    components = new ArrayList<>();
+                }
+                
+                prevPage = page;
                 components.add(component);
-                position++;
             }
-            return components;
+
+            // add the last page of components in
+            allComponents.add(components);
+            return allComponents;
         } catch (SQLException e) {
             e.printStackTrace(System.out);
             return null;
@@ -164,16 +191,17 @@ public class ComponentDAO {
         }
     }
     
-    public static String getTextboxText(int templateId, int position) {
+    public static String getTextboxText(int templateId, int page, int position) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT text FROM textbox WHERE templateId = ? and position = ?");
+            stmt = conn.prepareStatement("SELECT text FROM textbox WHERE templateId = ? and page = ? and position = ?");
             stmt.setInt(1, templateId);
-            stmt.setInt(2, position);
+            stmt.setInt(2, page);
+            stmt.setInt(3, position);
             rs = stmt.executeQuery();
 
             if(rs.next()){
@@ -189,16 +217,17 @@ public class ComponentDAO {
         }
     }
     
-    public static String getImagePrefix(int templateId, int position) {
+    public static String getImagePrefix(int templateId, int page, int position) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT imagePrefix FROM image WHERE templateId = ? and position = ?");
+            stmt = conn.prepareStatement("SELECT imagePrefix FROM image WHERE templateId = ? and page = ? and position = ?");
             stmt.setInt(1, templateId);
-            stmt.setInt(2, position);
+            stmt.setInt(2, page);
+            stmt.setInt(3, position);
             rs = stmt.executeQuery();
 
             if(rs.next()){
@@ -214,16 +243,17 @@ public class ComponentDAO {
         }
     }
     
-    public static byte[] getImageData(int templateId, int position) {
+    public static byte[] getImageData(int templateId, int page, int position) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT imageData FROM image WHERE templateId = ? and position = ?");
+            stmt = conn.prepareStatement("SELECT imageData FROM image WHERE templateId = ? and page = ? and position = ?");
             stmt.setInt(1, templateId);
-            stmt.setInt(2, position);
+            stmt.setInt(2, page);
+            stmt.setInt(3, position);
             rs = stmt.executeQuery();
 
             if(rs.next()){
@@ -239,7 +269,7 @@ public class ComponentDAO {
         }
     }
     
-    public static ArrayList<String> getChartProps(int templateId, int position) {
+    public static ArrayList<String> getChartProps(int templateId, int page, int position) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -247,9 +277,10 @@ public class ComponentDAO {
         ArrayList<String> props = new ArrayList<>();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT * FROM chart WHERE templateId = ? and position = ?");
+            stmt = conn.prepareStatement("SELECT * FROM chart WHERE templateId = ? and page = ? and position = ?");
             stmt.setInt(1, templateId);
-            stmt.setInt(2, position);
+            stmt.setInt(2, page);
+            stmt.setInt(3, position);
             rs = stmt.executeQuery();
 
             if(rs.next()){

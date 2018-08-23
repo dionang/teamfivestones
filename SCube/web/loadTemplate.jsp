@@ -36,10 +36,13 @@
         <script src="assets/js/dashboard.js"></script> 
         <!-- React modules-->
         <script src="assets/js/babel.min.js" charset="utf-8"></script>
-        <script src="assets/js/bundle.min.js"></script>        
+        <script src="assets/js/bundle.min.js"></script>    
+        
+        <script src="https://cdn.rawgit.com/gitbrent/PptxGenJS/v2.0.0/dist/pptxgen.bundle.js"></script>
         <!-- JsonProcessor -->
         <script src="assets/js/jsonProcessor.js"></script>
         <!-- Custom React Script -->
         <script type="text/babel" src="assets/js/app.js"></script> 
+        
     </body>
 </html>

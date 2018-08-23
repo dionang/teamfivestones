@@ -50,91 +50,119 @@ public class ComponentController extends HttpServlet {
             String operation = json.get("operation").getAsString();
             int templateId = json.get("templateId").getAsInt();
             if(operation.equals("saveComponents")){
-                JsonArray arr = json.getAsJsonArray("components");
-                ArrayList<Component> components = new ArrayList<>();
-                for(int i=0; i<arr.size();i++){
-                    JsonObject componentObj = arr.get(i).getAsJsonObject();
-                    // "deleted" components that we do not need to save
-                    if (!componentObj.get("display").getAsBoolean()){
-                        continue;
+                JsonArray allArr = json.getAsJsonArray("components");
+                ArrayList<ArrayList<Component>> allComponents = new ArrayList<>();
+                
+                for(int i=0; i<allArr.size(); i++){
+                    JsonArray arr = allArr.get(i).getAsJsonArray();
+                    ArrayList<Component> components = new ArrayList<>();
+
+                    for(int j=0; j<arr.size(); j++){
+                        JsonObject componentObj = arr.get(j).getAsJsonObject();
+                        
+                        // "deleted" components that we do not need to save
+                        if (!componentObj.get("display").getAsBoolean()){
+                            continue;
+                        }
+
+                        String type = componentObj.get("type").getAsString();
+                        int x = componentObj.get("x").getAsInt();
+                        int y = componentObj.get("y").getAsInt();
+                        int height = componentObj.get("height").getAsInt();
+                        int width = componentObj.get("width").getAsInt();
+
+                        JsonObject properties = componentObj.get("properties").getAsJsonObject();
+                        if (type.equals("text")){
+                            String text = properties.get("text").getAsString();
+                            components.add(new Textbox(type, x, y, height, width, text));
+                        } else if (type.equals("bar") || type.equals("line")){
+                            boolean initialized = properties.get("initialized").getAsBoolean();                        
+                            String datasourceUrl = properties.get("datasourceUrl").getAsString();
+                            String dataset = properties.get("dataset").getAsString();
+                            String title = properties.get("title").getAsString();
+                            String xAxis = properties.get("xAxis").getAsString();
+                            String yAxis = properties.get("yAxis").getAsString();
+                            String aggregate = properties.get("aggregate").getAsString();
+
+                            if(initialized){
+                                components.add(new Chart(type, x, y, height, width, datasourceUrl, dataset, title, xAxis, yAxis, aggregate));
+                            }
+                        } else if (type.equals("image")) {
+                            String imageUrl = properties.get("imageUrl").getAsString();
+                            int comma = imageUrl.indexOf(",");
+                            String imagePrefix = imageUrl.substring(0,comma);  
+                            byte[] imageData = Base64.getMimeDecoder().decode(imageUrl.substring(comma));
+
+                            components.add(new Image(type, x, y, height, width, imagePrefix, imageData));
+                        }
                     }
                     
-                    String type = componentObj.get("type").getAsString();
-                    int x = componentObj.get("x").getAsInt();
-                    int y = componentObj.get("y").getAsInt();
-                    int height = componentObj.get("height").getAsInt();
-                    int width = componentObj.get("width").getAsInt();
-                    
-                    JsonObject properties = componentObj.get("properties").getAsJsonObject();
-                    if (type.equals("text")){
-                        String text = properties.get("text").getAsString();
-                        components.add(new Textbox(type, x, y, height, width, text));
-                    } else if (type.equals("bar") || type.equals("line")){
-                        boolean initialized = properties.get("initialized").getAsBoolean();                        
-                        String datasourceUrl = properties.get("datasourceUrl").getAsString();
-                        String dataset = properties.get("dataset").getAsString();
-                        String title = properties.get("title").getAsString();
-                        String xAxis = properties.get("xAxis").getAsString();
-                        String yAxis = properties.get("yAxis").getAsString();
-                        String aggregate = properties.get("aggregate").getAsString();
-                        
-                        if(initialized){
-                            components.add(new Chart(type, x, y, height, width, datasourceUrl, dataset, title, xAxis, yAxis, aggregate));
-                        }
-                    } else if (type.equals("image")) {
-                        String imageUrl = properties.get("imageUrl").getAsString();
-                        int comma = imageUrl.indexOf(",");
-                        String imagePrefix = imageUrl.substring(0,comma);  
-                        byte[] imageData = Base64.getMimeDecoder().decode(imageUrl.substring(comma));
-
-                        components.add(new Image(type, x, y, height, width, imagePrefix, imageData));
+                    // add arraylist of components for each page to the overall one
+                    if(components.size()>0){
+                        allComponents.add(components);
                     }
                 }
                 
                 // remove existing data of the template, if exists
                 ComponentDAO.deleteAllComponents(templateId);
-                boolean status = ComponentDAO.saveComponents(components, templateId);
+                boolean status = ComponentDAO.saveComponents(allComponents, templateId);
                 responseObj.addProperty("status", status);
                 out.println(responseObj.toString());
                 
             } else if (operation.equals("loadComponents")) {
-                ArrayList<Component> components = ComponentDAO.loadComponentsFromTemplate(templateId);
-                JsonArray jsonArr = new JsonArray();
-                for(Component component : components){
-                    JsonObject componentObj = new JsonObject();
-                    componentObj.addProperty("display", true);
-                    componentObj.addProperty("type", component.getType());
-                    componentObj.addProperty("x", component.getX());
-                    componentObj.addProperty("y", component.getY());
-                    componentObj.addProperty("height", component.getHeight());
-                    componentObj.addProperty("width", component.getWidth());                    
-                    
-                    JsonObject properties = new JsonObject();
-                    if(component.getType().equals("text")){
-                        Textbox textbox = (Textbox) component;
-                        properties.addProperty("text", textbox.getText());
-                    } else if (component.getType().equals("bar") || component.getType().equals("line")) {
-                        Chart chart = (Chart) component;
-                        properties.addProperty("initialized", true);
-                        properties.addProperty("datasourceUrl", chart.getDatasourceUrl());
-                        properties.addProperty("dataset", chart.getDataset());
-                        properties.addProperty("title", chart.getTitle());
-                        properties.addProperty("xAxis", chart.getXAxis());
-                        properties.addProperty("yAxis", chart.getYAxis());                        
-                        properties.addProperty("aggregate", chart.getAggregate());
-                    } else if (component.getType().equals("image")){
-                        Image image = (Image) component;
-                        String imageUrl = image.getImagePrefix() + "," + Base64.getMimeEncoder().encodeToString(image.getImageData());
-                        properties.addProperty("imageUrl", imageUrl);
+                ArrayList<ArrayList<Component>> allComponents = ComponentDAO.loadComponentsFromTemplate(templateId);
+                JsonArray result = new JsonArray();
+                for(ArrayList<Component> components : allComponents){
+                    System.out.println(components);
+
+                    JsonArray componentArr = new JsonArray();
+                    for(Component component : components){
+                        JsonObject componentObj = new JsonObject();
+                        componentObj.addProperty("display", true);
+                        componentObj.addProperty("type", component.getType());
+                        componentObj.addProperty("x", component.getX());
+                        componentObj.addProperty("y", component.getY());
+                        componentObj.addProperty("height", component.getHeight());
+                        componentObj.addProperty("width", component.getWidth());                    
+
+                        JsonObject properties = new JsonObject();
+                        switch (component.getType()) {
+                            case "text":
+                                Textbox textbox = (Textbox) component;
+                                properties.addProperty("text", textbox.getText());
+                                break;
+                            case "bar":
+                            case "line":
+                                Chart chart = (Chart) component;
+                                properties.addProperty("initialized", true);
+                                properties.addProperty("datasourceUrl", chart.getDatasourceUrl());
+                                properties.addProperty("dataset", chart.getDataset());
+                                properties.addProperty("title", chart.getTitle());
+                                properties.addProperty("xAxis", chart.getXAxis());
+                                properties.addProperty("yAxis", chart.getYAxis());
+                                properties.addProperty("aggregate", chart.getAggregate());
+                                break;
+                            case "image":
+                                Image image = (Image) component;
+                                String imageUrl = image.getImagePrefix() + "," + Base64.getMimeEncoder().encodeToString(image.getImageData());
+                                properties.addProperty("initialized", true);
+                                properties.addProperty("imageUrl", imageUrl);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        componentObj.add("properties", properties);
+
+                        // add component to componentArr
+                        componentArr.add(componentObj);
                     }
                     
-                    componentObj.add("properties", properties);
+                    result.add(componentArr);
+                } 
 
-                    // add component to jsonArr
-                    jsonArr.add(componentObj);
-                }
                 
-                responseObj.add("components", jsonArr);
+                responseObj.add("components", result);
 //                System.out.println(responseObj.toString());
                 out.println(responseObj.toString());
             }

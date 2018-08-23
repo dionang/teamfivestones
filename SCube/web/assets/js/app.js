@@ -868,14 +868,13 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            components: [],
+            components: [[]],
             editMode: false,
             selectedSize: 'A4',
             selectedLayout: 'Portrait',
-            // w : 21*37.795276,
-            // h : 29.7*37.795276,
             templateName: "Template Name",
-            sidebar: true
+            sidebar: true,
+            pageNo: 0
         }
     }
 
@@ -889,8 +888,8 @@ class App extends Component {
 
     addTextbox = () => {
         let components = this.state.components;
-        components.push(
-            { type: "text", x: 0, y: 0, height: 120, width: 200, display: true, properties: { text: "<p><br></p>" } }
+        components[this.state.pageNo].push(
+            { type: "text", x: 0, y: 0, height: 150, width: 220, display: true, properties: { text: "<p><br></p>" } }
         );
 
         this.setState({ components, editMode: true });
@@ -899,37 +898,7 @@ class App extends Component {
     addBarChart = () => {
         let components = this.state.components;
         // adds new component to state
-        components.push(
-            {
-                type: "bar", x: 0, y: 0, height: 250, width: 300, display: true,
-                properties: {
-                    initialized: false,
-                    datasourceUrl: '',
-                    dataset: '',
-                    title: '',
-                    xAxis: '',
-                    yAxis: ''
-                }
-            }
-        );
-
-        // updates state
-        this.setState({ components, editMode: true });
-    }
-    
-    addTextbox = () => {
-        let components = this.state.components;
-        components.push(
-            { type: "text", x: 0, y: 0, height: 120, width: 200, display: true, properties: { text: "<p><br></p>" } }
-        );
-
-        this.setState({ components, editMode: true });
-    }
-
-    addBarChart = () => {
-        let components = this.state.components;
-        // adds new component to state
-        components.push(
+        components[this.state.pageNo].push(
             {
                 type: "bar", x: 0, y: 0, height: 250, width: 300, display: true,
                 properties: {
@@ -949,7 +918,7 @@ class App extends Component {
 
     addLineChart = () => {
         let components = this.state.components;
-        components.push(
+        components[this.state.pageNo].push(
             {
                 type: "line", x: 0, y: 0, height: 250, width: 300, display: true,
                 properties: {
@@ -963,35 +932,52 @@ class App extends Component {
             }
         );
 
-        this.setState({ components, editMode:true });
+        this.setState({ components, editMode: true });
     }
 
 
     addTable = () => {
         let components = this.state.components;
-        components.push(
+        components[this.state.pageNo].push(
             { type: "table", x: 0, y: 0, height: 300, width: 300, display: true }
         );
 
-        this.setState({ components, editMode:true });
+        this.setState({ components, editMode: true });
     }
 
     addImage = () => {
         let components = this.state.components;
-        components.push(
-            { type: "image", x: 0, y: 0, height: 200, width: 200, display: true, 
-                properties: { 
-                    imageUrl: '', 
+        components[this.state.pageNo].push(
+            {
+                type: "image", x: 0, y: 0, height: 200, width: 200, display: true,
+                properties: {
+                    imageUrl: '',
                     initialized: false,
-                } 
-            } 
+                }
+            }
         );
-        this.setState({ components, editMode:true });
+        this.setState({ components, editMode: true });
+    }
+
+    addVideo = () => {
+        let components = this.state.components;
+        components[this.state.pageNo].push(
+            {
+                type: "video", x: 0, y: 0, height: 200, width: 200, display: true,
+                properties: {
+                    // using textbox properties for now
+                    text: '',
+                }
+            }
+        );
+        this.setState({ components, editMode: true });
     }
 
     changeSettings(i) {
         let components = this.state.components;
-        components[i].properties.initialized = false;
+        let pageNo = this.state.pageNo;
+
+        components[pageNo][i].properties.initialized = false;
         this.setState({ components });
     }
 
@@ -1002,7 +988,9 @@ class App extends Component {
 
     deleteComponent(i) {
         let components = this.state.components;
-        components[i].display = false;
+        let pageNo = this.state.pageNo;
+
+        components[pageNo][i].display = false;
         this.setState({ components });
     }
 
@@ -1031,7 +1019,7 @@ class App extends Component {
                 json: true,
                 body: { operation: "loadComponents", templateId: templateId }
             }, function (error, response, body) {
-                if(body){
+                if (body) {
                     let components = body.components;
                     self.setState({ components });
                 }
@@ -1039,28 +1027,109 @@ class App extends Component {
         }
     }
 
+    previousPage = () => {
+        let pageNo = this.state.pageNo;
+        if(pageNo !== 0){
+            pageNo = this.state.pageNo-1;
+            this.setState({pageNo});
+        }
+    }
+
+    nextPage = () => {
+        let components = this.state.components;
+        let pageNo = this.state.pageNo+1;
+
+        // add new page if it doesnt exist
+        if(pageNo === components.length){
+            components.push([]);
+        }
+        this.setState({components, pageNo});
+    }
+
     renameTemplate = (e) => {
         this.setState({ templateName: e.target.value });
     }
 
-    saveComponents(templateId){
+    // i represents index of current item in this.state.components
+    // convert style data to integer. e.g. 10px -> 10
+    onResize(ref, pos, i) {
+        let components = this.state.components;
+        let pageNo = this.state.pageNo;
+        components[pageNo][i].height = parseInt(ref.style.height, 10);
+        components[pageNo][i].width = parseInt(ref.style.width, 10);
+        components[pageNo][i].x = pos.x;
+        components[pageNo][i].y = pos.y;
+        this.setState({ components });
+    }
+
+    onDragStop(ref, i) {
+        let components = this.state.components;
+        let pageNo = this.state.pageNo;
+        components[pageNo][i].x = ref.x;
+        components[pageNo][i].y = ref.y;
+        this.setState({ components });
+    }
+
+    saveComponents(templateId) {
         let self = this;
         request.post({
             url: api + 'saveComponents',
             json: true,
             body: { operation: "saveComponents", templateId: templateId, components: self.state.components }
         }, function (error, response, body) {
-            if (body && body.status){
-//                alert("Saved succesfully");
-                swal("Success", "Template saved", "success");
-                self.setState({editMode:false});
+            if (body && body.status) {
+                alert("Saved succesfully");
+                // swal("saved succesfully");
             } else {
-//                alert("Error in saving");
-                swal("Error", "Template failed to save", "error");
-                self.setState({editMode:false});
+                alert("Error in saving");
+                // swal("error in saving");
             }
-            
+
         });
+    }
+
+    savePresentation = () => {
+        var pptx = new PptxGenJS();
+        pptx.setBrowser(true);
+        
+        for(let pageNo in this.state.components){
+            let components = this.state.components[pageNo];
+            let slide = pptx.addNewSlide();
+            for(let component of components) {
+                // convert px to inches
+                let x = component.x / 96;
+                let y = component.y / 96;
+                let w = component.width / 96;
+                let h = (component.height) / 96;
+
+                if (component.type === "text") {
+                    // remove the p tags
+                    let text = component.properties.text.substring(3, component.properties.text.length-4).trim();
+                    // console.log(text);
+                    // let texts = text.split(/\r\n|\n|\r/);
+                    // console.log(texts); 
+                    slide.addText(text, {x:x, y:y,  w:w, h:h, 
+                        fontSize:14, color:'363636' 
+                        //, bullet:{code:'25BA'} 
+                    });
+                    
+                } else if (component.type === "image") {
+                    let imageUrl = component.properties.imageUrl;
+
+                    // remove height of toolbar
+                    y = (component.y + 27.5) / 96;
+                    h = (component.height - 27.5) / 96;
+                    slide.addImage({ data:imageUrl, x:x, y:y, w:w, h:h });
+                } else if (component.type === "video") {
+                    // remove the p tags
+                    let videoUrl = component.properties.text.substring(3, component.properties.text.length-4).trim();
+                    console.log(videoUrl);
+                    slide.addMedia({ type:'online', link:videoUrl, x:x, y:y, w:w, h:h });
+                }
+            }
+        }
+        
+        pptx.save('Sample Presentation');
     }
 
     saveTemplate = () => {
@@ -1079,7 +1148,6 @@ class App extends Component {
                     templatelayout: self.state.selectedLayout,
                     companyId: companyId,
                     userName: userName
-                    
                 }
             }, function (error, response, body) {
                 if (body === "false") {
@@ -1110,24 +1178,7 @@ class App extends Component {
                 }
             });
         }
-    }
-    
-    // i represents index of current item in this.state.components
-    // convert style data to integer. e.g. 10px -> 10
-    onResize(ref, pos, i) {
-        let components = this.state.components;
-        components[i].height = parseInt(ref.style.height, 10);
-        components[i].width = parseInt(ref.style.width, 10);
-        components[i].x = pos.x;
-        components[i].y = pos.y;
-        this.setState({ components });
-    }
-
-    onDragStop(ref, i) {
-        let components = this.state.components;
-        components[i].x = ref.x;
-        components[i].y = ref.y;
-        this.setState({ components });
+        this.setState({editMode:false});
     }
 
     toggleChartMenu = () => {
@@ -1149,7 +1200,9 @@ class App extends Component {
 
     updateProperties = (properties, i) => {
         let components = this.state.components;
-        components[i].properties = properties;
+        let pageNo = this.state.pageNo;
+        
+        components[pageNo][i].properties = properties;
         this.setState({ properties });
     }
 
@@ -1248,6 +1301,9 @@ class App extends Component {
                                         <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                         {this.state.editMode ? "Leave Edit Mode" : "Enter Edit Mode"}
                                     </Button>
+                                    <Button className="col-md-2 col-xs-2" style={{ float:"right", minWidth:150 }} bsStyle="warning" onClick={this.savePresentation}>
+                                        <i className="fa fa-edit" style={{ marginRight: 2 }} /> Export as PPT
+                                    </Button>
                                     <br/>
 
                                 {/* <div id="size" className="modal">
@@ -1291,26 +1347,49 @@ class App extends Component {
                                     </div>
                                 </div> */}
 
-
-                                <div className="col-sm-12 col-xs-12" style={{ paddingTop:10, paddingBottom:10, backgroundColor:'white', borderBottom:'7px solid #EB6B2A' }}>
+                                <div className="col-sm-12 col-xs-12" style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: 'white', borderBottom: '7px solid #EB6B2A' }}>
                                     <label> Add Component: </label>
-                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary" 
-                                        onClick={this.addTextbox}   style={{ marginRight:5,marginLeft:6 }}><i className="fa fa-font"/></Button>
-                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsStyle="warning" 
-                                        onClick={this.addBarChart}  style={{ marginRight:5 }}><i className="fa fa-bar-chart"/></Button>
-                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart" bsStyle="success" 
-                                        onClick={this.addLineChart} style={{ marginRight:5 }}><i className="fa fa-line-chart"/></Button>
-                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Table" bsStyle="danger"  
-                                        onClick={this.addTable}     style={{ marginRight:5 }}><i className="fa fa-table"/> </Button>
-                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Image"
-                                        onClick={this.addImage}     style={{ backgroundColor:"#31B0D5", color:"white", border:"1px solid #31B0D5"}}><i className="fa fa-image"/></Button>
+                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Textbox" bsStyle="primary"
+                                        onClick={this.addTextbox}   style={{ marginRight:5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
+                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Bar Chart" bsStyle="warning"
+                                        onClick={this.addBarChart}  style={{ marginRight:5 }}><i className="fa fa-bar-chart" /></Button>
+                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Line Chart" bsStyle="success"
+                                        onClick={this.addLineChart} style={{ marginRight:5 }}><i className="fa fa-line-chart" /></Button>
+                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Table" bsStyle="danger"
+                                        onClick={this.addTable}     style={{ marginRight:5 }}><i className="fa fa-table" /> </Button>
+                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Image"
+                                        onClick={this.addImage}     style={{ backgroundColor:"#31B0D5", color:"white", border:"1px solid #31B0D5", marginRight:5 }}><i className="fa fa-image" /></Button>
+                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Video"
+                                        onClick={this.addVideo}     style={{ backgroundColor:"#D896FF", color:"white", border:"1px solid #D896FF", marginRight:160 }}><i className="fa fa-play-circle" /></Button>
+
+                                    <span style={{fontFamily:'Georgia', fontSize:18}}>Page Number</span>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title = "Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
+                                        style={{ marginRight: 10, marginLeft: 10}}>
+                                        <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                            <path d="M0-.5h24v24H0z" fill="none"></path>
+                                            <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" className="jWRuRT"></path>
+                                        </svg>
+                                    </Button>                                   
+                                    <span style={{fontFamily:'Georgia', fontSize:18}}>{this.state.pageNo+1}</span>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title = "Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
+                                        style={{ marginLeft: 10}}>
+                                        <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                            <path d="M0-.5h24v24H0z" fill="none"></path>
+                                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
+                                        </svg>
+                                    </Button>
+
+                                    <Button bsStyle="default" bsSize="small" onClick={this.saveTemplate}
+                                        style={{ marginLeft: 10, color:'orange', border:'none' }}> <i className="fa fa-save fa-2x" />
+                                    </Button>
                                 </div>
-                                <div id="container" className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', overflow: 'auto', height:"100%", marginTop: -5 }}>
+
+                                <div id="container" className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', overflow: 'auto', height: "100%", marginTop: -5 }}>
                                     {/* map does a for loop over all the components in the state */}
 
-                                    {this.state.components.map((item, i) => {
+                                    {this.state.components[this.state.pageNo].map((item, i) => {
                                         if (item.display) {
-                                            return <Rnd key={i}
+                                            return <Rnd key={this.state.pageNo + "," + i}
                                                 style={{
                                                     borderStyle: this.state.editMode ? "dotted" : "hidden",
                                                     borderWidth: 2,
@@ -1339,7 +1418,7 @@ class App extends Component {
                                                 // ref represents item that was dragged
                                                 onDragStop={(event, ref) => this.onDragStop(ref, i)}
                                             >
-                                                <div style={{ height:27.5, float:"right" }}>
+                                                <div style={{ height: 27.5, float: "right" }}>
                                                     <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
                                                         onClick={() => this.changeSettings(i)}></i>
                                                     <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
@@ -1352,6 +1431,7 @@ class App extends Component {
                                             </Rnd>
                                         }
                                     })}
+                                    
                                 </div>
                             </div>
                         </div>
@@ -1388,6 +1468,11 @@ class ReportComponent extends Component {
             return(
                 <Table/>
             )
+        } else if (this.props.type === "video") {
+            return(
+                <Textbox i={this.props.i} text={this.props.properties.videoUrl} editMode={false}
+                    updateProperties={this.props.updateProperties} />
+            );
         }
     }
 }
@@ -1478,11 +1563,11 @@ class Barchart extends Component {
                     <YAxis dataKey={this.state.yAxis}>
                         <Label value={this.state.yAxis} position="outside" angle={-90}/>
                     </YAxis>
+                    <Tooltip/>
                     <Bar dataKey={this.state.yAxis} fill="blue" />
                     {/* <Bar dataKey="neutral" fill="orange" /> */}
                     {/* <Bar dataKey="negative" fill="grey" /> */}
                     <Legend verticalAlign="bottom"/>
-                    <Tooltip/>
                 </BarChart>
             </ResponsiveContainer>
             :   <ChartForm initializeChart={this.initializeChart}/>
@@ -1647,11 +1732,15 @@ class Textbox extends Component {
     render() {
         const toolbarConfig = {
             // Optionally specify the groups to display (displayed in the order listed).
-            display: ['INLINE_STYLE_BUTTONS'],
+            display: ['INLINE_STYLE_BUTTONS','BLOCK_TYPE_BUTTONS'],
             INLINE_STYLE_BUTTONS: [
-              {label: 'Bold', style: 'BOLD', className: 'custom-css-class'},
-              {label: 'Italic', style: 'ITALIC'},
-              {label: 'Underline', style: 'UNDERLINE'}
+                {label: 'Bold', style: 'BOLD'},
+                {label: 'Italic', style: 'ITALIC'},
+                {label: 'Underline', style: 'UNDERLINE'}
+            ],
+            BLOCK_TYPE_BUTTONS: [
+                {label: 'UL', style: 'unordered-list-item'},
+                {label: 'OL', style: 'ordered-list-item'}
             ]
         };
 
@@ -1812,6 +1901,62 @@ class Table extends Component {
 
             </div>
             : <TableForm initializeTable={this.initializeTable} />
+    }
+}
+
+class ChartForm extends Component {
+    render() {
+        return (
+            <Formik 
+                // initialize values to use in form
+                initialValues={{
+                    title:'', 
+                    dataset: datasets[0],
+                    datasourceUrl: datasourceUrl,
+                    xAxis: jsonProcessor.getOptions(datasets[0])[0], 
+                    yAxis: jsonProcessor.getNumericalOptions(datasets[0])[0], 
+                    processor:jsonProcessor
+                }}
+
+                // pass values to the charts
+                onSubmit={this.props.initializeChart}
+
+                // render form
+                render={formProps=>(
+                    <Form name="title" className="draggable" style={{textAlign: "center", zIndex: 100,height:"100%",width:"100%"}}>
+                        <label>Chart Title</label>
+                        <Field type="text" name="title" placeholder="Chart Title" style={{position:"relative"}} className = "cannotDrag"/>
+                        <br/><br/>
+                        <label>Choose the dataset</label>
+                        <Field component="select" name="dataset">
+                            {datasets.map((dataset)=>
+                                <option key={dataset}>{dataset}</option>
+                            )}
+                        </Field>
+                        <br/><br/>
+                        <label>Choose the X-Axis</label> 
+                        <Field component="select" name="xAxis">
+                            {/* gets the option based on selected dataset */}
+                            {jsonProcessor.getOptions(formProps.values.dataset)
+                            .map((option)=>
+                                <option key={option}>{option}</option>
+                            )}
+                        </Field>
+                        <br/><br/>
+                        <label>Choose the Y-Axis</label> 
+                        <Field component="select" name="yAxis">
+                            {jsonProcessor.getNumericalOptions(formProps.values.dataset)
+                            .map((option)=> 
+                                <option key={option}>{option}</option>
+                            )}
+                        </Field>
+                        <br/><br/>
+                        <Button type="submit">Submit</Button>
+                        {/* <DisplayFormikState {...this.props}/> */}
+                    </Form>
+                )}
+            />
+        );
     }
 }
 
