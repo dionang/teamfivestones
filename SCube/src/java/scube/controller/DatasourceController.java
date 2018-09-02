@@ -2,7 +2,9 @@ package scube.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +43,27 @@ public class DatasourceController extends HttpServlet {
                 String datasourceUrl = request.getParameter("datasourceUrl");
                 String datasourceName = request.getParameter("datasourceName");
                 String remark = request.getParameter("remark");
+                String path[]=request.getParameterValues("path");
+              
+                String name[]=request.getParameterValues("name");
+               
+                String type[]=request.getParameterValues("type");
+                 String fieldName[]=request.getParameterValues("fieldName");
+               System.out.println(Arrays.toString(fieldName));
+                String dataType[]=request.getParameterValues("dataType");
+                String infoType[]=request.getParameterValues("infoType");
+                
                 boolean status = DatasourceDAO.addDatasource(account.getCompanyId(),datasourceUrl,datasourceName,remark);
+                ArrayList<Boolean> result=null;
+                if(status){
+                   int id=DatasourceDAO.getLatestDatasoureId();
+                    for(int i=1;i<path.length;i++){
+                        String p=path[i];
+                        String n=name[i];
+                        String t=type[i];
+                        result.add(DatasourceDAO.addDataset(n,p,t,id));
+                } 
+                }
                 out.print(status);                 
             } else if (operation.equals("getDatasources")){
                 String viewBtn=request.getParameter("viewBtn");

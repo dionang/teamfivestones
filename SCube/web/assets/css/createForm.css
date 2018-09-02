@@ -13,6 +13,7 @@ and open the template in the editor.
     margin-top:5px;
     box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
+
 /** inputs and textarea**/
  input:not([type="submit"]){
    
@@ -43,12 +44,19 @@ input:-moz-placeholder{
     font-style:italic;
 }
 
-label{
+label {
     color:#7F7E7E;
     font-weight:bold;
     font-size:larger;
 }
-label:hover {
+.l{
+    
+    color:#7F7E7E;
+    font-weight:300;
+    font-size:medium;
+    
+}
+label .l:hover {
     color:#191919;
 }
 
@@ -64,3 +72,15 @@ label:hover {
     color:#E5224C;
 }
 
+ .dropdown-submenu {
+                position: relative;
+            }
+
+            .dropdown-submenu .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -1px;
+            }
+            .dropdown-menu{
+                top:0;
+            }
