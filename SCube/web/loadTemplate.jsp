@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/report.css">        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <title>Load Template</title>
     </head>
 
@@ -37,8 +36,8 @@
         <!-- React modules-->
         <script src="assets/js/babel.min.js" charset="utf-8"></script>
         <script src="assets/js/bundle.min.js"></script>    
-        
-        <script src="https://cdn.rawgit.com/gitbrent/PptxGenJS/v2.0.0/dist/pptxgen.bundle.js"></script>
+        <!-- PptXGenJS -->
+        <script src="https://cdn.rawgit.com/gitbrent/PptxGenJS/v2.2.0/dist/pptxgen.bundle.js"></script>
         <!-- JsonProcessor -->
         <script src="assets/js/jsonProcessor.js"></script>
         <!-- Custom React Script -->

@@ -105,16 +105,14 @@
 
         <script type="text/javascript">
             function lang1(event) {
-
                 var result;
                 var path = document.getElementById("value").value;
                 var target = event.target || event.srcElement;
                 if (path === "")
-                    result = event.target.textContent;
+                    result = target.textContent;
                 else
-                    result = path + "," + event.target.textContent;
+                    result = path + "," + target.textContent;
                 document.getElementById("value").value = result;
-
             }
         </script>
     </body>
