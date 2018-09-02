@@ -155,202 +155,190 @@
                 <script src="assets/js/chart.min.js"></script>
                 <script src="assets/js/dashboard.js"></script> 
                 <script>
-                    var counter = 0;
-                    var array = [];
-                    var chkArray = [];
-                    //clone div to display the dropdown multiple times
-                    function clone() {
-                        var div = $("#list").clone();
-                        div.attr("id", counter);
-                        $("#con").append(div.show());
-                        counter++;
-                        array = [];
-                        chkArray = [];
-                    }
-                    // delete selected div
-                    function remove(element) {
+                                                            var counter = 0;
+                                                            var array = [];
+                                                            var chkArray = [];
+                                                            //clone div to display the dropdown multiple times
+                                                            function clone() {
+                                                                var div = $("#list").clone();
+                                                                div.attr("id", counter);
+                                                                div.attr("class", "jsonForm");
+                                                                $("#con").append(div.show());
+                                                                counter++;
+                                                                array = [];
+                                                                chkArray = [];
+                                                            }
+                                                            // delete selected div
+                                                            function remove(element) {
 
-                        var parentId = element.parentNode.parentNode.parentNode.id;
-                        document.getElementById(parentId).remove();
-                    }
+                                                                var parentId = element.parentNode.parentNode.parentNode.id;
+                                                                document.getElementById(parentId).remove();
+                                                            }
 
-                    //call API
-                    function getData(element) {
+                                                            //call API
+                                                            function getData(element) {
 
-                        var top = element.offsetTop;
-                        var height = element.clientHeight;
-                        var parentId = element.parentNode.id;
+                                                                var top = element.offsetTop;
+                                                                var height = element.clientHeight;
+                                                                var parentId = element.parentNode.id;
 
-                        $('#' + String(parentId) + ' input[name="path"]').val("");
-                        var url = document.getElementById("url").value;
-                        var requestURL = url;
-                        var request = new XMLHttpRequest();
-                        request.open('GET', requestURL);
-                        request.responseType = 'json';
-                        request.onload = function () {
-                            var json = request.response;
-                            array = ["<ul class='dropdown-menu' style='left:25px;top:" + (top + height) + "px'>"];
+                                                                $('#' + String(parentId) + ' input[name="path"]').val("");
+                                                                var url = document.getElementById("url").value;
+                                                                var requestURL = url;
+                                                                var request = new XMLHttpRequest();
+                                                                request.open('GET', requestURL);
+                                                                request.responseType = 'json';
+                                                                request.onload = function () {
+                                                                    var json = request.response;
+                                                                    array = ["<ul class='dropdown-menu' style='left:25px;top:" + (top + height) + "px'>"];
 
-                            function printAll(items) {
-                                switch ($.type(items)) {
-                                    case "object":
-                                        getChildren(items);
-                                        break;
-                                    case "array":
-                                        printArray(items);
-                                        break;
-                                }
+                                                                    function printAll(items) {
+                                                                        switch ($.type(items)) {
+                                                                            case "object":
+                                                                                getChildren(items);
+                                                                                break;
+                                                                            case "array":
+                                                                                printArray(items);
+                                                                                break;
+                                                                        }
 
-                            }
+                                                                    }
 
-                            function getChildren(parent) {
-                                for (var child in parent) {
-                                    //console.log(child);
-                                    if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
-                                        array.push("<li onclick='lang1(this);'><a tabindex='-1'>" + child + "</a></li>");
-                                    } else if ($.type(parent[child]) === "array") {
+                                                                    function getChildren(parent) {
+                                                                        for (var child in parent) {
+                                                                            //console.log(child);
+                                                                            if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
+                                                                                array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
+                                                                            } else if ($.type(parent[child]) === "array") {
 
-                                        if ((parent[child]).length !== 0) {
+                                                                                if ((parent[child]).length !== 0) {
 
-                                            array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='list(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu'>");
-                                            printArray(parent[child]);
+                                                                                    array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu'>");
+                                                                                    printArray(parent[child]);
 
-                                            array.push("</ul></li>");
-
-
-                                        } else
-                                            array.push("<li onclick='lang1(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
-                                    } else {
-                                        array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='lang1(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu'>");
-                                        printAll(parent[child]);
-                                        array.push("</ul></li>");
-                                    }
-
-                                }
-                            }
-
-                            function printArray(myArray) {
+                                                                                    array.push("</ul></li>");
 
 
-                                var first = myArray[0];
-                                if (typeof (first) === "object") {
-                                    for (var child in first) {
-                                        array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
-                                    }
-                                    array.push("<li><button class='btn btn-default getList' type='button'>Select </button></li>");
+                                                                                } else
+                                                                                    array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
+                                                                            } else {
+                                                                                array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu'>");
+                                                                                printAll(parent[child]);
+                                                                                array.push("</ul></li>");
+                                                                            }
 
-                                } else {
-                                    for (var i = 0; i < myArray.length; i++) {
-                                        printAll(myArray[i]);
-                                    }
-                                }
-                            }
+                                                                        }
+                                                                    }
 
-                            printAll(json);
-                            array.push("</ul>");
+                                                                    function printArray(myArray) {
+
+
+                                                                        var first = myArray[0];
+                                                                        if (typeof (first) === "object") {
+                                                                            for (var child in first) {
+                                                                                array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
+                                                                            }
+                                                                            array.push("<li><button class='btn btn-default getList' type='button'>Select </button></li>");
+
+                                                                        } else {
+                                                                            for (var i = 0; i < myArray.length; i++) {
+                                                                                printAll(myArray[i]);
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                    printAll(json);
+                                                                    array.push("</ul>");
 
 //                                                                $("#" + String(parentId)).html('<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)">Select<span class="caret"></span></button>  <label>Path: </label><input type="text" name="path" /> <label>Name: </label><input type="text" name="name" /><label>Type: </label><select id="type"><option value="string">String</option><option value="number">Number</option> <option value="list">List</option><option value="datetime">Datetime</option></select> <a class="close-link" onclick="remove(this);"><i class="fa fa-close"></i></a>' + array.join(""));
 //                                                               console.log(array.join(""));
 
-                            $("#" + String(parentId)).append(array.join(""));
+                                                                    $("#" + String(parentId)).append(array.join(""));
 
 
 
-                            $('.dropdown-submenu a.test').on("click", function (e) {
-                                $(this).next('ul').toggle();
-                                e.stopPropagation();
-                                e.preventDefault();
-                            });
-                            $('.getList').on("click", function (e) {
+                                                                    $('.dropdown-submenu a.test').on("click", function (e) {
+                                                                        $(this).next('ul').toggle();
+                                                                        e.stopPropagation();
+                                                                        e.preventDefault();
+                                                                    });
+                                                                    $('.getList').on("click", function (e) {
 
-                                /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
-                               
-                                var parentId=$(this).closest('div').attr('id');
+                                                                        /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
 
-                                var path=$('#' + String(parentId) + ' input[name="path"]').val();
-                                chkArray.push("</br></br><div>");
-                                $(".chk:checked").each(function () {
-                                    chkArray.push("<div class='row'>");
-                                    chkArray.push("<div class='col-lg-5 form-group' style='margin-left: 12px;' >");
-                                    chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: </label>");
-                                    chkArray.push("<input type='text' name='fieldName,"+path+" class='form-control' value="+$(this).val().slice(0, -1)+" style='width:230px;display:inline'  />");
-                                    
-                                    chkArray.push("</div>");
-                                    chkArray.push("<div class='col-lg-2 form-group' >");
-                                    chkArray.push("<label style='font-weight:200; font-size:15px'>Type: </label>");
-                                    chkArray.push("<select id='dataType' name='dataType' style='font-size:14px; height:40px; '>");
-                                    chkArray.push("<option value='string' >String</option>");
-                                    chkArray.push("<option value='number' >Number</option>");
-                                    chkArray.push("<option value='list' >List</option>");
-                                    chkArray.push("<option value='datetime' >Datetime</option>");
-                                    chkArray.push("</select>");
-                                    chkArray.push("</div>");
-                                    chkArray.push("<div class='col-lg-3 form-group' >");
-                                    chkArray.push("<label style='font-weight:200; font-size:15px'>Info Type: </label>");
-                                    chkArray.push("<select id='infoType' name='infoType' style='font-size:14px; height:40px; '>");
-                                    chkArray.push("<option value='categorical' >Categorical</option>");
-                                    chkArray.push("<option value='numerical' >Numerical</option>");
-                                    chkArray.push("</select>");
-                                    chkArray.push("<label></label>");
-                                    chkArray.push("<a class='close-link' onclick='remove(this);' id ='remove'><i class='fa fa - close'></i></a>");
-                                    chkArray.push("</div>");
-                                    chkArray.push("</div></br>");
+                                                                        var parentId = $(this).closest('div').attr('id');
+
+                                                                        var path = $('#' + String(parentId) + ' input[name="path"]').val();
+                                                                        chkArray.push("</br></br><div>");
+                                                                        $(".chk:checked").each(function () {
+                                                                            chkArray.push("<div class='row'>");
+                                                                            chkArray.push("<div class='col-lg-5 form-group' style='margin-left: 12px;' >");
+                                                                            chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: </label>");
+                                                                            chkArray.push("<input type='text' name='fieldName," + path + " class='form-control' value=" + $(this).val().slice(0, -1) + " style='width:230px;display:inline'  />");
+                                                                            chkArray.push("</div>");
+                                                                            chkArray.push("<div class='col-lg-2 form-group' >");
+                                                                            chkArray.push("<label style='font-weight:200; font-size:15px'>Type: </label>");
+                                                                            chkArray.push("<select id='dataType' name='dataType' style='font-size:14px; height:40px; '>");
+                                                                            chkArray.push("<option value='string' >String</option>");
+                                                                            chkArray.push("<option value='number' >Number</option>");
+                                                                            chkArray.push("<option value='list' >List</option>");
+                                                                            chkArray.push("<option value='datetime' >Datetime</option>");
+                                                                            chkArray.push("</select>");
+                                                                            chkArray.push("</div>");
+                                                                            chkArray.push("<div class='col-lg-3 form-group' >");
+                                                                            chkArray.push("<label style='font-weight:200; font-size:15px'>Info Type: </label>");
+                                                                            chkArray.push("<select id='infoType' name='infoType' style='font-size:14px; height:40px; '>");
+                                                                            chkArray.push("<option value='categorical' >Categorical</option>");
+                                                                            chkArray.push("<option value='numerical' >Numerical</option>");
+                                                                            chkArray.push("</select>");
+                                                                            chkArray.push("<label></label>");
+                                                                            chkArray.push("<a class='close-link' onclick='remove(this);' id ='remove'><i class='fa fa - close'></i></a>");
+                                                                            chkArray.push("</div>");
+                                                                            chkArray.push("</div></br>");
 
 
-                                });
-                                chkArray.push("</div>");
-                                var id = $(this).closest('div').attr('id');
-                                $("#" + id).append(chkArray.join(""));
+                                                                        });
+                                                                        chkArray.push("</div>");
+                                                                        var id = $(this).closest('div').attr('id');
+                                                                        $("#" + id).append(chkArray.join(""));
 
-                                $(".chk:checkbox").prop('checked', false);
+                                                                        $(".chk:checkbox").prop('checked', false);
 
-                            });
-
+                                                                    });
 
 
 
 
 
-                        };
-                        request.send();
-                    }
-                    ;
-                    function lang1(e) {
-                        while (e && (e.tagName != "DIV" || !e.id))
-                            e = e.parentNode;
-                        if (e) // Check we found a DIV with an ID
-                            var id = e.id;
-                        var t = event.target;
-                        var value = $('#' + String(id) + ' input[name="path"]').val();
-                        var result;
-                        if (value === "")
-                            result = t.textContent;
-                        else
-                            result = value + "/" + t.textContent;
 
-                        $('#' + String(id) + ' input[name="path"]').val(result);
-                    }
+                                                                };
+                                                                request.send();
+                                                            }
+                                                            ;
+                                                            function handleClick(e) {
+                                                                // get the text value of the selected field
+                                                                var path = e.firstChild.innerHTML;
 
-                    function list(e) {
-                        document.getElementById("type").value = "list";
-                        $('#type').change();
-                        while (e && (e.tagName != "DIV" || !e.id))
-                            e = e.parentNode;
-                        if (e) // Check we found a DIV with an ID
-                            var id = e.id;
-                        var t = event.target;
-                        var value = $('#' + String(id) + ' input[name="path"]').val();
-                        var result;
-                        if (value === "")
-                            result = t.textContent;
-                        else
-                            result = value + "/" + t.textContent;
-                        $('#' + String(id) + ' input[name="path"]').val(result);
-                        
-                        
+                                                                // if a dropdown list is clicked, set path to the string inside the a tag, 
+                                                                // and get the parent <li> element
+                                                                if (path === undefined) {
+                                                                    path = e.firstChild.textContent;
+                                                                    e = e.parentNode;
+                                                                }
 
-                    }
+                                                                e = e.parentNode.parentNode;
 
+                                                                // while there exists a parent selection
+                                                                while (e && e.className !== "jsonForm open") {
+                                                                    // append the text content to the path
+                                                                    path = e.firstChild.firstChild.textContent + "/" + path;
+                                                                    // go up to the previous menu
+                                                                    e = e.parentNode.parentNode;
+                                                                }
+
+                                                                // set the form's path value
+                                                                $('#' + e.id + ' input[name="path"]').val(path);
+                                                            }
                 </script>
                 <script>
                     document.getElementById('submitForm').onsubmit = function (e) {
@@ -372,13 +360,13 @@
                                                 datasourceUrl: form.elements["datasourceUrl"].value,
                                                 datasourceName: form.elements["datasourceName"].value,
                                                 remark: form.elements["remark"].value,
-                                                path:form.elements["path"].values(),
-                                                name:form.elements["name"].values(),
-                                              
-                                                fieldName:form.elements[name*='fieldName'].values(),
-                                                dataType:form.elements["dataType"].values(),
-                                                infoType:form.elements["infoType"].values(),
-                                               
+                                                path: form.elements["path"].values(),
+                                                name: form.elements["name"].values(),
+
+                                                fieldName: form.elements[name *= 'fieldName'].values(),
+                                                dataType: form.elements["dataType"].values(),
+                                                infoType: form.elements["infoType"].values(),
+
                                                 operation: form.elements["operation"].value,
                                             },
                                             success: function (success) {
