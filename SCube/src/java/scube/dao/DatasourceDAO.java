@@ -55,18 +55,19 @@ public class DatasourceDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     } 
-    public static boolean addListOption(int datasetId, String fieldName,String type,String infoType) {       
+    public static boolean addListOption(String fieldName,String type,String infoType,int datasetId) {       
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO listoption VALUES (?,?,?,?)");
-            stmt.setInt(1, datasetId);
+            stmt = conn.prepareStatement("INSERT INTO listoption VALUES (?,?,?,?,?)");
+            stmt.setNull(1, Types.INTEGER);
             stmt.setString(2, fieldName);
             stmt.setString(3, type);
             stmt.setString(4, infoType);
+             stmt.setInt(5, datasetId);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -104,7 +105,7 @@ public class DatasourceDAO {
         }
     }
        //retrieve all datasources (URL) from datasource table for API call
-    public static int getLatestDatasoureId() {
+    public static int getLatestDatasourceId() {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -126,6 +127,28 @@ public class DatasourceDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
+     public static int getLatestDatasetId() {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int id=0;
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT datasetId FROM dataset ORDER BY datasetId DESC LIMIT 1;");
+            
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                id=rs.getInt("datasetId");
+            }
+            return id;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return 0;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
     public static ArrayList<Dataset> getAllDatasetByDatasourece(int datasoureceId) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -133,14 +156,14 @@ public class DatasourceDAO {
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT * from dataset WHERE datasoureceId = ?");
+            stmt = conn.prepareStatement("SELECT * from dataset WHERE datasourceId = ? order by datasetId asc");
             stmt.setInt(1, datasoureceId);
             rs = stmt.executeQuery();
             
             ArrayList<Dataset> datasetList = new ArrayList<>();
             while(rs.next()){
                 Dataset ds = new Dataset(rs.getInt("datasetId"), rs.getString("datasetName"),
-                        rs.getString("path"),rs.getString("type"),rs.getInt("datasoureId"));
+                        rs.getString("path"),rs.getString("type"),rs.getInt("datasourceId"));
                 datasetList.add(ds);
             }
             return datasetList;
@@ -164,8 +187,8 @@ public class DatasourceDAO {
             
             ArrayList<List> list = new ArrayList<>();
             while(rs.next()){
-                List l = new List(rs.getInt("datasetId"), 
-                        rs.getString("path"),rs.getString("type"),rs.getString("infoType"));
+                List l = new List(rs.getInt("listId"), 
+                        rs.getString("fieldName"),rs.getString("type"),rs.getString("infoType"),rs.getInt("datasetId"));
                 list.add(l);
             }
             return list;
@@ -226,6 +249,53 @@ public class DatasourceDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     } 
+    public static boolean updateDataset(int datasetId,String datasetName, String path,String type,int datasourceId) {       
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("UPDATE dataset SET datasetName=?, path=?,type=? where datasetId=? and datasourceId=?");
+            
+            stmt.setString(1, datasetName);
+            stmt.setString(2, path);
+            stmt.setString(3, type);
+            stmt.setInt(4, datasetId);
+            stmt.setInt(5, datasourceId);
+            
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    } 
+     public static boolean updateList(int listId,String fieldName, String type,String infoType,int datasetId) {       
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("UPDATE listoption SET fieldName=?, type=?,infoType=? where listId=? and datasetId=?");
+            stmt.setString(1, fieldName);
+            stmt.setString(2, type);
+            stmt.setString(3, infoType);
+             stmt.setInt(4, listId);
+            stmt.setInt(5, datasetId);
+            
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    } 
     
     public static boolean deleteDatasource(int datasourceId) {
         Connection conn = null;
@@ -236,6 +306,63 @@ public class DatasourceDAO {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("DELETE FROM datasource WHERE datasourceId = ?");
             stmt.setInt(1, datasourceId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+
+    }
+    public static boolean deleteDataset(int datasetId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+          try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM dataset WHERE datasetId = ?");
+            stmt.setInt(1, datasetId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+
+    }
+     public static boolean deleteListOption(int datasetId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+          try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM listoption WHERE datasetId = ?");
+            stmt.setInt(1, datasetId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+
+    }
+      public static boolean deleteListOptionById(int listId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+          try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM listoption WHERE listId = ?");
+            stmt.setInt(1, listId);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {

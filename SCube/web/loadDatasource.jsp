@@ -1,9 +1,11 @@
+<%@page import="scube.entities.List"%>
+<%@page import="scube.entities.Dataset"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="scube.entities.Datasource"%>
 <%@ include file="protect.jsp" %>
 <%@ page import="scube.entities.Account" %>
 <%@ page import="scube.entities.Developer" %>
-<%    
-    Account account = (Account) session.getAttribute("account");
+<%    Account account = (Account) session.getAttribute("account");
     int id;
     String url;
     String name;
@@ -43,7 +45,7 @@
                     <div class="right_col">
                         <div class="row">
                             <div class="col-xs-10 col-xs-offset-1">
-                                <div class="form">
+                                <div class="form-inline form">
                                     <form action="updateDatasource" method="post" id="submitForm">
                                         <input type="hidden" name="id" value="<%= id%>" />
                                     <div class="row">
@@ -61,7 +63,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-10 col-xs-12 ">
-                                            <input type="text" class="form-control" name="datasourceUrl" value="<%= url%>" required="" />
+                                            <input type="text" class="form-control" name="datasourceUrl" id="url" value="<%= url%>" required="" style="width:700px"/>
                                         </div>
                                     </div>
                                     <br>
@@ -74,7 +76,143 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-10 col-xs-12 ">
-                                            <input type="text" class="form-control" name="datasourceName" value="<%= name%>" required="" />
+                                            <input type="text" class="form-control" name="datasourceName" value="<%= name%>" required="" style="width:700px"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <label for="datasourceName" class="icon-bookmark-empty"> Configuration </label>  
+                                        </div>
+                                    </div>
+                                    <div class="row" id="con">
+                                        <div class="col-md-5">
+                                            <a class="btn btn-warning"  onclick="clone();"><i class="fa fa-plus"></i> Add</a>
+                                        </div>
+
+                                        <br/><br/>
+                                        <% String allDataset = "";
+                                            String allList = "";
+                                            ArrayList<Dataset> set = (ArrayList<Dataset>) request.getAttribute("dataset");
+                                        %>
+                                        <input type="hidden" name="counter" id="counter" value="<%=set.size()%>"/>
+                                        <%if (set.size() != 0) {%>
+
+                                        <%for (int i = 0; i < set.size(); i++) {
+                                                allDataset += set.get(i).getDatasetId() + ",";%>
+                                        <div id="<%=i%>" style="margin-top: 10px" >
+                                            <input type="hidden" name="datasetId<%=i%>" value="<%=set.get(i).getDatasetId()%>" />
+                                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)" style="margin-left:12px;">Select<span class="caret"></span></button>
+                                            <div class="row" style="margin-top:10px">
+
+                                                <div class="col-lg-4 form-group" style="margin-left: 12px;" >
+                                                    <label style="font-size:15px">Path: </label>
+                                                    <input type="text" name="path<%=i%>" id="p" class="form-control" style="width:230px" value="<%=set.get(i).getPath()%>"/>
+                                                </div>
+
+                                                <div class="col-lg-4 form-group" >
+                                                    <label style="font-size:15px">Dataset Name: </label>
+                                                    <input type="text" name="name<%=i%>" class="form-control" style="width:170px"  value="<%=set.get(i).getDtatasetName()%>" />
+                                                </div>
+
+
+                                                <div class="col-lg-3 form-group" >
+                                                    <label style="font-size:15px">Type: </label>
+                                                    <select id="type" name="type<%=i%>" style="font-size:14px;height:40px;" value="<%=set.get(i).getType()%>">
+                                                        <option value="string"  <%if (set.get(i).getType().equals("string")) { %> selected <%}%>>String</option>
+                                                        <option value="number" <%if (set.get(i).getType().equals("number")) { %> selected <%}%>>Number</option>
+                                                        <option value="list" <%if (set.get(i).getType().equals("list")) { %> selected <%}%>>List</option>
+                                                        <option value="datetime" <%if (set.get(i).getType().equals("datetime")) { %> selected <%}%>>Datetime</option>
+                                                    </select>
+                                                    <label></label>
+                                                    <a class="close-link" onclick="remove(this);" id ="remove"><i class="fa fa-close"></i></a>
+                                                </div>
+
+                                            </div>
+                                            <%
+                                                int datasetId = set.get(i).getDatasetId();
+                                                ArrayList<ArrayList<List>> optionlist = (ArrayList<ArrayList<List>>) request.getAttribute("listoption");
+                                                if (optionlist.size() != 0) {
+                                                    for (int a = 0; a < optionlist.size(); a++) {
+                                                        ArrayList<List> eachList = optionlist.get(a);
+                                                        for (int j = 0; j < eachList.size(); j++) {
+                                                            List list = eachList.get(j);
+
+                                                            int setId = list.getDatasetId();
+                                                            if (setId == datasetId) {
+                                                                allList += list.getListId() + ",";%>
+                                            </br>
+                                            <div class="row" id="<%=i%><%=j%>">
+                                                <input type="hidden" name="listId<%=i%><%=j%>" value="<%=list.getListId()%>" />
+                                                <div class="col-lg-5 form-group" style="margin-left: 12px;" >
+                                                    <label style="font-weight:200;font-size:15px">Field Name: </label>
+                                                    <input type="text" name="fName<%=i%><%=j%>" class="form-control" value="<%=list.getfFieldName()%>" style="width:230px;display:inline"  />
+                                                </div>
+                                                <div class="col-lg-2 form-group" >
+                                                    <label style="font-weight:200; font-size:15px">Type: </label>
+                                                    <select id="dataType" name="dType<%=i%><%=j%>" style="font-size:14px; height:40px;">
+                                                        <option value="string" <%if (list.getType().equals("string")) { %> selected <%}%>> String </option>
+                                                        <option value="number" <%if (list.getType().equals("number")) { %> selected <%}%>>Number</option>
+                                                        <option value="list" <%if (list.getType().equals("list")) { %> selected <%}%>>List</option>
+                                                        <option value="datetime" <%if (list.getType().equals("datetime")) { %> selected <%}%>>Datetime</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-3 form-group" >
+                                                    <label style="font-weight:200; font-size:15px">Info Type: </label>
+                                                    <select id="infoType" name="iType<%=i%><%=j%>" style="font-size:14px; height:40px;">
+                                                        <option value="categorical" <%if (list.getInfoType().equals("categorical")) { %> selected <%}%>>Categorical</option>
+                                                        <option value="numerical" <%if (list.getInfoType().equals("numerical")) { %> selected <%}%>>Numerical</option>
+                                                    </select>
+                                                    <label></label>
+                                                    <a class="close-link" onclick="removeList(this);" id ="remove"><i class="fa fa-close"></i></a>
+                                                </div>
+                                            </div></br>
+
+
+                                            <input type="hidden" value="<%=eachList.size()%>" name="subCounter<%=i%>"  />
+                                            <% }
+                                                        }
+
+                                                    }
+                                                }
+                                            %>
+
+                                        </div>
+                                        <% }%>
+                                        <input type="hidden" id="allList" value="<%=allList%>"/>
+                                        <input type="hidden" id="allDataset" value="<%=allDataset%>"/>
+
+                                        <%  }%>
+
+                                        <div id="list" style="display:none;margin-top: 10px">
+                                            <input type="hidden" name="datasetId" value="new" />
+                                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)" style="margin-left:12px;">Select<span class="caret"></span></button>
+                                            <div class="row" style="margin-top:10px">
+
+                                                <div class="col-lg-4 form-group" style="margin-left: 12px;" >
+                                                    <label style="font-size:15px">Path: </label>
+                                                    <input type="text" name="path" id="p" class="form-control" style="width:230px" />
+                                                </div>
+
+                                                <div class="col-lg-4 form-group" >
+                                                    <label style="font-size:15px">Dataset Name: </label>
+                                                    <input type="text" name="name" class="form-control" style="width:170px"/>
+                                                </div>
+
+
+                                                <div class="col-lg-3 form-group" >
+                                                    <label style="font-size:15px">Type: </label>
+                                                    <select id="type" name="type" style="font-size:14px;height:40px;">
+                                                        <option value="string" >String</option>
+                                                        <option value="number" >Number</option>
+                                                        <option value="list" >List</option>
+                                                        <option value="datetime" >Datetime</option>
+                                                    </select>
+                                                    <label></label>
+                                                    <a class="close-link" onclick="remove(this);" id ="remove"><i class="fa fa-close"></i></a>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
                                     <br>
@@ -86,7 +224,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-10 col-xs-12 ">
-                                            <textarea class="form-control" name="remark"  /><%= remark%></textarea>
+                                            <textarea class="form-control" name="remark"  style="width:700px"/><%= remark%></textarea>
                                         </div>
                                     </div>
                                     <br>
@@ -123,45 +261,278 @@
                 <script src="assets/js/chart.min.js"></script>
                 <script src="assets/js/dashboard.js"></script> 
                 <script >
-                    document.getElementById('submitForm').onsubmit = function (e) {
-                        e.preventDefault();
+                                                        document.getElementById('submitForm').onsubmit = function (e) {
+                                                            e.preventDefault();
 
-                        swal({
-                            title: "Confirmation",
-                            text: "Are you sure you want to update this datasource?",
-                            icon: "warning",
-                            buttons: true,
-                            dangerMode: true
-                        })
-                                .then((confirm) => {
-                                    if (confirm) {
-                                        var form = document.getElementById("submitForm");
-                                        $.ajax({
-                                            url: "updateDatasource",
-                                            data: {
-                                                id: form.elements["id"].value,
-                                                datasourceUrl: form.elements["datasourceUrl"].value,
-                                                datasourceName: form.elements["datasourceName"].value,
-                                                remark: form.elements["remark"].value,
-                                                operation: form.elements["operation"].value,
-                                            },
-                                            success: function (success) {
-                                                if (success === "true") {
-                                                    swal({icon: "success", text: "Datasource has been updated successfully!!", type:
-                                                                "success"}).then(function () {
-                                                        window.location = "devHome.jsp";
-                                                    }
-                                                    );
-                                                } else {
-                                                    swal("Error!", {
-                                                        icon: "error"
-                                                    });
-                                                }
-                                            }
-                                        });
+                                                            swal({
+                                                                title: "Confirmation",
+                                                                text: "Are you sure you want to update this datasource?",
+                                                                icon: "warning",
+                                                                buttons: true,
+                                                                dangerMode: true
+                                                            })
+                                                                    .then((confirm) => {
+                                                                        if (confirm) {
+                                                                            var form = document.getElementById("submitForm");
+                                                                            var count = document.getElementById("counter").value;
+
+                                                                            var i;
+                                                                            var j;
+                                                                            var list = [];
+                                                                            if (count !== "") {
+                                                                                for (i = 0; i < count; i++) {
+                                                                                    var d1 = document.getElementById(i);
+                                                                                    if (d1 !== null) {
+                                                                                        var div = [];
+                                                                                        div.push(document.getElementsByName("datasetId" + i + "")[0].value);
+                                                                                        div.push(document.getElementsByName("path" + i + "")[0].value);
+                                                                                        div.push(document.getElementsByName("name" + i + "")[0].value);
+                                                                                        div.push(document.getElementsByName("type" + i + "")[0].value);
+
+                                                                                        var t = document.getElementsByName("type" + i + "")[0].value;
+                                                                                        if (t === "list") {
+                                                                                            var subCount = document.getElementsByName("subCounter" + i + "")[0].value;
+                                                                                            for (j = 0; j < subCount; j++) {
+                                                                                                var d = document.getElementById("" + i + j);
+                                                                                                if (d !== null) {
+                                                                                                    var field = [];
+                                                                                                    field.push(document.getElementsByName("listId" + i + j + "")[0].value);
+                                                                                                    field.push(document.getElementsByName("fName" + i + j + "")[0].value);
+                                                                                                    field.push(document.getElementsByName("dType" + i + j + "")[0].value);
+                                                                                                    field.push(document.getElementsByName("iType" + i + j + "")[0].value);
+                                                                                                    div.push(field);
+                                                                                                }
+
+                                                                                            }
+                                                                                        }
+                                                                                        list.push(div);
+                                                                                    }
+                                                                                }
+
+
+
+                                                                            }
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                url: "updateDatasource",
+                                                                                data: JSON.stringify({
+                                                                                    id: form.elements["id"].value,
+                                                                                    operation: form.elements["operation"].value,
+                                                                                    datasourceUrl: form.elements["datasourceUrl"].value,
+                                                                                    datasourceName: form.elements["datasourceName"].value,
+                                                                                    remark: form.elements["remark"].value,
+                                                                                    counter: count,
+                                                                                    subCounter: subCount,
+                                                                                    allDataset: document.getElementById("allDataset").value,
+                                                                                    allList: document.getElementById("allList").value,
+                                                                                    params: list,
+                                                                                }),
+
+                                                                                success: function (success) {
+                                                                                    if (success === "true") {
+                                                                                        swal({icon: "success", text: "Datasource has been updated successfully!!", type:
+                                                                                                    "success"}).then(function () {
+                                                                                            window.location = "devHome.jsp";
+                                                                                        }
+                                                                                        );
+                                                                                    } else {
+                                                                                        swal("Error!", {
+                                                                                            icon: "error"
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                        };
+                </script>
+                <script>
+
+                    var counter = document.getElementById("counter").value;
+                    var count = 0;
+                    var array = [];
+                    var chkArray = [];
+                    //clone div to display the dropdown multiple times
+                    function clone() {
+
+                        var div = $("#list").clone();
+                        div.attr("id", counter);
+                        div.find('input[name=datasetId]').attr('name', 'datasetId' + counter);
+                        div.find('input[name=path]').attr('name', 'path' + counter);
+                        div.find('input[name=name]').attr('name', 'name' + counter);
+                        div.find('select[name=type]').attr('name', 'type' + counter);
+                        div.attr("class", "jsonForm");
+                        $("#con").append(div.show());
+                        counter++;
+                        array = [];
+                        chkArray = [];
+                        document.getElementById("counter").value = counter;
+                    }
+                    // delete selected div
+                    function remove(element) {
+
+                        var parentId = element.parentNode.parentNode.parentNode.id;
+                        document.getElementById(parentId).remove();
+                        counter--;
+                    }
+                    function removeList(element) {
+
+                        var parentId = element.parentNode.parentNode.id;
+                        alert(parentId);
+                        document.getElementById(parentId).remove();
+                        count--;
+                    }
+                    //call API
+                    function getData(element) {
+
+                        var top = element.offsetTop;
+                        var height = element.clientHeight;
+                        var parentId = element.parentNode.id;
+                        $('#' + String(parentId) + ' input[name="path' + parentId + '"]').val("");
+                        var url = document.getElementById("url").value;
+                        var requestURL = url;
+                        var request = new XMLHttpRequest();
+                        request.open('GET', requestURL);
+                        request.responseType = 'json';
+                        request.onload = function () {
+                            var json = request.response;
+                            array = ["<ul class='dropdown-menu' style='left:25px;top:" + (top + height) + "px'>"];
+                            function printAll(items) {
+                                switch ($.type(items)) {
+                                    case "object":
+                                        getChildren(items);
+                                        break;
+                                    case "array":
+                                        printArray(items);
+                                        break;
+                                }
+
+                            }
+
+                            function getChildren(parent) {
+                                for (var child in parent) {
+                                    //console.log(child);
+                                    if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
+                                        array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
+                                    } else if ($.type(parent[child]) === "array") {
+
+                                        if ((parent[child]).length !== 0) {
+
+                                            array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu'>");
+                                            printArray(parent[child]);
+                                            array.push("</ul></li>");
+                                        } else
+                                            array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
+                                    } else {
+                                        array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu'>");
+                                        printAll(parent[child]);
+                                        array.push("</ul></li>");
                                     }
+
+                                }
+                            }
+
+                            function printArray(myArray) {
+
+
+                                var first = myArray[0];
+                                if (typeof (first) === "object") {
+                                    for (var child in first) {
+                                        array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
+                                    }
+                                    array.push("<li><button class='btn btn-default getList' type='button'>Select </button></li>");
+                                } else {
+                                    for (var i = 0; i < myArray.length; i++) {
+                                        printAll(myArray[i]);
+                                    }
+                                }
+                            }
+
+                            printAll(json);
+                            array.push("</ul>");
+//                                                                $("#" + String(parentId)).html('<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)">Select<span class="caret"></span></button>  <label>Path: </label><input type="text" name="path" /> <label>Name: </label><input type="text" name="name" /><label>Type: </label><select id="type"><option value="string">String</option><option value="number">Number</option> <option value="list">List</option><option value="datetime">Datetime</option></select> <a class="close-link" onclick="remove(this);"><i class="fa fa-close"></i></a>' + array.join(""));
+//                                                               console.log(array.join(""));
+
+                            $("#" + String(parentId)).append(array.join(""));
+                            $('.dropdown-submenu a.test').on("click", function (e) {
+                                $(this).next('ul').toggle();
+                                e.stopPropagation();
+                                e.preventDefault();
+                            });
+                            $('.getList').on("click", function (e) {
+
+                                /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
+
+                                var parentId = $(this).closest('div').attr('id');
+                                var path = $('#' + String(parentId) + ' input[name="path"]').val();
+                                count = 0;
+                                $(".chk:checked").each(function () {
+                                    chkArray.push("<div class='row' id=" + parentId + count + " >");
+                                    chkArray.push(" <input type='hidden' name='listId" + parentId + count + "' value='newList' />");
+                                    chkArray.push("<div class='col-lg-5 form-group' style='margin-left: 12px;' >");
+                                    chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: </label>");
+                                    chkArray.push("<input type='text' name='fName" + parentId + count + "' class='form-control' value=" + $(this).val().slice(0, -1) + " style='width:230px;display:inline'  />");
+                                    chkArray.push("</div>");
+                                    chkArray.push("<div class='col-lg-2 form-group' >");
+                                    chkArray.push("<label style='font-weight:200; font-size:15px'>Type: </label>");
+                                    chkArray.push("<select id='dataType' name='dType" + parentId + count + "' style='font-size:14px; height:40px;'>");
+                                    chkArray.push("<option value='string'> String </option>");
+                                    chkArray.push("<option value='number' >Number</option>");
+                                    chkArray.push("<option value='list' >List</option>");
+                                    chkArray.push("<option value='datetime' >Datetime</option>");
+                                    chkArray.push("</select>");
+                                    chkArray.push("</div>");
+                                    chkArray.push("<div class='col-lg-3 form-group' >");
+                                    chkArray.push("<label style='font-weight:200; font-size:15px'>Info Type: </label>");
+                                    chkArray.push("<select id='infoType' name='iType" + parentId + count + "' style='font-size:14px; height:40px;'>");
+                                    chkArray.push("<option value='categorical' >Categorical</option>");
+                                    chkArray.push("<option value='numerical' >Numerical</option>");
+                                    chkArray.push("</select>");
+                                    chkArray.push('<label></label>');
+                                    chkArray.push('<a class="close-link" onclick="removeList(this);" id ="remove"><i class="fa fa-close"></i></a>');
+                                    chkArray.push("</div>");
+                                    chkArray.push("</div></br>");
+                                    count++;
                                 });
-                    };
+
+                                chkArray.push("<input type='hidden' value=" + count + " name='subCounter" + parentId + "' value=" + count + "/>");
+
+                                var id = $(this).closest('div').attr('id');
+                                $("#" + id).append(chkArray.join(""));
+                                $(".chk:checkbox").prop('checked', false);
+
+
+                            });
+                        };
+                        request.send();
+                    }
+                    ;
+                    function handleClick(e) {
+                       
+                        
+                       
+                        // get the text value of the selected field
+                         var   path = e.firstChild.innerHTML;
+                        // if a dropdown list is clicked, set path to the string inside the a tag, 
+                        // and get the parent <li> element
+                        if (path === undefined) {
+                            path = e.firstChild.textContent;
+                            e = e.parentNode;
+                        }
+
+                       
+                        // while there exists a parent selection
+                        while (e && e.className !== "jsonForm open") {
+                            // append the text content to the path
+                            path = e.firstChild.firstChild.textContent + "/" + path;
+                            // go up to the previous menu
+                            e = e.parentNode.parentNode;
+                        }
+
+                        // set the form's path value
+                        $('#' + e.id + ' input[name="path' + e.id + '"]').val(path);
+                    }
+
                 </script>
                 </body>
                 </html>
