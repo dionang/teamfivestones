@@ -465,6 +465,10 @@
 
                                 var parentId = $(this).closest('div').attr('id');
                                 var path = $('#' + String(parentId) + ' input[name="path"]').val();
+                               
+                                 document.getElementsByName("type"+parentId)[0].value="list";
+                                document.getElementsByName("type"+parentId)[0].selectmenu('refresh');
+                               
                                 count = 0;
                                 $(".chk:checked").each(function () {
                                     chkArray.push("<div class='row' id=" + parentId + count + " >");

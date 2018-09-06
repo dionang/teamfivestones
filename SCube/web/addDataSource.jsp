@@ -358,13 +358,14 @@
 
                                 var parentId = $(this).closest('div').attr('id');
                                 var path = $('#' + String(parentId) + ' input[name="path"]').val();
-                                
+                                 document.getElementsByName("type"+parentId)[0].value="list";
+                                document.getElementsByName("type"+parentId)[0].selectmenu('refresh');
                                 count=0;
                                 $(".chk:checked").each(function () {
                                     chkArray.push("<div class='row' id=" + parentId + count + " >");
                                     chkArray.push("<div class='col-lg-5 form-group' style='margin-left: 12px;' >");
                                     chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: </label>");
-                                    chkArray.push("<input type='text' name='fName" + parentId + count + "' class='form-control' value=" + $(this).val().slice(0, -1) + " style='width:230px;display:inline'  />");
+                                    chkArray.push("<input type='text' name='fName" + parentId + count + "' class='form-control' value=" + $(this).val() + " style='width:230px;display:inline'  />");
                                     chkArray.push("</div>");
                                     chkArray.push("<div class='col-lg-2 form-group' >");
                                     chkArray.push("<label style='font-weight:200; font-size:15px'>Type: </label>");
@@ -388,7 +389,7 @@
                                     count++;
                                 });
                                 
-                                chkArray.push("<input type='text' value=" + count + " name='subCounter" + parentId + "' value=" + count + "/>");
+                                chkArray.push("<input type='hidden' value=" + count + " name='subCounter" + parentId + "' value=" + count + "/>");
 
                                 var id = $(this).closest('div').attr('id');
                                 $("#" + id).append(chkArray.join(""));
