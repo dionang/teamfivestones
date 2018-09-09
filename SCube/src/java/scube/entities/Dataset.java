@@ -23,7 +23,7 @@ public class Dataset {
         this.type=type;
         this.datasourceId=datasourceId;
     }
-    public int getDtatasetId(){
+    public int getDatasetId(){
         return datasetId;
     }
     public void setDatasetId(int datasetId){

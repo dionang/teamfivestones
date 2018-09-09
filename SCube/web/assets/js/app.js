@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import request from 'request';
 import Rnd from 'react-rnd';
 import RichTextEditor from 'react-rte';
-import PDFDocument from 'pdfkit';
 import { Button, ButtonToolbar, SplitButton, MenuItem, Navbar } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';

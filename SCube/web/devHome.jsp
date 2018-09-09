@@ -129,12 +129,14 @@
                                 if (confirm) {
                                    
                                     $.ajax({
+                                        type: "POST",
                                         url: "getDatasources",
-                                        data: {
-                                            id: form.elements["datasourceId"].value,
-                                            deleteBtn: form.elements["deleteBtn"].value,
-                                            operation: form.elements["operation"].value,
-                                        },
+                                        data: JSON.stringify({
+                                               id: form.elements["datasourceId"].value,
+                                               deleteBtn: form.elements["deleteBtn"].value,
+                                               operation: form.elements["operation"].value,
+                                        }),    
+                                       
                                         success: function (success) {
                                             if (success === "true") {
                                                 swal({icon: "success", text: "Datasource has been deleted successfully!!", type:"success"})
