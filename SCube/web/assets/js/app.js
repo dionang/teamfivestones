@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import request from 'request';
 import Rnd from 'react-rnd';
 import RichTextEditor from 'react-rte';
+import PDFDocument from 'pdfkit';
 import { Button, ButtonToolbar, SplitButton, MenuItem, Navbar } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
@@ -13,8 +14,8 @@ import { Formik, Form, Field } from 'formik';
 //const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
 //const api = 'http://103.3.61.39:8080/SCube/';
 //const datasourceUrl = 'http://103.3.61.39:8080/Dummy_API/getCustomerOrders';
-const api = 'http://18.222.28.50/SCube/';
-const datasourceUrl = 'http://18.222.28.50/Dummy_API/getCustomerOrders';
+const api = 'http://scube.tk/SCube/';
+const datasourceUrl = 'http://scube.tk/Dummy_API/getCustomerOrders';
 const apiData = 
 {
   "customerOrders": [
@@ -1096,6 +1097,17 @@ class App extends Component {
         });
     }
 
+    savePdf = () => {
+        let container = document.getElementById('container').outerHTML;
+        let doc = new PDFDocument;
+        console.log("created");
+        
+        pdfkit.from_string('MicroPyramid', 'micro.pdf')
+        doc.addPage();
+        doc.end();
+        
+    }
+
     savePresentation = () => {
         let pptx = new PptxGenJS();
         
@@ -1322,6 +1334,9 @@ class App extends Component {
                                     </Button>
                                     <Button className="col-md-2 col-xs-2" style={{ float:"right", minWidth:150 }} bsStyle="warning" onClick={this.savePresentation}>
                                         <i className="fa fa-edit" style={{ marginRight: 2 }} /> Export as PPT
+                                    </Button>
+                                    <Button className="col-md-2 col-xs-2" style={{ float:"right", minWidth:150 }} bsStyle="warning" onClick={this.savePdf}>
+                                        <i className="fa fa-edit" style={{ marginRight: 2 }} /> Export as PDF
                                     </Button>
                                     <br/>
 

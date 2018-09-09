@@ -249,12 +249,7 @@
                             printAll(json);
                             array.push("</ul>");
 
-//                                                                $("#" + String(parentId)).html('<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)">Select<span class="caret"></span></button>  <label>Path: </label><input type="text" name="path" /> <label>Name: </label><input type="text" name="name" /><label>Type: </label><select id="type"><option value="string">String</option><option value="number">Number</option> <option value="list">List</option><option value="datetime">Datetime</option></select> <a class="close-link" onclick="remove(this);"><i class="fa fa-close"></i></a>' + array.join(""));
-//                                                               console.log(array.join(""));
-
                             $("#" + String(parentId)).append(array.join(""));
-
-
 
                             $('.dropdown-submenu a.test').on("click", function (e) {
                                 $(this).next('ul').toggle();
@@ -303,14 +298,7 @@
                                 $("#" + id).append(chkArray.join(""));
 
                                 $(".chk:checkbox").prop('checked', false);
-
                             });
-
-
-
-
-
-
                         };
                         request.send();
                     }
@@ -366,13 +354,17 @@
                                 .then((confirm) => {
                                     if (confirm) {
                                         var form = document.getElementById("submitForm");
+                                
+                                        // remove the hidden entry
+                                        var paths = form.elements["path"].shift();
+                                        var fieldNames =
                                         $.ajax({
                                             url: "addDatasource",
                                             data: {
                                                 datasourceUrl: form.elements["datasourceUrl"].value,
                                                 datasourceName: form.elements["datasourceName"].value,
                                                 remark: form.elements["remark"].value,
-                                                path:form.elements["path"].values(),
+                                                path: path,
                                                 name:form.elements["name"].values(),
                                               
                                                 fieldName:form.elements[name*='fieldName'].values(),
