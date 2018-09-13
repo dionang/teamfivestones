@@ -35,8 +35,9 @@
                     <!-- page content -->
 
                     <!-- set datasource -->
-                    <div class="right_col">
+                    <div class="right_col" id="all">
                         <div class="content">
+                                      
                             <div class="col-lg-3 col-sm-4 col-xs-6" style="margin-bottom: 15px">
                                 <a href="addDataSource.jsp" >
                                     <div class="card card-inverse card-info">
@@ -156,6 +157,7 @@
                     }
 
                 </script>
-                 <script src="assets/js/dashboard.js"></script> 
+                 <script src="assets/js/dashboard.js"></script>
+                
                 </body>
                 </html>
