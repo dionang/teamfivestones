@@ -23,7 +23,9 @@
         <input type="hidden" id="companyId"    value="<%= account.getCompanyId() %>"/>
         <input type="hidden" id="userName"     value="<%= account.getUsername() %>" />
         <input type="hidden" id="profileName"  value="<%= account.getName() %>" />
-        <div id="container"></div>
+         
+        <div id="container">
+        </div>
                     
         <!-- jQuery -->
         <script src="assets/js/jquery.min.js"></script>
@@ -44,6 +46,7 @@
         <!-- JsonProcessor -->
         <script src="assets/js/jsonProcessor.js"></script>
         <!-- Custom React Script -->
-        <script type="text/babel" src="assets/js/app.js"></script>
+        <script type="text/babel" src="assets/js/app.js"></script> 
+       
     </body>
 </html>
