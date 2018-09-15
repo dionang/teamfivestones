@@ -8,11 +8,9 @@
     //return;
     // }
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -158,88 +156,88 @@
                 <script src="assets/js/chart.min.js"></script>
                 <script src="assets/js/dashboard.js"></script> 
                 <script>
-                                                            document.getElementById('submitForm').onsubmit = function (e) {
-                                                                e.preventDefault();
-                                                                swal({
-                                                                    title: "Confirmation",
-                                                                    text: "Are you sure you want to add this datasource?",
-                                                                    icon: "warning",
-                                                                    buttons: true,
-                                                                    dangerMode: true
-                                                                })
-                                                                        .then((confirm) => {
-                                                                            if (confirm) {
-                                                                                var form = document.getElementById("submitForm");
-                                                                                var count = document.getElementById("counter").value;
-                                                                                var i;
-                                                                                var j;
-                                                                                var list = [];
-                                                                                if (count !== "") {
-                                                                                    for (i = 0; i < count; i++) {
-                                                                                        var d1 = document.getElementById(i);
-                                                                                        if (d1 !== null) {
-                                                                                            var div = [];
-                                                                                            div.push(document.getElementsByName("path" + i + "")[0].value);
-                                                                                            div.push(document.getElementsByName("name" + i + "")[0].value);
-                                                                                            div.push(document.getElementsByName("type" + i + "")[0].value);
-                                                                                            var t = document.getElementsByName("type" + i + "")[0].value
-                                                                                            if (t === "list") {
-                                                                                                var subCount = document.getElementsByName("subCounter" + i + "")[0].value;
-                                                                                                for (j = 0; j < subCount; j++) {
-                                                                                                    var d = document.getElementById("" + i + j);
-                                                                                                    console.log(d);
-                                                                                                    if (d !== null) {
-                                                                                                        var field = [];
-                                                                                                        field.push(document.getElementsByName("fName" + i + j + "")[0].value);
-                                                                                                        field.push(document.getElementsByName("dType" + i + j + "")[0].value);
-                                                                                                        field.push(document.getElementsByName("iType" + i + j + "")[0].value);
-                                                                                                        div.push(field);
-                                                                                                    }
+                    document.getElementById('submitForm').onsubmit = function (e) {
+                        e.preventDefault();
+                        swal({
+                            title: "Confirmation",
+                            text: "Are you sure you want to add this datasource?",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true
+                        })
+                        .then((confirm) => {
+                            if (confirm) {
+                                var form = document.getElementById("submitForm");
+                                var count = document.getElementById("counter").value;
+                                var i;
+                                var j;
+                                var list = [];
+                                if (count !== "") {
+                                    for (i = 0; i < count; i++) {
+                                        var d1 = document.getElementById(i);
+                                        if (d1 !== null) {
+                                            var div = [];
+                                            div.push(document.getElementsByName("path" + i + "")[0].value);
+                                            div.push(document.getElementsByName("name" + i + "")[0].value);
+                                            div.push(document.getElementsByName("type" + i + "")[0].value);
+                                            var t = document.getElementsByName("type" + i + "")[0].value
+                                            if (t === "list") {
+                                                var subCount = document.getElementsByName("subCounter" + i + "")[0].value;
+                                                for (j = 0; j < subCount; j++) {
+                                                    var d = document.getElementById("" + i + j);
+                                                    console.log(d);
+                                                    if (d !== null) {
+                                                        var field = [];
+                                                        field.push(document.getElementsByName("fName" + i + j + "")[0].value);
+                                                        field.push(document.getElementsByName("dType" + i + j + "")[0].value);
+                                                        field.push(document.getElementsByName("iType" + i + j + "")[0].value);
+                                                        div.push(field);
+                                                    }
 //                                                                                                    else{
 //                                                                                                        var field = [];
 //                                                                                                        field.push(document.getElementsByName("fName" + i + j + "")[0].value);
 //                                                                                                        field.push(document.getElementsByName("dType" + i + j + "")[0].value);
 //                                                                                                        field.push(document.getElementsByName("iType" + i + j + "")[0].value);
 //                                                                                                        div.push(field);
-                                                                                                   // }
+                                                   // }
 
-                                                                                                }
-                                                                                            }
-                                                                                            list.push(div);
-                                                                                        }
+                                                }
+                                            }
+                                            list.push(div);
+                                        }
 
-                                                                                    }
+                                    }
 
-                                                                                }
-                                                                                $.ajax({
-                                                                                    type: "POST",
-                                                                                    url: "addDatasource",
-                                                                                    data: JSON.stringify({
-                                                                                        operation: form.elements["operation"].value,
-                                                                                        datasourceUrl: form.elements["datasourceUrl"].value,
-                                                                                        datasourceName: form.elements["datasourceName"].value,
-                                                                                        remark: form.elements["remark"].value,
-                                                                                        counter: count,
-                                                                                        subCounter: subCount,
-                                                                                        params: list,
-                                                                                    }),
-                                                                                    success: function (success) {
-                                                                                        if (success === "true") {
-                                                                                            swal({icon: "success", text: "Datasource has been added successfully!!", type:
-                                                                                                        "success"}).then(function () {
-                                                                                                window.location = "devHome.jsp";
-                                                                                            }
-                                                                                            );
-                                                                                        } else {
-                                                                                            swal("Error!", {
-                                                                                                icon: "error"
-                                                                                            });
-                                                                                        }
-                                                                                    }
-                                                                                });
-                                                                            }
-                                                                        });
-                                                            };
+                                }
+                                $.ajax({
+                                    type: "POST",
+                                    url: "addDatasource",
+                                    data: JSON.stringify({
+                                        operation: form.elements["operation"].value,
+                                        datasourceUrl: form.elements["datasourceUrl"].value,
+                                        datasourceName: form.elements["datasourceName"].value,
+                                        remark: form.elements["remark"].value,
+                                        counter: count,
+                                        subCounter: subCount,
+                                        params: list,
+                                    }),
+                                    success: function (success) {
+                                        if (success === "true") {
+                                            swal({icon: "success", text: "Datasource has been added successfully!!", type:
+                                                        "success"}).then(function () {
+                                                window.location = "devHome.jsp";
+                                            }
+                                            );
+                                        } else {
+                                            swal("Error!", {
+                                                icon: "error"
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    };
                 </script>
                 <script>
                     var counter = 0;
@@ -398,8 +396,8 @@
                             });
                         };
                         request.send();
-                    }
-                    ;
+                    };
+                    
                     function handleClick(e) {
 
 
@@ -425,7 +423,6 @@
                         $('#' + e.id + ' input[name="path' + e.id + '"]').val(path);
                     }
 
-                </script>
-
-                </body>
-                </html>
+        </script>
+    </body>
+</html>

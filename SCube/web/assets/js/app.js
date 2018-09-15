@@ -884,10 +884,10 @@ class App extends Component {
     }
 
     componentDidMount() {
-         let templateName = document.getElementById("templateName").value;
-         if (templateName !== "null") {
-             this.setState({templateName});
-         }
+        let templateName = document.getElementById("templateName").value;
+        if (templateName !== "null") {
+            this.setState({templateName});
+        }
         this.loadTemplate();
     }
 
@@ -899,8 +899,6 @@ class App extends Component {
             }
         }, 100);
     }
-
-
 
     addTextbox = () => {
         let components = this.state.components;
@@ -1002,6 +1000,15 @@ class App extends Component {
     closeModal = () => {
         var modal = document.getElementById('size');
         modal.style.display = "none";
+    }
+    
+    dataUrlToFile(dataurl, filename) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, {type:mime});
     }
 
     deleteComponent(i) {
@@ -1106,32 +1113,31 @@ class App extends Component {
         });
     }
 
-    savePDF = () => {
+    savePDF() {
+        let self = this;
         let lastPage = this.state.lastPage;
         if (this.state.start == true) {
            // console.log(this.state.pageNo);
-            domtoimage.toJpeg(document.getElementById('container'), { quality: 1 })
-                .then(function (dataUrl) {
-                    var link = document.createElement('a');
-                    link.download = 'my-image-name.jpeg';
-                    link.href = dataUrl;
-                    link.click();
-                });
-
-                let self = this;
-
             setTimeout(function () {
-                if (lastPage == 0) {
-                    self.setState({ start: false });
-                    self.setState({ lastPage: -1 });
-                } else {
-                    
-                    lastPage -= 1;
-                   // console.log("Lasstpage"+lastPage)
-                    self.setState({ lastPage });
-                    self.setState({ pageNo: lastPage });
-                }
-            }, 10);
+                domtoimage.toJpeg(document.getElementById('container'), { quality: 1 })
+                .then(function (dataUrl) {
+                    let formData = new FormData();
+                    formData.append("file", self.dataUrlToFile(dataUrl, self.state.templateName + "_slide" + (self.state.pageNo + 1) + ".jpg"));
+
+                    let xhr = new XMLHttpRequest();
+                    xhr.open("POST", api + "saveFile");
+                    xhr.send(formData);
+
+                    if (lastPage == 0) {
+                        self.setState({ start: false });
+                        self.setState({ lastPage: -1 });
+                    } else {
+                        lastPage -= 1;
+                        self.setState({ lastPage });
+                        self.setState({ pageNo: lastPage });
+                    }
+                });
+            }, 100);
         } else {
             let noCom = this.state.components.length;
             //console.log("length" + noCom)
@@ -1366,7 +1372,7 @@ class App extends Component {
                                 <Button className="col-md-2 col-xs-3" style={{ float: "right", minWidth: 130 }} bsStyle="info" onClick={this.saveTemplate}>
                                     <i className="fa fa-save" /> Save Template
                                     </Button>
-                                <Button className="col-md-2 col-xs-3" style={{ float: "right", minWidth: 130 }} bsStyle="info" onClick={this.savePDF}>
+                                <Button className="col-md-2 col-xs-3" style={{ float: "right", minWidth: 130 }} bsStyle="info" onClick={()=>{this.setState({editMode: false}); this.savePDF()}}>
                                     <i className="fa fa-save" /> Save PDF
                                     </Button>
                                 <br />
@@ -1457,8 +1463,9 @@ class App extends Component {
 
                                 <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE" }}>
                                     <div id="container" style={{
-                                        border: "0.5px solid gray", backgroundColor: 'white', height: window.innerHeight * 0.70, marginTop: window.innerHeight * 0.04, marginBottom: window.innerHeight * 0.04,
-                                        marginRight: window.innerHeight * 0.02, marginLeft: window.innerHeight * 0.02,
+                                        border: "0.5px solid gray", backgroundColor: 'white', height: window.innerHeight * 0.70, 
+                                        marginTop: 0, marginBottom: 0,
+                                        marginRight: 0, marginLeft: 0,
                                     }}>
 
                                         {/* map does a for loop over all the components in the state */}
@@ -1551,7 +1558,7 @@ class ReportComponent extends Component {
             );
         } else if (this.props.type ==="image"){
             return(
-                <Image i={this.props.i}  editMode={this.props.editMode} 
+                <Iimage i={this.props.i}  editMode={this.props.editMode} 
                     properties={this.props.properties} updateProperties={this.props.updateProperties}/>
             );
         } else if (this.props.type ==="table"){
@@ -1716,7 +1723,7 @@ class Barchart extends Component {
                                     <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
                                 </YAxis>
                                 <Tooltip />
-                                <Bar dataKey={this.state.yAxis} fill="#CD5C5C" />
+                                <Bar dataKey={this.state.yAxis} fill="#CD5C5C" isAnimationActive={false}/>
                                 {/* <Bar dataKey="neutral" fill="orange" /> */}
                                 {/* <Bar dataKey="negative" fill="grey" /> */}
 
@@ -1733,7 +1740,7 @@ class Barchart extends Component {
                                         <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
                                     </YAxis>
                                     <Tooltip />
-                                    <Bar dataKey={this.state.yAxis} fill="#CD5C5C" />
+                                    <Bar dataKey={this.state.yAxis} fill="#CD5C5C" animationDuration={0}/>
                                     {/* <Bar dataKey="neutral" fill="orange" /> */}
                                     {/* <Bar dataKey="negative" fill="grey" /> */}
 
@@ -1903,7 +1910,7 @@ class Linechart extends Component {
                             </YAxis>
                             <Tooltip />
                             <Legend verticalAlign="top" height={20} />
-                            <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
+                            <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" isAnimationActive={false}/>
                         </LineChart>
                         :
                         <ResponsiveContainer className="draggable" width="95%" height="90%">
@@ -1917,7 +1924,7 @@ class Linechart extends Component {
                                 </YAxis>
                                 <Tooltip />
                                 <Legend verticalAlign="top" height={20} />
-                                <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
+                                <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" animationDuration={0}/>
                             </LineChart>
                         </ResponsiveContainer>
                     }
@@ -1938,7 +1945,7 @@ class Linechart extends Component {
     }
 }
 
-class Image extends React.Component {
+class Iimage extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -1964,8 +1971,6 @@ class Image extends React.Component {
 
         reader.readAsDataURL(file);
     }
-
-    
 
     render() {
         return (
@@ -2454,4 +2459,4 @@ class Descriptive extends Component {
     }
 }
 
-ReactDOM.render(<App/>, document.getElementById('container'));
+ReactDOM.render(<App/>, document.getElementById('reportContainer'));

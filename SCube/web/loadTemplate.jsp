@@ -24,8 +24,7 @@
         <input type="hidden" id="userName"     value="<%= account.getUsername() %>" />
         <input type="hidden" id="profileName"  value="<%= account.getName() %>" />
          
-        <div id="container">
-        </div>
+        <div id="reportContainer"></div>
                     
         <!-- jQuery -->
         <script src="assets/js/jquery.min.js"></script>
