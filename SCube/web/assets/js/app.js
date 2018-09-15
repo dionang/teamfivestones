@@ -13,8 +13,8 @@ import { Formik, Form, Field } from 'formik';
 //const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
 //const api = 'http://103.3.61.39:8080/SCube/';
 //const datasourceUrl = 'http://103.3.61.39:8080/Dummy_API/getCustomerOrders';
-const api = 'http://scube.tk/SCube/';
-const datasourceUrl = 'http://scube.tk/Dummy_API/getCustomerOrders';
+const api = 'https://scube.rocks/SCube/';
+const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 const apiData = 
 {
   "customerOrders": [
@@ -877,7 +877,9 @@ class App extends Component {
             templateName: "Template Name",
             sidebar: true,
             pageNo: 0,
-            selectedPages: "all"
+            lastPage: -1,
+            start: false
+
         }
     }
 
@@ -887,6 +889,15 @@ class App extends Component {
             this.setState({templateName});
         }
         this.loadTemplate();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        let self = this;
+        setTimeout(function () {
+            if (self.state.lastPage >=0) {
+                self.savePDF();
+            }
+        }, 100);
     }
 
     addTextbox = () => {
@@ -911,7 +922,8 @@ class App extends Component {
                     title: '',
                     xAxis: '',
                     yAxis: '',
-                    summary:''
+                    summary: '',
+                    variance: 0,
                 }
             }
         );
@@ -970,15 +982,11 @@ class App extends Component {
                 type: "video", x: 0, y: 0, height: 200, width: 200, display: true,
                 properties: {
                     // using textbox properties for now
-                    text: "Paste a video link here",
+                    text: '',
                 }
             }
         );
         this.setState({ components, editMode: true });
-    }
-
-    changePages = (e) => {
-        this.setState({selectedPages: e.target.value});
     }
 
     changeSettings(i) {
@@ -992,6 +1000,15 @@ class App extends Component {
     closeModal = () => {
         var modal = document.getElementById('size');
         modal.style.display = "none";
+    }
+    
+    dataUrlToFile(dataurl, filename) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, {type:mime});
     }
 
     deleteComponent(i) {
@@ -1037,21 +1054,21 @@ class App extends Component {
 
     previousPage = () => {
         let pageNo = this.state.pageNo;
-        if(pageNo !== 0){
-            pageNo = this.state.pageNo-1;
-            this.setState({pageNo});
+        if (pageNo !== 0) {
+            pageNo = this.state.pageNo - 1;
+            this.setState({ pageNo });
         }
     }
 
     nextPage = () => {
         let components = this.state.components;
-        let pageNo = this.state.pageNo+1;
+        let pageNo = this.state.pageNo + 1;
 
         // add new page if it doesnt exist
-        if(pageNo === components.length){
+        if (pageNo === components.length) {
             components.push([]);
         }
-        this.setState({components, pageNo});
+        this.setState({ components, pageNo });
     }
 
     renameTemplate = (e) => {
@@ -1096,35 +1113,51 @@ class App extends Component {
         });
     }
 
-    savePdf = () => {
-        let container = document.getElementById('container').outerHTML;
-        let doc = new PDFDocument;
-        console.log("created");
-        
-        pdfkit.from_string('MicroPyramid', 'micro.pdf')
-        doc.addPage();
-        doc.end();
-        
+    savePDF() {
+        let self = this;
+        let lastPage = this.state.lastPage;
+        if (this.state.start == true) {
+           // console.log(this.state.pageNo);
+            setTimeout(function () {
+                domtoimage.toJpeg(document.getElementById('container'), { quality: 1 })
+                .then(function (dataUrl) {
+                    let formData = new FormData();
+                    formData.append("file", self.dataUrlToFile(dataUrl, self.state.templateName + "_slide" + (self.state.pageNo + 1) + ".jpg"));
+
+                    let xhr = new XMLHttpRequest();
+                    xhr.open("POST", api + "saveFile");
+                    xhr.send(formData);
+
+                    if (lastPage == 0) {
+                        self.setState({ start: false });
+                        self.setState({ lastPage: -1 });
+                    } else {
+                        lastPage -= 1;
+                        self.setState({ lastPage });
+                        self.setState({ pageNo: lastPage });
+                    }
+                });
+            }, 100);
+        } else {
+            let noCom = this.state.components.length;
+            //console.log("length" + noCom)
+            // console.log(noCom);
+            lastPage = noCom - 1;
+            //console.log("last page" + lastPage);
+            this.setState({ lastPage });
+            this.setState({ start: true });
+            this.setState({ pageNo: lastPage });
+        }
     }
 
     savePresentation = () => {
-        let pptx = new PptxGenJS();
-        
-        // allow this library to be used in browser
+        var pptx = new PptxGenJS();
         pptx.setBrowser(true);
-        
-        let selectedPages = document.getElementById("selectedPages").value;
-        
-        // remove 1 from every page number so that the index matches
-        let pages = selectedPages === "all" ? this.state.components.keys() : selectedPages.split(",").map(function(value){
-            return Number(value) - 1;
-        });
 
-        console.log(this.state.components.keys());
-        for(let page of pages){
-            let components = this.state.components[page];
+        for (let pageNo in this.state.components) {
+            let components = this.state.components[pageNo];
             let slide = pptx.addNewSlide();
-            for(let component of components) {
+            for (let component of components) {
                 // convert px to inches
                 let x = component.x / 96;
                 let y = component.y / 96;
@@ -1133,30 +1166,32 @@ class App extends Component {
 
                 if (component.type === "text") {
                     // remove the p tags
-                    let text = component.properties.text.substring(3, component.properties.text.length-4);
+                    let text = component.properties.text.substring(3, component.properties.text.length - 4);
                     // console.log(text);
                     // let texts = text.split(/\r\n|\n|\r/);
                     // console.log(texts); 
-                    slide.addText(text, {x:x, y:y,  w:w, h:h, 
-                        fontSize:14, color:'363636'
+                    slide.addText(text, {
+                        x: x, y: y, w: w, h: h,
+                        fontSize: 14, color: '363636'
                         // , bullet:{code:'25BA'} 
                     });
-                    
+
                 } else if (component.type === "image") {
                     let imageUrl = component.properties.imageUrl;
 
                     // remove height of toolbar
                     y = (component.y + 27.5) / 96;
                     h = (component.height - 27.5) / 96;
-                    slide.addImage({ data:imageUrl, x:x, y:y, w:w, h:h });
+                    slide.addImage({ data: imageUrl, x: x, y: y, w: w, h: h });
                 } else if (component.type === "video") {
                     // remove the p tags
-                    let videoUrl = component.properties.text.substring(3, component.properties.text.length-4).trim();
-                    slide.addMedia({ type:'online', link:videoUrl, x:x, y:y, w:w, h:h });
+                    let videoUrl = component.properties.text.substring(3, component.properties.text.length - 4).trim();
+                    console.log(videoUrl);
+                    slide.addMedia({ type: 'online', link: videoUrl, x: x, y: y, w: w, h: h });
                 }
             }
         }
-        
+
         pptx.save('Sample Presentation');
     }
 
@@ -1206,7 +1241,7 @@ class App extends Component {
                 }
             });
         }
-        this.setState({editMode:false});
+        this.setState({ editMode: false });
     }
 
     toggleChartMenu = () => {
@@ -1229,7 +1264,7 @@ class App extends Component {
     updateProperties = (properties, i) => {
         let components = this.state.components;
         let pageNo = this.state.pageNo;
-        
+
         components[pageNo][i].properties = properties;
         this.setState({ properties });
     }
@@ -1322,22 +1357,26 @@ class App extends Component {
                                     <label style={{ fontSize: 15, marginRight: 2 }}>Template Name:</label>
                                     <input style={{ fontSize: 15 }} value={this.state.templateName} onChange={this.renameTemplate} />
                                 </div>
-                                    {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
-                                    {/* <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> */}
-                                    <Button className="col-md-2 col-xs-3" style={{ float:"right", minWidth:130 }} bsStyle="info" onClick={this.saveTemplate}>
-                                        <i className="fa fa-save" /> Save Template
+                                {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
+                                {/* <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> */}
+                                <Button className="col-md-2 col-xs-3" style={{ float: "right", minWidth: 130 }} bsStyle="info" onClick={this.saveTemplate}>
+                                    <i className="fa fa-save" /> Save Template
                                     </Button>
-                                    <Button className="col-md-2 col-xs-3" style={{ float:"right", minWidth:150 }} bsStyle="success" onClick={this.toggleEditMode}>
-                                        <i className="fa fa-edit" style={{ marginRight: 2 }} />
-                                        {this.state.editMode ? "Leave Edit Mode" : "Enter Edit Mode"}
+                                <Button className="col-md-2 col-xs-3" style={{ float: "right", minWidth: 150 }} bsStyle="success" onClick={this.toggleEditMode}>
+                                    <i className="fa fa-edit" style={{ marginRight: 2 }} />
+                                    {this.state.editMode ? "Leave Edit Mode" : "Enter Edit Mode"}
+                                </Button>
+                                <Button className="col-md-2 col-xs-2" style={{ float: "right", minWidth: 150 }} bsStyle="warning" onClick={this.savePresentation}>
+                                    <i className="fa fa-edit" style={{ marginRight: 2 }} /> Export as PPT
                                     </Button>
-                                    <Button className="col-md-2 col-xs-2" style={{ float:"right", minWidth:150 }} bsStyle="warning" onClick={this.savePresentation}>
-                                        <i className="fa fa-edit" style={{ marginRight: 2 }} /> Export as PPT
+                                <Button className="col-md-2 col-xs-3" style={{ float: "right", minWidth: 130 }} bsStyle="info" onClick={this.saveTemplate}>
+                                    <i className="fa fa-save" /> Save Template
                                     </Button>
-                                    <Button className="col-md-2 col-xs-2" style={{ float:"right", minWidth:150 }} bsStyle="warning" onClick={this.savePdf}>
-                                        <i className="fa fa-edit" style={{ marginRight: 2 }} /> Export as PDF
+                                <Button className="col-md-2 col-xs-3" style={{ float: "right", minWidth: 130 }} bsStyle="info" onClick={()=>{this.setState({editMode: false}); this.savePDF()}}>
+                                    <i className="fa fa-save" /> Save PDF
                                     </Button>
-                                    <br/>
+                                <br />
+
 
                                 {/* <div id="size" className="modal">
                                     <div className="modal-content">
@@ -1382,107 +1421,115 @@ class App extends Component {
 
 
                                 <div className="col-sm-12 col-xs-12" style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: 'white', borderBottom: '7px solid #EB6B2A' }}>
-                                    
+
                                     <label> Add Component: </label>
-                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Textbox" bsStyle="primary"
-                                        onClick={this.addTextbox}   style={{ marginRight:5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
-                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Bar Chart" bsStyle="warning"
-                                        onClick={this.addBarChart}  style={{ marginRight:5 }}><i className="fa fa-bar-chart" /></Button>
-                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Line Chart" bsStyle="success"
-                                        onClick={this.addLineChart} style={{ marginRight:5 }}><i className="fa fa-line-chart" /></Button>
-                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Table" bsStyle="danger"
-                                        onClick={this.addTable}     style={{ marginRight:5 }}><i className="fa fa-table" /> </Button>
-                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Image"
-                                        onClick={this.addImage}     style={{ backgroundColor:"#31B0D5", color:"white", border:"1px solid #31B0D5", marginRight:5 }}><i className="fa fa-image" /></Button>
-                                    <Button data-toggle="tooltip"   data-placement="bottom" title="Add Video"
-                                        onClick={this.addVideo}     style={{ backgroundColor:"#D896FF", color:"white", border:"1px solid #D896FF", marginRight:90 }}><i className="fa fa-play-circle" /></Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"
+                                        onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsStyle="warning"
+                                        onClick={this.addBarChart} style={{ marginRight: 5 }}><i className="fa fa-bar-chart" /></Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart" bsStyle="success"
+                                        onClick={this.addLineChart} style={{ marginRight: 5 }}><i className="fa fa-line-chart" /></Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Table" bsStyle="danger"
+                                        onClick={this.addTable} style={{ marginRight: 5 }}><i className="fa fa-table" /> </Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Image"
+                                        onClick={this.addImage} style={{ backgroundColor: "#31B0D5", color: "white", border: "1px solid #31B0D5", marginRight: 5 }}><i className="fa fa-image" /></Button>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"
+                                        onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 160 }}><i className="fa fa-play-circle" /></Button>
 
-                                    <span style={{fontFamily:'Georgia', fontSize:18}}>Page Number</span>
-                                    <Button data-toggle="tooltip" data-placement="bottom" title = "Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
-                                        style={{ marginRight: 10, marginLeft: 10, padding: 5, paddingTop: 0 }}>
-                                        <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
-                                            <path d="M0-.5h24v24H0z" fill="none"></path>
-                                            <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" className="jWRuRT"></path>
-                                        </svg>
-                                    </Button>                                   
-                                    <span style={{fontFamily:'Georgia', fontSize:18}}>{this.state.pageNo+1}</span>
-                                    <Button data-toggle="tooltip" data-placement="bottom" title = "Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
-                                        style={{ marginLeft: 10, padding: 5, paddingTop: 0}}>
-                                        <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
-                                            <path d="M0-.5h24v24H0z" fill="none"></path>
-                                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
-                                        </svg>
-                                    </Button>
 
-                                    <Button bsStyle="default" bsSize="small" onClick={this.saveTemplate}
-                                        style={{ marginLeft: 10, color:'orange', border:'none' }}> <i className="fa fa-save fa-2x" />
-                                    </Button>
-                                    Pages: <input id="selectedPages" value={this.state.selectedPages} onChange={this.changePages}/>
+
+                                    <span style={{ fontFamily: 'Georgia', fontSize: 18, textAlign: "center" }}>Page Number
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
+                                            style={{ marginRight: 10, marginLeft: 10 }}>
+                                            <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                                <path d="M0-.5h24v24H0z" fill="none"></path>
+                                                <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" className="jWRuRT"></path>
+                                            </svg>
+                                        </Button>
+                                        <span style={{ fontFamily: 'Georgia', fontSize: 18 }}>{this.state.pageNo + 1}</span>
+                                        <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
+                                            style={{ marginLeft: 10 }}>
+                                            <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                                <path d="M0-.5h24v24H0z" fill="none"></path>
+                                                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
+                                            </svg>
+                                        </Button>
+
+                                        <Button bsStyle="default" bsSize="small" onClick={this.saveTemplate}
+                                            style={{ marginLeft: 10, color: 'orange', border: 'none' }}> <i className="fa fa-save fa-2x" />
+                                        </Button>
+                                    </span>
                                 </div>
 
-                                <div id="container" className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white',  height:"calc(100% + 100px)", marginTop: -5 }}>
-                                    {/* map does a for loop over all the components in the state */}
+                                <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE" }}>
+                                    <div id="container" style={{
+                                        border: "0.5px solid gray", backgroundColor: 'white', height: window.innerHeight * 0.70, 
+                                        marginTop: 0, marginBottom: 0,
+                                        marginRight: 0, marginLeft: 0,
+                                    }}>
 
-                                    {this.state.components[this.state.pageNo].map((item, i) => {
-                                        if (item.display) {
-                                            return <Rnd key={this.state.pageNo + "," + i}
-                                                style={{
-                                                    borderStyle: this.state.editMode ? "dotted" : "hidden",
-                                                    borderWidth: 2,
-                                                    backgroundColor: "white",
-                                                    borderColor: 'grey'
-                                                    
-                                                }}
+                                        {/* map does a for loop over all the components in the state */}
+                                        {/* {console.log("pageNo" + this.state.pageNo)} */}
+                                        {this.state.components[this.state.pageNo].map((item, i) => {
+                                            if (item.display) {
+                                                return <Rnd key={this.state.pageNo + "," + i}
+                                                    style={{
+                                                        borderStyle: this.state.editMode ? "dotted" : "hidden",
+                                                        borderWidth: 2,
+                                                        backgroundColor: "white",
+                                                        borderColor: 'grey',
+                                                    }}
 
-                                                // intialize components x,y,height and width
-                                                position={{ x: item.x, y: item.y }}
-                                                size={{ width: item.width, height: item.height }}
+                                                    // intialize components x,y,height and width
+                                                    position={{ x: item.x, y: item.y }}
+                                                    size={{ width: item.width, height: item.height }}
 
-                                                // min height and size
-                                                minHeight={10} minWidth={10}
+                                                    // min height and size
+                                                    minHeight={10} minWidth={10}
 
-                                                // to customize the dragging and resizing behavior
-                                                bounds={"parent"}
-                                                cancel={".nonDraggable"}
-                                                dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
-                                                enableResizing={{
-                                                    bottom: this.state.editMode,
-                                                    bottomLeft: this.state.editMode,
-                                                    bottomRight: this.state.editMode,
-                                                    left: this.state.editMode,
-                                                    right: this.state.editMode,
-                                                    top: this.state.editMode,
-                                                    topLeft: this.state.editMode,
-                                                    topRight: this.state.editMode
-                                                }}
-                                                
-                                                // update height and width onResizeStop
-                                                // onResizeStop will activate a callback function containing these params
-                                                // ref represents item that was resized
-                                                onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
+                                                    // to customize the dragging and resizing behavior
+                                                    bounds={"parent"}
+                                                    cancel={".nonDraggable"}
+                                                    dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
+                                                    enableResizing={{
+                                                        bottom: this.state.editMode,
+                                                        bottomLeft: this.state.editMode,
+                                                        bottomRight: this.state.editMode,
+                                                        left: this.state.editMode,
+                                                        right: this.state.editMode,
+                                                        top: this.state.editMode,
+                                                        topLeft: this.state.editMode,
+                                                        topRight: this.state.editMode
+                                                    }}
 
-                                                // update height and width onResizeStop
-                                                // onDragStop will activate a callback function containing these params
-                                                // ref represents item that was dragged
-                                                onDragStop={(event, ref) => this.onDragStop(ref, i)}
-                                            >
-                                                <div style={{ height: 27.5, float: "right" }}>
-                                                    <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
-                                                        onClick={() => this.changeSettings(i)}></i>
-                                                    <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
-                                                        onClick={() => this.deleteComponent(i)}></i>
-                                                </div>
-                                                <ReportComponent type={item.type} editMode={this.state.editMode}
-                                                    properties={item.properties} i={i}
-                                                    updateProperties={this.updateProperties.bind(this)}
-                                                />
-                                                {/* <Descriptive type={item.type} editMode={this.state.editMode}
+                                                    // update height and width onResizeStop
+                                                    // onResizeStop will activate a callback function containing these params
+                                                    // ref represents item that was resized
+                                                    onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
+
+                                                    // update height and width onResizeStop
+                                                    // onDragStop will activate a callback function containing these params
+                                                    // ref represents item that was dragged
+                                                    onDragStop={(event, ref) => this.onDragStop(ref, i)}
+                                                >
+                                                    <div style={{ height: 27.5, float: "right" }}>
+                                                        <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
+                                                            onClick={() => this.changeSettings(i)}></i>
+                                                        <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
+                                                            onClick={() => this.deleteComponent(i)}></i>
+                                                    </div>
+                                                    <ReportComponent type={item.type} editMode={this.state.editMode}
+                                                        properties={item.properties} i={i}
+                                                        updateProperties={this.updateProperties.bind(this)}
+                                                    />
+                                                    {/* <Descriptive type={item.type} editMode={this.state.editMode}
                                                     properties={item.properties} i={i}
                                                     updateProperties={this.updateProperties.bind(this)}></Descriptive> */}
-                                            </Rnd>
-                                        }
-                                    })}
-                                    
+                                                </Rnd>
+                                            }
+                                        })}
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1511,7 +1558,7 @@ class ReportComponent extends Component {
             );
         } else if (this.props.type ==="image"){
             return(
-                <Image i={this.props.i}  editMode={this.props.editMode} 
+                <Iimage i={this.props.i}  editMode={this.props.editMode} 
                     properties={this.props.properties} updateProperties={this.props.updateProperties}/>
             );
         } else if (this.props.type ==="table"){
@@ -1532,38 +1579,39 @@ class Barchart extends Component {
         super(props);
         this.state = {
             ...this.props.properties,
-            chartData:[],
-            summaryData:'',
-            heightP:"62%"
+            chartData: [],
+            summaryData: '',
+            variance:0,
+            median:[]
         }
     }
 
     // update state of initialized when props change
-    componentWillReceiveProps(nextProps){
-        if (nextProps.properties.initialized != this.state.initialized){
-            this.setState({initialized: nextProps.properties.initialized});
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.properties.initialized != this.state.initialized) {
+            this.setState({ initialized: nextProps.properties.initialized });
         }
     }
 
     // do API call to render chartData upon loading of component from DB
-    componentWillMount(){
+    componentWillMount() {
         let self = this;
         let url = this.props.properties.datasourceUrl;
         let aggregate = this.props.properties.aggregate;
-        if (url){
+        if (url) {
             request.get({
                 url: url,
-            }, function(error, response, body){
+            }, function (error, response, body) {
                 let data = JSON.parse(body);
                 let chartData = data[self.props.properties.dataset];
                 let xAxis = self.props.properties.xAxis;
                 let yAxis = self.props.properties.yAxis;
-                if (aggregate === ""){
+                if (aggregate === "") {
                     chartData.sort((a, b) => a[xAxis] - b[xAxis]);
                 } else {
                     chartData = new JsonProcessor().getAggregatedData(chartData, xAxis, yAxis, aggregate);
                 }
-                self.setState({chartData});
+                self.setState({ chartData });
             });
         }
     }
@@ -1576,6 +1624,7 @@ class Barchart extends Component {
         let dataset = values.dataset;
         let data = processor.getDataset(dataset);
 
+
         let title = values.title;
         let xAxis = values.xAxis;
         let yAxis = values.yAxis;
@@ -1583,17 +1632,63 @@ class Barchart extends Component {
 
         // if x-axis is non-categorical, 
         // sort data in ascending order by x-axis
-        if (processor.getType(dataset, xAxis) !== "string"){
+        if (processor.getType(dataset, xAxis) !== "string") {
             data.sort((a, b) => a[xAxis] - b[xAxis]);
         } else {
             aggregate = "sum";
             data = processor.getAggregatedData(data, xAxis, yAxis, aggregate);
         }
-        
-        let summaryData = processor.getDetails(dataset,yAxis);
 
+        let summaryData = processor.getDetails(dataset, yAxis);
+        let average = summaryData.average;
+        
+        let finalVariance = 0; 
+        for (let obj of processor.getDataset(dataset)){
+            finalVariance += (obj[yAxis]-average)*(obj[yAxis]-average);
+        }
+
+        finalVariance = finalVariance.toFixed(4);
+
+        var collectArr =[];
+        
+        let check = false;
+        let num = 0;
+        let i = 0;
+        for (let obj of processor.getDataset(dataset)){
+            num = obj[yAxis];
+            
+            for( i = 0; i < collectArr.length; i++){
+                if(collectArr[i][0]==num){
+                    collectArr[i][1]++;
+                    check = true;
+                } 
+            }
+            if(check == false){
+                collectArr.push([num,1]);
+            } else {
+                check = false;
+            }
+            
+        }
+
+        
+        let maxCount = 0;
+        var medianArr = [];
+        for(i=0; i < collectArr.length;i++){
+            
+            if(maxCount<collectArr[i][1]){
+                maxCount=collectArr[i][1];
+                medianArr=[];
+                medianArr.push(collectArr[i][0]);
+            } else if(maxCount==collectArr[i][1]){
+                medianArr.push(collectArr[i][0]);
+            }
+        }
+
+
+        // write the cal for the variance 
         this.setState({
-            initialized:true,
+            initialized: true,
             datasourceUrl: datasourceUrl,
             dataset: dataset,
             title: title,
@@ -1602,47 +1697,63 @@ class Barchart extends Component {
             aggregate: aggregate,
             chartData: data,
             summary: values.summary,
-            summaryData: summaryData
+            summaryData: summaryData,
+            variance: finalVariance,
+            median:medianArr
         })
 
-
-        let {chartData, ...other} = this.state;
+        let { chartData, ...other } = this.state;
         this.props.updateProperties(other, this.props.i);
-        
-
     }
 
     render() {
-        return ( 
-            <div className="draggable" style={{height:"100% "}}>
+        return (
+            <div className="draggable" style={{ height: "100%" }}>
                 {this.state.initialized ?
-                <div style={{height:"calc(62.5% + 1px)"}}>
-                    <p style={{fontFamily:'Georgia', textAlign:"center", fontSize:20, }}> {this.state.title} </p>
-                    <ResponsiveContainer > 
-                        <BarChart  data={this.state.chartData} width={730} height={250}  margin={{ top: 1,right: 30, left: 20, bottom: 30 }}>
-                            <CartesianGrid strokeDasharray="3 3"/>                 
-                            <XAxis dataKey={this.state.xAxis}>
-                                <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
-                            </XAxis>
-                            <YAxis dataKey={this.state.yAxis}>
-                                <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90}/>
-                            </YAxis>
-                            <Tooltip/>
-                            <Bar dataKey={this.state.yAxis} fill="#CD5C5C" />
-                            {/* <Bar dataKey="neutral" fill="orange" /> */}
-                            {/* <Bar dataKey="negative" fill="grey" /> */}
-                            
-                            <Legend verticalAlign="top" height={20} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-                :   <ChartForm initializeChart={this.initializeChart}/>
+                    <div style={{ height: "calc(62.5% + 100px)" }}>
+                        <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
+
+                        {this.state.facetype ?
+                            <BarChart data={this.state.chartData} width={650} height={250} margin={{ top: 10, right: 30, left: 20, bottom: 30 }}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey={this.state.xAxis}>
+                                    <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
+                                </XAxis>
+                                <YAxis dataKey={this.state.yAxis}>
+                                    <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
+                                </YAxis>
+                                <Tooltip />
+                                <Bar dataKey={this.state.yAxis} fill="#CD5C5C" isAnimationActive={false}/>
+                                {/* <Bar dataKey="neutral" fill="orange" /> */}
+                                {/* <Bar dataKey="negative" fill="grey" /> */}
+
+                                <Legend verticalAlign="top" height={20} />
+                            </BarChart>
+                            :
+                            <ResponsiveContainer style={{height:"100%"}}>
+                                <BarChart data={this.state.chartData} width={730} height={250} margin={{ top: 1, right: 30, left: 20, bottom: 30 }}>
+                                    <CartesianGrid strokeDa1sharray="3 3" />
+                                    <XAxis dataKey={this.state.xAxis}>
+                                        <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
+                                    </XAxis>
+                                    <YAxis dataKey={this.state.yAxis}>
+                                        <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
+                                    </YAxis>
+                                    <Tooltip />
+                                    <Bar dataKey={this.state.yAxis} fill="#CD5C5C" animationDuration={0}/>
+                                    {/* <Bar dataKey="neutral" fill="orange" /> */}
+                                    {/* <Bar dataKey="negative" fill="grey" /> */}
+
+                                    <Legend verticalAlign="top" height={20} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        }
+                    </div>
+                    : <ChartForm initializeChart={this.initializeChart} />
                 }
-                <div style={{marginTop:"20px"}} >
-                    {this.state.summary ? 
-                        <div>
-                            <Descriptive summaryData={this.state.summaryData}/> 
-                        </div> : ""}
+                <div style={{ marginTop: "20px" }} >
+                    {this.state.summary ? <div>
+                        <Descriptive summaryData={this.state.summaryData} variance = {this.state.variance} median = {this.state.median}></Descriptive> </div> : ""}
                     {/* summary={this.props.properties.summary} summaryData = {this.state.summaryData} */}
                 </div>
             </div>
@@ -1657,6 +1768,8 @@ class Linechart extends Component {
             ...this.props.properties,
             chartData: [],
             summaryData:'',
+            variance:0,
+            median:[],
         }
     }
 
@@ -1713,6 +1826,54 @@ class Linechart extends Component {
 
         let summaryData = processor.getDetails(dataset,yAxis);
 
+        let average = summaryData.average;
+        
+        let finalVariance = 0; 
+        for (let obj of processor.getDataset(dataset)){
+            finalVariance += (obj[yAxis]-average)*(obj[yAxis]-average);
+        }
+
+        finalVariance = finalVariance.toFixed(4);
+
+        let median = 0; 
+        var collectArr =[];
+        
+        let check = false;
+        let num = 0;
+        let i = 0;
+        for (let obj of processor.getDataset(dataset)){
+            num = obj[yAxis];
+            
+            for( i = 0; i < collectArr.length; i++){
+                if(collectArr[i][0]==num){
+                    collectArr[i][1]++;
+                    check = true;
+                } 
+            }
+            if(check == false){
+                collectArr.push([num,1]);
+            } else {
+                check = false;
+            }
+            
+        }
+
+        
+        let maxCount = 0;
+        var medianArr = [];
+        for(i=0; i < collectArr.length;i++){
+            
+            if(maxCount<collectArr[i][1]){
+                maxCount=collectArr[i][1];
+                medianArr=[];
+                medianArr.push(collectArr[i][0]);
+            } else if(maxCount==collectArr[i][1]){
+                medianArr.push(collectArr[i][0]);
+            }
+        }
+         
+
+
         this.setState({
             initialized: true,
             datasourceUrl: datasourceUrl,
@@ -1723,7 +1884,9 @@ class Linechart extends Component {
             aggregate: aggregate,
             chartData: data,
             summary: values.summary,
-            summaryData: summaryData
+            summaryData: summaryData,
+            median:medianArr,
+            variance: finalVariance
         })
 
         let { chartData, ...other } = this.state;
@@ -1736,6 +1899,20 @@ class Linechart extends Component {
                 {this.state.initialized ?
                     <div style={{ height: "calc(70.5% + 1px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
+                        {this.state.facetype?
+                        <LineChart width={700} height={250}  margin={{ top: 1,right: 30, left: 20, bottom: 30 }} data={this.state.chartData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey={this.state.xAxis}>
+                                <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
+                            </XAxis>
+                            <YAxis dataKey={this.state.yAxis}>
+                                <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
+                            </YAxis>
+                            <Tooltip />
+                            <Legend verticalAlign="top" height={20} />
+                            <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" isAnimationActive={false}/>
+                        </LineChart>
+                        :
                         <ResponsiveContainer className="draggable" width="95%" height="90%">
                             <LineChart width={730} height={250}  margin={{ top: 1,right: 30, left: 20, bottom: 30 }} data={this.state.chartData}>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -1747,18 +1924,20 @@ class Linechart extends Component {
                                 </YAxis>
                                 <Tooltip />
                                 <Legend verticalAlign="top" height={20} />
-                                <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
+                                <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" animationDuration={0}/>
                             </LineChart>
-                        </ResponsiveContainer></div>
+                        </ResponsiveContainer>
+                    }
+
+                    </div>
 
                     : <ChartForm initializeChart={this.initializeChart} />
                 }
 
-                <div style={{marginTop:"20px"}} >
+                <div style={{marginTop:"20px"}}>
                 {this.state.summary ? 
-                    <div>
-                        <Descriptive summaryData={this.state.summaryData}/> 
-                    </div>: ""}
+                <div>
+                    <Descriptive summaryData={this.state.summaryData} variance = {this.state.variance} median = {this.state.median}  ></Descriptive> </div>: ""}
                     {/* summary={this.props.properties.summary} summaryData = {this.state.summaryData} */}
                 </div>
             </div>
@@ -1766,12 +1945,19 @@ class Linechart extends Component {
     }
 }
 
-class Image extends React.Component {
+class Iimage extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
+            initialized: this.props.properties.initialized,
             imageUrl: this.props.properties.imageUrl, 
         };
+    }
+
+    componentWillReceiveProps(nextProps){
+        if (nextProps.properties.initialized != this.state.initialized){
+            this.setState({initialized: nextProps.properties.initialized});
+        }
     }
 
     imageChange = (e) => {
@@ -1779,8 +1965,8 @@ class Image extends React.Component {
         let file = e.target.files[0];
 
         reader.onloadend = () => {
-            this.setState({imageUrl: reader.result});
-            this.props.updateProperties({imageUrl: reader.result}, this.props.i);
+            this.setState({initialized: true, imageUrl: reader.result});
+            this.props.updateProperties({initialized: true, imageUrl: reader.result}, this.props.i);
         }
 
         reader.readAsDataURL(file);
@@ -1789,7 +1975,7 @@ class Image extends React.Component {
     render() {
         return (
             <div className="draggable" style={{height:"100%", width:"100%"}}>
-                {this.state.imageUrl ? 
+                {this.state.initialized ? 
                 <img style={{height:"calc(100% - 27.5px)", width:"100%"}} 
                     src={this.state.imageUrl} 
                 />
@@ -1993,9 +2179,6 @@ class Table extends Component {
                     rowStyle={rowStyle}>
                     
                 </BootstrapTable>
-
-
-
             </div>
             : <TableForm initializeTable={this.initializeTable} />
     }
@@ -2160,6 +2343,8 @@ class Descriptive extends Component {
             this.setState({initialized: nextProps.properties.initialized});
         }
     }*/
+
+
     
     addCol = (e) => {
         let columns = this.state.columns;
@@ -2182,7 +2367,7 @@ class Descriptive extends Component {
                 
 
             });
-        } else {
+        } else if(e==="Max"){
             columns.push({
                 dataField: 'Max',
                 text:  
@@ -2190,6 +2375,12 @@ class Descriptive extends Component {
                 
 
             });
+        } else if(e==="Variance"){
+            columns.push({
+                dataField:"Variance",
+                text:
+                <div>Variance<i style={{marginTop:10, marginRight:10, marginRight:4}} className="fa fa-times" onClick={() => this.delete(order)}></i></div>,
+            })
         }
 
         this.setState({ columns,order });
@@ -2221,16 +2412,28 @@ class Descriptive extends Component {
           },{
             dataField: 'Median',
             text: 'Median'
+          },{
+              dataField:"Variance",
+              text:"Variance"
           }];
+
+          var medianArr = this.props.median;
+          
+          let medianStr = "";
+          for(var i=0; i < medianArr.length;i++){
+            medianStr+=medianArr[i] + " ";
+          }
 
 
         var products = [{
             Sum: this.props.summaryData.total,
-            Median: 30,
+            Median: medianStr,
             Average: this.props.summaryData.average,
             Min: this.props.summaryData.min,
             Max:this.props.summaryData.max,
+            Variance:this.props.variance,
         }];
+        
 
         const rowStyle = { backgroundColor: '#D3D3D3' };
         const { value, onUpdate, ...rest } = this.props;
@@ -2245,18 +2448,15 @@ class Descriptive extends Component {
 
         
         return (
-            <div  className="draggable" height="100%">
-                
+            <div className="draggable" height="100%">
                 <BootstrapTable keyField='id' data={products}
                     columns={columns}
                     //cellEdit={cellEditFactory({ mode: 'dbclick' })}
                     rowStyle={rowStyle}>
-                   
-                    
                 </BootstrapTable>
             </div>
         );
     }
 }
 
-ReactDOM.render(<App/>, document.getElementById('container'));
+ReactDOM.render(<App/>, document.getElementById('reportContainer'));

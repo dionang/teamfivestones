@@ -13,7 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="assets/css/report.css">        
+        <link rel="stylesheet" href="assets/css/report.css" >        
         <title>Load Template</title>
     </head>
 
@@ -24,8 +24,7 @@
         <input type="hidden" id="userName"     value="<%= account.getUsername() %>" />
         <input type="hidden" id="profileName"  value="<%= account.getName() %>" />
          
-        <div id="container">
-        </div>
+        <div id="reportContainer"></div>
                     
         <!-- jQuery -->
         <script src="assets/js/jquery.min.js"></script>
@@ -39,6 +38,9 @@
         <script src="assets/js/babel.min.js" charset="utf-8"></script>
         <script src="assets/js/bundle.min.js"></script>    
         <!-- PptXGenJS -->
+        <script src="assets/js/jspdf.js"></script>
+        <script src="assets/js/html2canvas.js"></script>
+        <script src="assets/js/dom-to-image.js"></script>
         <script src="https://cdn.rawgit.com/gitbrent/PptxGenJS/v2.2.0/dist/pptxgen.bundle.js"></script>
         <!-- JsonProcessor -->
         <script src="assets/js/jsonProcessor.js"></script>

@@ -1,76 +1,113 @@
-<%@ include file="protect.jsp" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="assets/css/dashboard.css">
-        <link rel="stylesheet" href="assets/css/app.css">
-    </head>
-    <body class="nav-md">
-        <div class="container body">
-            <div class="main_container">
-                <jsp:include page="sidebarReport.jsp"></jsp:include>
-                <jsp:include page="navbar.jsp"></jsp:include>
-                <div class="right_col" style="overflow-x: hidden">
-<!--                    <div id="container"></div>-->
-                    <iframe src="http://18.222.28.50/SCube/"></iframe>
-                </div>
-            </div>
-        </div>
-    <!-- jQuery -->
-    <script src="assets/js/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!-- React modules-->
-    <script src="assets/js/babel.js"></script>
-    <script src="assets/js/compressed.js"></script>
-    <!-- JsonProcessor -->
-    <script src="assets/js/jsonProcessor.js"></script>
-    <!-- Custom React Script -->
-    <!--<script type="text/babel" src="assets/js/app.js"></script>-->    
-    <script src="assets/js/screenshot.js"></script>
-    <script src="assets/js/jspdf.js"></script>
-    <script src="assets/js/html2pdf.js"></script>
 
-
-    <!-- Custom Dashboard Script -->
+<head>
+    <title>jsPDF</title>
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/jspdf.js"></script>
+    <script type="text/javascript" src="assets/js/html2canvas.js"></script>
     <script>
-        $(document).ready(function () {
-            // Toggle sidebar
-            $('#screenshot').click(function () {
-                var pdf = new jsPDF('p', 'pt', 'letter');
-                var canvas = pdf.canvas;
+	var pdf,page_section,HTML_Width,HTML_Height,top_left_margin,PDF_Width,PDF_Height,canvas_image_width,canvas_image_height;
+	
+	
+	
+	function calculatePDF_height_width(selector,index){
+		page_section = $(selector).eq(index);
+		HTML_Width = page_section.width();
+		HTML_Height = page_section.height();
+		top_left_margin = 15;
+		PDF_Width = HTML_Width + (top_left_margin * 2);
+		PDF_Height = (PDF_Width * 1.2) + (top_left_margin * 2);
+		canvas_image_width = HTML_Width;
+		canvas_image_height = HTML_Height;
+	}
+	
 
-                canvas.width = 8.5 * 72;
 
-                html2canvas(document.body, {
-                    canvas:canvas,
-                    onrendered: function(canvas) {
-                        var iframe = document.createElement('iframe');
-//                        iframe.setAttribute('style','left:0; top:0; bottom:0; height:100%; width:500px');
-                        iframe.src = pdf.output('datauristring');
-                        pdf.save("test.pdf");
 
-                    }
-                });
-//                window.open(window.URL.createObjectURL(screenshotPage()));
-            });
-            
-            $('#options li').click(function () {
-                $(this).find('ul').toggle();
-            });
+    //Generate PDF
+    function generatePDF() {
+        pdf = "";
+		$("#downloadbtn").hide();
+		$("#genmsg").show();
+        html2canvas($(".print-wrap:eq(0)")[0], { allowTaint: true }).then(function(canvas) {
 
-            $('#menu_toggle').click(function () {
-                $('#logo').toggle();
-                $('#logo2').toggle();
-                $('#title').toggle();
-                $('#title1').toggle();
+            calculatePDF_height_width(".print-wrap",0);
+            var imgData = canvas.toDataURL("image/png", 1.0);
+			pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, HTML_Width, HTML_Height);
 
-                $('body').hasClass("nav-md") ? ($('#sidebar-menu').find("li.active ul").hide(), $('#sidebar-menu').find("li.active").addClass("active-sm").removeClass("active")) : ($('#sidebar-menu').find("li.active-sm ul").show(), $('#sidebar-menu').find("li.active-sm").addClass("active").removeClass("active-sm")), $('body').toggleClass("nav-md nav-sm");
-            });
         });
-    </script> 
+
+        html2canvas($(".print-wrap:eq(1)")[0], { allowTaint: true }).then(function(canvas) {
+
+            calculatePDF_height_width(".print-wrap",1);
+			
+            var imgData = canvas.toDataURL("image/png", 1.0);
+            pdf.addPage(PDF_Width, PDF_Height);
+            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, HTML_Width, HTML_Height);
+
+        });
+
+        html2canvas($(".print-wrap:eq(2)")[0], { allowTaint: true }).then(function(canvas) {
+
+            calculatePDF_height_width(".print-wrap",2);
+			
+            var imgData = canvas.toDataURL("image/png", 1.0);
+            pdf.addPage(PDF_Width, PDF_Height);
+            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, HTML_Width, HTML_Height);
+
+
+           
+                //console.log((page_section.length-1)+"==="+index);
+                setTimeout(function() {
+
+                    //Save PDF Doc	
+                    pdf.save("HTML-Document.pdf");
+
+                    //Generate BLOB object
+                    var blob = pdf.output("blob");
+
+                    //Getting URL of blob object
+                    var blobURL = URL.createObjectURL(blob);
+
+                    //Showing PDF generated in iFrame element
+                    var iframe = document.getElementById('sample-pdf');
+                    iframe.src = blobURL;
+
+                    //Setting download link
+                    var downloadLink = document.getElementById('pdf-download-link');
+                    downloadLink.href = blobURL;
+
+					$("#sample-pdf").slideDown();
+					
+					
+					$("#downloadbtn").show();
+					$("#genmsg").hide();
+                }, 0);
+        });
+    };
+
+    </script>
+    <style>
+    .print-wrap {
+        width: 500px;
+    }
+    </style>
+</head>
+
+<body>
+    <iframe frameBorder="0" id="sample-pdf" style="right:0; top:53px; bottom:0; height:400px; width:100%"></iframe>
+    <a id="pdf-download-link" title="Download PDF File">Download PDF file</a>
+    <a id="pdf-showiFrame-link" title="Show PDF in iFrame">Show PDF in iFrame</a>
+    <div class="print-wrap page1">
+        <h3>Sample page one for demo</h3>
+    </div>
+    <div class="print-wrap page2">
+        <h3>Sample page two for demo</h3>
+    </div>
+    <div class="print-wrap page3">
+        <h3>Sample page three for demo</h3>
+    </div>
+</body>
+
 </html>
