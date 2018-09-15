@@ -7,6 +7,7 @@ package scube.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +20,7 @@ import scube.dao.ReportDAO;
  *
  * @author ZhenDan
  */
-@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate", "/updateTemplate", "/loadDefault"})
+@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate", "/updateTemplate", "/loadDefault", "/slideShow"})
 public class TemplateController extends HttpServlet {
 
     /**
@@ -77,6 +78,25 @@ public class TemplateController extends HttpServlet {
                 id=Integer.parseInt(request.getParameter("templateId"));
                 request.setAttribute("templateId", id);
                 request.getRequestDispatcher("loadTemplate.jsp").forward(request, response);
+            }else  if(operation.equals("slideShow")){
+                ArrayList<String> result=new ArrayList<String>();
+                String template=request.getParameter("template");
+               
+                if(template!=null){
+                    String tempId= template.substring( 0, template.indexOf(","));
+                    String tempName =template.substring(template.indexOf(",")+1, template.length());
+                    System.out.println(template+" i am temp Name");
+                    int templateId=Integer.parseInt(tempId);
+                    String page=ComponentDAO.getPageNoByTemplateId(templateId);
+                    if(page!=null){
+                        int pageNo=Integer.parseInt(page);
+                        for(int i=1;i<=pageNo;i++){
+                            result.add("https://scube.rocks/images/"+tempName+"_slide"+i+".jpg");   
+                        }
+                    }
+                }
+                request.setAttribute("slides", result);
+                request.getRequestDispatcher("slideShow2.jsp").forward(request, response);
             }
         }
     }

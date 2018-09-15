@@ -301,7 +301,29 @@ public class ComponentDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
-    
+        public static String getPageNoByTemplateId(int templateId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT max(page) as pageNo FROM component WHERE templateId = ? ");
+            stmt.setInt(1, templateId);
+            rs = stmt.executeQuery();
+
+            if(rs.next()){
+               return rs.getString("pageNo");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
     // Update operations
 //    public static boolean changePassword(int accountId, String newPassword) {
 //        Connection conn = null;
