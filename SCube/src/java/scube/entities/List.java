@@ -13,11 +13,13 @@ public class List {
     private int listId;
     private int datasetId;
     private String fieldName;
+    private String fNValue;
     private String type;
     private String infoType;
     
-    public List(int listId, String fieldName, String type, String infoType,int datasetId){
+    public List(int listId, String fNValue,String fieldName, String type, String infoType,int datasetId){
         this.listId=listId;
+        this.fNValue=fNValue;
         this.fieldName=fieldName;
         this.type=type;
         this.infoType=infoType;
@@ -28,6 +30,12 @@ public class List {
     }
     public void setListId(){
         this.listId=listId;
+    }
+    public String getFNValue(){
+        return fNValue;
+    }
+    public void setFNValue(){
+        this.fNValue=fNValue;
     }
     public int getDatasetId(){
         return datasetId;

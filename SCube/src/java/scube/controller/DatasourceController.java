@@ -22,7 +22,7 @@ import scube.entities.*;
  *
  * @author HongYuan
  */
-@WebServlet(name = "DatasourceController", urlPatterns = {"/addDatasource", "/getDatasources", "/updateDatasource"})
+@WebServlet(name = "DatasourceController", urlPatterns = {"/addDatasource", "/getDatasources", "/updateDatasource", "/loadDatasource", "/loadDataset", "/loadOptionList"})
 public class DatasourceController extends HttpServlet {
 
     /**
@@ -70,11 +70,12 @@ public class DatasourceController extends HttpServlet {
                             for (int j = 3; j < div.size(); j++) {
                                 JsonArray fieldList = div.get(j).getAsJsonArray();
                                 int datasetId = DatasourceDAO.getLatestDatasetId();
-                                String fName = fieldList.get(0).getAsString();
-                                String dType = fieldList.get(1).getAsString();
-                                String iType = fieldList.get(2).getAsString();
+                                String fNValue = fieldList.get(0).getAsString();
+                                String fName = fieldList.get(1).getAsString();
+                                String dType = fieldList.get(2).getAsString();
+                                String iType = fieldList.get(3).getAsString();
 
-                                boolean r1 = DatasourceDAO.addListOption(fName, dType, iType, datasetId);
+                                boolean r1 = DatasourceDAO.addListOption(fNValue,fName, dType, iType, datasetId);
                                 if (!r1) {
                                     result = false;
                                 }
@@ -173,15 +174,16 @@ public class DatasourceController extends HttpServlet {
                                 for (int j = 4; j < div.size(); j++) {
                                     JsonArray fieldList = div.get(j).getAsJsonArray();
                                     String lId = fieldList.get(0).getAsString();
-                                    String fName = fieldList.get(1).getAsString();
-                                    String dType = fieldList.get(2).getAsString();
-                                    String iType = fieldList.get(3).getAsString();
+                                    String fNValue = fieldList.get(1).getAsString();
+                                    String fName = fieldList.get(2).getAsString();
+                                    String dType = fieldList.get(3).getAsString();
+                                    String iType = fieldList.get(4).getAsString();
                                     if (lId.equals("newList")) {
-                                       r1 = DatasourceDAO.addListOption(fName, dType, iType,datasetId);
+                                       r1 = DatasourceDAO.addListOption(fNValue,fName, dType, iType,datasetId);
                                        
                                     } else {
                                         int listId = fieldList.get(0).getAsInt();
-                                        r1 = DatasourceDAO.updateList(listId, fName, dType, iType, datasetId);
+                                        r1 = DatasourceDAO.updateList(listId,fNValue, fName, dType, iType, datasetId);
                                         updateList+=lId;
                                     }
                                     if (!r1) {
@@ -259,6 +261,49 @@ public class DatasourceController extends HttpServlet {
                     result = false;
                 }
                 out.print(result);
+            }else if (operation.equals("loadDatasource")){
+                JsonObject responseObj = new JsonObject();
+                int companyId = json.get("companyId").getAsInt();
+                ArrayList<Datasource> datasource=DatasourceDAO.getAllDatasources(companyId);
+                JsonArray datasourceArr = new JsonArray();
+                for(Datasource source: datasource){
+                    JsonObject sourceObj = new JsonObject();
+                    sourceObj.addProperty("id", source.getDatasourceId());
+                    sourceObj.addProperty("url", source.getDatasourceUrl());
+                    sourceObj.addProperty("name", source.getDatasourceName());
+                    datasourceArr.add(sourceObj);
+                }
+                responseObj.add("datasource", datasourceArr);
+                out.println(responseObj.toString());
+                
+            }else if (operation.equals("loadDataset")){
+                JsonObject responseObj = new JsonObject();
+                int datasourceId = json.get("datasourceId").getAsInt();
+                ArrayList<Dataset> dataset=DatasourceDAO.getListTypeDataset(datasourceId);
+                JsonArray datasetArr = new JsonArray();
+                for(Dataset set: dataset){
+                    JsonObject setObj = new JsonObject();
+                    setObj.addProperty("id", set.getDatasetId());
+                    setObj.addProperty("path", set.getPath());
+                    setObj.addProperty("name", set.getDtatasetName());
+                    datasetArr.add(setObj);
+                }
+                responseObj.add("dataset", datasetArr);
+                out.println(responseObj.toString());
+                
+            }else if (operation.equals("loadOptionList")){
+                JsonObject responseObj = new JsonObject();
+                int datasetId = json.get("datasetId").getAsInt();
+                ArrayList<List> list=DatasourceDAO.getAllListOptionByDataset(datasetId);
+                JsonArray listArr = new JsonArray();
+                for(List option: list){
+                    JsonObject listObj = new JsonObject();
+                    listObj.addProperty("value", option.getFNValue());
+                    listObj.addProperty("name", option.getfFieldName());
+                    listArr.add(listObj);
+                }
+                responseObj.add("list", listArr);
+                out.println(responseObj.toString());
             }
         }
 

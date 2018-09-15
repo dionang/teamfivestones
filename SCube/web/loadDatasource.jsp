@@ -25,7 +25,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+      
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -145,6 +145,7 @@
                                             </br>
                                             <div class="row" id="<%=i%><%=j%>">
                                                 <input type="hidden" name="listId<%=i%><%=j%>" value="<%=list.getListId()%>" />
+                                                <input type="hidden" name="fNValue<%=i%><%=j%>" class="form-control" value="<%=list.getFNValue()%>" style="width:230px;display:inline"  />
                                                 <div class="col-lg-5 form-group" style="margin-left: 12px;" >
                                                     <label style="font-weight:200;font-size:15px">Field Name: </label>
                                                     <input type="text" name="fName<%=i%><%=j%>" class="form-control" value="<%=list.getfFieldName()%>" style="width:230px;display:inline"  />
@@ -298,6 +299,7 @@
                                                                                                 if (d !== null) {
                                                                                                     var field = [];
                                                                                                     field.push(document.getElementsByName("listId" + i + j + "")[0].value);
+                                                                                                    field.push(document.getElementsByName("fNValue" + i + j + "")[0].value);
                                                                                                     field.push(document.getElementsByName("fName" + i + j + "")[0].value);
                                                                                                     field.push(document.getElementsByName("dType" + i + j + "")[0].value);
                                                                                                     field.push(document.getElementsByName("iType" + i + j + "")[0].value);
@@ -472,6 +474,7 @@
                                
                                 count = 0;
                                 $(".chk:checked").each(function () {
+                                    chkArray.push("<input type='hidden' name='fNValue" + parentId + count + "' class='form-control' value=" + $(this).val() + " style='width:230px;display:inline'  />");
                                     chkArray.push("<div class='row' id=" + parentId + count + " >");
                                     chkArray.push(" <input type='hidden' name='listId" + parentId + count + "' value='newList' />");
                                     chkArray.push("<div class='col-lg-5 form-group' style='margin-left: 12px;' >");
@@ -536,6 +539,8 @@
 
                         // set the form's path value
                         $('#' + e.id + ' input[name="path' + e.id + '"]').val(path);
+                        var name = /[^/]*$/.exec(path)[0];
+                        $('#' + e.id + ' input[name="name' + e.id + '"]').val(name);
                     }
 
                 </script>

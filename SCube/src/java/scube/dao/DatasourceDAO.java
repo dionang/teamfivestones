@@ -55,19 +55,20 @@ public class DatasourceDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     } 
-    public static boolean addListOption(String fieldName,String type,String infoType,int datasetId) {       
+    public static boolean addListOption(String fNValue,String fieldName,String type,String infoType,int datasetId) {       
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO listoption VALUES (?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO listoption VALUES (?,?,?,?,?,?)");
             stmt.setNull(1, Types.INTEGER);
-            stmt.setString(2, fieldName);
-            stmt.setString(3, type);
-            stmt.setString(4, infoType);
-             stmt.setInt(5, datasetId);
+            stmt.setString(2, fNValue);
+            stmt.setString(3, fieldName);
+            stmt.setString(4, type);
+            stmt.setString(5, infoType);
+             stmt.setInt(6, datasetId);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -174,6 +175,31 @@ public class DatasourceDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
+    public static ArrayList<Dataset> getListTypeDataset(int datasoureceId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT * from dataset WHERE datasourceId = ? and type='list' order by datasetId asc");
+            stmt.setInt(1, datasoureceId);
+            rs = stmt.executeQuery();
+            
+            ArrayList<Dataset> datasetList = new ArrayList<>();
+            while(rs.next()){
+                Dataset ds = new Dataset(rs.getInt("datasetId"), rs.getString("datasetName"),
+                        rs.getString("path"),rs.getString("type"),rs.getInt("datasourceId"));
+                datasetList.add(ds);
+            }
+            return datasetList;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
     public static ArrayList<List> getAllListOptionByDataset(int datasetId) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -187,7 +213,7 @@ public class DatasourceDAO {
             
             ArrayList<List> list = new ArrayList<>();
             while(rs.next()){
-                List l = new List(rs.getInt("listId"), 
+                List l = new List(rs.getInt("listId"), rs.getString("fNValue"),
                         rs.getString("fieldName"),rs.getString("type"),rs.getString("infoType"),rs.getInt("datasetId"));
                 list.add(l);
             }
@@ -273,19 +299,20 @@ public class DatasourceDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     } 
-     public static boolean updateList(int listId,String fieldName, String type,String infoType,int datasetId) {       
+     public static boolean updateList(int listId,String fNValue,String fieldName, String type,String infoType,int datasetId) {       
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("UPDATE listoption SET fieldName=?, type=?,infoType=? where listId=? and datasetId=?");
-            stmt.setString(1, fieldName);
-            stmt.setString(2, type);
-            stmt.setString(3, infoType);
-             stmt.setInt(4, listId);
-            stmt.setInt(5, datasetId);
+            stmt = conn.prepareStatement("UPDATE listoption SET fNValue=?,fieldName=?, type=?,infoType=? where listId=? and datasetId=?");
+            stmt.setString(1, fNValue);
+            stmt.setString(2, fieldName);
+            stmt.setString(3, type);
+            stmt.setString(4, infoType);
+            stmt.setInt(5, listId);
+            stmt.setInt(6, datasetId);
             
             stmt.executeUpdate();
             return true;
