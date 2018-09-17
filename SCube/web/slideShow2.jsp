@@ -16,13 +16,14 @@
     <body>
         <div class="row" style=" margin-top:20px;">
             <div class="slideshow-container">
-                <% ArrayList<String> slides = (ArrayList<String>) request.getAttribute("slides");
-                        for (String eachSlides : slides) {%>
-                <div class="mySlides fade" >
-                    <img src="<%=eachSlides%>" style="width:100%;border-bottom: 1px solid black;">
-                </div>
-
-                <% }%>
+                <% 
+                    ArrayList<String> slides = (ArrayList<String>) request.getAttribute("slides");
+                    for (String eachSlides : slides) {
+                %>
+                        <div class="mySlides fade" >
+                            <img src="<%=eachSlides%>" style="width:100%;border-bottom: 1px solid black;">
+                        </div>
+                <%  } %>
 
                 <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                 <a class="next" onclick="plusSlides(1)">&#10095;</a>

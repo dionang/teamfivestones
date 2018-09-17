@@ -46,7 +46,7 @@ public class ComponentDAO {
                         case "bar":
                         case "line":
                             Chart chart = (Chart) component;
-                            addChart(templateId, page, i, chart.getDatasourceUrl(), chart.getDataset(), chart.getTitle(), chart.getXAxis(), chart.getYAxis(), chart.getAggregate());
+                            addChart(templateId, page, i, chart.getDatasourceUrl(), chart.getPath(), chart.getTitle(), chart.getXAxis(), chart.getYAxis(), chart.getAggregate(), chart.getSummary());
                             break;
                         case "image":
                             Image image = (Image) component;
@@ -67,23 +67,24 @@ public class ComponentDAO {
         }
     }
     
-    public static void addChart(int templateId, int page, int position, String datasourceUrl, String dataset, String title, String xAxis, String yAxis, String aggregate) {
+    public static void addChart(int templateId, int page, int position, String datasourceUrl, String path, String title, String xAxis, String yAxis, String aggregate, boolean summary) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO chart VALUES (?,?,?,?,?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO chart VALUES (?,?,?,?,?,?,?,?,?,?)");
             stmt.setInt(1, templateId);
             stmt.setInt(2, page);            
             stmt.setInt(3, position);            
             stmt.setString(4, datasourceUrl);            
-            stmt.setString(5, dataset);
+            stmt.setString(5, path);
             stmt.setString(6, title);
             stmt.setString(7, xAxis);
             stmt.setString(8, yAxis);            
             stmt.setString(9, aggregate);
+            stmt.setBoolean(10, summary);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -164,7 +165,7 @@ public class ComponentDAO {
                 } else if (type.equals("line") || type.equals("bar")){
                     ArrayList<String> props = getChartProps(templateId, page, position);
                     component = new Chart(type, rs.getInt("x"), rs.getInt("y"), 
-                        rs.getInt("height"), rs.getInt("width"), props.get(0), props.get(1), props.get(2), props.get(3), props.get(4), props.get(5));
+                        rs.getInt("height"), rs.getInt("width"), props.get(0), props.get(1), props.get(2), props.get(3), props.get(4), props.get(5), props.get(6).equals("true"));
                 } else if (type.equals("image")) {
                     component = new Image(type, rs.getInt("x"), rs.getInt("y"), rs.getInt("height"), rs.getInt("width"), 
                         getImagePrefix(templateId, page, position), getImageData(templateId, page, position));
@@ -285,11 +286,12 @@ public class ComponentDAO {
 
             if(rs.next()){
                 props.add(rs.getString("datasourceUrl"));
-                props.add(rs.getString("dataset"));
+                props.add(rs.getString("path"));
                 props.add(rs.getString("title"));
                 props.add(rs.getString("xAxis"));
                 props.add(rs.getString("yAxis"));                
                 props.add(rs.getString("aggregate"));
+                props.add(""+rs.getBoolean("summary"));
                 return props;
             } else {
                 return null;
@@ -301,7 +303,7 @@ public class ComponentDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
-        public static String getPageNoByTemplateId(int templateId) {
+        public static int getPageNoByTemplateId(int templateId) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -313,13 +315,13 @@ public class ComponentDAO {
             rs = stmt.executeQuery();
 
             if(rs.next()){
-               return rs.getString("pageNo");
+               return rs.getInt("pageNo");
             } else {
-                return null;
+                return -1;
             }
         } catch (SQLException e) {
             e.printStackTrace(System.out);
-            return null;
+            return -1;
         } finally {
             ConnectionManager.close(conn, stmt, rs);
         }

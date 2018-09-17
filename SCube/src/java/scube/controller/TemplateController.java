@@ -78,19 +78,17 @@ public class TemplateController extends HttpServlet {
                 id=Integer.parseInt(request.getParameter("templateId"));
                 request.setAttribute("templateId", id);
                 request.getRequestDispatcher("loadTemplate.jsp").forward(request, response);
-            }else  if(operation.equals("slideShow")){
-                ArrayList<String> result=new ArrayList<String>();
+            } else if(operation.equals("slideShow")){
+                ArrayList<String> result = new ArrayList<>();
                 String template=request.getParameter("template");
                
                 if(template!=null){
-                    String tempId= template.substring( 0, template.indexOf(","));
-                    String tempName =template.substring(template.indexOf(",")+1, template.length());
-                    System.out.println(template+" i am temp Name");
+                    String tempId = template.substring( 0, template.indexOf(","));
+                    String tempName = template.substring(template.indexOf(",")+1, template.length());
                     int templateId=Integer.parseInt(tempId);
-                    String page=ComponentDAO.getPageNoByTemplateId(templateId);
-                    if(page!=null){
-                        int pageNo=Integer.parseInt(page);
-                        for(int i=1;i<=pageNo;i++){
+                    int pages = ComponentDAO.getPageNoByTemplateId(templateId) + 1;
+                    if(pages != 0){
+                        for(int i=1;i<=pages;i++){
                             result.add("https://scube.rocks/images/"+tempName+"_slide"+i+".jpg");   
                         }
                     }

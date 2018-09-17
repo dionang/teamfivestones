@@ -1145,7 +1145,8 @@ class Dashboard extends Component {
                                         <ul className="nav navbar-nav navbar-right">
                                             <li>
                                                 <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <img src="assets/images/user.png" />
+                                                    {document.getElementById('profileName').value}
+                                                    <img style={{marginLeft:2}} src="assets/images/user.png" />
                                                     <span className=" fa fa-angle-down"></span>
                                                 </a>
                                                 <ul className="dropdown-menu dropdown-usermenu pull-right">

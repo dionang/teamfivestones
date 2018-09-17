@@ -27,15 +27,10 @@
         %>
     </head>
     <body class="nav-md">
-
         <div class="container body">
             <div class="main_container">
-
                 <jsp:include page="sidebarManager.jsp"></jsp:include>
                 <jsp:include page="navbar.jsp"></jsp:include>
-                    <!-- page content -->
-
-                    <!-- set datasource -->
                     <div class="right_col">
                          <div class="form">
                             <form action="slideShow" method="post" target="_blank">
@@ -43,24 +38,22 @@
                                 <h1>Select Template</h1>
                                 <br/>
                                 <select name="template" class="form-control" style="font-size:14px;height:40px;">
-                                   
-                                <% ReportDAO reportDao = new ReportDAO();
-                                ArrayList<Template> templateList = reportDao.retrieveAllTemplatesByCompany(companyId);
-                                for (Template eachTemplate : templateList) {%>
-                                <option  value="<%=eachTemplate.getTemplateId() + "," + eachTemplate.getTemplateName()%>"><%=eachTemplate.getTemplateName()%></option>   
-                                <% }
+                                <% 
+                                    ReportDAO reportDao = new ReportDAO();
+                                    ArrayList<Template> templateList = reportDao.retrieveAllTemplatesByCompany(companyId);
+                                    for (Template eachTemplate : templateList) {
                                 %>
-
-                            </select>
+                                        <option value="<%=eachTemplate.getTemplateId() + "," + eachTemplate.getTemplateName()%>">
+                                            <%=eachTemplate.getTemplateName()%>
+                                        </option>   
+                                <% } %>
+                                </select>
                                <br/>
                             <button type="submit" class="btn btn-success" >Generate Slide Show</button>
-                          
                         </form> 
                     </div>
                 </div>
             </div>
         </div>
-
-
     </body>
 </html>

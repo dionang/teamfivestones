@@ -78,14 +78,15 @@ public class ComponentController extends HttpServlet {
                         } else if (type.equals("bar") || type.equals("line")){
                             boolean initialized = properties.get("initialized").getAsBoolean();                        
                             String datasourceUrl = properties.get("datasourceUrl").getAsString();
-                            String dataset = properties.get("dataset").getAsString();
+                            String path = properties.get("path").getAsString();
                             String title = properties.get("title").getAsString();
                             String xAxis = properties.get("xAxis").getAsString();
                             String yAxis = properties.get("yAxis").getAsString();
                             String aggregate = properties.get("aggregate").getAsString();
+                            boolean summary = properties.get("summary").getAsBoolean();                        
 
                             if(initialized){
-                                components.add(new Chart(type, x, y, height, width, datasourceUrl, dataset, title, xAxis, yAxis, aggregate));
+                                components.add(new Chart(type, x, y, height, width, datasourceUrl, path, title, xAxis, yAxis, aggregate, summary));
                             }
                         } else if (type.equals("image")) {
                             String imageUrl = properties.get("imageUrl").getAsString();
@@ -98,9 +99,7 @@ public class ComponentController extends HttpServlet {
                     }
                     
                     // add arraylist of components for each page to the overall one
-                    if(components.size()>0){
-                        allComponents.add(components);
-                    }
+                    allComponents.add(components);
                 }
                 
                 // remove existing data of the template, if exists
@@ -136,11 +135,12 @@ public class ComponentController extends HttpServlet {
                                 Chart chart = (Chart) component;
                                 properties.addProperty("initialized", true);
                                 properties.addProperty("datasourceUrl", chart.getDatasourceUrl());
-                                properties.addProperty("dataset", chart.getDataset());
+                                properties.addProperty("path", chart.getPath());
                                 properties.addProperty("title", chart.getTitle());
                                 properties.addProperty("xAxis", chart.getXAxis());
                                 properties.addProperty("yAxis", chart.getYAxis());
                                 properties.addProperty("aggregate", chart.getAggregate());
+                                properties.addProperty("summary", chart.getSummary());
                                 break;
                             case "image":
                                 Image image = (Image) component;

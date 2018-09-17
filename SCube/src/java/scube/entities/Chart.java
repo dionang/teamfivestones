@@ -10,21 +10,23 @@ package scube.entities;
  * @author Dion
  */
 public class Chart extends Component{
-    public String datasourceUrl;    
-    public String dataset;
+    public String datasourceUrl;   
+    public String path;
     public String title;
     public String xAxis;
     public String yAxis;
     public String aggregate;
+    public boolean summary;
 
-    public Chart(String type, int x, int y, int height, int width, String datasourceUrl, String dataset, String title, String xAxis, String yAxis, String aggregate) {
+    public Chart(String type, int x, int y, int height, int width, String datasourceUrl, String path, String title, String xAxis, String yAxis, String aggregate, boolean summary) {
         super(type, x, y, height, width);
         this.datasourceUrl = datasourceUrl;
-        this.dataset = dataset;
+        this.path = path;
         this.title = title;
         this.xAxis = xAxis;
         this.yAxis = yAxis;
         this.aggregate = aggregate;
+        this.summary = summary;
     }
     
     public String getDatasourceUrl() {
@@ -35,12 +37,12 @@ public class Chart extends Component{
         this.datasourceUrl = datasourceUrl;
     }
 
-    public String getDataset() {
-        return dataset;
+    public String getPath() {
+        return path;
     }
 
-    public void setDataset(String dataset) {
-        this.dataset = dataset;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getTitle() {
@@ -73,5 +75,13 @@ public class Chart extends Component{
 
     public void setAggregate(String aggregate) {
         this.aggregate = aggregate;
+    }
+    
+    public boolean getSummary() {
+        return summary;
+    }
+
+    public void setSummary(boolean summary) {
+        this.summary = summary;
     }
 }

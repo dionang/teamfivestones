@@ -150,7 +150,7 @@ public class DatasourceDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
-    public static ArrayList<Dataset> getAllDatasetByDatasourece(int datasoureceId) {
+    public static ArrayList<Dataset> getAllDatasetByDatasource(int datasoureceId) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
