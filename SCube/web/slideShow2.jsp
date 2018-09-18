@@ -21,7 +21,7 @@
                     for (String eachSlides : slides) {
                 %>
                         <div class="mySlides fade" >
-                            <img src="<%=eachSlides%>" style="width:100%;border-bottom: 1px solid black;">
+                            <img src="<%=eachSlides%>" style="width:100%;">
                         </div>
                 <%  } %>
 
