@@ -186,9 +186,7 @@ public class DatasourceController extends HttpServlet {
                             }
                         } else if (!r) {
                             result = false;
-                        } else{
-                            result = false;
-                        }
+                        } 
                     }
                      
                     if(allDataset.length()!=0&&!updateSet.equals(allDataset)){
@@ -216,6 +214,7 @@ public class DatasourceController extends HttpServlet {
                                 boolean dListOption = DatasourceDAO.deleteListOption(Integer.parseInt(n1));
                                 if (!dDataset || !dListOption) {
                                     result = false;
+                                    System.out.println("something wrong with deleteDataset or listOption");
                                 }
                             }
                         }
@@ -243,6 +242,7 @@ public class DatasourceController extends HttpServlet {
                             if(!same){
                                 boolean dListOption = DatasourceDAO.deleteListOptionById(Integer.parseInt(n1));
                                 if (!dListOption) {
+                                    System.out.println("something wrong with deleteOPtionById");
                                     result = false;
                                 }
                             }
@@ -250,6 +250,7 @@ public class DatasourceController extends HttpServlet {
                     }
                 } else {
                     result = false;
+                    System.out.println("something wrong with updateDatasource");
                 }
                 out.print(result);
             } else if (operation.equals("loadDatasource")){

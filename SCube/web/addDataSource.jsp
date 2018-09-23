@@ -128,8 +128,8 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-10 col-xs-12 ">
-                                                <textarea class="form-control" name="remark"  style="width:700px"></textarea>
+                                            <div class="col-md-12 col-xs-12 ">
+                                                <textarea class="form-control" name="remark"  style="width:100%"></textarea>
                                             </div>
                                         </div>
                                         <br>
@@ -409,8 +409,7 @@
                     //call API
                     function getData(element) {
 
-                        var top = element.offsetTop;
-                        var height = element.clientHeight;
+                        
                         parentId = element.parentNode.parentNode.parentNode.parentNode.id;
                         if (count != 0) {
 
