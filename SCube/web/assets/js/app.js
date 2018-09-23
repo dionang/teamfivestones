@@ -808,8 +808,8 @@ class Textbox extends Component {
         };
 
         return(
-            <RichTextEditor style={{border:"hidden"}}
-                rootStyle={{height:"100%", minHeight:100, minWidth:150}}
+            <RichTextEditor 
+                rootStyle={{height:"100%", minHeight:100, minWidth:150, border:0}}
                 value={this.state.value}
                 onChange={this.onChange}
                 toolbarConfig={toolbarConfig}
@@ -1127,12 +1127,6 @@ class VideoComponent extends React.Component {
         }
     }
 
-    componentDidUpdate(){
-        if (this.state.initialized){
-            document.getElementById("player").load();
-        }
-    }
-
     loadVideo = (e) => {
         let videoUrl = document.getElementById("videoUrl").value.trim();
         this.setState({initialized: true, videoUrl: videoUrl});
@@ -1143,14 +1137,15 @@ class VideoComponent extends React.Component {
         return (
             <div style={{height:"100%", width:"100%"}}>
                 {this.state.initialized ? 
-                <video id="player" controls
+                <video className="draggable" id="player" controls
                     // src="http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
                     src={this.state.videoUrl}
                     width="100%"
                     style={{height:"calc(100% - 27.5px)"}}>
                 </video>
-                : <div style={{height:"100%", display:"flex"}}>
-                    <input id="videoUrl" placeholder="Please enter a embed video URL" style={{margin:"auto", width:"80%"}}/>
+                : <div style={{height:"100%", display:"flex"}} className="draggable">
+                    <input id="videoUrl" className="nonDraggable" placeholder="Please enter a embed video URL" 
+                        style={{margin:"auto", width:"80%"}}/>
                     <button style={{margin:"auto"}} onClick={this.loadVideo}>Submit</button>
                 </div>}
             </div>
@@ -1265,7 +1260,7 @@ class ChartForm extends Component {
                 render={formProps=>(
                     <Form className="draggable" style={{textAlign: "center", height:"100%",width:"100%"}}>
                         <label>Chart Title</label>
-                        <Field type="text" name="title" placeholder="Chart Title" />
+                        <Field className="nonDraggable" type="text" name="title" placeholder="Chart Title" />
                         <br/><br/>
                         <label>Choose the datasource</label>
                         <Field component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
