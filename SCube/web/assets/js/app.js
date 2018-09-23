@@ -886,72 +886,7 @@ class Barchart extends Component {
     }
 }
 
-class EmptyTable extends React.Component {
 
-    constructor(props) {
-      super(props);
-  
-      //  this.state.products = [];
-      this.state = {};
-      this.state.filterText = "";
-      this.state.products = [];
-  
-    }
-    handleUserInput(filterText) {
-      this.setState({filterText: filterText});
-    };
-    handleRowDel(product) {
-      var index = this.state.products.indexOf(product);
-      this.state.products.splice(index, 1);
-      this.setState(this.state.products);
-    };
-  
-    handleAddEvent(evt) {
-      var id = (+ new Date() + Math.floor(Math.random() * 999999)).toString(36);
-      var product = {
-        id: id,
-        name: "",
-        price: "",
-        category: "",
-        qty: 0
-      }
-      this.state.products.push(product);
-      this.setState(this.state.products);
-  
-    }
-  
-    handleProductTable(evt) {
-      var item = {
-        id: evt.target.id,
-        name: evt.target.name,
-        value: evt.target.value
-      };
-  var products = this.state.products.slice();
-    var newProducts = products.map(function(product) {
-  
-      for (var key in product) {
-        if (key == item.name && product.id == item.id) {
-          product[key] = item.value;
-  
-        }
-      }
-      return product;
-    });
-      this.setState({products:newProducts});
-    //  console.log(this.state.products);
-    };
-    render() {
-  
-      return (
-        <div class="draggable" autofocus="true">
-          {/* <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput.bind(this)}/> */}
-          <ProductTable onProductTableUpdate={this.handleProductTable.bind(this)} onRowAdd={this.handleAddEvent.bind(this)} onRowDel={this.handleRowDel.bind(this)} products={this.state.products} filterText={this.state.filterText}/>
-        </div>
-      );
-  
-    }
-  
-  }
   class SearchBar extends React.Component {
     handleChange() {
       this.props.onUserInput(this.refs.filterTextInput.value);
@@ -1767,6 +1702,108 @@ class Descriptive extends Component {
             </div>
         );
     }
+}
+
+class EmptyTable extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            columns: [{
+                    dataField: 'col1',
+                    text: 'Header 1',
+                    headerEvents: {
+                        onClick: this.handleClick,
+                        onBlur: this.handleBlur
+                    },
+                }, {
+                    dataField: 'col2',
+                    text: 'Header 2',
+                    headerEvents: {
+                        onClick: this.handleClick,
+                        onBlur: this.handleBlur
+                    },
+                }, {
+                    dataField: 'cancel',
+                    text: 'Cancel',
+                    editable: false
+                }],
+            data: [{
+                id: 'example1',
+                    col1: 'Some data',
+                    col2: 'Some data',
+                },{
+                    id: 'example2',
+                    col1: 'Some data',
+                    col2: 'Some data'
+                }],
+        }
+    }
+
+    addRow = (e) => {
+        let data = this.state.data;
+        let new_data = {id:'example' + (data.length+1)};
+        for (let i=1; i <= this.state.columns.length; i++){
+            new_data["col" + i] = '';
+        }
+
+        data.push(new_data);
+        this.setState({data})
+    }
+
+    addCol = (e) => {
+        let columns = this.state.columns;
+        let data = this.state.data;
+
+        columns.push({
+            dataField: 'col' + (columns.length+1),
+            text: 'Header ' + (columns.length+1),
+            headerEvents: {
+                onClick: this.handleClick,
+                onBlur: this.handleBlur
+            }
+        });
+
+        for (let obj of data){
+            obj["col" + columns.length] = '';
+        }
+
+        this.setState({columns, data})
+    }
+
+    handleClick = (e) => {
+        let value = e.target.innerHTML;
+        e.target.innerHTML = '<input value="' + value + '"/>';
+        e.target.childNodes[0].focus();
+    }
+
+    handleBlur = (e) => {
+        let parent = e.target.parentNode;
+        parent.innerHTML = e.target.value;
+        this.setState({clickTitle: true});
+    }
+
+    render(){
+        return (
+            <div className="draggable" style={{ height: "100%" }}>
+                <Button bsSize="small" bsStyle="primary" style={{ padding:"4px 6px" }}
+                    onClick={this.addRow}>Add Row</Button>
+                <Button bsSize="small" bsStyle="primary" style={{ padding:"4px 6px" }}
+                    onClick={this.addCol}>Add Col</Button>
+                <BootstrapTable keyField='id' 
+                    striped responsive
+                    data={ this.state.data } 
+                    columns={ this.state.columns } 
+                    cellEdit={ 
+                        cellEditFactory({ 
+                            blurToSave: true,
+                            mode:'click'
+                        }) 
+                    }
+                />
+            </div>
+        );
+    }
+
 }
 
 ReactDOM.render(<App/>, document.getElementById('reportContainer'));
