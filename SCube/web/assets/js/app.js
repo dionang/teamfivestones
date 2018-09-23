@@ -71,7 +71,7 @@ class App extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             {
-                type: "line", x: 0, y: 0, height: 250, width: 300, display: true,
+                type: "line", x: 0, y: 0, height: "fit-content", width: "fit-content", display: true,
                 properties: {
                     initialized: false,
                 }
@@ -287,7 +287,7 @@ class App extends Component {
                         doc.addImage(dataUrl,'JPEG', 0, 0, 297,140);  
 
                         // 20 is left margin, 200 is top margin
-                        doc.text(20,200, "Page No: " + (pageNo+1));
+                        doc.text(20,200, "Page No: " + (i+1));
                         
                         // if not last page, add page
                         if(i != self.state.picArr.length-1){
@@ -489,9 +489,13 @@ class App extends Component {
                                 <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
                                     <div className="menu_section">
                                         <ul className="nav side-menu" id="options">
-                                            <li><a href="dashboard.jsp"><i className="fa fa-bar-chart"></i>  View Dashboard</a></li>
-                                            <li><a href="createUserAccount.jsp"><i className="fa fa-group"></i>  Create User Account</a></li>
-                                            <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"></i>  Template</a></li>
+                                            <ul className="nav side-menu" id="options">
+                                                <li><a href="managerHome.jsp"><i className="fa fa-home"/>  Home</a></li>
+                                                <li><a href="dashboard.jsp"><i className="fa fa-bar-chart"/>  View Dashboard</a></li>
+                                                <li><a href="createUserAccount.jsp"><i className="fa fa-group"/>  Create User Account</a></li>
+                                                <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"/>  Template</a></li>
+                                                <li><a href="slideShow.jsp"><i className="fa fa-slideshare"/>  Slide Show</a></li> 
+                                            </ul>
                                         </ul>
                                     </div>
                                 </div>
@@ -512,7 +516,7 @@ class App extends Component {
                                             </a>
                                             <ul className="dropdown-menu dropdown-usermenu pull-right">
                                                 <li><a href="javascript:;"> Profile</a></li>
-                                                <li><a href="logout.jsp"><i className="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                                <li><a href="logout.jsp"><i className="fa fa-sign-out pull-right"/> Log Out</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -521,7 +525,7 @@ class App extends Component {
                         </div>
 
                         <div className="right_col">
-                            <div className="col-md-6 col-xs-6">
+                            <div className="col-md-4 col-xs-4">
                                 <label style={{ fontSize: 15, marginRight: 2 }}>Template Name:</label>
                                 <input style={{ fontSize: 15 }} value={this.state.templateName} onChange={this.renameTemplate} />
                             </div>
@@ -535,10 +539,10 @@ class App extends Component {
                                 {this.state.editMode ? "Leave Edit Mode" : "Enter Edit Mode"}
                             </Button>
                             <Button className="col-md-2 col-xs-2" style={{ float: "right", minWidth: 150 }} bsStyle="warning" onClick={this.savePresentation}>
-                                <i className="fa fa-edit" style={{ marginRight: 2 }} /> Export as PPT
+                                <i className="fa fa-file-powerpoint-o" style={{ marginRight: 2 }} /> Export as PPT
                             </Button>
                             <Button className="col-md-2 col-xs-2" style={{ float: "right", minWidth: 130 }} bsStyle="info" onClick={()=>{this.setState({editMode: false}); this.savePDF()}}>
-                                <i className="fa fa-save" /> Save PDF
+                                <i className="fa fa-file-pdf-o"></i> Save PDF
                             </Button>
                             <br />
 
@@ -597,12 +601,12 @@ class App extends Component {
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Image"
                                     onClick={this.addImage} style={{ backgroundColor: "#31B0D5", color: "white", border: "1px solid #31B0D5", marginRight: 5 }}><i className="fa fa-image" /></Button>
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"
-                                    onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 160 }}><i className="fa fa-play-circle" /></Button>
+                                    onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF"}}><i className="fa fa-play-circle" /></Button>
 
-                                <span style={{ fontFamily: 'Georgia', fontSize: 18, textAlign: "center" }}>Page Number
-                                <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
+                                <span style={{ float:"right", fontFamily: 'Georgia', fontSize: 18, textAlign: "center" }}>Page Number
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
                                         style={{ marginRight: 10, marginLeft: 10 }}>
-                                        <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                        <svg height="15" width="24" style={{marginTop: -5}} preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" >
                                             <path d="M0-.5h24v24H0z" fill="none"></path>
                                             <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" className="jWRuRT"></path>
                                         </svg>
@@ -610,14 +614,10 @@ class App extends Component {
                                     <span style={{ fontFamily: 'Georgia', fontSize: 18 }}>{this.state.pageNo + 1}</span>
                                     <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
                                         style={{ marginLeft: 10 }}>
-                                        <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                        <svg height="15" width="24" style={{marginTop: -5}} preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" >
                                             <path d="M0-.5h24v24H0z" fill="none"></path>
                                             <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
                                         </svg>
-                                    </Button>
-
-                                    <Button bsStyle="default" bsSize="small" onClick={this.saveTemplate}
-                                        style={{ marginLeft: 10, color: 'orange', border: 'none' }}> <i className="fa fa-save fa-2x" />
                                     </Button>
                                 </span>
                             </div>
@@ -720,7 +720,7 @@ class ReportComponent extends Component {
             );
         } else if (this.props.type ==="table"){
             return(
-                <Table/>
+                <EmptyTable/>
             );
         } else if (this.props.type === "video") {
             return(
@@ -857,6 +857,181 @@ class Barchart extends Component {
         );
     }
 }
+
+class EmptyTable extends React.Component {
+
+    constructor(props) {
+      super(props);
+  
+      //  this.state.products = [];
+      this.state = {};
+      this.state.filterText = "";
+      this.state.products = [];
+  
+    }
+    handleUserInput(filterText) {
+      this.setState({filterText: filterText});
+    };
+    handleRowDel(product) {
+      var index = this.state.products.indexOf(product);
+      this.state.products.splice(index, 1);
+      this.setState(this.state.products);
+    };
+  
+    handleAddEvent(evt) {
+      var id = (+ new Date() + Math.floor(Math.random() * 999999)).toString(36);
+      var product = {
+        id: id,
+        name: "",
+        price: "",
+        category: "",
+        qty: 0
+      }
+      this.state.products.push(product);
+      this.setState(this.state.products);
+  
+    }
+  
+    handleProductTable(evt) {
+      var item = {
+        id: evt.target.id,
+        name: evt.target.name,
+        value: evt.target.value
+      };
+  var products = this.state.products.slice();
+    var newProducts = products.map(function(product) {
+  
+      for (var key in product) {
+        if (key == item.name && product.id == item.id) {
+          product[key] = item.value;
+  
+        }
+      }
+      return product;
+    });
+      this.setState({products:newProducts});
+    //  console.log(this.state.products);
+    };
+    render() {
+  
+      return (
+        <div class="draggable" autofocus="true">
+          {/* <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput.bind(this)}/> */}
+          <ProductTable onProductTableUpdate={this.handleProductTable.bind(this)} onRowAdd={this.handleAddEvent.bind(this)} onRowDel={this.handleRowDel.bind(this)} products={this.state.products} filterText={this.state.filterText}/>
+        </div>
+      );
+  
+    }
+  
+  }
+  class SearchBar extends React.Component {
+    handleChange() {
+      this.props.onUserInput(this.refs.filterTextInput.value);
+    }
+    render() {
+      return (
+        <div>
+  
+          <input type="text" placeholder="Search..." value={this.props.filterText} ref="filterTextInput" onChange={this.handleChange.bind(this)}/>
+  
+        </div>
+  
+      );
+    }
+  
+  }
+  
+  class ProductTable extends React.Component {
+  
+    render() {
+      var onProductTableUpdate = this.props.onProductTableUpdate;
+      var rowDel = this.props.onRowDel;
+      var filterText = this.props.filterText;
+      var product = this.props.products.map(function(product) {
+        if (product.name.indexOf(filterText) === -1) {
+          return;
+        }
+        return (<ProductRow onProductTableUpdate={onProductTableUpdate} product={product} onDelEvent={rowDel.bind(this)} key={product.id}/>)
+      });
+      return (
+        <div>
+  
+  
+        <button type="button" onClick={this.props.onRowAdd} className="btn btn-success pull-right">Add</button>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>price</th>
+                <th>quantity</th>
+                <th>category</th>
+              </tr>
+            </thead>
+  
+            <tbody>
+              {product}
+  
+            </tbody>
+  
+          </table>
+        </div>
+      );
+  
+    }
+  
+  }
+  
+  class ProductRow extends React.Component {
+    onDelEvent() {
+      this.props.onDelEvent(this.props.product);
+  
+    }
+    render() {
+  
+      return (
+        <tr className="eachRow">
+          <EditableCell onProductTableUpdate={this.props.onProductTableUpdate} cellData={{
+            "type": "name",
+            value: this.props.product.name,
+            id: this.props.product.id
+          }}/>
+          <EditableCell onProductTableUpdate={this.props.onProductTableUpdate} cellData={{
+            type: "price",
+            value: this.props.product.price,
+            id: this.props.product.id
+          }}/>
+          <EditableCell onProductTableUpdate={this.props.onProductTableUpdate} cellData={{
+            type: "qty",
+            value: this.props.product.qty,
+            id: this.props.product.id
+          }}/>
+          <EditableCell onProductTableUpdate={this.props.onProductTableUpdate} cellData={{
+            type: "category",
+            value: this.props.product.category,
+            id: this.props.product.id
+          }}/>
+          <td className="del-cell">
+            <input type="button" onClick={this.onDelEvent.bind(this)} value="X" className="del-btn"/>
+          </td>
+        </tr>
+      );
+  
+    }
+  
+  }
+  class EditableCell extends React.Component {
+  
+    render() {
+      return (
+        <td>
+          <input type='text' name={this.props.cellData.type} id={this.props.cellData.id} value={this.props.cellData.value} onChange={this.props.onProductTableUpdate}/>
+        </td>
+      );
+  
+    }
+  
+  }
+
 
 class Linechart extends Component {
     constructor(props) {
