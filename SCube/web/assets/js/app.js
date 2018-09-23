@@ -84,7 +84,10 @@ class App extends Component {
     addTable = () => {
         let components = this.state.components;
         components[this.state.pageNo].push(
-            { type: "table", x: 0, y: 0, height: 300, width: 300, display: true }
+            { 
+                type: "table", x: 0, y: 0, height: "fit-content", width: "fit-content", display: true, minWidth:500,
+                properties: {}
+            }
         );
 
         this.setState({ components, editMode: true });
@@ -108,10 +111,11 @@ class App extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             {
-                type: "video", x: 0, y: 0, height: 200, width: 200, display: true,
+                type: "video", x: 0, y: 0, height: 200, width: 400, display: true,
                 properties: {
                     // using textbox properties for now
-                    text: '',
+                    initialized: false,
+                    videoUrl: 'Enter video embed URL',
                 }
             }
         );
@@ -743,7 +747,7 @@ class ReportComponent extends Component {
             );
         } else if (this.props.type ==="image"){
             return(
-                <Iimage i={this.props.i}  editMode={this.props.editMode} 
+                <ImageComponent i={this.props.i}  editMode={this.props.editMode} 
                     properties={this.props.properties} updateProperties={this.props.updateProperties}/>
             );
         } else if (this.props.type ==="table"){
@@ -752,10 +756,63 @@ class ReportComponent extends Component {
             );
         } else if (this.props.type === "video") {
             return(
-                <Textbox i={this.props.i} text={this.props.properties.text} editMode={this.props.editMode}
-                    updateProperties={this.props.updateProperties} />
+                <VideoComponent i={this.props.i} editMode={this.props.editMode} 
+                    properties={this.props.properties} updateProperties={this.props.updateProperties} />
             );
         }
+    }
+}
+
+
+class Textbox extends Component {
+    constructor(props) {
+        super(props);
+        // initialize state with what was passed by the props
+        this.state = {
+            // converts the markup value into the value used by this component
+            editMode: this.props.editMode,
+            value: RichTextEditor.createValueFromString(this.props.text, 'html'),
+            htmlValue: this.props.text
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.editMode != nextProps.editMode){
+            this.setState({editMode: nextProps.editMode});
+        }
+    }
+
+    onChange = (value) => {
+        // converts the value in state
+        this.setState({value:value, htmlValue:value.toString('html')});
+        this.props.updateProperties({text:this.state.htmlValue}, this.props.i);
+    };
+
+    render() {
+        const toolbarConfig = {
+            // Optionally specify the groups to display (displayed in the order listed).
+            display: ['INLINE_STYLE_BUTTONS','BLOCK_TYPE_BUTTONS'],
+            INLINE_STYLE_BUTTONS: [
+                {label: 'Bold', style: 'BOLD'},
+                {label: 'Italic', style: 'ITALIC'},
+                {label: 'Underline', style: 'UNDERLINE'}
+            ],
+            BLOCK_TYPE_BUTTONS: [
+                {label: 'UL', style: 'unordered-list-item'},
+                {label: 'OL', style: 'ordered-list-item'}
+            ]
+        };
+
+        return(
+            <RichTextEditor style={{border:"hidden"}}
+                rootStyle={{height:"100%", minHeight:100, minWidth:150}}
+                value={this.state.value}
+                onChange={this.onChange}
+                toolbarConfig={toolbarConfig}
+                toolbarClassName={"draggable"}
+                toolbarStyle={{display: this.state.editMode ? "" : "none"}}
+            />
+        );
     }
 }
 
@@ -886,116 +943,6 @@ class Barchart extends Component {
     }
 }
 
-
-  class SearchBar extends React.Component {
-    handleChange() {
-      this.props.onUserInput(this.refs.filterTextInput.value);
-    }
-    render() {
-      return (
-        <div>
-  
-          <input type="text" placeholder="Search..." value={this.props.filterText} ref="filterTextInput" onChange={this.handleChange.bind(this)}/>
-  
-        </div>
-  
-      );
-    }
-  
-  }
-  
-  class ProductTable extends React.Component {
-  
-    render() {
-      var onProductTableUpdate = this.props.onProductTableUpdate;
-      var rowDel = this.props.onRowDel;
-      var filterText = this.props.filterText;
-      var product = this.props.products.map(function(product) {
-        if (product.name.indexOf(filterText) === -1) {
-          return;
-        }
-        return (<ProductRow onProductTableUpdate={onProductTableUpdate} product={product} onDelEvent={rowDel.bind(this)} key={product.id}/>)
-      });
-      return (
-        <div>
-  
-  
-        <button type="button" onClick={this.props.onRowAdd} className="btn btn-success pull-right">Add</button>
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>price</th>
-                <th>quantity</th>
-                <th>category</th>
-              </tr>
-            </thead>
-  
-            <tbody>
-              {product}
-  
-            </tbody>
-  
-          </table>
-        </div>
-      );
-  
-    }
-  
-  }
-  
-  class ProductRow extends React.Component {
-    onDelEvent() {
-      this.props.onDelEvent(this.props.product);
-  
-    }
-    render() {
-  
-      return (
-        <tr className="eachRow">
-          <EditableCell onProductTableUpdate={this.props.onProductTableUpdate} cellData={{
-            "type": "name",
-            value: this.props.product.name,
-            id: this.props.product.id
-          }}/>
-          <EditableCell onProductTableUpdate={this.props.onProductTableUpdate} cellData={{
-            type: "price",
-            value: this.props.product.price,
-            id: this.props.product.id
-          }}/>
-          <EditableCell onProductTableUpdate={this.props.onProductTableUpdate} cellData={{
-            type: "qty",
-            value: this.props.product.qty,
-            id: this.props.product.id
-          }}/>
-          <EditableCell onProductTableUpdate={this.props.onProductTableUpdate} cellData={{
-            type: "category",
-            value: this.props.product.category,
-            id: this.props.product.id
-          }}/>
-          <td className="del-cell">
-            <input type="button" onClick={this.onDelEvent.bind(this)} value="X" className="del-btn"/>
-          </td>
-        </tr>
-      );
-  
-    }
-  
-  }
-  class EditableCell extends React.Component {
-  
-    render() {
-      return (
-        <td>
-          <input type='text' name={this.props.cellData.type} id={this.props.cellData.id} value={this.props.cellData.value} onChange={this.props.onProductTableUpdate}/>
-        </td>
-      );
-  
-    }
-  
-  }
-
-
 class Linechart extends Component {
     constructor(props) {
         super(props);
@@ -1118,7 +1065,7 @@ class Linechart extends Component {
     }
 }
 
-class Iimage extends React.Component {
+class ImageComponent extends Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -1161,201 +1108,52 @@ class Iimage extends React.Component {
     }
 }
 
-class Textbox extends Component {
+class VideoComponent extends React.Component {
     constructor(props) {
         super(props);
-        // initialize state with what was passed by the props
-        this.state = {
-            // converts the markup value into the value used by this component
-            editMode: this.props.editMode,
-            value: RichTextEditor.createValueFromString(this.props.text, 'html'),
-            htmlValue: this.props.text
-        }
+        this.state = { 
+            initialized: this.props.initialized,
+            videoUrl: '',
+        };
     }
 
     componentWillReceiveProps(nextProps){
-        if(this.props.editMode != nextProps.editMode){
-            this.setState({editMode: nextProps.editMode});
+        if (nextProps.properties.initialized != this.state.initialized){
+            this.setState({initialized: nextProps.properties.initialized});
         }
     }
 
-    onChange = (value) => {
-        // converts the value in state
-        this.setState({value:value, htmlValue:value.toString('html')});
-        this.props.updateProperties({text:this.state.htmlValue}, this.props.i);
-    };
+    componentDidUpdate(){
+        if (this.state.initialized){
+            document.getElementById("player").load();
+        }
+    }
+
+    loadVideo = (e) => {
+        let videoUrl = document.getElementById("videoUrl").value.trim();
+        this.setState({initialized: true, videoUrl: videoUrl});
+        this.props.updateProperties({initialized: true, videoUrl: videoUrl}, this.props.i);
+    }
 
     render() {
-        const toolbarConfig = {
-            // Optionally specify the groups to display (displayed in the order listed).
-            display: ['INLINE_STYLE_BUTTONS','BLOCK_TYPE_BUTTONS'],
-            INLINE_STYLE_BUTTONS: [
-                {label: 'Bold', style: 'BOLD'},
-                {label: 'Italic', style: 'ITALIC'},
-                {label: 'Underline', style: 'UNDERLINE'}
-            ],
-            BLOCK_TYPE_BUTTONS: [
-                {label: 'UL', style: 'unordered-list-item'},
-                {label: 'OL', style: 'ordered-list-item'}
-            ]
-        };
-
-        return(
-            <RichTextEditor style={{border:"hidden"}}
-                rootStyle={{height:"100%", minHeight:100, minWidth:150}}
-                value={this.state.value}
-                onChange={this.onChange}
-                toolbarConfig={toolbarConfig}
-                toolbarClassName={"draggable"}
-                toolbarStyle={{display: this.state.editMode ? "" : "none"}}
-            />
+        return (
+            <div style={{height:"100%", width:"100%"}}>
+                {this.state.initialized ? 
+                <video id="player" controls
+                    // src="http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
+                    src={this.state.videoUrl}
+                    width="100%"
+                    style={{height:"calc(100% - 27.5px)"}}>
+                </video>
+                : <div style={{height:"100%", display:"flex"}}>
+                    <input id="videoUrl" placeholder="Please enter a embed video URL" style={{margin:"auto", width:"80%"}}/>
+                    <button style={{margin:"auto"}} onClick={this.loadVideo}>Submit</button>
+                </div>}
+            </div>
         );
     }
 }
 
-class Table extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            ...this.props.properties,
-            columns: 
-            [{
-                dataField: 'id',
-                text:<div>Product ID <i style={{marginTop:10, marginRight:10, marginRight:4}} className="fa fa-times" onClick={() => this.delete(1)}></i></div>,
-                sort: true
-            }],
-            order: 1,
-            aggregateType: 'Sum'
-        }
-    }
-
-    // update state of initialized when props change
-    /*componentWillReceiveProps(nextProps){
-        if (nextProps.properties.initialized != this.state.initialized){
-            this.setState({initialized: nextProps.properties.initialized});
-        }
-    }*/
-
-    initializeTable = (values) => {
-        //set settings of barchart
-        let processor = values.processor;
-        let datasourceUrl = values.datasourceUrl;
-        let dataset = values.dataset;
-        let data = processor.getDataset(dataset);
-
-        this.setState({
-            initialized: true,
-            datasourceUrl: datasourceUrl,
-            dataset: dataset,
-            chartData: data
-        })
-
-        // sending all data to app2 other than chartData
-        //let {chartData, ...other} = this.state;
-        //this.props.updateProperties(other, this.props.i);
-    }
-
-    
-    addCol = (e) => {
-        let columns = this.state.columns;
-        let order = this.state.order+1;
-
-        if (e === "name") {
-            columns.push({
-                dataField: 'name',
-                text:
-                <div>Product Name <i style={{marginTop:10, marginRight:10, marginRight:4}} className="fa fa-times" onClick={() => this.delete(order)}></i></div>,
-                sort: true,
-            });
-            
-
-        } else if (e === "price") {
-            columns.push({
-                dataField: 'price',
-                text: 
-                <div>Price <i style={{marginTop:10, marginRight:10, marginRight:4}} className="fa fa-times" onClick={() => this.delete(order)}></i></div>,
-                sort: true
-
-            });
-        } else {
-            columns.push({
-                dataField: 'id',
-                text:  
-                <div>Product ID <i style={{marginTop:10, marginRight:10, marginRight:4}} className="fa fa-times" onClick={() => this.delete(order)}></i></div>,
-                sort: true
-
-            });
-        }
-
-        this.setState({ columns,order });
-        
-    }
-
-    delete(e){
-        console.log(e);
-        const columns = this.state.columns ;
-        delete columns[(e-1)];
-        //console.log(col);
-        this.setState({columns});
-    }
-
-
-    render() {
-        var products = [{
-            id: 1,
-            name: "Product1",
-            price: 120
-        }, {
-            id: 2,
-            name: "Product2",
-            price: 80
-        }, {
-            id: 3,
-            name: "Product1",
-            price: 120
-        }, {
-            id: 4,
-            name: "Product2",
-            price: 80
-        }, {
-            id: 5,
-            name: "Product1",
-            price: 120
-        }];
-
-        const rowStyle = { backgroundColor: '#c8e6c9' };
-        const { value, onUpdate, ...rest } = this.props;
-        
-        // loop through the columns to remove the empty items
-        const actualTitle = [];
-        for (var i=0; i < this.state.columns.length; i++) {
-            if(this.state.columns[i] !== undefined){
-                actualTitle.push(this.state.columns[i]);
-            }
-        }
-
-        return this.state.initialized ?
-        
-            <div  className="draggable">
-                <ButtonToolbar >
-                    <SplitButton title="Add a Column" bsStyle="info" pullRight id="split-button-pull-right" onSelect={this.addCol}>
-                        Categories
-                        <MenuItem eventKey="id">Product ID</MenuItem>
-                        <MenuItem eventKey="name">Product Name</MenuItem>
-                        <MenuItem eventKey="price">Product Price</MenuItem>
-                    </SplitButton>
-                </ButtonToolbar>
-
-                <BootstrapTable keyField='id' data={products}
-                    columns={actualTitle}
-                    //cellEdit={cellEditFactory({ mode: 'dbclick' })}
-                    rowStyle={rowStyle}>
-                    
-                </BootstrapTable>
-            </div>
-            : <TableForm initializeTable={this.initializeTable} />
-    }
-}
 
 class ChartForm extends Component {
     constructor(props) {
@@ -1514,75 +1312,6 @@ class ChartForm extends Component {
     }
 }
 
-class TableForm extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            aggregateType: 'Sum'
-        }
-    }
-
-    changeAggregate = (e)=>{
-        let aggregateType = this.state.aggregateType;
-        aggregateType = e;
-        this.setState(aggregateType);
-    }
-
-    render() {
-        return (
-            <Formik 
-                // initialize values to use in form
-                initialValues={{
-                    title:'', 
-                    dataset: datasets[0],
-                    datasourceUrl: datasourceUrl,
-                    primaryCol: jsonProcessor.getOptions(datasets[0])[0], 
-                    processor:jsonProcessor,
-                }}
-
-                // pass values to the charts
-                onSubmit={this.props.initializeTable}
-
-                // render form
-                render={formProps=>(
-                    <Form className="draggable" style={{textAlign: "center", zIndex: -1,height:"100%",width:"100%"}}>
-                        <label style={{marginRight:5}}>Chart Title</label>
-                        <Field type="text" name="title" placeholder="Chart Title"/>
-                        <br/><br/>
-                        <label style={{marginRight:5}}>Choose the dataset</label>
-                        <Field component="select" name="dataset">
-                            {datasets.map((dataset)=>
-                                <option key={dataset}>{dataset}</option>
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <label style={{marginRight:5}}>Type of Calculation</label> 
-                        <select name="tableAggregate">
-                            {/* gets the option based on selected dataset */}
-                            <option key = "Sum" onClick={this.changeAggregate}>Sum</option>
-                            <option key = "Average"  onClick={this.changeAggregate}>Average</option>
-                            <option key = "Medium"  onClick={this.changeAggregate}>Medium</option>
-                        </select>
-                        <br/><br/>
-                        <label style={{marginRight:5}}>Choose the category for {this.state.aggregateType}</label>   
-                        <Field component="select" name="tableCat">
-                            {/* gets the option based on selected dataset */}
-                            {jsonProcessor.getOptions(formProps.values.dataset)
-                            .map((option)=>
-                                <option key={option}>{option}</option>
-                            )}
-                        </Field>
-
-                        <br/><br/>
-                        <Button bsStyle="default" type="submit">Submit</Button>
-                    </Form>
-                )}
-            />
-        );
-    }
-}
-
 class Descriptive extends Component {
     constructor(props) {
         super(props);
@@ -1707,6 +1436,7 @@ class Descriptive extends Component {
 class EmptyTable extends Component {
     constructor(props) {
         super(props);
+        let self = this;
         this.state = {
             columns: [{
                     dataField: 'col1',
@@ -1723,16 +1453,20 @@ class EmptyTable extends Component {
                         onBlur: this.handleBlur
                     },
                 }, {
-                    dataField: 'cancel',
-                    text: 'Cancel',
-                    editable: false
+                    dataField: 'delete',
+                    text: 'Delete',
+                    align: 'center',
+                    editable: false,
+                    formatter: function(cell, row, rowIndex){
+                        return <i className="fa fa-trash" onClick={() => self.delRow(rowIndex)}/>
+                    }
                 }],
             data: [{
-                id: 'example1',
+                    id: 'row1',
                     col1: 'Some data',
                     col2: 'Some data',
                 },{
-                    id: 'example2',
+                    id: 'row2',
                     col1: 'Some data',
                     col2: 'Some data'
                 }],
@@ -1741,7 +1475,8 @@ class EmptyTable extends Component {
 
     addRow = (e) => {
         let data = this.state.data;
-        let new_data = {id:'example' + (data.length+1)};
+        let new_data = {id:'example' + (data.length+1)}
+
         for (let i=1; i <= this.state.columns.length; i++){
             new_data["col" + i] = '';
         }
@@ -1750,23 +1485,36 @@ class EmptyTable extends Component {
         this.setState({data})
     }
 
+    delRow(rowIndex){
+        let data = this.state.data;
+        data.splice(rowIndex,1);
+        
+        // fix id referencing error        
+        for(let i in data) {
+            data[i].id = "row" + (i+1);
+        }
+        this.setState({data});
+    }
+
     addCol = (e) => {
         let columns = this.state.columns;
         let data = this.state.data;
 
-        columns.push({
-            dataField: 'col' + (columns.length+1),
-            text: 'Header ' + (columns.length+1),
+        // add new item to end of each table row (or else code will crash)
+        for (let obj of data){
+            obj["col" + columns.length] = '';
+        }
+
+        // add column to column, before the cancel column
+        columns.splice(columns.length-1,0,{
+            dataField: 'col' + columns.length,
+            text: 'Header ' + columns.length,
             headerEvents: {
                 onClick: this.handleClick,
                 onBlur: this.handleBlur
             }
         });
-
-        for (let obj of data){
-            obj["col" + columns.length] = '';
-        }
-
+        
         this.setState({columns, data})
     }
 
@@ -1779,31 +1527,29 @@ class EmptyTable extends Component {
     handleBlur = (e) => {
         let parent = e.target.parentNode;
         parent.innerHTML = e.target.value;
-        this.setState({clickTitle: true});
     }
 
     render(){
         return (
-            <div className="draggable" style={{ height: "100%" }}>
+            <div className="draggable">
                 <Button bsSize="small" bsStyle="primary" style={{ padding:"4px 6px" }}
                     onClick={this.addRow}>Add Row</Button>
                 <Button bsSize="small" bsStyle="primary" style={{ padding:"4px 6px" }}
                     onClick={this.addCol}>Add Col</Button>
-                <BootstrapTable keyField='id' 
+                <BootstrapTable keyField='id' className="nonDraggable" 
                     striped responsive
                     data={ this.state.data } 
                     columns={ this.state.columns } 
                     cellEdit={ 
                         cellEditFactory({ 
                             blurToSave: true,
-                            mode:'click'
+                            mode:'dbclick'
                         }) 
                     }
                 />
             </div>
         );
     }
-
 }
 
 ReactDOM.render(<App/>, document.getElementById('reportContainer'));
