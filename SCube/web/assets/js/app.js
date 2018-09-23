@@ -152,6 +152,14 @@ class App extends Component {
         this.setState({ components });
     }
 
+    export = (e) => {
+        if (e === "PDF") {
+            this.savePDF();
+        } else {
+            this.savePresentation();
+        }
+    }
+    
     getComponentDetails = () => {
         console.log(this.state.components);
     }
@@ -360,7 +368,7 @@ class App extends Component {
                     slide.addImage({ data: imageUrl, x: x, y: y, w: w, h: h });
                 } else if (component.type === "video") {
                     // remove the p tags
-                    let videoUrl = component.properties.text.substring(3, component.properties.text.length - 4).trim();
+                    let videoUrl = component.properties.videoUrl.trim();
                     console.log(videoUrl);
                     slide.addMedia({ type: 'online', link: videoUrl, x: x, y: y, w: w, h: h });
                 }
@@ -1132,7 +1140,7 @@ class VideoComponent extends React.Component {
         this.setState({initialized: true, videoUrl: videoUrl});
         this.props.updateProperties({initialized: true, videoUrl: videoUrl}, this.props.i);
     }
-
+    
     render() {
         return (
             <div style={{height:"100%", width:"100%"}}>
