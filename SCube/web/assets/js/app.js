@@ -525,33 +525,19 @@ class App extends Component {
                         </div>
 
                         <div className="right_col">
-                                <div className="col-md-6 col-xs-6">
-                                    
-                                    {this.state.editMode ?
-                                        <span>
-                                        <label style={{ fontSize: 15, marginRight: 2, float:"left" }}>Template Name:</label>
+                               <div className="col-md-12 col-xs-12">
+                                <label style={{ fontSize: 15, marginRight: 2, float:"left" }}>Template Name:</label>
                                         <input style={{ fontSize: 15, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
-
-                                        <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5 }} bsStyle="sucess" onClick={this.toggleEditMode}>
-                                            <i className="fa fa-edit" style={{ marginRight: 2 }} />
-                                            Editing
-                                        </Button>
-                                        </span>
-                                        :
-                                        <span>
-                                        <label style={{ fontSize: 15, marginRight: 2, float:"left" }}>Template Name:</label>
-                                        <input style={{ fontSize: 15, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
-
-                                        <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5}} bsStyle="success" onClick={this.toggleEditMode}>
-                                            <i className="fa fa-edit" style={{ marginRight: 2 }} />
-                                            Edit
-                                        </Button>
-                                       
+                                        <span style={{float:"right"}}>
                                         
-                                        </span>
-                                    }
+
+                                            <DropdownButton title="Export As" id="dropdown-size-medium"  onSelect={this.export}>
+                                                <MenuItem eventKey="PDF">PDF</MenuItem>
+                                                <MenuItem eventKey="PPT">PPT</MenuItem>
+                                            </DropdownButton>
+                                            </span>
+                                    
                                 </div>
-                            <br />
 
                             {/* <div id="size" className="modal">
                                 <div className="modal-content">
@@ -596,8 +582,8 @@ class App extends Component {
 
 
                             <div className="col-sm-12 col-xs-12" style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: 'white', borderBottom: '7px solid #EB6B2A' }}>
-                                <span><label> Add Component: </label>
-                                        <ButtonToolbar>
+                                    <label> Add Component: </label>
+                                      
                                             <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"
                                                 onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
                                             <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsStyle="warning"
@@ -609,46 +595,64 @@ class App extends Component {
                                             <Button data-toggle="tooltip" data-placement="bottom" title="Add Image"
                                                 onClick={this.addImage} style={{ backgroundColor: "#31B0D5", color: "white", border: "1px solid #31B0D5", marginRight: 5 }}><i className="fa fa-image" /></Button>
                                             <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"
-                                                onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 5 }}><i className="fa fa-play-circle" /></Button>
+                                                onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 5}}><i className="fa fa-play-circle" /></Button>
 
 
-                                            <Button  style={{  width: "fit-content", marginRight:5}} onClick={this.saveTemplate} block>
-                                            <i className="fa fa-save fa-lg" />
-                                        </Button>
-
-                                            <DropdownButton title="Export As" id="dropdown-size-medium" onSelect={this.export}>
-                                                <MenuItem eventKey="PDF">PDF</MenuItem>
-                                                <MenuItem eventKey="PPT">PPT</MenuItem>
-                                            </DropdownButton>
+                                           
                                             
                                      
                                         
 
 
-                                        <span style={{ fontFamily: 'Georgia', fontSize: 18, float: "right" }}>Page Number
-                                        <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
-                                                style={{ marginLeft: 10, float: "right"  }}>
-                                                <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
-                                                    <path d="M0-.5h24v24H0z" fill="none"></path>
-                                                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
-                                                </svg>
-                                            </Button>
-                                            <span style={{ fontFamily: 'Georgia', fontSize: 18, float:"right" }}>{this.state.pageNo + 1}</span>
+                                        <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Number
                                         <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
-                                                style={{ marginRight: 10, marginLeft: 10, float: "right"  }}>
+                                                style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
                                                 <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
                                                     <path d="M0-.5h24v24H0z" fill="none"></path>
                                                     <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" className="jWRuRT"></path>
                                                 </svg>
                                             </Button>
                                             
+                                            <span style={{ fontFamily: 'Georgia', fontSize: 18,textAlign:"center"  }}>{this.state.pageNo + 1}</span>
+                                        <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
+                                                style={{ marginLeft: 10,  textAlign:"center"  }}>
+                                                <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                                    <path d="M0-.5h24v24H0z" fill="none"></path>
+                                                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
+                                                </svg>
+                                            </Button>
+                                            <Button  style={{ marginLeft: 5,marginRight:5}} bsStyle = "info" onClick={this.saveTemplate}> 
+                                            <i className="fa fa-save fa-lg" style={{marginRight:4}}/>Save
+                                            </Button>
+                                            {this.state.editMode ?
+                                        <span>
+                                        
+                                        <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right' }} bsStyle="danger" onClick={this.toggleEditMode}>
+                                            <i className="fa fa-edit" style={{ marginRight: 2 }} />
+                                            Editing
+                                        </Button>
+                                        
+                                        
+                                        </span>
+                                        :
+                                        <span>
+                                       
+
+                                        <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right'}} bsStyle="success" onClick={this.toggleEditMode}>
+                                            <i className="fa fa-edit" style={{ marginRight: 2 }} />
+                                            Edit
+                                        </Button>
+                                       
+                                        
+                                        </span>
+                                    }                            
+                                            
                                             
                                         </span>
                                         
-                                        </ButtonToolbar>
-                                        </span>
+                                       
 
-                            </div>
+                                </div>
 
                             <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE" }}>
                                 <div id="container" style={{
