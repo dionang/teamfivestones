@@ -874,7 +874,7 @@ class ChartForm extends Component {
                             )}
                         </Field>
                         <br/><br/>
-                        <span style={{marginRight:10}}>Show Summary Table</span>
+                        <span style={{marginRight:10}}>Show Summary Statistic</span>
                         <input type="checkbox" name="summary" onChange={function(){
                             formProps.values.summary = !formProps.values.summary;
                         }}>
