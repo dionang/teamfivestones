@@ -762,7 +762,7 @@ class ReportComponent extends Component {
             );
         } else if (this.props.type ==="table"){
             return(
-                <EmptyTable/>
+                <EmptyTable editMode={this.props.editMode}/>
             );
         } else if (this.props.type === "video") {
             return(
@@ -1301,7 +1301,7 @@ class ChartForm extends Component {
                             )}
                         </Field>
                         <br/><br/>
-                        <span style={{marginRight:10}}>Show Summary Statistic</span>
+                        <span style={{marginRight:10}}>Show Summary Statistics</span>
                         <input type="checkbox" name="summary" onChange={function(){
                             formProps.values.summary = !formProps.values.summary;
                         }}>
@@ -1462,6 +1462,7 @@ class EmptyTable extends Component {
                     text: 'Delete',
                     align: 'center',
                     editable: false,
+                    hidden: false,
                     formatter: function(cell, row, rowIndex){
                         return <i className="fa fa-trash" onClick={() => self.delRow(rowIndex)}/>
                     }
@@ -1475,6 +1476,14 @@ class EmptyTable extends Component {
                     col1: 'Some data',
                     col2: 'Some data'
                 }],
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.editMode != nextProps.editMode){
+            let columns = this.state.columns;
+            columns[columns.length - 1].hidden = !columns[columns.length - 1].hidden;
+            this.setState({columns});
         }
     }
 
