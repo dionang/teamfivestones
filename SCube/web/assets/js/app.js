@@ -113,9 +113,8 @@ class App extends Component {
             {
                 type: "video", x: 0, y: 0, height: 200, width: 400, display: true,
                 properties: {
-                    // using textbox properties for now
                     initialized: false,
-                    videoUrl: 'Enter video embed URL',
+                    videoUrl: '',
                 }
             }
         );
@@ -153,11 +152,15 @@ class App extends Component {
     }
 
     export = (e) => {
-        if (e === "PDF") {
-            this.savePDF();
-        } else {
-            this.savePresentation();
-        }
+        let self = this;
+        this.setState({editMode: false});
+        setTimeout(function () {
+            if (e === "PDF") {
+                self.savePDF();
+            } else {
+                self.savePresentation();
+            }
+        }, 100);
     }
     
     getComponentDetails = () => {
@@ -254,80 +257,80 @@ class App extends Component {
         });
     }
 
-    savePDF(){
-        let self = this; 
+    savePDF() {
+        let self = this;
 
         // if exporting
-        if(this.state.exporting){
+        if (this.state.exporting) {
             domtoimage.toJpeg(document.getElementById('container'), { quality: 1 })
-            .then(function(dataUrl) {
-                // add page screenshot to picArr
-                var picArr = self.state.picArr;
-                picArr.push(dataUrl);
-                let pageNo = self.state.pageNo;
+                .then(function (dataUrl) {
+                    // add page screenshot to picArr
+                    var picArr = self.state.picArr;
+                    picArr.push(dataUrl);
+                    let pageNo = self.state.pageNo;
 
-                // if not on last page, increment pageNo and trigger rerender
-                if (pageNo < self.state.components.length-1) {
-                    pageNo += 1;
-                    self.setState({pageNo});
+                    // if not on last page, increment pageNo and trigger rerender
+                    if (pageNo < self.state.components.length - 1) {
+                        pageNo += 1;
+                        self.setState({ pageNo });
 
-                    // give time for page to rerender before calling the method
-                    setTimeout(function(){
-                        self.savePDF();
-                    }, 1500);
+                        // give time for page to rerender before calling the method
+                        setTimeout(function () {
+                            self.savePDF();
+                        }, 1500);
 
-                // reached the last page, proceed to export PDF
-                } else {
-                    // hardcoded A4 dimensions, width * height
-                    let doc = new jsPDF('l', 'mm', [297, 210]); 
+                        // reached the last page, proceed to export PDF
+                    } else {
+                        // hardcoded A4 dimensions, width * height
+                        let doc = new jsPDF('l', 'mm', [297, 210]);
 
-                    // iterate through the pages
-                    for(let i=0; i<self.state.picArr.length; i++){
-                        let dataUrl = self.state.picArr[i];
+                        // iterate through the pages
+                        for (let i = 0; i < self.state.picArr.length; i++) {
+                            let dataUrl = self.state.picArr[i];
 
-                        // uploads the image to our public folder
+                            // uploads the image to our public folder
+                            let formData = new FormData();
+                            formData.append("file", self.dataUrlToFile(dataUrl, self.state.templateName + "_slide" + (i + 1) + ".jpg"));
+                            let xhr = new XMLHttpRequest();
+                            xhr.open("POST", api + "saveFile");
+                            xhr.send(formData);
+
+                            // should use these values to set PDF dimensions
+                            // let width = document.getElementById('container').width;
+                            // let height = document.getElementById('container').height;
+
+                            doc.addImage(dataUrl, 'JPEG', 0, 0, 297, 140);
+
+                            // 20 is left margin, 200 is top margin
+                            doc.text(20, 200, "Page No: " + (i + 1));
+
+                            // if not last page, add page
+                            if (i != self.state.picArr.length - 1) {
+                                doc.addPage();
+                            }
+                        }
+
+                        // completed the rendering of doc
+                        // upload PDF to public folder
                         let formData = new FormData();
-                        formData.append("file", self.dataUrlToFile(dataUrl, self.state.templateName + "_slide" + (i + 1) + ".jpg"));
+                        formData.append("file", doc.output('blob'), self.state.templateName + ".pdf");
                         let xhr = new XMLHttpRequest();
                         xhr.open("POST", api + "saveFile");
                         xhr.send(formData);
 
-                        // should use these values to set PDF dimensions
-                        // let width = document.getElementById('container').width;
-                        // let height = document.getElementById('container').height;
-
-                        doc.addImage(dataUrl,'JPEG', 0, 0, 297,140);  
-
-                        // 20 is left margin, 200 is top margin
-                        doc.text(20,200, "Page No: " + (i+1));
-                        
-                        // if not last page, add page
-                        if(i != self.state.picArr.length-1){
-                            doc.addPage();
-                        }
+                        // proceed to save locally
+                        doc.save(self.state.templateName);
+                        picArr = [];
+                        self.setState({ picArr: [], exporting: false });
                     }
+                });
 
-                    // completed the rendering of doc
-                    // upload PDF to public folder
-                    let formData = new FormData();
-                    formData.append("file", doc.output('blob'), self.state.templateName+".pdf");
-                    let xhr = new XMLHttpRequest();
-                    xhr.open("POST", api + "saveFile");
-                    xhr.send(formData);
-
-                    // proceed to save locally
-                    doc.save(self.state.templateName);
-                    picArr = [];
-                    self.setState({picArr:[], exporting:false});
-                }
-            });
-
-        // starts the exporting process, starting from the first page
+            // starts the exporting process, starting from the first page
         } else {
-            this.setState({ pageNo:0, exporting:true });
+            this.setState({ pageNo: 0, exporting: true });
 
             // give time for page to rerender before calling the method
-            setTimeout(function(){
+            setTimeout(function () {
                 self.savePDF();
             }, 1500);
         }
@@ -350,13 +353,9 @@ class App extends Component {
                 if (component.type === "text") {
                     // remove the p tags
                     let text = component.properties.text.substring(3, component.properties.text.length - 4);
-                    // console.log(text);
-                    // let texts = text.split(/\r\n|\n|\r/);
-                    // console.log(texts); 
                     slide.addText(text, {
                         x: x, y: y, w: w, h: h,
                         fontSize: 14, color: '363636'
-                        // , bullet:{code:'25BA'} 
                     });
 
                 } else if (component.type === "image") {
@@ -527,7 +526,6 @@ class App extends Component {
                                                 <span className=" fa fa-angle-down"></span>
                                             </a>
                                             <ul className="dropdown-menu dropdown-usermenu pull-right">
-                                                <li><a href="javascript:;"> Profile</a></li>
                                                 <li><a href="logout.jsp"><i className="fa fa-sign-out pull-right"/> Log Out</a></li>
                                             </ul>
                                         </li>
@@ -1124,14 +1122,17 @@ class VideoComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            initialized: this.props.initialized,
-            videoUrl: '',
+            initialized: this.props.properties.initialized,
+            videoUrl: this.props.properties.videoUrl,
         };
     }
 
     componentWillReceiveProps(nextProps){
         if (nextProps.properties.initialized != this.state.initialized){
-            this.setState({initialized: nextProps.properties.initialized});
+            this.setState({
+                initialized:nextProps.properties.initialized, 
+                videoUrl: nextProps.properties.videoUrl
+            });
         }
     }
 
@@ -1140,18 +1141,15 @@ class VideoComponent extends React.Component {
         this.setState({initialized: true, videoUrl: videoUrl});
         this.props.updateProperties({initialized: true, videoUrl: videoUrl}, this.props.i);
     }
-    
+
     render() {
         return (
-            <div style={{height:"100%", width:"100%"}}>
+            <div className="draggable" style={{height:"100%", width:"100%"}}>
                 {this.state.initialized ? 
-                <video className="draggable" id="player" controls
-                    // src="http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
-                    src={this.state.videoUrl}
-                    width="100%"
-                    style={{height:"calc(100% - 27.5px)"}}>
-                </video>
-                : <div style={{height:"100%", display:"flex"}} className="draggable">
+                    <iframe style={{width:"100%", height:"calc(100% - 27.5px)"}} 
+                        src={this.state.videoUrl} frameBorder="0" allow="encrypted-media" allowFullScreen>
+                    </iframe>
+                : <div style={{height:"100%", display:"flex"}}>
                     <input id="videoUrl" className="nonDraggable" placeholder="Please enter a embed video URL" 
                         style={{margin:"auto", width:"80%"}}/>
                     <button style={{margin:"auto"}} onClick={this.loadVideo}>Submit</button>
