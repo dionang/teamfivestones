@@ -46,7 +46,7 @@
     border: none;
     border-top: 1px solid rgba(34, 36, 38, .1);
     box-shadow: none;
-    
+    background-color: white;
     
 }
 
@@ -58,12 +58,14 @@
 }
 
 .card-title {
-    font-size: 1.2em;
+    font-size: 1.4em;
     font-weight: 550;
     line-height: 1em;
     width: 230px;
     white-space: nowrap;
     overflow: hidden;
+    color:#2F4F4F;
+    font-family: Oswald;
    
 }
 .card-footer {

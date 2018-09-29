@@ -1,5 +1,5 @@
 <%@page import="scube.entities.Account"%>
-<div class="top_nav">
+<div class="top_nav" style=" font-family: Oswald;">
     <div class="nav_menu">
         <nav>
             <div class="nav toggle">

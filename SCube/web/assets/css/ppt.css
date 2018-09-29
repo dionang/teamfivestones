@@ -1,0 +1,22 @@
+
+body { font-family:'Helvetica','Arial'; }
+#checks {
+	margin: 10px 0; padding:5px;
+	background: #fffccc;
+	font-family: monospace;
+}
+#btnDemo {
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 12px !important;
+    color: #ffffff !important;
+	background-color: #3498DB;
+    border: 0 !important;
+    padding: 8px 30px;
+    margin: 10px 0;
+    white-space: nowrap;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+}

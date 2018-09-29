@@ -35,7 +35,7 @@
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <!-- page content -->
                 
-                <div class="right_col">
+                <div class="right_col" style="background-image: url(https://auditplus.com.pl/wp-content/uploads/2013/06/Abstract-office-table-free-ppt-backgrounds.jpg); background-size:  100% 100%; " style="background-image: url(https://auditplus.com.pl/wp-content/uploads/2013/06/Abstract-office-table-free-ppt-backgrounds.jpg); background-size:  100% 100%; " >
                     <div class="content">
                         <div class="col-lg-3 col-sm-4 col-xs-6" style="margin-bottom: 15px">
                             <!-- Trigger/Open The Modal -->
@@ -148,7 +148,7 @@
                         </div>
                     <% for (int i=0 ; i<templateList.size(); i++) { 
                             Template template = templateList.get(i); %>
-                            <form action="loadTemplate" method="post" id="form<%=i%>">
+                            <form action="loadTemplate" method="post" id="form<%=i%>" >
                                 <input type=hidden name="templateId" value="<%= template.getTemplateId() %>">
                                 <input type=hidden name="templateName" value="<%= template.getTemplateName() %>">
                                 <input type=hidden name="operation" value="loadTemplate">

@@ -29,37 +29,41 @@
                 <!-- page content -->
                 
                 
-                <div class="right_col">
-                    <div class="content">
-                        <div class="col-sm-4 outer">
-                        <div class="img">
-                            <a href="dashboard.jsp" style="text-decoration: none">
-                                <div class="pic"style=" padding-top:30px;">
-                                    <img src="assets/images/dashboard.png" class="image"  />
+                <div class="right_col" style="background-image: url(https://auditplus.com.pl/wp-content/uploads/2013/06/Abstract-office-table-free-ppt-backgrounds.jpg); background-size:  100% 100%; " >
+                    <!--<div class="content" >-->
+                    <h1 style="text-align: center; color: #2F4F4F; font-family: Oswald; font-size: 60px">S Cube Reporting Tool</h1>
+                    <div class="icons" style="border-top: 3px solid">
+                        <div class="col-sm-4 outer" style="padding: 70px 0; ">
+                        <div class="img" >
+                            <a href="dashboard_1.jsp" style="text-decoration: none; ">
+                                <div class="pic"style=" padding-top:30px; background-color: white ">
+                                    <img src="assets/images/dashboard.png" class="image" />
                                 </div>
                            
-                            <h4>View Dashboard</h4>
+                            <h4 style="font-family: Raleway; font-size:22px;color: #2F4F4F;">View Dashboard</h4>
                             </a>
                         </div>
                         </div>
-                        <div class="col-sm-4 img">
+                        <div class="col-sm-4 img" style="padding: 70px 0;">
                             <a href="createUserAccount.jsp" style="text-decoration: none">
-                                <div class="pic">
-                                   <img src="assets/images/userHome.png" class="image" />
+                                <div class="pic" style="background-color:white">
+                                   <img src="assets/images/user.png" class="image" />
                                 </div>
                             
-                            <h4 >Create User Account</h4>
+                            <h4 style="font-family: Raleway; font-size:22px; color: #2F4F4F;" >Create User Account</h4>
                             </a>
                         </div>
-                       <div class="col-sm-4 img">
+                       <div class="col-sm-4 img" style="padding: 70px 0;">
                             <a href="templateHome.jsp" style="text-decoration: none">
-                               <div class="pic">
+                               <div class="pic" style="background-color:white">
+                                   
                                    <img src="assets/images/report.png"  class="image"/>
                                 </div>
-                            <h4 >Create Report Template</h4>
+                            <h4 style="font-family: Raleway; font-size:22px; color: #2F4F4F;" >Create Report Template</h4>
                            </a>
                        </div>
-                    </div>  
+                    </div>
+                    <!--</div>-->  
                 <!-- page content -->
                 </div>
             </div>

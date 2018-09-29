@@ -25,8 +25,8 @@
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <!-- page content -->
                 
-                
-                <div class="right_col">
+                <div  style="background-image: url(http://mobileoffice.biz/wp-content/uploads/2018/01/office-desktop-background-d-interior-hd-wallpaper-high-image-minimalist-white-image-office-desktop-background-wallpaper.jpg)">
+                <div class="right_col" >
                     <div class="content">
                         <div class="col-sm-4 img">
                             <a href="createDevAccount.jsp" style="text-decoration: none" >
@@ -60,6 +60,7 @@
                 <!-- page content -->
             </div>
         </div>
+                </div>
         
         <!-- jQuery -->
         <script src="assets/js/jquery.min.js"></script>
