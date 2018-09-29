@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-offset-2 col-md-4 col-xs-12">
-                                        <a href="loadTemplate.jsp?templateId=9 ">
+                                        <a href="loadTemplate.jsp?templateId=1 ">
                                              <div class="card card-inverse card-info">
                                                 <div class="card-block">
                                                      <img class="card-img-top" src="assets/images/dummyReport.png">
