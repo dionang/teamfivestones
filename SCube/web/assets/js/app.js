@@ -604,7 +604,6 @@ class App extends Component {
 
                             <div className="col-sm-12 col-xs-12" style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: 'white', borderBottom: '7px solid #EB6B2A' }}>
                                 <label> Add Component: </label>
-                                      
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"
                                     onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsStyle="warning"
