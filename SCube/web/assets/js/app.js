@@ -54,7 +54,7 @@ class App extends Component {
         // adds new component to state
         components[this.state.pageNo].push(
             {
-                type: "bar", x: 0, y: 0, height: 250, width: 500, display: true,
+                type: "bar", x: 0, y: 0, height: 300, width: 500, display: true,
                 properties: {
                     initialized: false,
                 }
@@ -69,7 +69,7 @@ class App extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             {
-                type: "line", x: 0, y: 0, height: "fit-content", width: "fit-content", display: true,
+                type: "line", x: 0, y: 0, height: 300, width: 500, display: true,
                 properties: {
                     initialized: false,
                 }
@@ -94,12 +94,12 @@ class App extends Component {
                     }],
                     data: [{
                         id: 'row1',
-                        col1: 'Some data',
-                        col2: 'Some data',
+                        col1: '',
+                        col2: '',
                     },{
                         id: 'row2',
-                        col1: 'Some data',
-                        col2: 'Some data'
+                        col1: '',
+                        col2: ''
                     }]
                 }
             }
@@ -292,7 +292,7 @@ class App extends Component {
                         // give time for page to rerender before calling the method
                         setTimeout(function () {
                             self.savePDF();
-                        }, 1500);
+                        }, 2000);
 
                         // reached the last page, proceed to export PDF
                     } else {
@@ -549,19 +549,16 @@ class App extends Component {
                         </div>
 
                         <div className="right_col">
-                               <div className="col-md-12 col-xs-12">
+                            <div className="col-md-12 col-xs-12">
                                 <label style={{ fontSize: 15, marginRight: 2, float:"left" }}>Template Name:</label>
-                                        <input style={{ fontSize: 15, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
-                                        <span style={{float:"right"}}>
-                                        
-
-                                            <DropdownButton title="Export As" id="dropdown-size-medium"  onSelect={this.export}>
-                                                <MenuItem eventKey="PDF">PDF</MenuItem>
-                                                <MenuItem eventKey="PPT">PPT</MenuItem>
-                                            </DropdownButton>
-                                            </span>
-                                    
-                                </div>
+                                <input style={{ fontSize: 15, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
+                                <span style={{float:"right"}}>
+                                    <DropdownButton title="Export As" id="dropdown-size-medium"  onSelect={this.export}>
+                                        <MenuItem eventKey="PDF">PDF</MenuItem>
+                                        <MenuItem eventKey="PPT">PPT</MenuItem>
+                                    </DropdownButton>
+                                </span>
+                            </div>
 
                             {/* <div id="size" className="modal">
                                 <div className="modal-content">
@@ -606,78 +603,58 @@ class App extends Component {
 
 
                             <div className="col-sm-12 col-xs-12" style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: 'white', borderBottom: '7px solid #EB6B2A' }}>
-                                    <label> Add Component: </label>
+                                <label> Add Component: </label>
                                       
-                                            <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"
-                                                onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
-                                            <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsStyle="warning"
-                                                onClick={this.addBarChart} style={{ marginRight: 5 }}><i className="fa fa-bar-chart" /></Button>
-                                            <Button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart" bsStyle="success"
-                                                onClick={this.addLineChart} style={{ marginRight: 5 }}><i className="fa fa-line-chart" /></Button>
-                                            <Button data-toggle="tooltip" data-placement="bottom" title="Add Table" bsStyle="danger"
-                                                onClick={this.addTable} style={{ marginRight: 5 }}><i className="fa fa-table" /> </Button>
-                                            <Button data-toggle="tooltip" data-placement="bottom" title="Add Image"
-                                                onClick={this.addImage} style={{ backgroundColor: "#31B0D5", color: "white", border: "1px solid #31B0D5", marginRight: 5 }}><i className="fa fa-image" /></Button>
-                                            <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"
-                                                onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 5}}><i className="fa fa-play-circle" /></Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"
+                                    onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsStyle="warning"
+                                    onClick={this.addBarChart} style={{ marginRight: 5 }}><i className="fa fa-bar-chart" /></Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart" bsStyle="success"
+                                    onClick={this.addLineChart} style={{ marginRight: 5 }}><i className="fa fa-line-chart" /></Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Table" bsStyle="danger"
+                                    onClick={this.addTable} style={{ marginRight: 5 }}><i className="fa fa-table" /> </Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Image"
+                                    onClick={this.addImage} style={{ backgroundColor: "#31B0D5", color: "white", border: "1px solid #31B0D5", marginRight: 5 }}><i className="fa fa-image" /></Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"
+                                    onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 5}}><i className="fa fa-play-circle" /></Button>
 
+                                <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Number
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
+                                    style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
+                                    <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                        <path d="M0-.5h24v24H0z" fill="none"></path>
+                                        <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" className="jWRuRT"></path>
+                                    </svg>
+                                </Button>
 
-                                           
-                                            
-                                     
-                                        
-
-
-                                        <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Number
-                                        <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
-                                                style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
-                                                <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
-                                                    <path d="M0-.5h24v24H0z" fill="none"></path>
-                                                    <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" className="jWRuRT"></path>
-                                                </svg>
-                                            </Button>
-                                            
-                                            <span style={{ fontFamily: 'Georgia', fontSize: 18,textAlign:"center"  }}>{this.state.pageNo + 1}</span>
-                                        <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
-                                                style={{ marginLeft: 10,  textAlign:"center"  }}>
-                                                <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
-                                                    <path d="M0-.5h24v24H0z" fill="none"></path>
-                                                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
-                                                </svg>
-                                            </Button>
-                                            <Button  style={{ marginLeft: 5,marginRight:5}} bsStyle = "info" onClick={this.saveTemplate}> 
-                                            <i className="fa fa-save fa-lg" style={{marginRight:4}}/>Save
-                                            </Button>
-                                            {this.state.editMode ?
+                                <span style={{ fontFamily: 'Georgia', fontSize: 18,textAlign:"center"  }}>{this.state.pageNo + 1}</span>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
+                                        style={{ marginLeft: 10,  textAlign:"center"  }}>
+                                        <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                            <path d="M0-.5h24v24H0z" fill="none"></path>
+                                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
+                                        </svg>
+                                    </Button>
+                                    <Button style={{ marginLeft: 5,marginRight:5}} bsStyle = "info" onClick={this.saveTemplate}> 
+                                        <i className="fa fa-save fa-lg" style={{marginRight:4}}/>Save
+                                    </Button>
+                                    {this.state.editMode ?
                                         <span>
-                                        
-                                        <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right' }} bsStyle="danger" onClick={this.toggleEditMode}>
-                                            <i className="fa fa-edit" style={{ marginRight: 2 }} />
-                                            Editing
-                                        </Button>
-                                        
-                                        
+                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right' }} bsStyle="danger" onClick={this.toggleEditMode}>
+                                                <i className="fa fa-edit" style={{ marginRight: 2 }} />
+                                                Editing
+                                            </Button>
                                         </span>
                                         :
                                         <span>
-                                       
-
-                                        <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right'}} bsStyle="success" onClick={this.toggleEditMode}>
-                                            <i className="fa fa-edit" style={{ marginRight: 2 }} />
-                                            Edit
-                                        </Button>
-                                       
-                                        
+                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right'}} bsStyle="success" onClick={this.toggleEditMode}>
+                                                <i className="fa fa-edit" style={{ marginRight: 2 }} />
+                                                Edit
+                                            </Button>
                                         </span>
                                     }                            
-                                            
-                                            
-                                        </span>
-                                        
-                                       
-
-                                </div>
-
+                                </span>
+                            </div>
                             <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE" }}>
                                 <div id="container" style={{
                                     backgroundColor: 'white', height: window.innerHeight * 0.70, margin:0
@@ -691,8 +668,10 @@ class App extends Component {
                                                 style={{
                                                     borderStyle: this.state.editMode ? "dotted" : "hidden",
                                                     borderWidth: 2,
-                                                    backgroundColor: "white",
+                                                    backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
+                                                                      ? "transparent" : "white",
                                                     borderColor: 'grey',
+                                                    width: "fit-content"
                                                 }}
 
                                                 // intialize components x,y,height and width
@@ -788,7 +767,6 @@ class ReportComponent extends Component {
     }
 }
 
-
 class Textbox extends Component {
     constructor(props) {
         super(props);
@@ -830,12 +808,15 @@ class Textbox extends Component {
 
         return(
             <RichTextEditor 
-                rootStyle={{height:"100%", minHeight:100, minWidth:150, border:0}}
+                rootStyle={{height:"100%", minHeight:100, minWidth:150, border:0, 
+                    backgroundColor:this.state.editMode ? "white" : "transparent"}}
+                editorStyle={{marginRight:20}}
                 value={this.state.value}
                 onChange={this.onChange}
                 toolbarConfig={toolbarConfig}
                 toolbarClassName={"draggable"}
-                toolbarStyle={{display: this.state.editMode ? "" : "none"}}
+                toolbarStyle={{display: this.state.editMode ? "" : "none", position:"absolute", margin:0, bottom:0, paddingLeft:10, 
+                    borderTop:"1px solid lightgray", width:"100%", backgroundColor:"whitesmoke"}}
             />
         );
     }
@@ -1049,7 +1030,7 @@ class Linechart extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{ height: "100% " }}>
+            <div className="draggable" style={{ height: "100%" }}>
                 {this.state.initialized ?
                     <div style={{ height: "calc(70.5% + 1px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
@@ -1119,12 +1100,12 @@ class ImageComponent extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{height:"100%", width:"100%"}}>
+            <div className="draggable" style={{height:"100%", width:"100%", backgroundColor: this.props.editMode ? "white" : "transparent"}}>
                 {this.state.initialized ? 
                 <img style={{height:"calc(100% - 27.5px)", width:"100%"}} 
                     src={this.state.imageUrl} 
                 />
-                : <div style={{border: "1px dotted grey", height:"100%"}}>
+                : <div style={{border: "1px dotted grey", height:"100%", backgroundColor:"white"}}>
                     <input className="fileInput" type="file" onChange={this.imageChange} /><br/>
                     Please select an Image for Preview
                 </div>}
@@ -1159,12 +1140,12 @@ class VideoComponent extends React.Component {
 
     render() {
         return (
-            <div className="draggable" style={{height:"100%", width:"100%"}}>
+            <div className="draggable" style={{height:"100%", width:"100%", background:this.props.editMode ? "white" : "transparent"}}>
                 {this.state.initialized ? 
                     <iframe style={{width:"100%", height:"calc(100% - 27.5px)"}} 
                         src={this.state.videoUrl} frameBorder="0" allow="encrypted-media" allowFullScreen>
                     </iframe>
-                : <div style={{height:"100%", display:"flex"}}>
+                : <div style={{height:"100%", width:"100%", display:"flex"}}>
                     <input id="videoUrl" className="nonDraggable" placeholder="Please enter a embed video URL" 
                         style={{margin:"auto", width:"80%"}}/>
                     <button style={{margin:"auto"}} onClick={this.loadVideo}>Submit</button>
@@ -1279,7 +1260,7 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="draggable" style={{textAlign: "center", height:"100%",width:"100%"}}>
+                    <Form className="draggable" style={{textAlign:"center", height:"100%", width:"100%", backgroundColor:"white"}}>
                         <label>Chart Title</label>
                         <Field className="nonDraggable" type="text" name="title" placeholder="Chart Title" />
                         <br/><br/>
@@ -1485,12 +1466,12 @@ class EmptyTable extends Component {
                 }],
             data: [{
                     id: 'row1',
-                    col1: 'Some data',
-                    col2: 'Some data'
+                    col1: '',
+                    col2: ''
                 },{
                     id: 'row2',
-                    col1: 'Some data',
-                    col2: 'Some data'
+                    col1: '',
+                    col2: ''
                 }],
         }
     }
@@ -1630,7 +1611,7 @@ class EmptyTable extends Component {
                     cellEdit={ 
                         cellEditFactory({ 
                             blurToSave: true,
-                            mode:'dbclick'
+                            mode:'click'
                         }) 
                     }
                 />
