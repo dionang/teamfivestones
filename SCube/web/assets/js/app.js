@@ -604,6 +604,19 @@ class App extends Component {
 
                             <div className="col-sm-12 col-xs-12" style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: 'white', borderBottom: '7px solid #EB6B2A' }}>
                                 <label> Add Component: </label>
+                                <input type="image" data-toggle="tooltip" title="Add Textbox"
+                                    onClick={this.addTextbox} style={{ marginRight: 1, height:"30px", marginBottom:"-10px" }} src= "assets/images/text.png"/>
+                                <input type="image" data-toggle="tooltip" title="Add Bar Chart"
+                                    onClick={this.addBarChart} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/bar chart.png"/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Line Chart" 
+                                    onClick={this.addLineChart} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/line chart.png"/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Table" 
+                                    onClick={this.addTable} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/table.png"/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Image" 
+                                    onClick={this.addImage} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/picture.png"/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Video" 
+                                    onClick={this.addVideo} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/video_4880.png"/>
+                                {/*
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"
                                     onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsStyle="warning"
@@ -616,7 +629,7 @@ class App extends Component {
                                     onClick={this.addImage} style={{ backgroundColor: "#31B0D5", color: "white", border: "1px solid #31B0D5", marginRight: 5 }}><i className="fa fa-image" /></Button>
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"
                                     onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 5}}><i className="fa fa-play-circle" /></Button>
-
+                                */}
                                 <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Number
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
                                     style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
