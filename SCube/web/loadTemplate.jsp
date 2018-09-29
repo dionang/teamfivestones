@@ -39,7 +39,6 @@
         <script src="assets/js/bundle.min.js"></script>    
         <!-- PptXGenJS -->
         <script src="assets/js/jspdf.js"></script>
-        <script src="assets/js/html2canvas.js"></script>
         <script src="assets/js/dom-to-image.js"></script>
         <script src="https://cdn.rawgit.com/gitbrent/PptxGenJS/v2.2.0/dist/pptxgen.bundle.js"></script>
         <!-- JsonProcessor -->

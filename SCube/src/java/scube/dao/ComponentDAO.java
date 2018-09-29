@@ -2,10 +2,7 @@ package scube.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
-import scube.entities.Component;
-import scube.entities.Textbox;
-import scube.entities.Chart;
-import scube.entities.Image;
+import scube.entities.*;
 
 public class ComponentDAO {
     //Create operations
@@ -51,6 +48,14 @@ public class ComponentDAO {
                         case "image":
                             Image image = (Image) component;
                             addImage(templateId, page, i, image.getImagePrefix(), image.getImageData());
+                            break;
+                        case "table":
+                            Table table = (Table) component;
+                            addTable(templateId, page, i, table.getColumns(), table.getData());
+                            break;
+                        case "video":
+                            Video video = (Video) component;
+                            addVideo(templateId, page, i, video.getVideoUrl());
                             break;
                         default:
                             break;
@@ -116,6 +121,27 @@ public class ComponentDAO {
         }
     }
     
+    public static void addTable(int templateId, int page, int position, String columns, String data) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO `table` VALUES (?,?,?,?,?)"); //because table is a special keyword
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, page);            
+            stmt.setInt(3, position);            
+            stmt.setString(4, columns);
+            stmt.setString(5, data);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
     public static void addTextbox(int templateId, int page, int position, String text) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -128,6 +154,27 @@ public class ComponentDAO {
             stmt.setInt(2, page);            
             stmt.setInt(3, position);            
             stmt.setString(4, text);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static void addVideo(int templateId, int page, int position, String videoUrl) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO video VALUES (?,?,?,?)");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, page);            
+            stmt.setInt(3, position);            
+            stmt.setString(4, videoUrl);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -169,6 +216,13 @@ public class ComponentDAO {
                 } else if (type.equals("image")) {
                     component = new Image(type, rs.getInt("x"), rs.getInt("y"), rs.getInt("height"), rs.getInt("width"), 
                         getImagePrefix(templateId, page, position), getImageData(templateId, page, position));
+                } else if (type.equals("table")) {
+                    ArrayList<String> props = getTableProps(templateId, page, position);
+                    component = new Table(type, rs.getInt("x"), rs.getInt("y"), rs.getInt("height"), rs.getInt("width"), 
+                        props.get(0), props.get(1));
+                } else if (type.equals("video")) {
+                    component = new Video(type, rs.getInt("x"), rs.getInt("y"), rs.getInt("height"), rs.getInt("width"), 
+                        getVideoUrl(templateId, page, position));
                 }
                 
                 // if next page, add existing list to allComponents and reset the components list
@@ -270,6 +324,35 @@ public class ComponentDAO {
         }
     }
     
+    public static ArrayList<String> getTableProps(int templateId, int page, int position) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        ArrayList<String> props = new ArrayList<>();
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT columns, data FROM `table` WHERE templateId = ? and page = ? and position = ?");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, page);
+            stmt.setInt(3, position);
+            rs = stmt.executeQuery();
+
+            if(rs.next()){
+                props.add(rs.getString("columns"));
+                props.add(rs.getString("data"));
+                return props;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
     public static ArrayList<String> getChartProps(int templateId, int page, int position) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -303,7 +386,34 @@ public class ComponentDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
-        public static int getPageNoByTemplateId(int templateId) {
+    
+    public static String getVideoUrl(int templateId, int page, int position) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT videoUrl FROM video WHERE templateId = ? and page = ? and position = ?");
+            stmt.setInt(1, templateId);
+            stmt.setInt(2, page);
+            stmt.setInt(3, position);
+            rs = stmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getString("videoUrl");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static int getPageNoByTemplateId(int templateId) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -326,6 +436,7 @@ public class ComponentDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
+    
     // Update operations
 //    public static boolean changePassword(int accountId, String newPassword) {
 //        Connection conn = null;
@@ -363,6 +474,8 @@ public class ComponentDAO {
             deleteAllCharts(templateId);            
             deleteAllTextboxes(templateId);            
             deleteAllImages(templateId);
+            deleteAllTables(templateId);    
+            deleteAllVideos(templateId);
 
             return true;
         } catch (SQLException e) {
@@ -419,6 +532,44 @@ public class ComponentDAO {
         try {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("DELETE FROM image WHERE templateId = ?");
+            stmt.setInt(1, templateId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static boolean deleteAllTables(int templateId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM `table` WHERE templateId = ?");
+            stmt.setInt(1, templateId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static boolean deleteAllVideos(int templateId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM video WHERE templateId = ?");
             stmt.setInt(1, templateId);
             stmt.executeUpdate();
             return true;

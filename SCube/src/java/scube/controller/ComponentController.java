@@ -5,9 +5,7 @@
  */
 package scube.controller;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,10 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import scube.dao.ComponentDAO;
-import scube.entities.Component;
-import scube.entities.Textbox;
-import scube.entities.Chart;
-import scube.entities.Image;
+import scube.entities.*;
 
 /**
  *
@@ -93,8 +88,18 @@ public class ComponentController extends HttpServlet {
                             int comma = imageUrl.indexOf(",");
                             String imagePrefix = imageUrl.substring(0,comma);  
                             byte[] imageData = Base64.getMimeDecoder().decode(imageUrl.substring(comma));
-
                             components.add(new Image(type, x, y, height, width, imagePrefix, imageData));
+                        } else if (type.equals("table")) {
+                            String columns  = properties.get("columns").getAsJsonArray().toString();
+                            String data = properties.get("data").getAsJsonArray().toString();
+                            components.add(new Table(type, x, y, height, width, columns, data));
+                        } else if (type.equals("video")) {
+                            boolean initialized = properties.get("initialized").getAsBoolean();
+                            String videoUrl = properties.get("videoUrl").getAsString();
+                            
+                            if(initialized){
+                                components.add(new Video(type, x, y, height, width, videoUrl));
+                            }
                         }
                     }
                     
@@ -148,6 +153,13 @@ public class ComponentController extends HttpServlet {
                                 properties.addProperty("initialized", true);
                                 properties.addProperty("imageUrl", imageUrl);
                                 break;
+                            case "table":
+                                Table table = (Table) component;
+                                JsonArray columns = new JsonParser().parse(table.getColumns()).getAsJsonArray();
+                                JsonArray data = new JsonParser().parse(table.getData()).getAsJsonArray();
+                                properties.addProperty("initialized", true);
+                                properties.add("columns", columns);
+                                properties.add("data", data);
                             default:
                                 break;
                         }
