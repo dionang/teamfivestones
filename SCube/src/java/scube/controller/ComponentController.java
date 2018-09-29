@@ -158,10 +158,12 @@ public class ComponentController extends HttpServlet {
                                 properties.addProperty("initialized", true);
                                 properties.add("columns", columns);
                                 properties.add("data", data);
+                                break;
                             case "video":
                                 Video video = (Video) component;
                                 properties.addProperty("initialized", true);
                                 properties.addProperty("videoUrl", video.getVideoUrl());
+                                break;
                             default:
                                 break;
                         }
