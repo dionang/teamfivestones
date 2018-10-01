@@ -15,17 +15,20 @@
     </head>
     <body>
         <div class="row" style=" margin-top:20px;">
-            <div class="slideshow-container">
+             
+            <div class="slideshow-container" >
+                <a class="prev" onclick="plusSlides(-1)" >&#10094;</a>
                 <% 
                     ArrayList<String> slides = (ArrayList<String>) request.getAttribute("slides");
-                    for (String eachSlides : slides) {
+                    for (int i=0;i<slides.size();i++) {
                 %>
                         <div class="mySlides fade" >
-                            <img src="<%=eachSlides%>" style="width:100%;">
+                            <img src="<%=slides.get(i)%>" style="width:100%;">
+                            <div class="text"><%= i+1%>/<%=slides.size()%></div>
                         </div>
                 <%  } %>
 
-                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+               
                 <a class="next" onclick="plusSlides(1)">&#10095;</a>
             </div>
             <br>
