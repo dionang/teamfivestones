@@ -359,6 +359,11 @@ class App extends Component {
             let components = this.state.components[pageNo];
             let slide = pptx.addNewSlide();
             for (let component of components) {
+                // if component is not displayed, skip the entry
+                if (!component.display) {
+                    continue;
+                }
+
                 // convert px to inches
                 let x = component.x / 96;
                 let y = component.y / 96;
@@ -380,6 +385,34 @@ class App extends Component {
                     y = (component.y + 27.5) / 96;
                     h = (component.height - 27.5) / 96;
                     slide.addImage({ data: imageUrl, x: x, y: y, w: w, h: h });
+                } else if (component.type === "table") {
+                    // remove height of toolbar
+                    y = (component.y + 27.5) / 96;
+                    h = (component.height - 27.5) / 96;
+                    let headerNames = [];
+                    let headerData = [];
+
+                    // store the header names and data
+                    for (let col of component.properties.columns) {
+                        headerNames.push(col.dataField);
+                        headerData.push(col.text);
+                    }
+
+                    let tableData = [];
+                    tableData.push(headerData);
+
+                    // insert table data
+                    for (let row of component.properties.data) {
+                        let rowData = [];
+                        for (let name of headerNames) {
+                            rowData.push(row[name]);
+                        }
+
+                        tableData.push(rowData);
+                    }
+
+                    let tableOpts = { x:x, y:y, w:w }
+                    slide.addTable(tableData, tableOpts);
                 } else if (component.type === "video") {
                     // remove the p tags
                     let videoUrl = component.properties.videoUrl.trim();
@@ -1457,14 +1490,14 @@ class EmptyTable extends Component {
                     text: 'Header 1',
                     headerEvents: {
                         onClick: this.handleClick,
-                        onBlur: this.handleBlur
+                        onBlur: (e) => this.handleBlur(e,0)
                     }
                 }, {
                     dataField: 'col2',
                     text: 'Header 2',
                     headerEvents: {
                         onClick: this.handleClick,
-                        onBlur: this.handleBlur
+                        onBlur: (e) => this.handleBlur(e,1)
                     }
                 }, {
                     dataField: 'delete',
@@ -1490,11 +1523,6 @@ class EmptyTable extends Component {
 
     componentWillMount(){
         let self = this;
-        let headerEvents = {
-            onClick: this.handleClick,
-            onBlur: this.handleBlur
-        };
-
         let columns = this.props.properties.columns;
         let new_columns = [];
 
@@ -1502,7 +1530,10 @@ class EmptyTable extends Component {
             new_columns.push({
                 dataField:columns[i].dataField, 
                 text:columns[i].text, 
-                headerEvents:headerEvents
+                headerEvents:{
+                    onClick: this.handleClick,
+                    onBlur: (e) => this.handleBlur(e,i)
+                }
             }) 
         }
 
@@ -1551,7 +1582,7 @@ class EmptyTable extends Component {
         data.splice(rowIndex,1);
         
         // fix id referencing error        
-        for(let i in data) {
+        for(let i=0; i < data.length; i++) {
             data[i].id = "row" + (i+1);
         }
         this.setState({data});
@@ -1573,7 +1604,7 @@ class EmptyTable extends Component {
             text: 'Header ' + columns.length,
             headerEvents: {
                 onClick: this.handleClick,
-                onBlur: this.handleBlur
+                onBlur: (e) => this.handleBlur(e,columns.length-1)
             }
         });
 
@@ -1590,10 +1621,18 @@ class EmptyTable extends Component {
         e.target.childNodes[0].focus();
     }
 
-    handleBlur = (e) => {
+    handleBlur(e, i) {
+        let self = this;
         let parent = e.target.parentNode;
+        let columns = this.state.columns;
+
         parent.innerHTML = e.target.value;
-        this.updateProperties();
+        columns[i].text = e.target.value;
+
+        this.setState({columns});
+        setTimeout(function() {
+            self.updateProperties();
+        }, 100);
     }
 
     updateProperties() {
@@ -1605,7 +1644,6 @@ class EmptyTable extends Component {
                 new_columns.push({dataField:column.dataField, text:column.text})
             }
         }
-
         this.props.updateProperties({columns:new_columns, data:this.state.data}, this.props.i);
     }
 
