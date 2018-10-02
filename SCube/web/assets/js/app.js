@@ -1606,7 +1606,7 @@ class EmptyTable extends Component {
             text: 'Delete',
             align: 'center',
             editable: false,
-            hidden: false,
+            hidden: !self.props.editMode,
             formatter: function(cell, row, rowIndex){
                 return <i className="fa fa-trash" onClick={() => self.delRow(rowIndex)}/>
             }
