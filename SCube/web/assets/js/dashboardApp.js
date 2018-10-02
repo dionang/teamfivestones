@@ -96,11 +96,30 @@ class DashboardApp extends Component {
         this.setState({ components, editMode: true });
     }
 
-
     addTable = () => {
         let components = this.state.components;
         components[this.state.pageNo].push(
-            { type: "table", x: 0, y: 0, height: 300, width: 300, display: true }
+            { 
+                type: "table", x: 0, y: 0, height:150, width:300, display: true,
+                properties: {
+                    columns: [{
+                        dataField: 'col1',
+                        text: 'Header 1'
+                    }, {
+                        dataField: 'col2',
+                        text: 'Header 2'
+                    }],
+                    data: [{
+                        id: 'row1',
+                        col1: '',
+                        col2: '',
+                    },{
+                        id: 'row2',
+                        col1: '',
+                        col2: ''
+                    }]
+                }
+            }
         );
 
         this.setState({ components, editMode: true });
@@ -124,10 +143,10 @@ class DashboardApp extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             {
-                type: "video", x: 0, y: 0, height: 200, width: 200, display: true,
+                type: "video", x: 0, y: 0, height: 240, width: 400, display: true,
                 properties: {
-                    // using textbox properties for now
-                    text: '',
+                    initialized: false,
+                    videoUrl: '',
                 }
             }
         );
@@ -534,67 +553,63 @@ class DashboardApp extends Component {
 
 
                                 <div id="container" ref={this.myInput} className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', height: "calc(100% + 100px)", marginTop: 15, display: "block" , overflow:"scroll", marginLeft:"10px", maxHeight:this.state.halfHeight}}>
-                                    {/* map does a for loop over all the components in the state */}
-
-                                    
-
                                     {this.state.components[this.state.pageNo].map((item, i) => {
+                                            if (item.display) {
+                                                return <Rnd key={this.state.pageNo + "," + i}
+                                                    style={{
+                                                        borderStyle: this.state.editMode ? "dotted" : "hidden",
+                                                        borderWidth: 2,
+                                                        backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
+                                                                          ? "transparent" : "white",
+                                                        borderColor: 'grey',
+                                                        width: "fit-content"
+                                                    }}
 
-                                        
-                                        if (item.display) {
-                                            return <div key={this.state.pageNo + "," + i}
+                                                    // intialize components x,y,height and width
+                                                    position={{ x: item.x, y: item.y }}
+                                                    size={{ width: item.width, height: item.height }}
 
-                                                style={{
-                                                    borderStyle:"none",
-                                                    borderWidth: 0.5,
-                                                    backgroundColor: "white",
-                                                    borderColor: 'grey',
-                                                    width: this.state.halfWidth,
-                                                    // height: this.state.halfHeight,
-                                                    display: "inline-block",
-                                                    marginLeft:"10px"
-                                                }}
+                                                    // min height and size
+                                                    minHeight={120} minWidth={135}
 
-                                                // intialize components x,y,height and width
-                                                position={{ x: item.x, y: item.y }}
-                                                size={{ width: item.width, height: item.height }}
+                                                    // to customize the dragging and resizing behavior
+                                                    bounds={"parent"}
+                                                    cancel={".nonDraggable"}
+                                                    dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
+                                                    enableResizing={{
+                                                        bottom: this.state.editMode,
+                                                        bottomLeft: this.state.editMode,
+                                                        bottomRight: this.state.editMode,
+                                                        left: this.state.editMode,
+                                                        right: this.state.editMode,
+                                                        top: this.state.editMode,
+                                                        topLeft: this.state.editMode,
+                                                        topRight: this.state.editMode
+                                                    }}
 
-                                                // min height and size
-                                                minHeight={10} minWidth={10}
+                                                    // update height and width onResizeStop
+                                                    // onResizeStop will activate a callback function containing these params
+                                                    // ref represents item that was resized
+                                                    onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
 
-                                                // to customize the dragging and resizing behavior
-                                                cancel={".nonDraggable"}
-                                                dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
-
-                                                // update height and width onResizeStop
-                                                // onResizeStop will activate a callback function containing these params
-                                                // ref represents item that was resized
-                                                onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
-
-                                                // update height and width onResizeStop
-                                                // onDragStop will activate a callback function containing these params
-                                                // ref represents item that was dragged
-                                                onDragStop={(event, ref) => this.onDragStop(ref, i)}
-                                            >
-                                                <div style={{ height: 27.5, float: "right" }}>
-                                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
-                                                        onClick={() => this.changeSettings(i)}></i>
-                                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
-                                                        onClick={() => this.deleteComponent(i)}></i>
-                                                </div>
-                                                <ReportComponent type={item.type} editMode={this.state.editMode}
-                                                    properties={item.properties} i={i}
-                                                    updateProperties={this.updateProperties.bind(this)}
-
-                                                />
-                                               
-                                                {/* <Descriptive type={item.type} editMode={this.state.editMode}
-                                                    properties={item.properties} i={i}
-                                            updateProperties={this.updateProperties.bind(this)}></Descriptive>*/}
-                                            </div>
-                                        }
-                                    })}
-
+                                                    // update height and width onResizeStop
+                                                    // onDragStop will activate a callback function containing these params
+                                                    // ref represents item that was dragged
+                                                    onDragStop={(event, ref) => this.onDragStop(ref, i)}
+                                                >
+                                                    <div style={{ height: 27.5, float: "right" }}>
+                                                        <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
+                                                            onClick={() => this.changeSettings(i)}></i>
+                                                        <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
+                                                            onClick={() => this.deleteComponent(i)}></i>
+                                                    </div>
+                                                    <ReportComponent type={item.type} editMode={this.state.editMode}
+                                                        properties={item.properties} i={i}
+                                                        updateProperties={this.updateProperties.bind(this)}
+                                                    />
+                                                </Rnd>
+                                            }
+                                        })}
                                 </div>
                             </div>
                         </div>
@@ -1152,17 +1167,18 @@ class ReportComponent extends Component {
             );
         } else if (this.props.type ==="image"){
             return(
-                <Image i={this.props.i}  editMode={this.props.editMode} 
+                <ImageComponent i={this.props.i}  editMode={this.props.editMode} 
                     properties={this.props.properties} updateProperties={this.props.updateProperties}/>
             );
         } else if (this.props.type ==="table"){
             return(
-                <EmptyTable/>
+                <EmptyTable i={this.props.i} editMode={this.props.editMode} 
+                    properties={this.props.properties} updateProperties={this.props.updateProperties} />
             );
         } else if (this.props.type === "video") {
             return(
-                <Textbox i={this.props.i} text={this.props.properties.text} editMode={this.props.editMode}
-                    updateProperties={this.props.updateProperties} />
+                <VideoComponent i={this.props.i} editMode={this.props.editMode} 
+                    properties={this.props.properties} updateProperties={this.props.updateProperties} />
             );
         }
     }
@@ -1171,89 +1187,188 @@ class ReportComponent extends Component {
 class EmptyTable extends Component {
     constructor(props) {
         super(props);
+        let self = this;
         this.state = {
+            editMode: this.props.editMode,
             columns: [{
                     dataField: 'col1',
                     text: 'Header 1',
                     headerEvents: {
                         onClick: this.handleClick,
-                        onBlur: this.handleBlur
-                    },
+                        onBlur: (e) => this.handleBlur(e,0)
+                    }
                 }, {
                     dataField: 'col2',
                     text: 'Header 2',
                     headerEvents: {
                         onClick: this.handleClick,
-                        onBlur: this.handleBlur
-                    },
+                        onBlur: (e) => this.handleBlur(e,1)
+                    }
                 }, {
-                    dataField: 'cancel',
-                    text: 'Cancel',
-                    editable: false
+                    dataField: 'delete',
+                    text: 'Delete',
+                    align: 'center',
+                    editable: false,
+                    hidden: false,
+                    formatter: function(cell, row, rowIndex){
+                        return <i className="fa fa-trash" onClick={() => self.delRow(rowIndex)}/>
+                    }
                 }],
             data: [{
-                id: 'example1',
-                    col1: 'Some data',
-                    col2: 'Some data',
+                    id: 'row1',
+                    col1: '',
+                    col2: ''
                 },{
-                    id: 'example2',
-                    col1: 'Some data',
-                    col2: 'Some data'
+                    id: 'row2',
+                    col1: '',
+                    col2: ''
                 }],
         }
     }
 
+    componentWillMount(){
+        let self = this;
+        let columns = this.props.properties.columns;
+        let new_columns = [];
+
+        for (let i in columns) {
+            new_columns.push({
+                dataField:columns[i].dataField, 
+                text:columns[i].text, 
+                headerEvents:{
+                    onClick: this.handleClick,
+                    onBlur: (e) => this.handleBlur(e,i)
+                }
+            }) 
+        }
+
+        // add the delete column
+        new_columns.push({
+            dataField: 'delete',
+            text: 'Delete',
+            align: 'center',
+            editable: false,
+            hidden: false,
+            formatter: function(cell, row, rowIndex){
+                return <i className="fa fa-trash" onClick={() => self.delRow(rowIndex)}/>
+            }
+        });
+
+        this.setState({columns: new_columns, data:this.props.properties.data})
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.editMode != nextProps.editMode){
+            let columns = this.state.columns;
+            columns[columns.length - 1].hidden = !columns[columns.length - 1].hidden;
+            this.setState({columns, editMode:nextProps.editMode});
+        }
+    }
+
     addRow = (e) => {
+        let self = this;
         let data = this.state.data;
-        let new_data = {id:'example' + (data.length+1)};
-        for (let i=1; i <= this.state.columns.length; i++){
+        let new_data = {id:'row' + (data.length+1)}
+
+        for (let i=1; i < this.state.columns.length; i++){
             new_data["col" + i] = '';
         }
 
         data.push(new_data);
         this.setState({data})
+
+        setTimeout(function () {
+            self.updateProperties();
+        }, 100);
+    }
+
+    delRow(rowIndex){
+        let data = this.state.data;
+        data.splice(rowIndex,1);
+        
+        // fix id referencing error        
+        for(let i=0; i < data.length; i++) {
+            data[i].id = "row" + (i+1);
+        }
+        this.setState({data});
     }
 
     addCol = (e) => {
+        let self = this;
         let columns = this.state.columns;
+        let new_columns = [];
         let data = this.state.data;
 
-        columns.push({
-            dataField: 'col' + (columns.length+1),
-            text: 'Header ' + (columns.length+1),
-            headerEvents: {
-                onClick: this.handleClick,
-                onBlur: this.handleBlur
-            }
-        });
-
+        // add new item to end of each table row (or else code will crash)
         for (let obj of data){
             obj["col" + columns.length] = '';
         }
 
-        this.setState({columns, data})
+        for (let i in columns) {
+            let column = columns[i];
+
+            // push the new column before the cancel column
+            if(i == columns.length - 1) {
+                new_columns.push({
+                    dataField: 'col' + columns.length,
+                    text: 'Header ' + columns.length,
+                    headerEvents: {
+                        onClick: this.handleClick,
+                        onBlur: (e) => this.handleBlur(e,columns.length-1)
+                    }
+                })
+            }
+
+            new_columns.push(column);
+        }
+
+        this.setState({columns: new_columns, data});
+
+        setTimeout(function() {
+            self.updateProperties();
+        }, 100);
     }
 
     handleClick = (e) => {
         let value = e.target.innerHTML;
-        e.target.innerHTML = '<input value="' + value + '"/>';
+        e.target.innerHTML = '<input class="nonDraggable" value="' + value + '"/>';
         e.target.childNodes[0].focus();
     }
 
-    handleBlur = (e) => {
+    handleBlur(e, i) {
+        let self = this;
         let parent = e.target.parentNode;
+        let columns = this.state.columns;
+
         parent.innerHTML = e.target.value;
-        this.setState({clickTitle: true});
+        columns[i].text = e.target.value;
+
+        this.setState({columns});
+        setTimeout(function() {
+            self.updateProperties();
+        }, 100);
+    }
+
+    updateProperties() {
+        let columns = this.state.columns;
+        let new_columns = [];
+        for (let i in columns) {
+            let column = columns[i];
+            if(i != columns.length - 1) {
+                new_columns.push({dataField:column.dataField, text:column.text})
+            }
+        }
+        this.props.updateProperties({columns:new_columns, data:this.state.data}, this.props.i);
     }
 
     render(){
         return (
-            <div>
-                <Button bsSize="small" bsStyle="primary" style={{ padding:"4px 6px" }}
+            <div className="draggable">
+                <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
                     onClick={this.addRow}>Add Row</Button>
-                <Button bsSize="small" bsStyle="primary" style={{ padding:"4px 6px" }}
+                <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
                     onClick={this.addCol}>Add Col</Button>
-                <BootstrapTable keyField='id' 
+                <BootstrapTable keyField='id' className="nonDraggable" 
                     striped responsive
                     data={ this.state.data } 
                     columns={ this.state.columns } 
@@ -1267,7 +1382,47 @@ class EmptyTable extends Component {
             </div>
         );
     }
-
 }
 
-ReactDOM.render(<DashboardApp/>, document.getElementById('container'));
+class VideoComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            initialized: this.props.properties.initialized,
+            videoUrl: this.props.properties.videoUrl,
+        };
+    }
+
+    componentWillReceiveProps(nextProps){
+        if (nextProps.properties.initialized != this.state.initialized){
+            this.setState({
+                initialized:nextProps.properties.initialized, 
+                videoUrl: nextProps.properties.videoUrl
+            });
+        }
+    }
+
+    loadVideo = (e) => {
+        let videoUrl = document.getElementById("videoUrl").value.trim();
+        this.setState({initialized: true, videoUrl: videoUrl});
+        this.props.updateProperties({initialized: true, videoUrl: videoUrl}, this.props.i);
+    }
+
+    render() {
+        return (
+            <div className="draggable" style={{height:"100%", width:"100%", background:this.props.editMode ? "white" : "transparent"}}>
+                {this.state.initialized ? 
+                    <iframe style={{width:"100%", height:"calc(100% - 27.5px)"}} 
+                        src={this.state.videoUrl} frameBorder="0" allow="encrypted-media" allowFullScreen>
+                    </iframe>
+                : <div style={{height:"100%", width:"100%", display:"flex"}}>
+                    <input id="videoUrl" className="nonDraggable" placeholder="Please enter a embed video URL" 
+                        style={{margin:"auto", width:"80%"}}/>
+                    <button style={{margin:"auto"}} onClick={this.loadVideo}>Submit</button>
+                </div>}
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<DashboardApp/>, document.getElementById('reportContainer'));

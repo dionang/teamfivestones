@@ -47,7 +47,7 @@ public class LoginController extends HttpServlet {
             } else if (account instanceof Manager) {
                 response.sendRedirect("managerHome.jsp");
             } else if (account instanceof User) {
-                response.sendRedirect("userHome.jsp");
+                response.sendRedirect("managerHome.jsp");
             } else {
                 response.sendRedirect("createCompanyAccount.jsp");
             }
