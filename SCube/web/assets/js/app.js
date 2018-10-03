@@ -54,7 +54,7 @@ class App extends Component {
         // adds new component to state
         components[this.state.pageNo].push(
             {
-                type: "bar", x: 0, y: 0, height: 300, width: 500, display: true,
+                type: "bar", x: 0, y: 0, height: 370, width: 450, display: true,
                 properties: {
                     initialized: false,
                 }
@@ -69,7 +69,7 @@ class App extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             {
-                type: "line", x: 0, y: 0, height: 300, width: 500, display: true,
+                type: "line", x: 0, y: 0, height: 370, width: 450, display: true,
                 properties: {
                     initialized: false,
                 }
@@ -359,6 +359,11 @@ class App extends Component {
             let components = this.state.components[pageNo];
             let slide = pptx.addNewSlide();
             for (let component of components) {
+                // if component is not displayed, skip the entry
+                if (!component.display) {
+                    continue;
+                }
+
                 // convert px to inches
                 let x = component.x / 96;
                 let y = component.y / 96;
@@ -366,13 +371,56 @@ class App extends Component {
                 let h = (component.height) / 96;
 
                 if (component.type === "text") {
-                    // remove the p tags
-                    let text = component.properties.text.substring(3, component.properties.text.length - 4);
-                    slide.addText(text, {
+                    let text = component.properties.text;
+                    // remove non breaking spaces
+                    text = text.replace(/&nbsp;/g, " ");
+                    // replace break tag
+                    text = text.replace(new RegExp("<br>","g"), "\n");
+                    // extract all tokens
+                    let tokens = text.split(/(<strong>|<\/strong>|<em>|<\/em>|<u>|<\/u>|<p>|<\/p>|<ul>|<\/ul>|<ol>|<\/ol>|<li>|<\/li>)/);
+
+                    let texts = [];
+                    let bold = false;
+                    let underline = false;
+                    let italic = false;
+                    let breakLine = true;
+                    let bulletType = false;
+                    let bullet = false;
+                    for (let text of tokens){
+                        if (text === "" || text === "\n" || text === "\n  ") {
+                            continue;
+                        } else if (text === "<strong>" || text === "</strong>"){
+                            bold = !bold;
+                        } else if (text === "<em>" || text === "</em>"){
+                            italic = !italic;
+                        } else if (text === "<u>" || text === "</u>"){
+                            underline = !underline;
+                        } else if (text === "<p>" || text === "</p>") {
+                            breakLine = !breakLine;
+                            // push a line break if p tag end was hit
+                            if (breakLine) {
+                                texts.push({text:"\n"});
+                            }
+                        } else if (text === "<ul>" || text === "</ul>") {
+                            bulletType = true;
+                        } else if (text === "<ol>" || text === "</ol>") {
+                            bulletType = {type:"number"};
+                        } else if (text === "<li>" || text === "</li>") {
+                            bullet = !bullet;
+                        } else {
+                            let textItem = { text:text, options:{ bold:bold, underline:underline, italic:italic }};
+                            // only introduce the bullet attribute if necessary, as this starts a new line
+                            if (bullet) {
+                                textItem.options.bullet = bulletType;
+                            }
+                            texts.push(textItem);
+                        }
+                    }
+
+                    slide.addText(texts, {
                         x: x, y: y, w: w, h: h,
                         fontSize: 14, color: '363636'
                     });
-
                 } else if (component.type === "image") {
                     let imageUrl = component.properties.imageUrl;
 
@@ -380,6 +428,34 @@ class App extends Component {
                     y = (component.y + 27.5) / 96;
                     h = (component.height - 27.5) / 96;
                     slide.addImage({ data: imageUrl, x: x, y: y, w: w, h: h });
+                } else if (component.type === "table") {
+                    // remove height of toolbar
+                    y = (component.y + 27.5) / 96;
+                    h = (component.height - 27.5) / 96;
+                    let headerNames = [];
+                    let headerData = [];
+
+                    // store the header names and data
+                    for (let col of component.properties.columns) {
+                        headerNames.push(col.dataField);
+                        headerData.push({text: col.text, options: {bold: true}});
+                    }
+
+                    let tableData = [];
+                    tableData.push(headerData);
+
+                    // insert table data
+                    for (let row of component.properties.data) {
+                        let rowData = [];
+                        for (let name of headerNames) {
+                            rowData.push(row[name]);
+                        }
+
+                        tableData.push(rowData);
+                    }
+
+                    let tableOpts = { x:x, y:y, w:w }
+                    slide.addTable(tableData, tableOpts);
                 } else if (component.type === "video") {
                     // remove the p tags
                     let videoUrl = component.properties.videoUrl.trim();
@@ -388,7 +464,7 @@ class App extends Component {
             }
         }
 
-        pptx.save('Sample Presentation');
+        pptx.save(this.state.templateName);
     }
 
     saveTemplate = () => {
@@ -820,7 +896,7 @@ class Textbox extends Component {
 
         return(
             <RichTextEditor 
-                rootStyle={{height:"100%", minHeight:100, minWidth:150, border:0, 
+                rootStyle={{height:"100%", minHeight:100, minWidth:150, border:0, fontFamily: "Arial",
                     backgroundColor:this.state.editMode ? "white" : "transparent"}}
                 editorStyle={{marginRight:20}}
                 value={this.state.value}
@@ -1272,51 +1348,71 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="draggable" style={{textAlign:"center", height:"100%", width:"100%", backgroundColor:"white"}}>
-                        <label>Chart Title</label>
-                        <Field className="nonDraggable" type="text" name="title" placeholder="Chart Title" />
-                        <br/><br/>
-                        <label>Choose the datasource</label>
-                        <Field component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
-                            {self.state.datasources.map((datasource)=>
-                                <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the dataset</label>
-                        <Field component="select" name="path" onChange={(e)=>this.loadListOptions(e.target.value, formProps)}>
-                            {self.state.datasets.map((dataset)=>
-                                <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
-                            )}  
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the X-Axis</label> 
-                        <Field component="select" name="xAxis">
-                            {/* gets the option based on selected dataset */}
-                            {self.state.listOptions.map((listOption)=>
-                                {if(listOption.infoType === "categorical") {
-                                    return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
-                                }}
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the Y-Axis</label> 
-                        <Field component="select" name="yAxis">
-                            {self.state.listOptions.map((listOption)=>
-                                {if(listOption.infoType === "numerical") {
-                                    return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
-                                }}
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <span style={{marginRight:10}}>Show Summary Statistics</span>
-                        <input type="checkbox" name="summary" onChange={function(){
-                            formProps.values.summary = !formProps.values.summary;
-                        }}>
-                            
-                        </input>
-                        <br/><br/>
-                        <Button type="submit">Submit</Button>
+                    <Form className="form-horizontal draggable" style={{ height:"100%", width:"100%", backgroundColor:"white"}}>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Chart Title</label>
+                            <div className="col-md-7">
+                                <Field className="form-control nonDraggable" type="text" name="title" placeholder="Chart Title" />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the datasource</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
+                                    {self.state.datasources.map((datasource)=>
+                                        <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
+                                    )}
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the dataset</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target.value, formProps)}>
+                                    {self.state.datasets.map((dataset)=>
+                                        <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
+                                    )}  
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the X&#8209;Axis</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="xAxis">
+                                    {/* gets the option based on selected dataset */}
+                                    {self.state.listOptions.map((listOption)=>
+                                        {if(listOption.infoType === "categorical") {
+                                            return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
+                                        }}
+                                    )}
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the Y&#8209;Axis</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="yAxis">
+                                    {self.state.listOptions.map((listOption)=>
+                                        {if(listOption.infoType === "numerical") {
+                                            return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
+                                        }}
+                                    )}
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <div className="col-md-offset-3 col-md-7">
+                                <div className="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="summary" onChange={function(){
+                                            formProps.values.summary = !formProps.values.summary;
+                                        }}/> Show Summary Statistics
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <Button className="col-md-offset-5 col-md-2" type="submit">Submit</Button>
+                        
                         {/* <DisplayFormikState {...this.props}/> */}
                     </Form>
                 )}
@@ -1457,14 +1553,14 @@ class EmptyTable extends Component {
                     text: 'Header 1',
                     headerEvents: {
                         onClick: this.handleClick,
-                        onBlur: this.handleBlur
+                        onBlur: (e) => this.handleBlur(e,0)
                     }
                 }, {
                     dataField: 'col2',
                     text: 'Header 2',
                     headerEvents: {
                         onClick: this.handleClick,
-                        onBlur: this.handleBlur
+                        onBlur: (e) => this.handleBlur(e,1)
                     }
                 }, {
                     dataField: 'delete',
@@ -1490,11 +1586,6 @@ class EmptyTable extends Component {
 
     componentWillMount(){
         let self = this;
-        let headerEvents = {
-            onClick: this.handleClick,
-            onBlur: this.handleBlur
-        };
-
         let columns = this.props.properties.columns;
         let new_columns = [];
 
@@ -1502,7 +1593,10 @@ class EmptyTable extends Component {
             new_columns.push({
                 dataField:columns[i].dataField, 
                 text:columns[i].text, 
-                headerEvents:headerEvents
+                headerEvents:{
+                    onClick: this.handleClick,
+                    onBlur: (e) => this.handleBlur(e,i)
+                }
             }) 
         }
 
@@ -1512,7 +1606,7 @@ class EmptyTable extends Component {
             text: 'Delete',
             align: 'center',
             editable: false,
-            hidden: false,
+            hidden: !self.props.editMode,
             formatter: function(cell, row, rowIndex){
                 return <i className="fa fa-trash" onClick={() => self.delRow(rowIndex)}/>
             }
@@ -1551,7 +1645,7 @@ class EmptyTable extends Component {
         data.splice(rowIndex,1);
         
         // fix id referencing error        
-        for(let i in data) {
+        for(let i=0; i < data.length; i++) {
             data[i].id = "row" + (i+1);
         }
         this.setState({data});
@@ -1560,6 +1654,7 @@ class EmptyTable extends Component {
     addCol = (e) => {
         let self = this;
         let columns = this.state.columns;
+        let new_columns = [];
         let data = this.state.data;
 
         // add new item to end of each table row (or else code will crash)
@@ -1567,17 +1662,25 @@ class EmptyTable extends Component {
             obj["col" + columns.length] = '';
         }
 
-        // add column to column, before the cancel column
-        columns.splice(columns.length-1,0,{
-            dataField: 'col' + columns.length,
-            text: 'Header ' + columns.length,
-            headerEvents: {
-                onClick: this.handleClick,
-                onBlur: this.handleBlur
-            }
-        });
+        for (let i in columns) {
+            let column = columns[i];
 
-        this.setState({columns, data});
+            // push the new column before the cancel column
+            if(i == columns.length - 1) {
+                new_columns.push({
+                    dataField: 'col' + columns.length,
+                    text: 'Header ' + columns.length,
+                    headerEvents: {
+                        onClick: this.handleClick,
+                        onBlur: (e) => this.handleBlur(e,columns.length-1)
+                    }
+                })
+            }
+
+            new_columns.push(column);
+        }
+
+        this.setState({columns: new_columns, data});
 
         setTimeout(function() {
             self.updateProperties();
@@ -1586,14 +1689,22 @@ class EmptyTable extends Component {
 
     handleClick = (e) => {
         let value = e.target.innerHTML;
-        e.target.innerHTML = '<input value="' + value + '"/>';
+        e.target.innerHTML = '<input class="nonDraggable" value="' + value + '"/>';
         e.target.childNodes[0].focus();
     }
 
-    handleBlur = (e) => {
+    handleBlur(e, i) {
+        let self = this;
         let parent = e.target.parentNode;
+        let columns = this.state.columns;
+
         parent.innerHTML = e.target.value;
-        this.updateProperties();
+        columns[i].text = e.target.value;
+
+        this.setState({columns});
+        setTimeout(function() {
+            self.updateProperties();
+        }, 100);
     }
 
     updateProperties() {
@@ -1605,7 +1716,6 @@ class EmptyTable extends Component {
                 new_columns.push({dataField:column.dataField, text:column.text})
             }
         }
-
         this.props.updateProperties({columns:new_columns, data:this.state.data}, this.props.i);
     }
 

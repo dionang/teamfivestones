@@ -2,13 +2,12 @@
 <%@page import="java.util.*"%>
 <%@page import="scube.dao.ReportDAO"%>
 <%@ include file="protect.jsp" %>
-<%@ page import="scube.entities.Account" %>
-<%@ page import="scube.entities.Manager" %>
+<%@ page import="scube.entities.*" %>
 <%
     Account account = (Account) session.getAttribute("account");
     ArrayList<Template> templateList;
-    if (!(account instanceof Manager)){
-        response.sendRedirect("/");
+    if (!(account instanceof Manager) && !(account instanceof User)){
+        response.sendRedirect("login.jsp");
         return;
     } else {
         int companyId=account.getCompanyId();
@@ -42,7 +41,7 @@
                             <a id="myBtn">
                                 <div class="card card-inverse card-info">
                                     <div class="card-block">
-                                        <img class="card-img-top create" src="assets/images/create.png">
+                                        <img class="card-img-top create" src="assets/images/create.png" style="height:150px; width:150px">
                                     </div>
                                     <div class="card-footer">
 
@@ -155,7 +154,9 @@
                                 <div class="col-lg-3 col-sm-4 col-xs-6" style="margin-bottom: 15px">
                                     <div class="card card-inverse card-info" >
                                         <div class="card-block">
-                                            <img class="card-img-top" src="assets/images/dummyReport.png">
+                                            <!--<img class="card-img-top" src="assets/images/dummyReport.png">-->
+                                            <img class="card-img-top" src="https://scube.rocks/images/<%= template.getTemplateName() %>_slide1.jpg" style="height:150px; width:100%">
+
                                         </div>
                                         <div class="card-footer">
                                             <div class="row">

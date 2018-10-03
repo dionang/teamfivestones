@@ -1,9 +1,8 @@
 <%@ include file="protect.jsp" %>
-<%@ page import="scube.entities.Account" %>
-<%@ page import="scube.entities.Manager" %>
+<%@ page import="scube.entities.*" %>
 <%
     Account account = (Account) session.getAttribute("account");
-    if (!(account instanceof Manager)){
+    if (!(account instanceof Manager) && !(account instanceof User)){
         response.sendRedirect("login.jsp");
         return;
     }
@@ -16,7 +15,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/dashboard.css">
         <link rel="stylesheet" href="assets/css/home.css">
-        <title>Manager Home</title>
+        <title>User Home</title>
         
     </head>
 
@@ -35,7 +34,7 @@
                     <div class="icons" style="border-top: 3px solid">
                         <div class="col-sm-4 outer" style="padding: 70px 0; ">
                         <div class="img" >
-                            <a href="dashboard_1.jsp" style="text-decoration: none; ">
+                            <a href="dashboard.jsp" style="text-decoration: none; ">
                                 <div class="pic"style=" padding-top:30px; background-color: white ">
                                     <img src="assets/images/dashboard.png" class="image" />
                                 </div>

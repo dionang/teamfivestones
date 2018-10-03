@@ -1,9 +1,6 @@
-
-<%@page import="scube.entities.Manager"%>
-<%@page import="scube.entities.Template"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="scube.dao.ReportDAO"%>
-<%@page import="scube.entities.Account"%>
+<%@page import="scube.entities.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,7 +15,7 @@
         <%
             Account account = (Account) session.getAttribute("account");
 
-            if (!(account instanceof Manager)) {
+            if (!(account instanceof Manager) && !(account instanceof User)) {
                 response.sendRedirect("login.jsp");
                 return;
             }
@@ -55,5 +52,9 @@
                 </div>
             </div>
         </div>
+        <!-- jQuery -->
+        <script src="assets/js/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="assets/js/bootstrap.min.js"></script>
     </body>
 </html>

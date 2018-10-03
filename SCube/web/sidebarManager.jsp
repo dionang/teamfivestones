@@ -12,7 +12,7 @@
             <div class="menu_section">
                 <ul class="nav side-menu" id="options">
                     <li><a href="managerHome.jsp"><i class="fa fa-home"></i>  Home</a></li>
-                    <li><a href="dashboard_1.jsp"><i class="fa fa-bar-chart"></i>  View Dashboard</a></li>
+                    <li><a href="dashboard.jsp"><i class="fa fa-bar-chart"></i>  View Dashboard</a></li>
                     <li><a href="createUserAccount.jsp"><i class="fa fa-group"></i>  Create User Account</a></li>
                     <li><a href="templateHome.jsp"><i class="fa fa-file-image-o"></i>  Template</a></li> 
                     <li><a href="slideShow.jsp"><i class="fa fa-slideshare"></i>  Slide Show</a></li> 

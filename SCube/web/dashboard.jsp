@@ -1,9 +1,8 @@
 <%@ include file="protect.jsp" %>
-<%@ page import="scube.entities.Account" %>
-<%@ page import="scube.entities.Manager" %>
+<%@ page import="scube.entities.*" %>
 <%
     Account account = (Account) session.getAttribute("account");
-    if (!(account instanceof Manager)){
+    if (!(account instanceof Manager) && !(account instanceof User)){
         response.sendRedirect("login.jsp");
         return;
     }
@@ -21,7 +20,7 @@
         <input type="hidden" id="companyId"    value="<%= account.getCompanyId() %>"/>
         <input type="hidden" id="userName"     value="<%= account.getUsername() %>" />
         <input type="hidden" id="profileName"  value="<%= account.getName() %>" />
-        <div id="container"></div>
+        <div id="reportContainer"></div>
                     
         <!-- jQuery -->
         <script src="assets/js/jquery.min.js"></script>

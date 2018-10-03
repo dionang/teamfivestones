@@ -15,7 +15,6 @@ import { Formik, Form, Field } from 'formik';
 //const datasourceUrl = 'http://103.3.61.39:8080/Dummy_API/getCustomerOrders';
 //const api = 'https://scube.rocks/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
-
 const api = 'http://localhost:8084/';
 
 class DashboardApp extends Component {
@@ -31,26 +30,9 @@ class DashboardApp extends Component {
             templateName: "Template Name",
             sidebar: true,
             pageNo: 0,
-            halfWidth: window.innerWidth*0.4,
-            halfHeight: window.innerHeight*0.7
+            picArr:[],
+            exporting: false
         }
-    }
-
-    componentDidMount() {
-        // let templateName = document.getElementById("templateName").value;
-        // if (templateName !== "null") {
-        //     this.setState({templateName});
-        // }
-        this.loadTemplate();
-    }
-
-    addTextbox = () => {
-        let components = this.state.components;
-        components[this.state.pageNo].push(
-            { type: "text", x: 0, y: 0, height: 150, width: 220, display: true, properties: { text: "<p><br></p>" } }
-        );
-
-        this.setState({ components, editMode: true });
     }
 
     addBarChart = () => {
@@ -58,16 +40,9 @@ class DashboardApp extends Component {
         // adds new component to state
         components[this.state.pageNo].push(
             {
-                type: "bar", x: 0, y: 0, height: 250, width: 500, display: true,
+                type: "bar", x: 0, y: 0, height: 370, width: 500, display: true,
                 properties: {
                     initialized: false,
-                    datasourceUrl: '',
-                    dataset: '',
-                    title: '',
-                    xAxis: '',
-                    yAxis: '',
-                    summary: '',
-                    facetype: true
                 }
             }
         );
@@ -80,57 +55,42 @@ class DashboardApp extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             {
-                type: "line", x: 0, y: 0, height: 250, width: 300, display: true,
+                type: "line", x: 0, y: 0, height: 370, width: 500, display: true,
                 properties: {
                     initialized: false,
-                    datasourceUrl: '',
-                    dataset: '',
-                    title: '',
-                    xAxis: '',
-                    yAxis: '',
-                    facetype: true
                 }
             }
         );
 
         this.setState({ components, editMode: true });
     }
-
 
     addTable = () => {
         let components = this.state.components;
         components[this.state.pageNo].push(
-            { type: "table", x: 0, y: 0, height: 300, width: 300, display: true }
-        );
-
-        this.setState({ components, editMode: true });
-    }
-
-    addImage = () => {
-        let components = this.state.components;
-        components[this.state.pageNo].push(
-            {
-                type: "image", x: 0, y: 0, height: 200, width: 200, display: true,
+            { 
+                type: "table", x: 0, y: 0, height:150, width:250, display: true,
                 properties: {
-                    imageUrl: '',
-                    initialized: false,
+                    columns: [{
+                        dataField: 'col1',
+                        text: 'Header 1'
+                    }, {
+                        dataField: 'col2',
+                        text: 'Header 2'
+                    }],
+                    data: [{
+                        id: 'row1',
+                        col1: '',
+                        col2: '',
+                    },{
+                        id: 'row2',
+                        col1: '',
+                        col2: ''
+                    }]
                 }
             }
         );
-        this.setState({ components, editMode: true });
-    }
 
-    addVideo = () => {
-        let components = this.state.components;
-        components[this.state.pageNo].push(
-            {
-                type: "video", x: 0, y: 0, height: 200, width: 200, display: true,
-                properties: {
-                    // using textbox properties for now
-                    text: '',
-                }
-            }
-        );
         this.setState({ components, editMode: true });
     }
 
@@ -155,192 +115,8 @@ class DashboardApp extends Component {
         this.setState({ components });
     }
 
-    getComponentDetails = () => {
-        console.log(this.state.components);
-    }
-
-    // handleSizeChange = (changeEvent) => {
-    //     this.setState({
-    //         selectedSize: changeEvent.target.value
-    //     });
-    // }
-
-    // handleLayoutChange = (changeEvent) => {
-    //     this.setState({
-    //         selectedLayout: changeEvent.target.value
-    //     });
-    // }
-
-    loadTemplate = () => {
-        let self = this;
-        let templateId = parseInt(document.getElementById("templateId").value, 10);
-        if (templateId !== 0) {
-            request.post({
-                url: api + 'loadComponents',
-                json: true,
-                body: { operation: "loadComponents", templateId: templateId }
-            }, function (error, response, body) {
-                if (body) {
-                    let components = body.components;
-                    self.setState({ components });
-                }
-            });
-        }
-    }
-
-    previousPage = () => {
-        let pageNo = this.state.pageNo;
-        if (pageNo !== 0) {
-            pageNo = this.state.pageNo - 1;
-            this.setState({ pageNo });
-        }
-    }
-
-    nextPage = () => {
-        let components = this.state.components;
-        let pageNo = this.state.pageNo + 1;
-
-        // add new page if it doesnt exist
-        if (pageNo === components.length) {
-            components.push([]);
-        }
-        this.setState({ components, pageNo });
-    }
-
     renameTemplate = (e) => {
         this.setState({ templateName: e.target.value });
-    }
-
-    // i represents index of current item in this.state.components
-    // convert style data to integer. e.g. 10px -> 10
-    onResize(ref, pos, i) {
-        let components = this.state.components;
-        let pageNo = this.state.pageNo;
-        components[pageNo][i].height = parseInt(ref.style.height, 10);
-        components[pageNo][i].width = parseInt(ref.style.width, 10);
-        components[pageNo][i].x = pos.x;
-        components[pageNo][i].y = pos.y;
-        this.setState({ components });
-    }
-
-    onDragStop(ref, i) {
-        let components = this.state.components;
-        let pageNo = this.state.pageNo;
-        components[pageNo][i].x = ref.x;
-        components[pageNo][i].y = ref.y;
-        this.setState({ components });
-    }
-
-    saveComponents(templateId) {
-        let self = this;
-        request.post({
-            url: api + 'saveComponents',
-            json: true,
-            body: { operation: "saveComponents", templateId: templateId, components: self.state.components }
-        }, function (error, response, body) {
-            if (body && body.status) {
-                alert("Saved succesfully");
-                // swal("saved succesfully");
-            } else {
-                alert("Error in saving");
-                // swal("error in saving");
-            }
-
-        });
-    }
-
-    savePresentation = () => {
-        var pptx = new PptxGenJS();
-        pptx.setBrowser(true);
-
-        for (let pageNo in this.state.components) {
-            let components = this.state.components[pageNo];
-            let slide = pptx.addNewSlide();
-            for (let component of components) {
-                // convert px to inches
-                let x = component.x / 96;
-                let y = component.y / 96;
-                let w = component.width / 96;
-                let h = (component.height) / 96;
-
-                if (component.type === "text") {
-                    // remove the p tags
-                    let text = component.properties.text.substring(3, component.properties.text.length - 4);
-                    // console.log(text);
-                    // let texts = text.split(/\r\n|\n|\r/);
-                    // console.log(texts); 
-                    slide.addText(text, {
-                        x: x, y: y, w: w, h: h,
-                        fontSize: 14, color: '363636'
-                        // , bullet:{code:'25BA'} 
-                    });
-
-                } else if (component.type === "image") {
-                    let imageUrl = component.properties.imageUrl;
-
-                    // remove height of toolbar
-                    y = (component.y + 27.5) / 96;
-                    h = (component.height - 27.5) / 96;
-                    slide.addImage({ data: imageUrl, x: x, y: y, w: w, h: h });
-                } else if (component.type === "video") {
-                    // remove the p tags
-                    let videoUrl = component.properties.text.substring(3, component.properties.text.length - 4).trim();
-                    console.log(videoUrl);
-                    slide.addMedia({ type: 'online', link: videoUrl, x: x, y: y, w: w, h: h });
-                }
-            }
-        }
-
-        pptx.save('Sample Presentation');
-    }
-
-    saveTemplate = () => {
-        let self = this;
-        let templateId = parseInt(document.getElementById("templateId").value, 10);
-        let companyId = parseInt(document.getElementById("companyId").value, 10);
-        let userName = document.getElementById("userName").value;
-        if (templateId === 0 || templateId === 9) {
-            request.post({
-                url: api + 'createTemplate',
-                form: {
-                    operation: "createTemplate",
-                    templateId: templateId,
-                    templateName: self.state.templateName,
-                    templatesize: self.state.selectedSize,
-                    templatelayout: self.state.selectedLayout,
-                    companyId: companyId,
-                    userName: userName
-                }
-            }, function (error, response, body) {
-                if (body === "false") {
-                    alert("Failed to create template!");
-                } else {
-                    // update the value of the hidden fields
-                    document.getElementById("templateId").value = body;
-                    self.saveComponents(body);
-                }
-            });
-        } else {
-            request.post({
-                url: api + 'updateTemplate',
-                form: {
-                    operation: "updateTemplate",
-                    templateId: templateId,
-                    templateName: self.state.templateName,
-                    templatesize: self.state.selectedSize,
-                    templatelayout: self.state.selectedLayout,
-                    companyId: companyId,
-                    userName: userName
-                }
-            }, function (error, response, body) {
-                if (body === "false") {
-                    alert("Failed to update template!");
-                } else {
-                    self.saveComponents(templateId);
-                }
-            });
-        }
-        this.setState({ editMode: false });
     }
 
     toggleChartMenu = () => {
@@ -367,35 +143,6 @@ class DashboardApp extends Component {
         components[pageNo][i].properties = properties;
         this.setState({ properties });
     }
-
-    // handleFormSubmit= (formSubmitEvent) => {
-    //     formSubmitEvent.preventDefault();
-    //     var size=this.state.selectedSize;
-    //     var layout=this.state.selectedLayout;
-    //     if (size==="A3" && layout==="Portrait") {
-    //         this.setState({w : 29.7 *37.795276, h : 42*37.795276});
-    //     } else if (size==="A3" && layout==="Landscape") {
-    //         this.setState({h : 29.7 *37.795276, w : 42*37.795276});
-    //     } else if (size==="A4" && layout==="Portrait") {
-    //         this.setState({h : 29.7 *37.795276, w : 21*37.795276});
-    //     } else if (size==="A4" && layout==="Landscape") {
-    //         this.setState({w : 29.7 *37.795276, h : 21*37.795276});
-    //     } else if (size==="A5" && layout==="Portrait") {
-    //         this.setState({w : 14.8*37.795276, h : 21*37.795276}); 
-    //     } else if (size==="A5" && layout==="Landscape") {
-    //         this.setState({w : 21*37.795276, h : 14.8*37.795276});
-    //     }
-
-    //     this.setState({formVisibility:"hidden"});
-    //     var modal = document.getElementById('size');
-    //     modal.style.display = "none";
-    // }
-
-    // openModal = () => {
-    //     var modal = document.getElementById('size');
-    //     modal.style.display = "block";
-    //     this.setState({formVisibility:""});
-    // }
 
     render() {
         return (
@@ -460,7 +207,7 @@ class DashboardApp extends Component {
 
                             <div className="right_col" width="100%" style={{ backgroundColor: "#F3F3F3", overflow:"hidden" }}>
 
-                                <div className="col-xs-3 col-md-2" style={{ textAlign: "center", 'vertical-align': 'middle', float: "right", height: 'fit-content',  }} >
+                                <div className="col-xs-3 col-md-2" style={{ textAlign: "center", verticalAlign: 'middle', float: "right", height: 'fit-content',  }} >
                                     <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px", width: "30px", backgroundColor: '	brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Generated Reports</label>
                                     <label style={{ margin: "0px", fontSize: "40px", width: '100%', border: "1px solid grey", }}>100</label>
                                 </div>
@@ -468,9 +215,6 @@ class DashboardApp extends Component {
                                     <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px",  backgroundColor: '	brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Reports Printed</label>
                                     <br /><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>100</label>
                                 </div>
-
-
-
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
                                 {/* <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> */}
@@ -554,27 +298,6 @@ class DashboardApp extends Component {
                                                     display: "inline-block",
                                                     marginLeft:"10px"
                                                 }}
-
-                                                // intialize components x,y,height and width
-                                                position={{ x: item.x, y: item.y }}
-                                                size={{ width: item.width, height: item.height }}
-
-                                                // min height and size
-                                                minHeight={10} minWidth={10}
-
-                                                // to customize the dragging and resizing behavior
-                                                cancel={".nonDraggable"}
-                                                dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
-
-                                                // update height and width onResizeStop
-                                                // onResizeStop will activate a callback function containing these params
-                                                // ref represents item that was resized
-                                                onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
-
-                                                // update height and width onResizeStop
-                                                // onDragStop will activate a callback function containing these params
-                                                // ref represents item that was dragged
-                                                onDragStop={(event, ref) => this.onDragStop(ref, i)}
                                             >
                                                 <div style={{ height: 27.5, float: "right" }}>
                                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
@@ -686,7 +409,7 @@ class Barchart extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{ height: "100%" }}>
+            <div  >
                 { this.state.initialized ?
                     <div style={{ height: "calc(62.5% + 100px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
@@ -731,7 +454,6 @@ class Barchart extends Component {
         );
     }
 }
-
 
 class ChartForm extends Component {
     constructor(props) {
@@ -837,51 +559,71 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="draggable" style={{textAlign: "center", height:"100%",width:"100%"}}>
-                        <label>Chart Title</label>
-                        <Field type="text" name="title" placeholder="Chart Title" />
-                        <br/><br/>
-                        <label>Choose the datasource</label>
-                        <Field component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
-                            {self.state.datasources.map((datasource)=>
-                                <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the dataset</label>
-                        <Field component="select" name="path" onChange={(e)=>this.loadListOptions(e.target.value, formProps)}>
-                            {self.state.datasets.map((dataset)=>
-                                <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
-                            )}  
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the X-Axis</label> 
-                        <Field component="select" name="xAxis">
-                            {/* gets the option based on selected dataset */}
-                            {self.state.listOptions.map((listOption)=>
-                                {if(listOption.infoType === "categorical") {
-                                    return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
-                                }}
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the Y-Axis</label> 
-                        <Field component="select" name="yAxis">
-                            {self.state.listOptions.map((listOption)=>
-                                {if(listOption.infoType === "numerical") {
-                                    return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
-                                }}
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <span style={{marginRight:10}}>Show Summary Statistic</span>
-                        <input type="checkbox" name="summary" onChange={function(){
-                            formProps.values.summary = !formProps.values.summary;
-                        }}>
-                            
-                        </input>
-                        <br/><br/>
-                        <Button type="submit">Submit</Button>
+                    <Form className="form-horizontal " style={{ height:"500px", width:"500px", backgroundColor:"white"}}>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Chart Title</label>
+                            <div className="col-md-7">
+                                <Field className="form-control nonDraggable" type="text" name="title" placeholder="Chart Title" />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the datasource</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
+                                    {self.state.datasources.map((datasource)=>
+                                        <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
+                                    )}
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the dataset</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target.value, formProps)}>
+                                    {self.state.datasets.map((dataset)=>
+                                        <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
+                                    )}  
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the X&#8209;Axis</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="xAxis">
+                                    {/* gets the option based on selected dataset */}
+                                    {self.state.listOptions.map((listOption)=>
+                                        {if(listOption.infoType === "categorical") {
+                                            return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
+                                        }}
+                                    )}
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the Y&#8209;Axis</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="yAxis">
+                                    {self.state.listOptions.map((listOption)=>
+                                        {if(listOption.infoType === "numerical") {
+                                            return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
+                                        }}
+                                    )}
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <div className="col-md-offset-3 col-md-7">
+                                <div className="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="summary" onChange={function(){
+                                            formProps.values.summary = !formProps.values.summary;
+                                        }}/> Show Summary Statistics
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <Button className="col-md-offset-5 col-md-2" type="submit">Submit</Button>
+                        
                         {/* <DisplayFormikState {...this.props}/> */}
                     </Form>
                 )}
@@ -1000,7 +742,7 @@ class Descriptive extends Component {
 
         
         return (
-            <div className="draggable" height="100%">
+            <div>
                 <BootstrapTable keyField='id' data={products}
                     columns={columns}
                     //cellEdit={cellEditFactory({ mode: 'dbclick' })}
@@ -1093,7 +835,7 @@ class Linechart extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{ height: "100% " }}>
+            <div >
                 {this.state.initialized ?
                     <div style={{ height: "calc(70.5% + 1px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
@@ -1152,17 +894,18 @@ class ReportComponent extends Component {
             );
         } else if (this.props.type ==="image"){
             return(
-                <Image i={this.props.i}  editMode={this.props.editMode} 
+                <ImageComponent i={this.props.i}  editMode={this.props.editMode} 
                     properties={this.props.properties} updateProperties={this.props.updateProperties}/>
             );
         } else if (this.props.type ==="table"){
             return(
-                <EmptyTable/>
+                <EmptyTable i={this.props.i} editMode={this.props.editMode} 
+                    properties={this.props.properties} updateProperties={this.props.updateProperties} />
             );
         } else if (this.props.type === "video") {
             return(
-                <Textbox i={this.props.i} text={this.props.properties.text} editMode={this.props.editMode}
-                    updateProperties={this.props.updateProperties} />
+                <VideoComponent i={this.props.i} editMode={this.props.editMode} 
+                    properties={this.props.properties} updateProperties={this.props.updateProperties} />
             );
         }
     }
@@ -1171,90 +914,173 @@ class ReportComponent extends Component {
 class EmptyTable extends Component {
     constructor(props) {
         super(props);
+        let self = this;
         this.state = {
+            editMode: this.props.editMode,
             columns: [{
                     dataField: 'col1',
                     text: 'Header 1',
                     headerEvents: {
                         onClick: this.handleClick,
-                        onBlur: this.handleBlur
-                    },
+                        onBlur: (e) => this.handleBlur(e,0)
+                    }
                 }, {
                     dataField: 'col2',
                     text: 'Header 2',
                     headerEvents: {
                         onClick: this.handleClick,
-                        onBlur: this.handleBlur
-                    },
+                        onBlur: (e) => this.handleBlur(e,1)
+                    }
                 }, {
-                    dataField: 'cancel',
-                    text: 'Cancel',
-                    editable: false
+                    dataField: 'delete',
+                    text: 'Delete',
+                    align: 'center',
+                    editable: false,
+                    hidden: false,
+                    formatter: function(cell, row, rowIndex){
+                        return <i className="fa fa-trash" onClick={() => self.delRow(rowIndex)}/>
+                    }
                 }],
             data: [{
-                id: 'example1',
-                    col1: 'Some data',
-                    col2: 'Some data',
+                    id: 'row1',
+                    col1: '',
+                    col2: ''
                 },{
-                    id: 'example2',
-                    col1: 'Some data',
-                    col2: 'Some data'
+                    id: 'row2',
+                    col1: '',
+                    col2: ''
                 }],
         }
     }
 
+    componentWillMount(){
+        let self = this;
+        let columns = this.props.properties.columns;
+        let new_columns = [];
+
+        for (let i in columns) {
+            new_columns.push({
+                dataField:columns[i].dataField, 
+                text:columns[i].text, 
+                headerEvents:{
+                    onClick: this.handleClick,
+                    onBlur: (e) => this.handleBlur(e,i)
+                }
+            }) 
+        }
+        this.setState({columns: new_columns, data:this.props.properties.data})
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.editMode != nextProps.editMode){
+            let columns = this.state.columns;
+            columns[columns.length - 1].hidden = !columns[columns.length - 1].hidden;
+            this.setState({columns, editMode:nextProps.editMode});
+        }
+    }
+
     addRow = (e) => {
+        let self = this;
         let data = this.state.data;
-        let new_data = {id:'example' + (data.length+1)};
-        for (let i=1; i <= this.state.columns.length; i++){
+        let new_data = {id:'row' + (data.length+1)}
+
+        for (let i=1; i < this.state.columns.length; i++){
             new_data["col" + i] = '';
         }
 
         data.push(new_data);
         this.setState({data})
+
+        setTimeout(function () {
+            self.updateProperties();
+        }, 100);
+    }
+
+    delRow(rowIndex){
+        let data = this.state.data;
+        data.splice(rowIndex,1);
+        
+        // fix id referencing error        
+        for(let i=0; i < data.length; i++) {
+            data[i].id = "row" + (i+1);
+        }
+        this.setState({data});
     }
 
     addCol = (e) => {
+        let self = this;
         let columns = this.state.columns;
+        let new_columns = [];
         let data = this.state.data;
 
-        columns.push({
-            dataField: 'col' + (columns.length+1),
-            text: 'Header ' + (columns.length+1),
-            headerEvents: {
-                onClick: this.handleClick,
-                onBlur: this.handleBlur
-            }
-        });
-
+        // add new item to end of each table row (or else code will crash)
         for (let obj of data){
             obj["col" + columns.length] = '';
         }
 
-        this.setState({columns, data})
+        for (let i in columns) {
+            let column = columns[i];
+
+
+            new_columns.push(column);
+        }
+        new_columns.push({
+            dataField: 'col' + columns.length,
+            text: 'Header ' + columns.length,
+            headerEvents: {
+                onClick: this.handleClick,
+                onBlur: (e) => this.handleBlur(e,columns.length-1)
+            }
+        })
+
+        this.setState({columns: new_columns, data});
+
+        setTimeout(function() {
+            self.updateProperties();
+        }, 100);
     }
 
     handleClick = (e) => {
         let value = e.target.innerHTML;
-        e.target.innerHTML = '<input value="' + value + '"/>';
+        e.target.innerHTML = '<input class="nonDraggable" value="' + value + '"/>';
         e.target.childNodes[0].focus();
     }
 
-    handleBlur = (e) => {
+    handleBlur(e, i) {
+        let self = this;
         let parent = e.target.parentNode;
+        let columns = this.state.columns;
+
         parent.innerHTML = e.target.value;
-        this.setState({clickTitle: true});
+        columns[i].text = e.target.value;
+
+        this.setState({columns});
+        setTimeout(function() {
+            self.updateProperties();
+        }, 100);
+    }
+
+    updateProperties() {
+        let columns = this.state.columns;
+        let new_columns = [];
+        for (let i in columns) {
+            let column = columns[i];
+            if(i != columns.length - 1) {
+                new_columns.push({dataField:column.dataField, text:column.text})
+            }
+        }
+        this.props.updateProperties({columns:new_columns, data:this.state.data}, this.props.i);
     }
 
     render(){
         return (
-            <div>
-                <Button bsSize="small" bsStyle="primary" style={{ padding:"4px 6px" }}
+            <div className="draggable" style={{width:"100%"}}>
+                <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
                     onClick={this.addRow}>Add Row</Button>
-                <Button bsSize="small" bsStyle="primary" style={{ padding:"4px 6px" }}
+                <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
                     onClick={this.addCol}>Add Col</Button>
-                <BootstrapTable keyField='id' 
-                    striped responsive
+                <BootstrapTable keyField='id' className="nonDraggable" 
+                    striped responsive 
                     data={ this.state.data } 
                     columns={ this.state.columns } 
                     cellEdit={ 
@@ -1267,7 +1093,6 @@ class EmptyTable extends Component {
             </div>
         );
     }
-
 }
 
-ReactDOM.render(<DashboardApp/>, document.getElementById('container'));
+ReactDOM.render(<DashboardApp/>, document.getElementById('reportContainer'));
