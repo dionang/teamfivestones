@@ -13,9 +13,9 @@ import { Formik, Form, Field } from 'formik';
 //const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
 //const api = 'http://103.3.61.39:8080/SCube/';
 //const datasourceUrl = 'http://103.3.61.39:8080/Dummy_API/getCustomerOrders';
-//const api = 'https://scube.rocks/SCube/';
+const api = 'https://scube.rocks/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
-const api = 'http://localhost:8084/';
+//const api = 'http://localhost:8084/';
 
 class DashboardApp extends Component {
     constructor(props) {
@@ -43,6 +43,7 @@ class DashboardApp extends Component {
                 type: "bar", x: 0, y: 0, height: 370, width: 500, display: true,
                 properties: {
                     initialized: false,
+                    facetype: true
                 }
             }
         );
@@ -58,6 +59,7 @@ class DashboardApp extends Component {
                 type: "line", x: 0, y: 0, height: 370, width: 500, display: true,
                 properties: {
                     initialized: false,
+                    facetype: true
                 }
             }
         );
@@ -97,7 +99,6 @@ class DashboardApp extends Component {
     changeSettings(i) {
         let components = this.state.components;
         let pageNo = this.state.pageNo;
-
         components[pageNo][i].properties.initialized = false;
         this.setState({ components });
     }
@@ -110,7 +111,6 @@ class DashboardApp extends Component {
     deleteComponent(i) {
         let components = this.state.components;
         let pageNo = this.state.pageNo;
-
         components[pageNo][i].display = false;
         this.setState({ components });
     }
@@ -236,9 +236,6 @@ class DashboardApp extends Component {
                                     onClick={this.addBarChart} style={{ marginRight: 5, fontSize: "18px" }}><i className="fa fa-bar-chart" /> Bar Chart</button>
                                 <button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart"
                                     onClick={this.addLineChart} style={{ marginRight: 5, fontSize: "18px" }}><i className="fa fa-line-chart" /> Line Chart </button>
-                                <button data-toggle="tooltip" data-placement="bottom" title="Add Table"
-                                    onClick={this.addTable} style={{ marginRight: 5, fontSize: "18px", }}><i className="fa fa-table" /> Table </button>
-
 
                                 <div className="col-sm-12 col-xs-12" style={{ borderBottom: '3px solid maroon' }}>
 
@@ -277,7 +274,7 @@ class DashboardApp extends Component {
 
 
 
-                                <div id="container" ref={this.myInput} className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', height: "calc(100% + 100px)", marginTop: 15, display: "block" , overflow:"scroll", marginLeft:"10px", maxHeight:this.state.halfHeight}}>
+                                <div id="container" ref={this.myInput} className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', height: "calc(100% + 500px)", marginTop: 15, display: "block" , overflow:"scroll", marginLeft:"10px", maxHeight:this.state.halfHeight}}>
                                     {/* map does a for loop over all the components in the state */}
 
                                     
@@ -296,7 +293,9 @@ class DashboardApp extends Component {
                                                     width: this.state.halfWidth,
                                                     // height: this.state.halfHeight,
                                                     display: "inline-block",
-                                                    marginLeft:"10px"
+                                                    marginLeft:"10px",
+                                                    float: "left",
+                                                    height: "fit-content"
                                                 }}
                                             >
                                                 <div style={{ height: 27.5, float: "right" }}>
@@ -308,6 +307,7 @@ class DashboardApp extends Component {
                                                 <ReportComponent type={item.type} editMode={this.state.editMode}
                                                     properties={item.properties} i={i}
                                                     updateProperties={this.updateProperties.bind(this)}
+                                                    
 
                                                 />
                                                
@@ -411,7 +411,7 @@ class Barchart extends Component {
         return (
             <div  >
                 { this.state.initialized ?
-                    <div style={{ height: "calc(62.5% + 100px)" }}>
+                    <div style={{ height: "fit-content" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
                         {this.state.facetype ?
                         <BarChart data={this.state.chartData} width={650} height={250} margin={{ top: 10, right: 30, left: 20, bottom: 30 }}>
