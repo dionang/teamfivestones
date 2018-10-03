@@ -142,112 +142,51 @@ public class DatasourceController extends HttpServlet {
                 String updateSet="";
                 String updateList="";
                 boolean result = true;
+                boolean addDataset = true;
+                boolean addListOption = true;
+                boolean deleteDataset=true;
+                boolean deleteListOption=true;
                 boolean status = DatasourceDAO.updateDatasource(id, account.getCompanyId(), datasourceUrl, datasourceName, remark);
+                
                 if (status) {
+                    deleteDataset=DatasourceDAO. deleteDatasetByDatasourece(id);
+                    ArrayList<Dataset> datasetList=DatasourceDAO.getAllDatasetByDatasource(id);
+                    for(Dataset set: datasetList){
+                        int setId=set.getDatasetId();
+                        deleteListOption=DatasourceDAO.deleteListOption(setId);
+                    }
                     JsonArray allArr = json.getAsJsonArray("params");
                     for (int i = 0; i < allArr.size(); i++) {
                         JsonArray div = allArr.get(i).getAsJsonArray();
-                        String dId = div.get(0).getAsString();
+                        int dId = div.get(0).getAsInt();
                         String path = div.get(1).getAsString();
                         String name = div.get(2).getAsString();
                         String type = div.get(3).getAsString();
-                        boolean r = true;
-                        boolean r1 = true;
-                        int datasetId=0;
-                        if (dId.equals("new")) {
-                           r = DatasourceDAO.addDataset(name, path, type, id);
-                           datasetId=DatasourceDAO.getLatestDatasetId();
-                        } else {
-                            datasetId = div.get(0).getAsInt();
-                            updateSet+=dId+",";
-                            r = DatasourceDAO.updateDataset(datasetId, name, path, type, id);   
-                        }
                         
-                        if (r && type.equals("list")) {
-                            for (int j = 4; j < div.size(); j++) {
-                                JsonArray fieldList = div.get(j).getAsJsonArray();
-                                String lId = fieldList.get(0).getAsString();
-                                String fNValue = fieldList.get(1).getAsString();
-                                String fName = fieldList.get(2).getAsString();
-                                String dType = fieldList.get(3).getAsString();
-                                String iType = fieldList.get(4).getAsString();
-                                if (lId.equals("newList")) {
-                                   r1 = DatasourceDAO.addListOption(fNValue,fName, dType, iType,datasetId);
-
-                                } else {
-                                    int listId = fieldList.get(0).getAsInt();
-                                    r1 = DatasourceDAO.updateList(listId,fNValue, fName, dType, iType, datasetId);
-                                    updateList+=lId;
-                                }
-                                if (!r1) {
-                                       result = false;
-                                   }
-
-                            }
-                        } else if (!r) {
-                            result = false;
-                        } 
-                    }
-                     
-                    if(allDataset.length()!=0&&!updateSet.equals(allDataset)){
-                        String[] update={};
-                        String[] all={};
-                        if(updateSet.length()!=0){
-                              updateSet = updateSet.substring(0, updateSet.length() - 1);
-                              update =  updateSet.split(",");
-                        }
+                         addDataset = DatasourceDAO.addDataset(name, path, type, id);
+                         if(addDataset)
+                             dId=DatasourceDAO.getLatestDatasetId();   
                           
-                        allDataset = allDataset.substring(0, allDataset.length() - 1);
-                           
-                        all = allDataset.split(",");
-                        for(int a=0;a<all.length;a++){
-                            String n1=all[a];
-                            boolean same=false;
-                            for(int b=0;b<update.length;b++){
-                                String n2=update[b];
-                                if(n1.equals(n2)){
-                                    same=true;
-                                }
-                            }
-                            if(!same){
-                                boolean dDataset = DatasourceDAO.deleteDataset(Integer.parseInt(n1));
-                                boolean dListOption = DatasourceDAO.deleteListOption(Integer.parseInt(n1));
-                                if (!dDataset || !dListOption) {
-                                    result = false;
-                                    System.out.println("something wrong with deleteDataset or listOption");
-                                }
-                            }
+                        if(type.equals("list")){
+                             for (int j = 4; j < div.size(); j++) {
+                             JsonArray fieldList = div.get(j).getAsJsonArray();
+                             int lId = fieldList.get(0).getAsInt();
+                             String fNValue = fieldList.get(1).getAsString();
+                             String fName = fieldList.get(2).getAsString();
+                             String dType = fieldList.get(3).getAsString();
+                             String iType = fieldList.get(4).getAsString();
+                             addListOption = DatasourceDAO.addListOption(fNValue,fName, dType, iType,dId);
+
+                         }
                         }
+   
                     }
-                    
-                    if(allList.length()!=0 &&!updateList.equals(allList)){
-                        String[] update={};
-                        String[] all={};
-                        if(updateList.length()!=0){
-                            updateList = updateList.substring(0, updateList.length() - 1);
-                            update =  updateList.split(",");
-                        }
-                            
-                        allList= allList.substring(0,  allList.length() - 1);
-                        all= allList.split(",");
-                        for(int a=0;a<all.length;a++){
-                            String n1=all[a];
-                            boolean same=false;
-                            for(int b=0;b<update.length;b++){
-                                String n2=update[b];
-                                if(n1.equals(n2)){
-                                    same=true;
-                                }
-                            }
-                            if(!same){
-                                boolean dListOption = DatasourceDAO.deleteListOptionById(Integer.parseInt(n1));
-                                if (!dListOption) {
-                                    System.out.println("something wrong with deleteOPtionById");
-                                    result = false;
-                                }
-                            }
-                        }
-                    }
+                     if(!addDataset||!addListOption||!deleteDataset||!deleteListOption){
+                         result=false;
+                         System.out.println("something wrong with updateDataset/updateListOption");
+                         
+                     }
+                 
                 } else {
                     result = false;
                     System.out.println("something wrong with updateDatasource");

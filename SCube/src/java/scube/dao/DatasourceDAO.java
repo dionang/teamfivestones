@@ -362,6 +362,26 @@ public class DatasourceDAO {
         }
 
     }
+     public static boolean deleteDatasetByDatasourece(int datasourceId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+          try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM dataset WHERE datasourceId = ?");
+            stmt.setInt(1, datasourceId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+
+    }
+    
      public static boolean deleteListOption(int datasetId) {
         Connection conn = null;
         PreparedStatement stmt = null;

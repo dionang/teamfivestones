@@ -187,7 +187,7 @@
                                             <%  }%>
 
                                             <div id="list" style="display:none;margin-top: 10px;border-bottom: 1px solid rgba(0, 0, 0, 0.3);padding-bottom: 20px;">
-                                                 <input type="hidden" name="datasetId" value="new" />
+                                                 <input type="text" name="datasetId" value="-1" />
                                                 <div class="row" style="margin-top:10px;display:inline-block;width:100%;">
 
                                                     <div class="col-lg-4 col-xs-12 form-group"  >
@@ -380,8 +380,10 @@
                                         if (count !== "") {
                                             for (i = 0; i < count; i++) {
                                                 var d1 = document.getElementById(i);
-                                                if (d1 !== undefined) {
+                                                console.log(d1);
+                                                if (d1 !== null) {
                                                     var div = [];
+                                                    console.log("datasetId" + i + "");
                                                     div.push(document.getElementsByName("datasetId" + i + "")[0].value);
                                                     div.push(document.getElementsByName("path" + i + "")[0].value);
                                                     div.push(document.getElementsByName("name" + i + "")[0].value);
@@ -391,7 +393,7 @@
                                                         var subCount = document.getElementsByName("subCounter" + i + "")[0].value;
                                                         for (j = 0; j < subCount; j++) {
                                                             var d = document.getElementById("" + i + j);
-                                                            if (d !== undefined) {
+                                                            if (d !== null) {
                                                                 var field = [];
                                                                 field.push(document.getElementsByName("listId" + i + j + "")[0].value);
                                                                 field.push(document.getElementsByName("fNValue" + i + j + "")[0].value);
@@ -447,7 +449,6 @@
                 <script>
 
                     var counter = document.getElementById("counter").value;
-                    var count = 0;
                     var array = [];
                     var chkArray = [];
                     //clone div to display the dropdown multiple times
@@ -551,15 +552,15 @@
 
                         var parentId = element.parentNode.parentNode.parentNode.id;
                         document.getElementById(parentId).remove();
-                        counter--;
+                        
                     }
                     function removeList(element) {
 
                         var parentId = element.parentNode.parentNode.id;
                         document.getElementById(parentId).remove();
-                        count--;
+                        
                     }
-                                        function getList() {
+                    function getList() {
                         /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
                         var path = $('#' + String(parentId) + ' input[name="path"]').val();
                         document.getElementsByName("type" + parentId)[0].value = "list";
@@ -570,7 +571,7 @@
 
                             chkArray.push("<div class='row' id=" + parentId + count + " >");
                             chkArray.push("<input type='hidden' name='fNValue" + parentId + count + "' class='form-control'  value=" + $(this).val() + " style='display:inline'  />");
-                             chkArray.push(" <input type='hidden' name='listId" + parentId + count + "' value='newList' />");
+                             chkArray.push(" <input type='hidden' name='listId" + parentId + count + "' value='-1' />");
                             chkArray.push("<div class='col-lg-5 col-xs-12 form-group' style='margin-left: 12px;' >");
                             chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: </label>");
                             chkArray.push("<input type='text' name='fName" + parentId + count + "' class='form-control' required='' value=" + $(this).val() + " style='width:60%;display:inline'  />");
