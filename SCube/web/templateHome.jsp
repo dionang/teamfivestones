@@ -2,13 +2,12 @@
 <%@page import="java.util.*"%>
 <%@page import="scube.dao.ReportDAO"%>
 <%@ include file="protect.jsp" %>
-<%@ page import="scube.entities.Account" %>
-<%@ page import="scube.entities.Manager" %>
+<%@ page import="scube.entities.*" %>
 <%
     Account account = (Account) session.getAttribute("account");
     ArrayList<Template> templateList;
-    if (!(account instanceof Manager)){
-        response.sendRedirect("/");
+    if (!(account instanceof Manager) && !(account instanceof User)){
+        response.sendRedirect("login.jsp");
         return;
     } else {
         int companyId=account.getCompanyId();
