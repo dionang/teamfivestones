@@ -13,8 +13,9 @@ import { Formik, Form, Field } from 'formik';
 //const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
 //const api = 'http://103.3.61.39:8080/SCube/';
 //const datasourceUrl = 'http://103.3.61.39:8080/Dummy_API/getCustomerOrders';
-const api = 'https://scube.rocks/SCube/';
+//const api = 'https://scube.rocks/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
+const api = 'http://localhost:8084/';
 
 class DashboardApp extends Component {
     constructor(props) {
@@ -29,26 +30,9 @@ class DashboardApp extends Component {
             templateName: "Template Name",
             sidebar: true,
             pageNo: 0,
-            halfWidth: window.innerWidth*0.4,
-            halfHeight: window.innerHeight*0.7
+            picArr:[],
+            exporting: false
         }
-    }
-
-    componentDidMount() {
-        // let templateName = document.getElementById("templateName").value;
-        // if (templateName !== "null") {
-        //     this.setState({templateName});
-        // }
-//        this.loadTemplate();
-    }
-
-    addTextbox = () => {
-        let components = this.state.components;
-        components[this.state.pageNo].push(
-            { type: "text", x: 0, y: 0, height: 150, width: 220, display: true, properties: { text: "<p><br></p>" } }
-        );
-
-        this.setState({ components, editMode: true });
     }
 
     addBarChart = () => {
@@ -59,13 +43,6 @@ class DashboardApp extends Component {
                 type: "bar", x: 0, y: 0, height: 370, width: 400, display: true,
                 properties: {
                     initialized: false,
-                    datasourceUrl: '',
-                    dataset: '',
-                    title: '',
-                    xAxis: '',
-                    yAxis: '',
-                    summary: '',
-                    facetype: true
                 }
             }
         );
@@ -81,12 +58,6 @@ class DashboardApp extends Component {
                 type: "line", x: 0, y: 0, height: 370, width: 400, display: true,
                 properties: {
                     initialized: false,
-                    datasourceUrl: '',
-                    dataset: '',
-                    title: '',
-                    xAxis: '',
-                    yAxis: '',
-                    facetype: true
                 }
             }
         );
@@ -98,7 +69,7 @@ class DashboardApp extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             { 
-                type: "table", x: 0, y: 0, height:140, width:250, display: true,
+                type: "table", x: 0, y: 0, height:150, width:250, display: true,
                 properties: {
                     columns: [{
                         dataField: 'col1',
@@ -123,34 +94,6 @@ class DashboardApp extends Component {
         this.setState({ components, editMode: true });
     }
 
-    addImage = () => {
-        let components = this.state.components;
-        components[this.state.pageNo].push(
-            {
-                type: "image", x: 0, y: 0, height: 200, width: 200, display: true,
-                properties: {
-                    imageUrl: '',
-                    initialized: false,
-                }
-            }
-        );
-        this.setState({ components, editMode: true });
-    }
-
-    addVideo = () => {
-        let components = this.state.components;
-        components[this.state.pageNo].push(
-            {
-                type: "video", x: 0, y: 0, height: 200, width: 200, display: true,
-                properties: {
-                    // using textbox properties for now
-                    text: '',
-                }
-            }
-        );
-        this.setState({ components, editMode: true });
-    }
-
     changeSettings(i) {
         let components = this.state.components;
         let pageNo = this.state.pageNo;
@@ -172,192 +115,8 @@ class DashboardApp extends Component {
         this.setState({ components });
     }
 
-    getComponentDetails = () => {
-        console.log(this.state.components);
-    }
-
-    // handleSizeChange = (changeEvent) => {
-    //     this.setState({
-    //         selectedSize: changeEvent.target.value
-    //     });
-    // }
-
-    // handleLayoutChange = (changeEvent) => {
-    //     this.setState({
-    //         selectedLayout: changeEvent.target.value
-    //     });
-    // }
-
-    loadTemplate = () => {
-        let self = this;
-        let templateId = parseInt(document.getElementById("templateId").value, 10);
-        if (templateId !== 0) {
-            request.post({
-                url: api + 'loadComponents',
-                json: true,
-                body: { operation: "loadComponents", templateId: templateId }
-            }, function (error, response, body) {
-                if (body) {
-                    let components = body.components;
-                    self.setState({ components });
-                }
-            });
-        }
-    }
-
-    previousPage = () => {
-        let pageNo = this.state.pageNo;
-        if (pageNo !== 0) {
-            pageNo = this.state.pageNo - 1;
-            this.setState({ pageNo });
-        }
-    }
-
-    nextPage = () => {
-        let components = this.state.components;
-        let pageNo = this.state.pageNo + 1;
-
-        // add new page if it doesnt exist
-        if (pageNo === components.length) {
-            components.push([]);
-        }
-        this.setState({ components, pageNo });
-    }
-
     renameTemplate = (e) => {
         this.setState({ templateName: e.target.value });
-    }
-
-    // i represents index of current item in this.state.components
-    // convert style data to integer. e.g. 10px -> 10
-    onResize(ref, pos, i) {
-        let components = this.state.components;
-        let pageNo = this.state.pageNo;
-        components[pageNo][i].height = parseInt(ref.style.height, 10);
-        components[pageNo][i].width = parseInt(ref.style.width, 10);
-        components[pageNo][i].x = pos.x;
-        components[pageNo][i].y = pos.y;
-        this.setState({ components });
-    }
-
-    onDragStop(ref, i) {
-        let components = this.state.components;
-        let pageNo = this.state.pageNo;
-        components[pageNo][i].x = ref.x;
-        components[pageNo][i].y = ref.y;
-        this.setState({ components });
-    }
-
-    saveComponents(templateId) {
-        let self = this;
-        request.post({
-            url: api + 'saveComponents',
-            json: true,
-            body: { operation: "saveComponents", templateId: templateId, components: self.state.components }
-        }, function (error, response, body) {
-            if (body && body.status) {
-                alert("Saved succesfully");
-                // swal("saved succesfully");
-            } else {
-                alert("Error in saving");
-                // swal("error in saving");
-            }
-
-        });
-    }
-
-    savePresentation = () => {
-        var pptx = new PptxGenJS();
-        pptx.setBrowser(true);
-
-        for (let pageNo in this.state.components) {
-            let components = this.state.components[pageNo];
-            let slide = pptx.addNewSlide();
-            for (let component of components) {
-                // convert px to inches
-                let x = component.x / 96;
-                let y = component.y / 96;
-                let w = component.width / 96;
-                let h = (component.height) / 96;
-
-                if (component.type === "text") {
-                    // remove the p tags
-                    let text = component.properties.text.substring(3, component.properties.text.length - 4);
-                    // console.log(text);
-                    // let texts = text.split(/\r\n|\n|\r/);
-                    // console.log(texts); 
-                    slide.addText(text, {
-                        x: x, y: y, w: w, h: h,
-                        fontSize: 14, color: '363636'
-                        // , bullet:{code:'25BA'} 
-                    });
-
-                } else if (component.type === "image") {
-                    let imageUrl = component.properties.imageUrl;
-
-                    // remove height of toolbar
-                    y = (component.y + 27.5) / 96;
-                    h = (component.height - 27.5) / 96;
-                    slide.addImage({ data: imageUrl, x: x, y: y, w: w, h: h });
-                } else if (component.type === "video") {
-                    // remove the p tags
-                    let videoUrl = component.properties.text.substring(3, component.properties.text.length - 4).trim();
-                    console.log(videoUrl);
-                    slide.addMedia({ type: 'online', link: videoUrl, x: x, y: y, w: w, h: h });
-                }
-            }
-        }
-
-        pptx.save('Sample Presentation');
-    }
-
-    saveTemplate = () => {
-        let self = this;
-        let templateId = parseInt(document.getElementById("templateId").value, 10);
-        let companyId = parseInt(document.getElementById("companyId").value, 10);
-        let userName = document.getElementById("userName").value;
-        if (templateId === 0 || templateId === 9) {
-            request.post({
-                url: api + 'createTemplate',
-                form: {
-                    operation: "createTemplate",
-                    templateId: templateId,
-                    templateName: self.state.templateName,
-                    templatesize: self.state.selectedSize,
-                    templatelayout: self.state.selectedLayout,
-                    companyId: companyId,
-                    userName: userName
-                }
-            }, function (error, response, body) {
-                if (body === "false") {
-                    alert("Failed to create template!");
-                } else {
-                    // update the value of the hidden fields
-                    document.getElementById("templateId").value = body;
-                    self.saveComponents(body);
-                }
-            });
-        } else {
-            request.post({
-                url: api + 'updateTemplate',
-                form: {
-                    operation: "updateTemplate",
-                    templateId: templateId,
-                    templateName: self.state.templateName,
-                    templatesize: self.state.selectedSize,
-                    templatelayout: self.state.selectedLayout,
-                    companyId: companyId,
-                    userName: userName
-                }
-            }, function (error, response, body) {
-                if (body === "false") {
-                    alert("Failed to update template!");
-                } else {
-                    self.saveComponents(templateId);
-                }
-            });
-        }
-        this.setState({ editMode: false });
     }
 
     toggleChartMenu = () => {
@@ -384,35 +143,6 @@ class DashboardApp extends Component {
         components[pageNo][i].properties = properties;
         this.setState({ properties });
     }
-
-    // handleFormSubmit= (formSubmitEvent) => {
-    //     formSubmitEvent.preventDefault();
-    //     var size=this.state.selectedSize;
-    //     var layout=this.state.selectedLayout;
-    //     if (size==="A3" && layout==="Portrait") {
-    //         this.setState({w : 29.7 *37.795276, h : 42*37.795276});
-    //     } else if (size==="A3" && layout==="Landscape") {
-    //         this.setState({h : 29.7 *37.795276, w : 42*37.795276});
-    //     } else if (size==="A4" && layout==="Portrait") {
-    //         this.setState({h : 29.7 *37.795276, w : 21*37.795276});
-    //     } else if (size==="A4" && layout==="Landscape") {
-    //         this.setState({w : 29.7 *37.795276, h : 21*37.795276});
-    //     } else if (size==="A5" && layout==="Portrait") {
-    //         this.setState({w : 14.8*37.795276, h : 21*37.795276}); 
-    //     } else if (size==="A5" && layout==="Landscape") {
-    //         this.setState({w : 21*37.795276, h : 14.8*37.795276});
-    //     }
-
-    //     this.setState({formVisibility:"hidden"});
-    //     var modal = document.getElementById('size');
-    //     modal.style.display = "none";
-    // }
-
-    // openModal = () => {
-    //     var modal = document.getElementById('size');
-    //     modal.style.display = "block";
-    //     this.setState({formVisibility:""});
-    // }
 
     render() {
         return (
@@ -1290,11 +1020,13 @@ class EmptyTable extends Component {
 
         for (let i in columns) {
             let column = columns[i];
+
+
             new_columns.push(column);
         }
         new_columns.push({
-            dataField: 'col' + (columns.length+1),
-            text: 'Header ' + (columns.length+1),
+            dataField: 'col' + columns.length,
+            text: 'Header ' + columns.length,
             headerEvents: {
                 onClick: this.handleClick,
                 onBlur: (e) => this.handleBlur(e,columns.length-1)
@@ -1333,7 +1065,9 @@ class EmptyTable extends Component {
         let new_columns = [];
         for (let i in columns) {
             let column = columns[i];
-            new_columns.push({dataField:column.dataField, text:column.text})
+            if(i != columns.length - 1) {
+                new_columns.push({dataField:column.dataField, text:column.text})
+            }
         }
         this.props.updateProperties({columns:new_columns, data:this.state.data}, this.props.i);
     }
