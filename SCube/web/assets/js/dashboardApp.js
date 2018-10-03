@@ -40,7 +40,7 @@ class DashboardApp extends Component {
         // adds new component to state
         components[this.state.pageNo].push(
             {
-                type: "bar", x: 0, y: 0, height: 370, width: 400, display: true,
+                type: "bar", x: 0, y: 0, height: 370, width: 500, display: true,
                 properties: {
                     initialized: false,
                 }
@@ -55,7 +55,7 @@ class DashboardApp extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             {
-                type: "line", x: 0, y: 0, height: 370, width: 400, display: true,
+                type: "line", x: 0, y: 0, height: 370, width: 500, display: true,
                 properties: {
                     initialized: false,
                 }
@@ -409,7 +409,7 @@ class Barchart extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{ height: "100%" }}>
+            <div  >
                 { this.state.initialized ?
                     <div style={{ height: "calc(62.5% + 100px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
@@ -559,7 +559,7 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="form-horizontal draggable" style={{ height:"100%", width:"100%", backgroundColor:"white"}}>
+                    <Form className="form-horizontal " style={{ height:"500px", width:"500px", backgroundColor:"white"}}>
                         <div className="form-group">
                             <label className="col-md-3 control-label">Chart Title</label>
                             <div className="col-md-7">
@@ -742,7 +742,7 @@ class Descriptive extends Component {
 
         
         return (
-            <div className="draggable" height="100%">
+            <div>
                 <BootstrapTable keyField='id' data={products}
                     columns={columns}
                     //cellEdit={cellEditFactory({ mode: 'dbclick' })}
@@ -835,7 +835,7 @@ class Linechart extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{ height: "100%" }}>
+            <div >
                 {this.state.initialized ?
                     <div style={{ height: "calc(70.5% + 1px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
