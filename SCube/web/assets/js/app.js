@@ -592,7 +592,7 @@ class App extends Component {
                                         <ul className="nav side-menu" id="options">
                                             <ul className="nav side-menu" id="options">
                                                 <li><a href="managerHome.jsp"><i className="fa fa-home"/>  Home</a></li>
-                                                <li><a href="dashboard_1.jsp"><i className="fa fa-bar-chart"/>  View Dashboard</a></li>
+                                                <li><a href="dashboard.jsp"><i className="fa fa-bar-chart"/>  View Dashboard</a></li>
                                                 <li><a href="createUserAccount.jsp"><i className="fa fa-group"/>  Create User Account</a></li>
                                                 <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"/>  Template</a></li>
                                                 <li><a href="slideShow.jsp"><i className="fa fa-slideshare"/>  Slide Show</a></li> 

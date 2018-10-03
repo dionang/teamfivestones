@@ -34,7 +34,7 @@
                     <div class="icons" style="border-top: 3px solid">
                         <div class="col-sm-4 outer" style="padding: 70px 0; ">
                         <div class="img" >
-                            <a href="dashboard_1.jsp" style="text-decoration: none; ">
+                            <a href="dashboard.jsp" style="text-decoration: none; ">
                                 <div class="pic"style=" padding-top:30px; background-color: white ">
                                     <img src="assets/images/dashboard.png" class="image" />
                                 </div>

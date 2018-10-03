@@ -13,10 +13,8 @@ import { Formik, Form, Field } from 'formik';
 //const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
 //const api = 'http://103.3.61.39:8080/SCube/';
 //const datasourceUrl = 'http://103.3.61.39:8080/Dummy_API/getCustomerOrders';
-//const api = 'https://scube.rocks/SCube/';
+const api = 'https://scube.rocks/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
-
-const api = 'http://localhost:8084/';
 
 class DashboardApp extends Component {
     constructor(props) {
@@ -41,7 +39,7 @@ class DashboardApp extends Component {
         // if (templateName !== "null") {
         //     this.setState({templateName});
         // }
-        this.loadTemplate();
+//        this.loadTemplate();
     }
 
     addTextbox = () => {
@@ -58,7 +56,7 @@ class DashboardApp extends Component {
         // adds new component to state
         components[this.state.pageNo].push(
             {
-                type: "bar", x: 0, y: 0, height: 250, width: 500, display: true,
+                type: "bar", x: 0, y: 0, height: 370, width: 400, display: true,
                 properties: {
                     initialized: false,
                     datasourceUrl: '',
@@ -80,7 +78,7 @@ class DashboardApp extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             {
-                type: "line", x: 0, y: 0, height: 250, width: 300, display: true,
+                type: "line", x: 0, y: 0, height: 370, width: 400, display: true,
                 properties: {
                     initialized: false,
                     datasourceUrl: '',
@@ -100,7 +98,7 @@ class DashboardApp extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             { 
-                type: "table", x: 0, y: 0, height:150, width:300, display: true,
+                type: "table", x: 0, y: 0, height:140, width:250, display: true,
                 properties: {
                     columns: [{
                         dataField: 'col1',
@@ -143,10 +141,10 @@ class DashboardApp extends Component {
         let components = this.state.components;
         components[this.state.pageNo].push(
             {
-                type: "video", x: 0, y: 0, height: 240, width: 400, display: true,
+                type: "video", x: 0, y: 0, height: 200, width: 200, display: true,
                 properties: {
-                    initialized: false,
-                    videoUrl: '',
+                    // using textbox properties for now
+                    text: '',
                 }
             }
         );
@@ -479,7 +477,7 @@ class DashboardApp extends Component {
 
                             <div className="right_col" width="100%" style={{ backgroundColor: "#F3F3F3", overflow:"hidden" }}>
 
-                                <div className="col-xs-3 col-md-2" style={{ textAlign: "center", 'vertical-align': 'middle', float: "right", height: 'fit-content',  }} >
+                                <div className="col-xs-3 col-md-2" style={{ textAlign: "center", verticalAlign: 'middle', float: "right", height: 'fit-content',  }} >
                                     <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px", width: "30px", backgroundColor: '	brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Generated Reports</label>
                                     <label style={{ margin: "0px", fontSize: "40px", width: '100%', border: "1px solid grey", }}>100</label>
                                 </div>
@@ -487,9 +485,6 @@ class DashboardApp extends Component {
                                     <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px",  backgroundColor: '	brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Reports Printed</label>
                                     <br /><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>100</label>
                                 </div>
-
-
-
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
                                 {/* <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> */}
@@ -553,63 +548,46 @@ class DashboardApp extends Component {
 
 
                                 <div id="container" ref={this.myInput} className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', height: "calc(100% + 100px)", marginTop: 15, display: "block" , overflow:"scroll", marginLeft:"10px", maxHeight:this.state.halfHeight}}>
+                                    {/* map does a for loop over all the components in the state */}
+
+                                    
+
                                     {this.state.components[this.state.pageNo].map((item, i) => {
-                                            if (item.display) {
-                                                return <Rnd key={this.state.pageNo + "," + i}
-                                                    style={{
-                                                        borderStyle: this.state.editMode ? "dotted" : "hidden",
-                                                        borderWidth: 2,
-                                                        backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
-                                                                          ? "transparent" : "white",
-                                                        borderColor: 'grey',
-                                                        width: "fit-content"
-                                                    }}
 
-                                                    // intialize components x,y,height and width
-                                                    position={{ x: item.x, y: item.y }}
-                                                    size={{ width: item.width, height: item.height }}
+                                        
+                                        if (item.display) {
+                                            return <div key={this.state.pageNo + "," + i}
 
-                                                    // min height and size
-                                                    minHeight={120} minWidth={135}
+                                                style={{
+                                                    borderStyle:"none",
+                                                    borderWidth: 0.5,
+                                                    backgroundColor: "white",
+                                                    borderColor: 'grey',
+                                                    width: this.state.halfWidth,
+                                                    // height: this.state.halfHeight,
+                                                    display: "inline-block",
+                                                    marginLeft:"10px"
+                                                }}
+                                            >
+                                                <div style={{ height: 27.5, float: "right" }}>
+                                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
+                                                        onClick={() => this.changeSettings(i)}></i>
+                                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
+                                                        onClick={() => this.deleteComponent(i)}></i>
+                                                </div>
+                                                <ReportComponent type={item.type} editMode={this.state.editMode}
+                                                    properties={item.properties} i={i}
+                                                    updateProperties={this.updateProperties.bind(this)}
 
-                                                    // to customize the dragging and resizing behavior
-                                                    bounds={"parent"}
-                                                    cancel={".nonDraggable"}
-                                                    dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
-                                                    enableResizing={{
-                                                        bottom: this.state.editMode,
-                                                        bottomLeft: this.state.editMode,
-                                                        bottomRight: this.state.editMode,
-                                                        left: this.state.editMode,
-                                                        right: this.state.editMode,
-                                                        top: this.state.editMode,
-                                                        topLeft: this.state.editMode,
-                                                        topRight: this.state.editMode
-                                                    }}
+                                                />
+                                               
+                                                {/* <Descriptive type={item.type} editMode={this.state.editMode}
+                                                    properties={item.properties} i={i}
+                                            updateProperties={this.updateProperties.bind(this)}></Descriptive>*/}
+                                            </div>
+                                        }
+                                    })}
 
-                                                    // update height and width onResizeStop
-                                                    // onResizeStop will activate a callback function containing these params
-                                                    // ref represents item that was resized
-                                                    onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
-
-                                                    // update height and width onResizeStop
-                                                    // onDragStop will activate a callback function containing these params
-                                                    // ref represents item that was dragged
-                                                    onDragStop={(event, ref) => this.onDragStop(ref, i)}
-                                                >
-                                                    <div style={{ height: 27.5, float: "right" }}>
-                                                        <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
-                                                            onClick={() => this.changeSettings(i)}></i>
-                                                        <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
-                                                            onClick={() => this.deleteComponent(i)}></i>
-                                                    </div>
-                                                    <ReportComponent type={item.type} editMode={this.state.editMode}
-                                                        properties={item.properties} i={i}
-                                                        updateProperties={this.updateProperties.bind(this)}
-                                                    />
-                                                </Rnd>
-                                            }
-                                        })}
                                 </div>
                             </div>
                         </div>
@@ -747,7 +725,6 @@ class Barchart extends Component {
     }
 }
 
-
 class ChartForm extends Component {
     constructor(props) {
         super(props);
@@ -852,51 +829,71 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="draggable" style={{textAlign: "center", height:"100%",width:"100%"}}>
-                        <label>Chart Title</label>
-                        <Field type="text" name="title" placeholder="Chart Title" />
-                        <br/><br/>
-                        <label>Choose the datasource</label>
-                        <Field component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
-                            {self.state.datasources.map((datasource)=>
-                                <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the dataset</label>
-                        <Field component="select" name="path" onChange={(e)=>this.loadListOptions(e.target.value, formProps)}>
-                            {self.state.datasets.map((dataset)=>
-                                <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
-                            )}  
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the X-Axis</label> 
-                        <Field component="select" name="xAxis">
-                            {/* gets the option based on selected dataset */}
-                            {self.state.listOptions.map((listOption)=>
-                                {if(listOption.infoType === "categorical") {
-                                    return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
-                                }}
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <label>Choose the Y-Axis</label> 
-                        <Field component="select" name="yAxis">
-                            {self.state.listOptions.map((listOption)=>
-                                {if(listOption.infoType === "numerical") {
-                                    return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
-                                }}
-                            )}
-                        </Field>
-                        <br/><br/>
-                        <span style={{marginRight:10}}>Show Summary Statistic</span>
-                        <input type="checkbox" name="summary" onChange={function(){
-                            formProps.values.summary = !formProps.values.summary;
-                        }}>
-                            
-                        </input>
-                        <br/><br/>
-                        <Button type="submit">Submit</Button>
+                    <Form className="form-horizontal draggable" style={{ height:"100%", width:"100%", backgroundColor:"white"}}>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Chart Title</label>
+                            <div className="col-md-7">
+                                <Field className="form-control nonDraggable" type="text" name="title" placeholder="Chart Title" />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the datasource</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
+                                    {self.state.datasources.map((datasource)=>
+                                        <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
+                                    )}
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the dataset</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target.value, formProps)}>
+                                    {self.state.datasets.map((dataset)=>
+                                        <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
+                                    )}  
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the X&#8209;Axis</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="xAxis">
+                                    {/* gets the option based on selected dataset */}
+                                    {self.state.listOptions.map((listOption)=>
+                                        {if(listOption.infoType === "categorical") {
+                                            return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
+                                        }}
+                                    )}
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-3 control-label">Choose the Y&#8209;Axis</label>
+                            <div className="col-md-7">
+                                <Field className="form-control" component="select" name="yAxis">
+                                    {self.state.listOptions.map((listOption)=>
+                                        {if(listOption.infoType === "numerical") {
+                                            return <option key={"listOption" + listOption.value} value={listOption.value}>{listOption.name}</option>
+                                        }}
+                                    )}
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <div className="col-md-offset-3 col-md-7">
+                                <div className="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="summary" onChange={function(){
+                                            formProps.values.summary = !formProps.values.summary;
+                                        }}/> Show Summary Statistics
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <Button className="col-md-offset-5 col-md-2" type="submit">Submit</Button>
+                        
                         {/* <DisplayFormikState {...this.props}/> */}
                     </Form>
                 )}
@@ -1108,7 +1105,7 @@ class Linechart extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{ height: "100% " }}>
+            <div className="draggable" style={{ height: "100%" }}>
                 {this.state.initialized ?
                     <div style={{ height: "calc(70.5% + 1px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
@@ -1241,19 +1238,6 @@ class EmptyTable extends Component {
                 }
             }) 
         }
-
-        // add the delete column
-        new_columns.push({
-            dataField: 'delete',
-            text: 'Delete',
-            align: 'center',
-            editable: false,
-            hidden: false,
-            formatter: function(cell, row, rowIndex){
-                return <i className="fa fa-trash" onClick={() => self.delRow(rowIndex)}/>
-            }
-        });
-
         this.setState({columns: new_columns, data:this.props.properties.data})
     }
 
@@ -1306,21 +1290,16 @@ class EmptyTable extends Component {
 
         for (let i in columns) {
             let column = columns[i];
-
-            // push the new column before the cancel column
-            if(i == columns.length - 1) {
-                new_columns.push({
-                    dataField: 'col' + columns.length,
-                    text: 'Header ' + columns.length,
-                    headerEvents: {
-                        onClick: this.handleClick,
-                        onBlur: (e) => this.handleBlur(e,columns.length-1)
-                    }
-                })
-            }
-
             new_columns.push(column);
         }
+        new_columns.push({
+            dataField: 'col' + (columns.length+1),
+            text: 'Header ' + (columns.length+1),
+            headerEvents: {
+                onClick: this.handleClick,
+                onBlur: (e) => this.handleBlur(e,columns.length-1)
+            }
+        })
 
         this.setState({columns: new_columns, data});
 
@@ -1354,22 +1333,20 @@ class EmptyTable extends Component {
         let new_columns = [];
         for (let i in columns) {
             let column = columns[i];
-            if(i != columns.length - 1) {
-                new_columns.push({dataField:column.dataField, text:column.text})
-            }
+            new_columns.push({dataField:column.dataField, text:column.text})
         }
         this.props.updateProperties({columns:new_columns, data:this.state.data}, this.props.i);
     }
 
     render(){
         return (
-            <div className="draggable">
+            <div className="draggable" style={{width:"100%"}}>
                 <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
                     onClick={this.addRow}>Add Row</Button>
                 <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
                     onClick={this.addCol}>Add Col</Button>
                 <BootstrapTable keyField='id' className="nonDraggable" 
-                    striped responsive
+                    striped responsive 
                     data={ this.state.data } 
                     columns={ this.state.columns } 
                     cellEdit={ 
@@ -1379,47 +1356,6 @@ class EmptyTable extends Component {
                         }) 
                     }
                 />
-            </div>
-        );
-    }
-}
-
-class VideoComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            initialized: this.props.properties.initialized,
-            videoUrl: this.props.properties.videoUrl,
-        };
-    }
-
-    componentWillReceiveProps(nextProps){
-        if (nextProps.properties.initialized != this.state.initialized){
-            this.setState({
-                initialized:nextProps.properties.initialized, 
-                videoUrl: nextProps.properties.videoUrl
-            });
-        }
-    }
-
-    loadVideo = (e) => {
-        let videoUrl = document.getElementById("videoUrl").value.trim();
-        this.setState({initialized: true, videoUrl: videoUrl});
-        this.props.updateProperties({initialized: true, videoUrl: videoUrl}, this.props.i);
-    }
-
-    render() {
-        return (
-            <div className="draggable" style={{height:"100%", width:"100%", background:this.props.editMode ? "white" : "transparent"}}>
-                {this.state.initialized ? 
-                    <iframe style={{width:"100%", height:"calc(100% - 27.5px)"}} 
-                        src={this.state.videoUrl} frameBorder="0" allow="encrypted-media" allowFullScreen>
-                    </iframe>
-                : <div style={{height:"100%", width:"100%", display:"flex"}}>
-                    <input id="videoUrl" className="nonDraggable" placeholder="Please enter a embed video URL" 
-                        style={{margin:"auto", width:"80%"}}/>
-                    <button style={{margin:"auto"}} onClick={this.loadVideo}>Submit</button>
-                </div>}
             </div>
         );
     }
