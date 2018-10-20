@@ -99,7 +99,6 @@ class DashboardApp extends Component {
     changeSettings(i) {
         let components = this.state.components;
         let pageNo = this.state.pageNo;
-
         components[pageNo][i].properties.initialized = false;
         this.setState({ components });
     }
@@ -112,7 +111,6 @@ class DashboardApp extends Component {
     deleteComponent(i) {
         let components = this.state.components;
         let pageNo = this.state.pageNo;
-
         components[pageNo][i].display = false;
         this.setState({ components });
     }
@@ -238,9 +236,6 @@ class DashboardApp extends Component {
                                     onClick={this.addBarChart} style={{ marginRight: 5, fontSize: "18px" }}><i className="fa fa-bar-chart" /> Bar Chart</button>
                                 <button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart"
                                     onClick={this.addLineChart} style={{ marginRight: 5, fontSize: "18px" }}><i className="fa fa-line-chart" /> Line Chart </button>
-                                <button data-toggle="tooltip" data-placement="bottom" title="Add Table"
-                                    onClick={this.addTable} style={{ marginRight: 5, fontSize: "18px", }}><i className="fa fa-table" /> Table </button>
-
 
                                 <div className="col-sm-12 col-xs-12" style={{ borderBottom: '3px solid maroon' }}>
 
