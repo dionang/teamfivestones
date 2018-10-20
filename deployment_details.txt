@@ -3,4 +3,4 @@ First, configure PUTTY to tunnel at port 8888, and use teamfivestones.ppk for SS
 URL: http://18.222.28.50/SCube
 User: bitnami
 Password: scube
-PhpMyAdmin: GxRDrxScTul9
+PhpMyAdmin: oSHxWIdivpG8
