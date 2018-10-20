@@ -9,12 +9,12 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-const api = 'http://localhost:8084/';
-const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
-//const api = 'https://scube.rocks/SCube/';
+//const api = 'http://localhost:8084/';
+//const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
+const api = 'https://scube.rocks/SCube/';
 //const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
-class App extends Component {
+class SlideShow extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,8 +28,7 @@ class App extends Component {
             sidebar: true,
             pageNo: 0,
             picArr:[],
-            exporting: false,
-            slideshowBool:true
+            exporting: false
         }
     }
 
@@ -541,14 +540,6 @@ class App extends Component {
         components[pageNo][i].properties = properties;
         this.setState({ properties });
     }
-    
-    slideShow=()=>{
-        this.setState({slideshowBool:false,editMode: false, pageNo:0});
-    }
-    
-    exitSlide=()=>{
-        this.setState({slideshowBool:true,editMode: true});
-    }
 
     // handleFormSubmit= (formSubmitEvent) => {
     //     formSubmitEvent.preventDefault();
@@ -581,9 +572,7 @@ class App extends Component {
 
     render() {
         return (
-                <div>
-                {this.state.slideshowBool? 
-             <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
+            <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
                 <div className="container body" style={{ margin: 0, padding: 0, width: "100%" }}>
                     <div className="main_container">
                         <div className="col-md-3 left_col">
@@ -743,7 +732,6 @@ class App extends Component {
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Editing
                                             </Button>
-                                           <Button style={{marginLeft:"30px"}} onClick={this.slideShow}> <span style={{fontFamily: 'Georgia', fontSize: 20}}>Play slide show</span></Button>
                                         </span>
                                         :
                                         <span>
@@ -751,16 +739,13 @@ class App extends Component {
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Edit
                                             </Button>
-                                            <Button style={{marginLeft:"20px"}}>
-                                                <img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px"}} />
-                                                    Play slide show</Button>
                                         </span>
                                     }                            
                                 </span>
                             </div>
                             <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE" }}>
                                 <div id="container" style={{
-                                    backgroundColor: 'white', height: window.innerHeight * 0.70, 
+                                    backgroundColor: 'white', height: window.innerHeight * 0.70, margin:0
                                 }}>
 
                                     {/* map does a for loop over all the components in the state */}
@@ -830,104 +815,7 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
-            </div>:      
-                   
-                   
-                                                                                                                                                    
-           <div style={{  backgroundColor:"white", height:"fit-content", textAlign:"center", overflow:"hidden" }}>
-       
-                    <div style={{height:window.innerHeight*0.70, marginTop:window.innerHeight*0.1}}>
-     
-                                 
-                    <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#E9E9E8", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
-                            <img src="assets/images/arrow left.png" class="image" style={{height:window.innerWidth * 0.050, marginTop: window.innerHeight * 0.30}} /> 
-                    </div>
-                  
-                  
-                   <div style={{float:"right",  height: window.innerHeight * 0.70,width: window.innerWidth * 0.06,backgroundColor:"#E9E9E8", textAlign:"center", cursor: "pointer"}} onClick={this.nextPage}>
-                            <img src="assets/images/arrow right.png" class="image" style={{height: window.innerWidth * 0.050,  marginTop: window.innerHeight * 0.30}} />
-                    </div>
-                                <div style={{ height: window.innerHeight * 0.70, backgroundColor:"white", marginLeft: window.innerWidth * 0.08}}>
-
-                                    {/* map does a for loop over all the components in the state */}
-                                    {/* {console.log("pageNo" + this.state.pageNo)} */}
-                                    {this.state.components[this.state.pageNo].map((item, i) => {
-                                        if (item.display) {
-                                            return <Rnd key={this.state.pageNo + "," + i}
-                                                style={{
-                                                    borderStyle: this.state.editMode ? "dotted" : "hidden",
-                                                    borderWidth: 2,
-                                                    backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
-                                                                      ? "transparent" : "white",
-                                                    borderColor: 'grey',
-                                                    width: "fit-content",
-                                                    
-                                                }}
-
-                                                // intialize components x,y,height and width
-                                                position={{ x: item.x, y: item.y }}
-                                                size={{ width: item.width, height: item.height }}
-
-                                                // min height and size
-                                                minHeight={10} minWidth={10}
-
-                                                // to customize the dragging and resizing behavior
-                                                bounds={"parent"}
-                                                cancel={".nonDraggable"}
-                                                dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
-                                                enableResizing={{
-                                                    bottom: this.state.editMode,
-                                                    bottomLeft: this.state.editMode,
-                                                    bottomRight: this.state.editMode,
-                                                    left: this.state.editMode,
-                                                    right: this.state.editMode,
-                                                    top: this.state.editMode,
-                                                    topLeft: this.state.editMode,
-                                                    topRight: this.state.editMode
-                                                }}
-
-                                                // update height and width onResizeStop
-                                                // onResizeStop will activate a callback function containing these params
-                                                // ref represents item that was resized
-                                                onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
-
-                                                // update height and width onResizeStop
-                                                // onDragStop will activate a callback function containing these params
-                                                // ref represents item that was dragged
-                                                onDragStop={(event, ref) => this.onDragStop(ref, i)}
-                                            >
-                                                <div style={{ height: 27.5, float: "right" }}>
-                                                    <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
-                                                        onClick={() => this.changeSettings(i)}></i>
-                                                    <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
-                                                        onClick={() => this.deleteComponent(i)}></i>
-                                                </div>
-                                                <ReportComponent type={item.type} editMode={this.state.editMode}
-                                                    properties={item.properties} i={i}
-                                                    updateProperties={this.updateProperties.bind(this)}
-                                                />
-                                                {/* <Descriptive type={item.type} editMode={this.state.editMode}
-                                                properties={item.properties} i={i}
-                                                updateProperties={this.updateProperties.bind(this)}></Descriptive> */}
-                                            </Rnd>
-                                        }
-                                    })}
-                                    </div>
-                                    </div> 
-                                    
-                                        <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
-                                                                                                                                                                                                                
-                                                                                                                                                                                                                
-                                        <Button onClick={this.exitSlide} style={{float:"right",marginTop:window.innerHeight*0.1}}>Exit Slide Show</Button>
-                                    
-                                    
-                               
-                               
-                                                          </div>
-                               
-                }
-                </div>
-           
+            </div>
         );
     }
 }
@@ -1854,4 +1742,4 @@ class EmptyTable extends Component {
     }
 }
 
-ReactDOM.render(<App/>, document.getElementById('reportContainer'));
+ReactDOM.render(<SlideShow/>, document.getElementById('slideContainer'));
