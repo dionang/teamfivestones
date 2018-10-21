@@ -9,10 +9,10 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-const api = 'http://localhost:8084/';
-const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
-//const api = 'https://scube.rocks/SCube/';
-//const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
+//const api = 'http://localhost:8084/';
+//const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
+const api = 'https://scube.rocks/SCube/';
+const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
 class App extends Component {
     constructor(props) {
@@ -743,7 +743,8 @@ class App extends Component {
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Editing
                                             </Button>
-                                           <Button style={{marginLeft:"30px"}} onClick={this.slideShow}> <span style={{fontFamily: 'Georgia', fontSize: 20}}>Play slide show</span></Button>
+                                           <Button style={{marginLeft:"30px"}} onClick={this.slideShow}><img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px"}} />
+                                                   <span style={{fontFamily: 'Georgia', fontSize: 17}}>Play slide show</span></Button>
                                         </span>
                                         :
                                         <span>
@@ -751,9 +752,8 @@ class App extends Component {
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Edit
                                             </Button>
-                                            <Button style={{marginLeft:"20px"}}>
-                                                <img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px"}} />
-                                                    Play slide show</Button>
+                                            <Button style={{marginLeft:"30px"}} onClick={this.slideShow}><img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px"}} />
+                                                   <span style={{fontFamily: 'Georgia', fontSize: 17}}>Play slide show</span></Button>
                                         </span>
                                     }                            
                                 </span>

@@ -1,12 +1,12 @@
-<%@ include file="protect.jsp" %>
+<%--<%@ include file="protect.jsp" %>--%>
 <%@ page import="scube.entities.*" %>
-<%
+<%--<%
     Account account = (Account) session.getAttribute("account");
     if (!(account instanceof Manager) && !(account instanceof User)){
         response.sendRedirect("login.jsp");
         return;
     }
-%>
+%>--%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,10 +17,24 @@
     </head>
 
    <body>
-        <input type="hidden" id="companyId"    value="<%= account.getCompanyId() %>"/>
+        
+            
+<!--        <input type="hidden" id="companyId"    value="<%--<%= account.getCompanyId() %>"/>
         <input type="hidden" id="userName"     value="<%= account.getUsername() %>" />
-        <input type="hidden" id="profileName"  value="<%= account.getName() %>" />
-        <div id="slideContainer"></div>
+        <input type="hidden" id="profileName"  value="<%= account.getName() %>" />-->
+        
+        <!--<input type="hidden" id="templateName" value="<%--<%= request.getParameter("templateName") %>--%>"/>-->    
+        <!--<input type="hidden" id="accessToken"    value="<%--<%= request.getParameter("accessToken") %>--%>"/>-->
+        <!--<input type="hidden" id="templateId"     value="<%--<%= request.getParameter("templateId") %>--%>" />-->
+
+        <input type="hidden" id="accessToken"    value="accessToken"/>
+        <input type="hidden" id="templateId"     value="12" />        
+        <input type="hidden" id="templateName"     value="Demo Slides" />
+        <input type="hidden" id="companyId"    value="1"/>
+        <input type="hidden" id="userName"     value="manager" />
+        <input type="hidden" id="profileName"  value="profileName" />
+         
+        <div id="SlideshowContainer"></div>
                     
         <!-- jQuery -->
         <script src="assets/js/jquery.min.js"></script>
@@ -29,16 +43,18 @@
         <!--Sweet alert -->
         <script src="assets/js/sweetalert.min.js"></script>
         <!-- Custom JS -->
-        <script src="assets/js/slideshow.js"></script> 
+        <script src="assets/js/dashboard.js"></script> 
         <!-- React modules-->
         <script src="assets/js/babel.min.js" charset="utf-8"></script>
         <script src="assets/js/bundle.min.js"></script>    
         <!-- PptXGenJS -->
-        <script src="https://cdn.rawgit.com/gitbrent/PptxGenJS/v2.0.0/dist/pptxgen.bundle.js"></script>
+        <script src="assets/js/jspdf.js"></script>
+        <script src="assets/js/dom-to-image.js"></script>
+        <script src="https://cdn.rawgit.com/gitbrent/PptxGenJS/v2.2.0/dist/pptxgen.bundle.js"></script>
         <!-- JsonProcessor -->
         <script src="assets/js/jsonProcessor.js"></script>
         <!-- Custom React Script -->
         <script type="text/babel" src="assets/js/slideshow.js"></script> 
-        
+       
     </body>
 </html>
