@@ -6,21 +6,23 @@
 package scube.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import scube.dao.AccountDAO;
-import scube.entities.*;
+import scube.dao.EmailDAO;
+import scube.entities.Account;
+import scube.entities.StringGenerator;
 
 /**
  *
- * @author Dion
+ * @author ZhenDan
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login","/forgetPassword"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "passwordController", urlPatterns = {"/passwordController","/resetPassword"})
+public class passwordController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,27 +35,24 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        Account account = AccountDAO.login(username, password);
-        if (account != null) {
-            session.setAttribute("account", account);
-            if(account instanceof CompanyAccount){
-                response.sendRedirect("companyHome.jsp");
-            } else if (account instanceof Developer){
-                response.sendRedirect("devHome.jsp");
-            } else if (account instanceof Manager) {
-                response.sendRedirect("managerHome.jsp");
-            } else if (account instanceof User) {
-                response.sendRedirect("managerHome.jsp");
-            } else {
-                response.sendRedirect("createCompanyAccount.jsp");
+       String operation = request.getParameter("operation");
+       if (operation.equals("resetPassword")) {
+                String username = request.getParameter("username");
+                Account account = AccountDAO.getAccountByUsername(username);
+                String error = null;
+                if (account != null) {
+                    int accountId = account.getAccountId();
+                    StringGenerator generator = new StringGenerator();
+                    String randomString = generator.generateRandomString();
+                    boolean resetPassword = AccountDAO.changePassword(accountId, randomString);
+                    if (resetPassword) {
+                        EmailDAO.sendPassowrd(username, "Reset Password", randomString);
+                    }
+                } else {
+                    error = "Invalid User Name";
+                }
             }
-        } else {
-            response.sendRedirect("login.jsp?error=true");
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

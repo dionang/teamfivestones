@@ -53,7 +53,7 @@
                             </div>
                             <br><br>  
                             <div class="row">
-                                <label class="forget">Forget your password?</label>
+                                <a href="forgetPassword.jsp"><label class="forget">Forget your password?</label></a>
                             </div>
                         </form> 
                     </div>
