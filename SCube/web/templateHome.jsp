@@ -34,7 +34,7 @@
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <!-- page content -->
                 
-                <div class="right_col" style="background-image: url(https://auditplus.com.pl/wp-content/uploads/2013/06/Abstract-office-table-free-ppt-backgrounds.jpg); background-size:  100% 100%; " style="background-image: url(https://auditplus.com.pl/wp-content/uploads/2013/06/Abstract-office-table-free-ppt-backgrounds.jpg); background-size:  100% 100%; " >
+                <div class="right_col"  >
                     <div class="content">
                         <div class="col-lg-3 col-sm-4 col-xs-6" style="margin-bottom: 15px">
                             <!-- Trigger/Open The Modal -->

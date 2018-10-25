@@ -59,8 +59,10 @@ html,body,.container,.main_container {
 .nav-sm .nav.side-menu li a{
     text-align:center!important;
     font-weight:400;
-    font-size:10px;
-    padding:10px 5px
+    font-size:9px;
+    padding:10px 5px;
+    margin-right:12px;
+   
 }
 .nav-sm .nav.child_menu li.active,.nav-sm .nav.side-menu li.active-sm{
     border-right:5px solid #1ABB9C
@@ -156,7 +158,8 @@ html,body,.container,.main_container {
     position:fixed
 }
 body .container.body .right_col{
-    background:#F7F7F7;
+    background:#F6F6F6;
+    
     
 }
 .nav-md .container.body .right_col{
@@ -330,7 +333,9 @@ a{
     cursor:pointer
 }
 .nav.side-menu>li>a{
-    margin-bottom:6px
+    margin-bottom:6px;
+    margin-left:15px;
+    font-size: 14px;
 }
 .nav.side-menu>li>a:hover{
     color:#F2F5F7!important
