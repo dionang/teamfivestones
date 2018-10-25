@@ -741,7 +741,7 @@ class App extends Component {
                                 
                             <div  style={{ backgroundColor: "white" }}>
                                 <div id="container" style={{
-                                    border:"grey solid 1px", width:"1024px", height: "768px", overflow:"auto"
+                                    border:"grey solid 1px", width:"1024px", height: "768px",
                                 }}>
 
                                     {/* map does a for loop over all the components in the state */}
