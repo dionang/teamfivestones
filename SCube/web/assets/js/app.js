@@ -638,7 +638,7 @@ class App extends Component {
                         <div className="right_col" style={{ height:"100%", overflow:"hidden", backgroundColor:"white", textAlign:"center", }}>
 
 
-                             <div id= "addComponent" style={{backgroundColor: 'white', width:"fist-content", float:"right", height:"fit-content",  marginTop:50,overflow:"hide" }}>
+                             <div id= "addComponent" style={{backgroundColor: 'white', width:"fist-content", float:"right", height:"fit-content",  marginTop:20,overflow:"hide" }}>
                                  
                                  
                             <input style={{ fontSize: 16, textAlign:"center", height:"30px", fontWeight:"bold", width:"200px"}} value={this.state.templateName} onChange={this.renameTemplate}></input>
@@ -741,7 +741,7 @@ class App extends Component {
                                 
                             <div  style={{ backgroundColor: "white" }}>
                                 <div id="container" style={{
-                                    border:"grey solid 1px", width:"1024px", height: "768px",
+                                    border:"grey solid 1px", width:"800px", height: "600px",
                                 }}>
 
                                     {/* map does a for loop over all the components in the state */}
