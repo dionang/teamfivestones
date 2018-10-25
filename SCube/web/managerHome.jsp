@@ -39,7 +39,7 @@
                                     <img src="assets/images/dashboard.png" class="image" />
                                 </div>
                            
-                            <h4 style="font-family: Raleway; font-size:22px;color: #2F4F4F;">View Dashboard</h4>
+                            <h4 style="font-family:  Georgia; font-size:22px;color: #2F4F4F;">View Dashboard</h4>
                             </a>
                         </div>
                         </div>
@@ -49,16 +49,16 @@
                                    <img src="assets/images/user.png" class="image" />
                                 </div>
                             
-                            <h4 style="font-family: Raleway; font-size:22px; color: #2F4F4F;" >Create User Account</h4>
+                            <h4 style="font-family: Georgia; font-size:22px; color: #2F4F4F;" >Create User Account</h4>
                             </a>
                         </div>
                        <div class="col-sm-4 img" style="padding: 70px 0;">
                             <a href="templateHome.jsp" style="text-decoration: none">
                                <div class="pic" >
                                    
-                                   <img src="assets/images/report.png"  class="image"/>
+                                   <img src="assets/images/report.png"  class="image" style="margin-top:35px"/>
                                 </div>
-                            <h4 style="font-family: Raleway; font-size:22px; color: #2F4F4F;" >Create Report Template</h4>
+                            <h4 style="font-family:  Georgia; font-size:22px; color: #2F4F4F;" >Create Report Template</h4>
                            </a>
                        </div>
                     </div>
