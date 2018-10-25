@@ -82,7 +82,6 @@
                                         </div>
                                         <input type="hidden" name="username" value="<%= account.getUsername()%>">
                                         <input type="hidden" id="fileNum" name="fileNum" value="" />
-                                        <input type="hidden" id="password" name="password" value="" />
                                         <input type=hidden id="fileName" name="fileName" value="" />
                                         <div class="row">
                                             <p  id="demo">
@@ -114,7 +113,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <!-- Sweet Alert -->
         <script src="assets/js/sweetalert.min.js"></script>
-        <script src="assets/js/sweetalert2.all.min.js"></script>
+        <script src="assets/js/dashboard.js"></script> 
         <script>
                                             // Get the modal
                                             var modal = document.getElementById('myModal');
@@ -161,52 +160,47 @@
 
                                                 event.preventDefault();
                                                 swal({
-                                                    title: 'Enter your email password',
-                                                    input: 'password',
-                                                    inputPlaceholder: 'Enter your password',
-                                                    showCancelButton: true,
-                                 
-
-                                                }).then((result) => {
+                                                    title: "Confirmation",
+                                                    text: "Are you sure you want to send this email?",
+                                                    icon: "warning",
+                                                    buttons: true,
+                                                    dangerMode: true
 
 
-                                                    $("#password").val(result.value);
-                                                    var form = $('#submitForm')[0];
-                                                    var data = new FormData(form);
-                                                    // disabled the submit button
-                                                    $("#btnSubmit").prop("disabled", true);
-                                                    if (result === "") {
-                                                        swal.showInputError("You need to write something!");
-                                                        return false
-                                                    } else {
+                                                }).then((confirm) => {
+                                                    if (confirm) {
+                                                        var form = $('#submitForm')[0];
+                                                        var data = new FormData(form);
+                                                        // disabled the submit button
+                                                        $("#btnSubmit").prop("disabled", true);
 
                                                         $.ajax({
                                                             type: "POST",
-
                                                             url: "/EmailController",
                                                             data: data,
                                                             processData: false,
                                                             contentType: false,
                                                             success: function (success) {
-                                                                console.log(success);
-                                                                if (success) {
-                                                                    console.log("i am here");
-                                                                    swal({icon: "success", text: "Email has been sent successfully!!", type:
+                                                 
+                                                                if (success === "true") {
+                                                                    console.log("undefined here");
+                                                                    swal({icon: "success", text: "Datasource has been added successfully!!", type:
                                                                                 "success"}).then(function () {
-
+                                                                                $("#btnSubmit").prop("disabled", false);
+                                                                                modal.style.display = "none";
                                                                     }
                                                                     );
                                                                 } else {
-                                                                    console.log("i am ther");
-                                                                    swal("Error!", {
-                                                                        icon: "error"
-                                                                    });
+                                                                    swal({icon: "error", text: "Error!!!"}).then(function () {
+                                                                                $("#btnSubmit").prop("disabled", false);
+                                                                                
+                                                                    }
+                                                                    );
                                                                 }
                                                             }
-
                                                         });
-                                                    }
 
+                                                    }
                                                 });
 
                                             });

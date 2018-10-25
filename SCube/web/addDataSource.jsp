@@ -228,6 +228,8 @@
                                                                                 params: list,
                                                                             }),
                                                                             success: function (success) {
+                                                                               
+                                                                                
                                                                                 if (success === "true") {
                                                                                     swal({icon: "success", text: "Datasource has been added successfully!!", type:
                                                                                                 "success"}).then(function () {

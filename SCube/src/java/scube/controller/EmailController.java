@@ -101,11 +101,7 @@ public class EmailController extends HttpServlet {
             FileItem item = (FileItem) itr.next();
             if (item.isFormField()) {
                 String fieldName = item.getFieldName();
-                if (fieldName.equals("username")) {
-                    username = item.getString();
-                } else if (fieldName.equals("password")) {
-                    password = item.getString(); 
-                } else if (fieldName.equals("message")) {
+               if (fieldName.equals("message")) {
                     message = item.getString();
                 } else if (fieldName.equals("to")) {
                     to = item.getString();
@@ -139,11 +135,11 @@ public class EmailController extends HttpServlet {
             }
         }
 
-        boolean result=EmailDAO.sendEmail(username, password, to, subject, message, filePath);
+        boolean result=EmailDAO.sendEmail(to, subject, message, filePath);
         if(result){
             temp.delete();
         }
-         out.println(result);
+         out.print(result);
     }
     }
 

@@ -166,9 +166,9 @@ body .container.body .right_col{
 .nav_title{
     width:230px;
     float:left;
-    background:#2A3F54;
+    background:white;
     border-radius:0;
-    height:80px
+    height:57px
 }
 @media (max-width:991px){
     .nav-md .container.body .right_col,.nav-md .container.body .top_nav{

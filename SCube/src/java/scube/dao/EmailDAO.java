@@ -53,9 +53,8 @@ public class EmailDAO {
 
     }
 
-    public static boolean sendEmail(String from, String pw, String to, String s, String m,ArrayList<String>filePath) {
-        final String sender = from;
-        final String password = pw;
+    public static boolean sendEmail(String to, String s, String m,ArrayList<String>filePath) {
+
         String receiver = to;
         String subject = s;
         String message = m;
@@ -72,7 +71,7 @@ public class EmailDAO {
         //Establishing a session with required user details
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(sender, password);
+                return new PasswordAuthentication("scube.noreply@gmail.com", "Zd123456");
             }
         });
         try {
