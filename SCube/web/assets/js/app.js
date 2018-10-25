@@ -25,7 +25,7 @@ class App extends Component {
             // w : 21*37.795276,
             // h : 29.7*37.795276,
             templateName: "Template Name",
-            sidebar: true,
+            sidebar: false,
             pageNo: 0,
             picArr:[],
             exporting: false,
@@ -597,8 +597,8 @@ class App extends Component {
                                             }} />
                                     </a>
                                 </div>
-                                <div className="clearfix"  style={{height:"100%"}}></div><br />
-                                <div id="sidebar-menu" className="main_menu_side hidden-print main_menu" style={{height:"100%"}}>
+                                <div className="clearfix"  ></div><br />
+                                <div id="sidebar-menu" className="main_menu_side hidden-print main_menu" >
                                     <div className="menu_section">
                                         <ul className="nav side-menu" id="options">
                                             <ul className="nav side-menu" id="options">
@@ -638,7 +638,7 @@ class App extends Component {
                         <div className="right_col" style={{ height:"100%", overflow:"hidden", backgroundColor:"white", textAlign:"center", }}>
 
 
-                             <div id= "addComponent" style={{backgroundColor: 'white', width:"fist-content", float:"right", height:"fit-content",  marginTop:20,overflow:"hide" }}>
+                             <div id= "addComponent" style={{backgroundColor: 'white', width:"fist-content", float:"right", height:"fit-content", overflow:"hide" }}>
                                  
                                  
                             <input style={{ fontSize: 16, textAlign:"center", height:"30px", fontWeight:"bold", width:"200px"}} value={this.state.templateName} onChange={this.renameTemplate}></input>
@@ -683,7 +683,7 @@ class App extends Component {
                                     
                                                                     
                                     <br/><br/>
-                                    <span style={{ fontFamily: 'Georgia', fontSize: 17}}>Page No.
+                                    <span style={{ fontFamily: 'Georgia', fontSize: 17, }}>Page No.
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warn" bsSize="small" onClick={this.previousPage}
                                     style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
                                     <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
@@ -704,10 +704,10 @@ class App extends Component {
                                                    
                                 </span>
                                                                                 
-                                    <br/><br/>
+                                    <br/>
                                     
                                     
-                            <div id= "addComponent" style={{ width:"200px", borderTop:"grey solid 3px"}}>
+                            <div id= "addComponent" style={{ width:"200px", borderTop:"grey solid 3px", marginTop:"3px"}}>
                                 <label style={{fontSize:"17px"}}> Add Component: </label><br/>
                                 <input type="image" data-toggle="tooltip" title="Add Textbox"
                                     onClick={this.addTextbox} style={{  height:"60px", marginBottom:"10px"}} src= "assets/images/text.png"/><br/>
