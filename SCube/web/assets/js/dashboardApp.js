@@ -230,7 +230,7 @@ class DashboardApp extends Component {
                                     </Button> */}
                                 <br />
 
-                                <span style={{ fontFamily: "INTUITIVE", fontSize: "20px", marginRight: "20px" }}>Create <span style={{ fontSize: "50px", backgroundColor: "#F3F3F3", fontWeight: 'bold' }}>Dashboard</span> by adding</span>
+                                <span style={{ fontFamily: "INTUITIVE", fontSize: "20px", marginRight: "20px" }}><span style={{ fontSize: "50px", backgroundColor: "#F3F3F3", fontWeight: 'bold' }}>Dashboard</span> </span>
                                 <br />
                                 <button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart"
                                     onClick={this.addBarChart} style={{ marginRight: 5, fontSize: "18px" }}><i className="fa fa-bar-chart" /> Bar Chart</button>
