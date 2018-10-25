@@ -583,12 +583,12 @@ class App extends Component {
         return (
                 <div>
                 {this.state.slideshowBool? 
-             <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
-                <div className="container body" style={{ margin: 0, padding: 0, width: "100%" }}>
-                    <div className="main_container">
-                        <div className="col-md-3 left_col">
-                            <div className="left_col scroll-view">
-                                <div className="navbar nav_title" style={{ border: 0 }}>
+             <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main"  >
+                <div className="container body" style={{  margin: 0, padding: 0, width: "100%",backgroundColor:"#2A3F54" }}>
+                    <div className="main_container" >
+                        <div className="col-md-3 left_col" >
+                            <div className="left_col scroll-view" >
+                                <div className="navbar nav_title" style={{ border: 0,  }}>
                                     <a className="site_title">
                                         <img src={this.state.sidebar ? "assets/images/logo.png" : "assets/images/logo1_1.png"}
                                             style={{
@@ -597,8 +597,8 @@ class App extends Component {
                                             }} />
                                     </a>
                                 </div>
-                                <div className="clearfix"></div><br />
-                                <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
+                                <div className="clearfix"  style={{height:"100%"}}></div><br />
+                                <div id="sidebar-menu" className="main_menu_side hidden-print main_menu" style={{height:"100%"}}>
                                     <div className="menu_section">
                                         <ul className="nav side-menu" id="options">
                                             <ul className="nav side-menu" id="options">
@@ -635,90 +635,56 @@ class App extends Component {
                             </div>
                         </div>
 
-                        <div className="right_col">
-                            <div className="col-md-12 col-xs-12">
-                                <label style={{ fontSize: 15, marginRight: 2, float:"left" }}>Template Name:</label>
-                                <input style={{ fontSize: 15, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
-                                <span style={{float:"right"}}>
-                                    <DropdownButton title="Export As" id="dropdown-size-medium"  onSelect={this.export}>
+                        <div className="right_col" style={{ height:"100%", overflow:"hidden", backgroundColor:"white", textAlign:"center", }}>
+
+
+                             <div id= "addComponent" style={{backgroundColor: 'white', width:"fist-content", float:"right", height:"fit-content",  marginTop:50,overflow:"hide" }}>
+                                 
+                                 
+                            <input style={{ fontSize: 16, textAlign:"center", height:"30px", fontWeight:"bold", width:"200px"}} value={this.state.templateName} onChange={this.renameTemplate}></input>
+                                <br/>
+                               
+                                     {this.state.editMode ?
+                                            <div >
+                                            <Button style={{marginTop:"8px", width:101,height:"35px"}} onClick={this.saveTemplate} > 
+                                                <i className="fa fa-save fa-lg"  style={{ marginRight: 2 }}/>Save
+                                            </Button>
+                                        
+                                            <Button  bsStyle= "warn" style={{width:101,marginTop:"8px",marginLeft:"-10px",height:"35px"}} onClick={this.toggleEditMode}>
+                                                <i className="fa fa-edit" style={{ marginRight: 2 }} />
+                                                Editing
+                                            </Button>  
+                                            </div>
+                                        :
+                                                <div >
+                                        
+                                            <Button style={{marginTop:"8px",width:101,height:"35px"}} onClick={this.saveTemplate} > 
+                                                <i className="fa fa-save fa-lg"  style={{ marginRight: 2 }}/>Save
+                                            </Button>
+                                            <Button bsStyle= "info" style={{marginTop:"8px",width:101,height:"35px"}}  onClick={this.toggleEditMode}>
+                                                <i className="fa fa-edit" style={{ marginRight: 2 }} />
+                                                Edit
+                                            </Button>                                  
+                                            </div>
+                                        
+                                    }
+                                    
+                                       
+                                
+                            
+                                    <DropdownButton title="Export As" id="dropdown-size-medium" style={{height:"35px", width:101}}  onSelect={this.export} >
                                         <MenuItem eventKey="PDF">PDF</MenuItem>
                                         <MenuItem eventKey="PPT">PPT</MenuItem>
                                     </DropdownButton>
-                                </span>
-                            </div>
-
-                            {/* <div id="size" className="modal">
-                                <div className="modal-content">
-                                    <form onSubmit={this.handleFormSubmit} id="myform" visibility= {this.state.formVisibility}>
-                                        <div className="row">
-                                            <span className="close" onClick={this.closeModal}>&times;</span>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-offset-4 col-sm-3 ">
-                                                <div className='title'>Please choose your report page size.</div>
-                                                <div className="radio">
-                                                    <label><input type="radio" name="size" value="A3" checked={this.state.selectedSize === 'A3'} onChange={this.handleSizeChange}  />A3</label>
-                                                </div>
-                                                <div className="radio">
-                                                    <label><input type="radio" name="size" value="A4" checked={this.state.selectedSize === 'A4'} onChange={this.handleSizeChange} />A4</label>
-                                                </div>
-                                                <div className="radio">
-                                                    <label><input type="radio" name="size" value="A5" checked={this.state.selectedSize === 'A5'} onChange={this.handleSizeChange} />A5</label>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-offset-4 col-sm-3 ">
-                                                <div className='title'>Please choose your report layout.</div>
-                                                <div className="radio">
-                                                    <label><input type="radio" name="layout" value="Portrait" checked={this.state.selectedLayout === 'Portrait'}  onChange={this.handleLayoutChange}  />Portrait</label>
-                                                </div>
-                                                <div className="radio">
-                                                    <label><input type="radio" name="layout" value="Landscape" checked={this.state.selectedLayout === 'Landscape'}  onChange={this.handleLayoutChange} />Landscape</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-offset-7 col-sm-2 ">
-                                                <input type="submit" value="Submit" className="btn btn-info" />
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div> */}
-
-
-                            <div className="col-sm-12 col-xs-12" style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: 'white', borderBottom: '7px solid #EB6B2A' }}>
-                                <label> Add Component: </label>
-                                <input type="image" data-toggle="tooltip" title="Add Textbox"
-                                    onClick={this.addTextbox} style={{ marginRight: 1, height:"30px", marginBottom:"-10px" }} src= "assets/images/text.png"/>
-                                <input type="image" data-toggle="tooltip" title="Add Bar Chart"
-                                    onClick={this.addBarChart} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/bar chart.png"/>
-                                <input type="image"  data-toggle="tooltip"  title="Add Line Chart" 
-                                    onClick={this.addLineChart} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/line chart.png"/>
-                                <input type="image"  data-toggle="tooltip"  title="Add Table" 
-                                    onClick={this.addTable} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/table.png"/>
-                                <input type="image"  data-toggle="tooltip"  title="Add Image" 
-                                    onClick={this.addImage} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/picture.png"/>
-                                <input type="image"  data-toggle="tooltip"  title="Add Video" 
-                                    onClick={this.addVideo} style={{ marginRight: 10, height:"30px", marginBottom:"-10px"  }} src= "assets/images/video_4880.png"/>
-                                {/*
-                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"
-                                    onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
-                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsStyle="warning"
-                                    onClick={this.addBarChart} style={{ marginRight: 5 }}><i className="fa fa-bar-chart" /></Button>
-                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart" bsStyle="success"
-                                    onClick={this.addLineChart} style={{ marginRight: 5 }}><i className="fa fa-line-chart" /></Button>
-                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Table" bsStyle="danger"
-                                    onClick={this.addTable} style={{ marginRight: 5 }}><i className="fa fa-table" /> </Button>
-                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Image"
-                                    onClick={this.addImage} style={{ backgroundColor: "#31B0D5", color: "white", border: "1px solid #31B0D5", marginRight: 5 }}><i className="fa fa-image" /></Button>
-                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"
-                                    onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 5}}><i className="fa fa-play-circle" /></Button>
-                                */}
-                                <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Number
-                                <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
+                                    
+                                     <Button onClick={this.slideShow} style={{ height:"35px", width:101}}>
+                                        <img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px", }} />
+                                                    <span style={{fontFamily: 'Georgia', fontSize: 15}}>Play</span></Button>
+                                    
+                                                                    
+                                    <br/><br/>
+                                    <span style={{ fontFamily: 'Georgia', fontSize: 17}}>Page No.
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warn" bsSize="small" onClick={this.previousPage}
                                     style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
                                     <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
                                         <path d="M0-.5h24v24H0z" fill="none"></path>
@@ -727,40 +693,55 @@ class App extends Component {
                                 </Button>
 
                                 <span style={{ fontFamily: 'Georgia', fontSize: 18,textAlign:"center"  }}>{this.state.pageNo + 1}</span>
-                                    <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warn" bsSize="small" onClick={this.nextPage}
                                         style={{ marginLeft: 10,  textAlign:"center"  }}>
                                         <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
                                             <path d="M0-.5h24v24H0z" fill="none"></path>
                                             <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
                                         </svg>
                                     </Button>
-                                    <Button style={{ marginLeft: 5,marginRight:5}} bsStyle = "info" onClick={this.saveTemplate}> 
-                                        <i className="fa fa-save fa-lg" style={{marginRight:4}}/>Save
-                                    </Button>
-                                    {this.state.editMode ?
-                                        <span>
-                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right' }} bsStyle="danger" onClick={this.toggleEditMode}>
-                                                <i className="fa fa-edit" style={{ marginRight: 2 }} />
-                                                Editing
-                                            </Button>
-                                           <Button style={{marginLeft:"30px"}} onClick={this.slideShow}><img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px"}} />
-                                                   <span style={{fontFamily: 'Georgia', fontSize: 17}}>Play slide show</span></Button>
-                                        </span>
-                                        :
-                                        <span>
-                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right'}} bsStyle="success" onClick={this.toggleEditMode}>
-                                                <i className="fa fa-edit" style={{ marginRight: 2 }} />
-                                                Edit
-                                            </Button>
-                                            <Button style={{marginLeft:"30px"}} onClick={this.slideShow}><img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px"}} />
-                                                   <span style={{fontFamily: 'Georgia', fontSize: 17}}>Play slide show</span></Button>
-                                        </span>
-                                    }                            
+                                    
+                                                   
                                 </span>
+                                                                                
+                                    <br/><br/>
+                                    
+                                    
+                            <div id= "addComponent" style={{ width:"200px", borderTop:"grey solid 3px"}}>
+                                <label style={{fontSize:"17px"}}> Add Component: </label><br/>
+                                <input type="image" data-toggle="tooltip" title="Add Textbox"
+                                    onClick={this.addTextbox} style={{  height:"60px", marginBottom:"10px"}} src= "assets/images/text.png"/><br/>
+                                <input type="image" data-toggle="tooltip" title="Add Bar Chart"
+                                    onClick={this.addBarChart} style={{ height:"60px",  marginBottom:"10px"  }} src= "assets/images/bar chart.png"/><br/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Line Chart" 
+                                    onClick={this.addLineChart} style={{  height:"60px", marginBottom:"10px" }} src= "assets/images/line chart.png"/><br/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Table" 
+                                    onClick={this.addTable} style={{ height:"60px",  marginBottom:"10px" }} src= "assets/images/table.png"/><br/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Image" 
+                                    onClick={this.addImage} style={{  height:"60px",  marginBottom:"10px" }} src= "assets/images/picture.png"/><br/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Video" 
+                                    onClick={this.addVideo} style={{ height:"60px",  marginBottom:"10px" }} src= "assets/images/video_4880.png"/><br/>
+                            </div>  
                             </div>
-                            <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE" }}>
+                                {/*
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStysle="primary"
+                                    onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i classsName="fa fa-font" /></Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart" bsSstyle="warning"
+                                    onClick={this.addBarChart} style={{ marginRight: 5 }}><i className="fa fa-bsar-chart" /></Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart" bssStyle="success"
+                                    onClick={this.addLineChart} style={{ marginRight: 5 }}><i className="fa fa-sline-chart" /></Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Table" bsStyles="danger"
+                                    onClick={this.addTable} style={{ marginRight: 5 }}><i className="fa fa-tablse" /> </Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Image"s
+                                    onClick={this.addImage} style={{ backgroundColor: "#31B0D5", color: "white"s, border: "1px solid #31B0D5", marginRight: 5 }}><i className="fa fa-image" /></Button>
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"s
+                                    onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white"s, border: "1px solid #D896FF", marginRight: 5}}><i className="fa fa-play-circle" /></Button>
+                                */}
+                            
+                                
+                            <div  style={{ backgroundColor: "white" }}>
                                 <div id="container" style={{
-                                    backgroundColor: 'white', height: window.innerHeight * 0.70, 
+                                    border:"grey solid 1px", width:"1024px", height: "768px",
                                 }}>
 
                                     {/* map does a for loop over all the components in the state */}
@@ -825,8 +806,10 @@ class App extends Component {
                                             </Rnd>
                                         }
                                     })}
+                                    
                                 </div>
-                            </div>
+                                </div>
+                                 
                         </div>
                     </div>
                 </div>
@@ -1855,3 +1838,83 @@ class EmptyTable extends Component {
 }
 
 ReactDOM.render(<App/>, document.getElementById('reportContainer'));
+
+
+// code for the size change A2/A3/A4
+                            {/* <div id="size" className="modal">s
+                                <div className="modal-content">s
+                                    <form onSubmit={this.handleFormSubmit} id="myform" visibility= {this.state.sformVisibility}>
+                                        <div className="row">s
+                                            <span className="close" onClick={this.closeModal}>&times;</span>s
+                                        </div>s
+                                        <div className="row">s
+                                            <div className="col-sm-offset-4 col-sm-3 ">s
+                                                <div className='title'>Please choose your report page size.</disv>
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="size" value="A3" checked={sthis.state.selectedSize === 'A3'} onChange={this.handleSizeChange}  />A3</label>
+                                                </div>s
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="size" value="A4" checked={sthis.state.selectedSize === 'A4'} onChange={this.handleSizeChange} />A4</label>
+                                                </div>s
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="size" value="A5" checked={sthis.state.selectedSize === 'A5'} onChange={this.handleSizeChange} />A5</label>
+                                                </div>s
+                            {/* <div id="size" className="modal">s
+                                <div className="modal-content">s
+                                    <form onSubmit={this.handleFormSubmit} id="myform" visibility= {this.state.sformVisibility}>
+                                        <div className="row">s
+                                            <span className="close" onClick={this.closeModal}>&times;</span>s
+                                        </div>s
+                                        <div className="row">s
+                                            <div className="col-sm-offset-4 col-sm-3 ">s
+                                                <div className='title'>Please choose your report page size.</disv>
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="size" value="A3" checked={sthis.state.selectedSize === 'A3'} onChange={this.handleSizeChange}  />A3</label>
+                                                </div>s
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="size" value="A4" checked={sthis.state.selectedSize === 'A4'} onChange={this.handleSizeChange} />A4</label>
+                                                </div>s
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="size" value="A5" checked={sthis.state.selectedSize === 'A5'} onChange={this.handleSizeChange} />A5</label>
+                                                </div>s
+                            {/* <div id="size" className="modal">s
+                                <div className="modal-content">s
+                                    <form onSubmit={this.handleFormSubmit} id="myform" visibility= {this.state.sformVisibility}>
+                                        <div className="row">s
+                                            <span className="close" onClick={this.closeModal}>&times;</span>s
+                                        </div>s
+                                        <div className="row">s
+                                            <div className="col-sm-offset-4 col-sm-3 ">s
+                                                <div className='title'>Please choose your report page size.</disv>
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="size" value="A3" checked={sthis.state.selectedSize === 'A3'} onChange={this.handleSizeChange}  />A3</label>
+                                                </div>s
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="size" value="A4" checked={sthis.state.selectedSize === 'A4'} onChange={this.handleSizeChange} />A4</label>
+                                                </div>s
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="size" value="A5" checked={sthis.state.selectedSize === 'A5'} onChange={this.handleSizeChange} />A5</label>
+                                                </div>s
+                                            </div>s
+s
+                                        </div>s
+                                        <div className="row">s
+                                            <div className="col-sm-offset-4 col-sm-3 ">s
+                                                <div className='title'>Please choose your report layout.</div>s
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="layout" value="Portrait" cshecked={this.state.selectedLayout === 'Portrait'}  onChange={this.handleLayoutChange}  />Portrait</label>
+                                                </div>s
+                                                <div className="radio">s
+                                                    <label><input type="radio" name="layout" value="Landscape" schecked={this.state.selectedLayout === 'Landscape'}  onChange={this.handleLayoutChange} />Landscape</label>
+                                                </div>s
+                                            </div>s
+                                        </div>s
+                                        <div className="row">s
+                                            <div className="col-sm-offset-7 col-sm-2 ">s
+                                                <input type="submit" value="Submit" className="btn btn-info" />s
+                                            </div>s
+                                        </div>s
+                                    </form>s
+                                </div>s
+                            </div> */}
+                                        
