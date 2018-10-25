@@ -54,7 +54,6 @@ public class AccountController extends HttpServlet {
                 response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
             }
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

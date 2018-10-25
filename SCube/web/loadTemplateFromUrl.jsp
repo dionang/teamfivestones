@@ -1,12 +1,7 @@
+<%@ page import="scube.entities.*" %>
+<%@ page import="scube.dao.CompanyDAO"%>
 <%
     String accessToken = request.getParameter("accessToken");
-    
-    // validate access token
-    if (accessToken == null || !accessToken.equals("123")){
-        out.println("invalid access token entered");
-        return;
-    }
-    
     String templateID = request.getParameter("templateId");
     if (templateID == null){
         out.println("No templateId entered!");
@@ -15,15 +10,19 @@
     
     try {
         int templateId = Integer.parseInt(templateID);
-        out.println("<input type='hidden' id='templateId' value='" + templateId + "'/>");
+        if (accessToken != null && CompanyDAO.validateAccessToken(accessToken, templateId)){
+            out.println("<input type='hidden' id='templateId' value='" + templateId + "'/>");
+        } else {
+            throw new Exception();
+        }
     } catch (NumberFormatException e){
         out.println("Invalid templateId entered!");
         return;
     } catch (Exception e) {
-        
-    }
+        out.println("invalid access token entered");
+        return;        
+    }    
 %>
-<%@ page import="scube.entities.*" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

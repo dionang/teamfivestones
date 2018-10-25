@@ -9,14 +9,14 @@ import java.sql.Types;
 public class CompanyDAO {
     // Create operations
     public static boolean addCompany(String companyName, String address, String phoneNo, String fax, 
-            String logoUrl, Integer pocId, String datasourceUrl) {
+            String logoUrl, Integer pocId, String datasourceUrl, String accessToken) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO company VALUES (?,?,?,?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO company VALUES (?,?,?,?,?,?,?,?,?)");
             stmt.setNull(1, Types.INTEGER);
             stmt.setString(2, companyName);
             stmt.setString(3, address);
@@ -25,8 +25,32 @@ public class CompanyDAO {
             stmt.setString(6, logoUrl);
             stmt.setInt(7, pocId);
             stmt.setString(8, datasourceUrl);
+            stmt.setString(9, accessToken);
             stmt.executeUpdate();
             return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    // Read operations
+    public static boolean validateAccessToken(String accessToken, int companyId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT accessToken FROM template t, company c WHERE t.companyId = c.companyId and templateId = ?");
+            stmt.setInt(1, companyId);
+            rs = stmt.executeQuery();
+            if(rs.next()){
+                return accessToken.equals(rs.getString("accessToken"));
+            }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace(System.out);
             return false;
@@ -127,6 +151,26 @@ public class CompanyDAO {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("UPDATE company SET datasourceUrl = ? WHERE companyId = ?");
             stmt.setString(1, datasourceUrl);
+            stmt.setInt(2, companyId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return false;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static boolean setAccessToken(String accessToken, int companyId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("UPDATE company SET accessToken = ? WHERE companyId = ?");
+            stmt.setString(1, accessToken);
             stmt.setInt(2, companyId);
             stmt.executeUpdate();
             return true;
