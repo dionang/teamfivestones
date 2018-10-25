@@ -33,7 +33,11 @@ class App extends Component {
     }
 
     componentDidMount() {
+        let self = this;
         this.loadTemplate();
+        setTimeout(function () {
+            self.savePDF();
+        }, 3000);
     }
 
     changeSettings(i) {
@@ -85,7 +89,6 @@ class App extends Component {
     loadTemplate = () => {
         let self = this;
         let templateId = parseInt(document.getElementById("templateId").value, 10);
-        console.log(templateId);
 
         if (templateId !== 0) {
             request.post({
@@ -93,8 +96,6 @@ class App extends Component {
                 json: true,
                 body: { operation: "loadComponents", templateId: templateId }
             }, function (error, response, body) {
-                
-                console.log("load");
                 if (body) {
                     let components = body.components;
                     self.setState({ components });
@@ -224,6 +225,14 @@ class App extends Component {
                         let xhr = new XMLHttpRequest();
                         xhr.open("POST", api + "saveFile");
                         xhr.send(formData);
+
+                        // download status update
+                        let loader = document.getElementById("spinLoader");
+                        loader.style.display = "none";
+                        let tick = document.getElementById("downloadCompletedTick");
+                        tick.style.display="block";
+                        let downloadStatus = document.getElementById("downloadStatus");
+                        downloadStatus.innerHTML = "PDF download completed!";
 
                         // proceed to save locally
                         doc.save(self.state.templateName);

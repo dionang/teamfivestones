@@ -33,7 +33,11 @@
         <title>Load Template</title>
     </head>
 
-   <body>
+    <body>
+        <div id="spinLoader"></div>
+        <img id="downloadCompletedTick" src="assets/images/tick.png"/>
+        <div id="downloadStatus">Rendering ...</div>
+        <div id="screenOverlay"></div>
         <div id="reportContainer"></div>
                     
         <!-- jQuery -->
@@ -53,7 +57,6 @@
         <!-- JsonProcessor -->
         <script src="assets/js/jsonProcessor.js"></script>
         <!-- Custom React Script -->
-        <script type="text/babel" src="assets/js/app2.js"></script> 
-       
+        <script type="text/babel" src="assets/js/previewApp.js"></script> 
     </body>
 </html>
