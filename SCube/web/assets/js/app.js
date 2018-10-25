@@ -641,34 +641,32 @@ class App extends Component {
                              <div id= "addComponent" style={{backgroundColor: 'white', width:"fist-content", float:"right", height:"fit-content", overflow:"hide" }}>
                                  
                                  
-                            <input style={{ fontSize: 16, textAlign:"center", height:"30px", fontWeight:"bold", width:"200px"}} value={this.state.templateName} onChange={this.renameTemplate}></input>
+                            <input style={{ fontSize: 16, textAlign:"center", height:"30px", fontWeight:"bold", width:"220px", marginBottom:"20px", fontColor:"grey"}} value={this.state.templateName} onChange={this.renameTemplate}></input>
                                 <br/>
+                                
+                                 <Button bsStyle="success" style={{marginTop:"8px",width:"101px",height:"35px", marginBottom: "5px"  }} onClick={this.saveTemplate} > 
+                                                <i className="fa fa-save fa-lg"  style={{ marginRight: 2,}}/>Save
+                                </Button>
                                
-                                     {this.state.editMode ?
-                                            <div >
-                                            <Button style={{marginTop:"8px", width:101,height:"35px"}} onClick={this.saveTemplate} > 
-                                                <i className="fa fa-save fa-lg"  style={{ marginRight: 2 }}/>Save
-                                            </Button>
-                                        
-                                            <Button  bsStyle= "warn" style={{width:101,marginTop:"8px",marginLeft:"-10px",height:"35px"}} onClick={this.toggleEditMode}>
+                                     
+                                    
+                                    {this.state.editMode? 
+                                    <Button bsStyle= "info" style={{marginTop:"8px",width:"101px",height:"35px", marginLeft:"10px", marginBottom: "5px" }}  onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Editing
-                                            </Button>  
-                                            </div>
-                                        :
-                                                <div >
-                                        
-                                            <Button style={{marginTop:"8px",width:101,height:"35px"}} onClick={this.saveTemplate} > 
-                                                <i className="fa fa-save fa-lg"  style={{ marginRight: 2 }}/>Save
-                                            </Button>
-                                            <Button bsStyle= "info" style={{marginTop:"8px",width:101,height:"35px"}}  onClick={this.toggleEditMode}>
+                                            </Button> 
+                                            
+                                            :
+                                                    
+                                    <Button bsStyle= "warning" style={{marginTop:"8px",width:"101px",height:"35px", marginLeft:"10px", marginBottom: "5px" }}  onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Edit
-                                            </Button>                                  
-                                            </div>
-                                        
-                                    }
+                                            </Button> 
+                                            
+                                   }
                                     
+                                    
+                                    <br/>
                                        
                                 
                             
@@ -677,13 +675,35 @@ class App extends Component {
                                         <MenuItem eventKey="PPT">PPT</MenuItem>
                                     </DropdownButton>
                                     
-                                     <Button onClick={this.slideShow} style={{ height:"35px", width:101}}>
-                                        <img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px", }} />
-                                                    <span style={{fontFamily: 'Georgia', fontSize: 15}}>Play</span></Button>
+                                     <Button onClick={this.slideShow} style={{ height:"35px", width:101, marginLeft:"10px", textAlign:"center", padding:0}}>
+                                        <img src="assets/images/slideshow.png" style={{height: "20px",  }} />
+                                                    Slideshow</Button>
                                     
                                                                     
                                     <br/><br/>
-                                    <span style={{ fontFamily: 'Georgia', fontSize: 17, }}>Page No.
+                                   
+                                                                                
+                                    <br/>
+                                    
+                                    
+                            <div id= "addComponent" style={{ width:"200px", borderTop:"grey solid 3px", marginTop:"15px"}}>
+                                <label style={{fontSize:"17px",backgroundColor:"grey", width:"200px", color:"white"}}> Add Component: </label><br/>
+                                <input type="image" data-toggle="tooltip" title="Add Textbox"
+                                    onClick={this.addTextbox} style={{  marginLeft: "-20px", height:"60px", marginBottom:"10px"}} src= "assets/images/text.png"/>
+                                <input type="image" data-toggle="tooltip" title="Add Bar Chart"
+                                    onClick={this.addBarChart} style={{marginLeft:"10px", height:"60px",  marginBottom:"10px"  }} src= "assets/images/bar chart.png"/><br/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Line Chart" 
+                                    onClick={this.addLineChart} style={{  height:"60px", marginBottom:"10px", marginRight:"30px" }} src= "assets/images/line chart.png"/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Table" 
+                                    onClick={this.addTable} style={{ height:"60px",  marginBottom:"10px" }} src= "assets/images/table.png"/><br/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Image" 
+                                    onClick={this.addImage} style={{  height:"60px",  marginBottom:"10px" ,marginRight:"30px" }} src= "assets/images/picture.png"/>
+                                <input type="image"  data-toggle="tooltip"  title="Add Video" 
+                                    onClick={this.addVideo} style={{ height:"60px",  marginBottom:"10px" }} src= "assets/images/video_4880.png"/><br/>
+                            </div>  
+                            
+                            <div style={{marginTop:"60px"}}>
+                             <span style={{ fontFamily: 'Georgia', fontSize: 17, }}>Page No.
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warn" bsSize="small" onClick={this.previousPage}
                                     style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
                                     <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
@@ -703,25 +723,7 @@ class App extends Component {
                                     
                                                    
                                 </span>
-                                                                                
-                                    <br/>
-                                    
-                                    
-                            <div id= "addComponent" style={{ width:"200px", borderTop:"grey solid 3px", marginTop:"3px"}}>
-                                <label style={{fontSize:"17px"}}> Add Component: </label><br/>
-                                <input type="image" data-toggle="tooltip" title="Add Textbox"
-                                    onClick={this.addTextbox} style={{  height:"60px", marginBottom:"10px"}} src= "assets/images/text.png"/><br/>
-                                <input type="image" data-toggle="tooltip" title="Add Bar Chart"
-                                    onClick={this.addBarChart} style={{ height:"60px",  marginBottom:"10px"  }} src= "assets/images/bar chart.png"/><br/>
-                                <input type="image"  data-toggle="tooltip"  title="Add Line Chart" 
-                                    onClick={this.addLineChart} style={{  height:"60px", marginBottom:"10px" }} src= "assets/images/line chart.png"/><br/>
-                                <input type="image"  data-toggle="tooltip"  title="Add Table" 
-                                    onClick={this.addTable} style={{ height:"60px",  marginBottom:"10px" }} src= "assets/images/table.png"/><br/>
-                                <input type="image"  data-toggle="tooltip"  title="Add Image" 
-                                    onClick={this.addImage} style={{  height:"60px",  marginBottom:"10px" }} src= "assets/images/picture.png"/><br/>
-                                <input type="image"  data-toggle="tooltip"  title="Add Video" 
-                                    onClick={this.addVideo} style={{ height:"60px",  marginBottom:"10px" }} src= "assets/images/video_4880.png"/><br/>
-                            </div>  
+                                </div>
                             </div>
                                 {/*
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStysle="primary"
