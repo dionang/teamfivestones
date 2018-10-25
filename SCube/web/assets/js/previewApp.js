@@ -9,9 +9,9 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-const api = 'http://localhost:8084/';
+//const api = 'http://localhost:8084/';
 //const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
-//const api = 'https://scube.rocks/SCube/';
+const api = 'https://scube.rocks/SCube/';
 //const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
 class App extends Component {
@@ -37,7 +37,7 @@ class App extends Component {
         this.loadTemplate();
         setTimeout(function () {
             self.savePDF();
-        }, 3000);
+        }, 5000);
     }
 
     changeSettings(i) {
