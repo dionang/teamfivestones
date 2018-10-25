@@ -583,12 +583,12 @@ class App extends Component {
         return (
                 <div>
                 {this.state.slideshowBool? 
-             <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
-                <div className="container body" style={{  margin: 0, padding: 0, width: "100%" }}>
-                    <div className="main_container">
-                        <div className="col-md-3 left_col">
-                            <div className="left_col scroll-view">
-                                <div className="navbar nav_title" style={{ border: 0 }}>
+             <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main"  >
+                <div className="container body" style={{  margin: 0, padding: 0, width: "100%",backgroundColor:"#2A3F54" }}>
+                    <div className="main_container" >
+                        <div className="col-md-3 left_col" >
+                            <div className="left_col scroll-view" >
+                                <div className="navbar nav_title" style={{ border: 0,  }}>
                                     <a className="site_title">
                                         <img src={this.state.sidebar ? "assets/images/logo.png" : "assets/images/logo1_1.png"}
                                             style={{
@@ -597,8 +597,8 @@ class App extends Component {
                                             }} />
                                     </a>
                                 </div>
-                                <div className="clearfix"></div><br />
-                                <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
+                                <div className="clearfix"  style={{height:"100%"}}></div><br />
+                                <div id="sidebar-menu" className="main_menu_side hidden-print main_menu" style={{height:"100%"}}>
                                     <div className="menu_section">
                                         <ul className="nav side-menu" id="options">
                                             <ul className="nav side-menu" id="options">
@@ -638,43 +638,77 @@ class App extends Component {
                         <div className="right_col" style={{ height:"100%", overflow:"hidden", backgroundColor:"white", textAlign:"center", }}>
 
 
-                             <div id= "addComponent" style={{backgroundColor: 'white', width:"fist-content",marginLeft:"50px", float:"right", height:"fit-content", border:"grey solid 1px", overflow:"hide" }}>
+                             <div id= "addComponent" style={{backgroundColor: 'white', width:"fist-content", float:"right", height:"fit-content",  marginTop:50,overflow:"hide" }}>
                                  
                                  
-                            <input style={{ fontSize: 20, textAlign:"center", height:"30px"}} value={this.state.templateName} onChange={this.renameTemplate}></input>
-                                <br/><Button style={{marginTop:"8px", marginRight:"5px"}} onClick={this.saveTemplate} > 
-                                        <i className="fa fa-save fa-lg"  style={{ marginRight: 2 }}/>Save
-                                    </Button>
+                            <input style={{ fontSize: 16, textAlign:"center", height:"30px", fontWeight:"bold", width:"200px"}} value={this.state.templateName} onChange={this.renameTemplate}></input>
+                                <br/>
+                               
                                      {this.state.editMode ?
+                                            <div >
+                                            <Button style={{marginTop:"8px", width:101,height:"35px"}} onClick={this.saveTemplate} > 
+                                                <i className="fa fa-save fa-lg"  style={{ marginRight: 2 }}/>Save
+                                            </Button>
                                         
-                                            <Button  bsStyle= "warn" style={{marginTop:"8px"}} onClick={this.toggleEditMode}>
+                                            <Button  bsStyle= "warn" style={{width:101,marginTop:"8px",marginLeft:"-10px",height:"35px"}} onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Editing
-                                                </Button>                                      
+                                            </Button>  
+                                            </div>
                                         :
+                                                <div >
                                         
-                                            <Button bsStyle= "info" style={{marginTop:"8px"}}  onClick={this.toggleEditMode}>
+                                            <Button style={{marginTop:"8px",width:101,height:"35px"}} onClick={this.saveTemplate} > 
+                                                <i className="fa fa-save fa-lg"  style={{ marginRight: 2 }}/>Save
+                                            </Button>
+                                            <Button bsStyle= "info" style={{marginTop:"8px",width:101,height:"35px"}}  onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Edit
                                             </Button>                                  
-                                        
+                                            </div>
                                         
                                     }
-                                    <DropdownButton title="Export As" id="dropdown-size-medium" style={{marginTop:"8px", marginRight:"5px"}}  onSelect={this.export} >
-                                        <MenuItem eventKey="PDF">PDF</MenuItem>
-                                        <MenuItem eventKey="PPT">PPT</MenuItem>
-                                    </DropdownButton><br/><br/>
-                                        <Button onClick={this.slideShow} style={{ marginTop:"-10px"}}>
-                                        <img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px", }} />
-                                                    <span style={{fontFamily: 'Georgia', fontSize: 15}}>Slideshow</span></Button>
                                     
+                                       
                                 
                             
-                                                                  
-                                    <br/><br/><br/>
+                                    <DropdownButton title="Export As" id="dropdown-size-medium" style={{height:"35px", width:101}}  onSelect={this.export} >
+                                        <MenuItem eventKey="PDF">PDF</MenuItem>
+                                        <MenuItem eventKey="PPT">PPT</MenuItem>
+                                    </DropdownButton>
                                     
-                            <div id= "addComponent" style={{ width:"fit-content", border:"grey soslid 1px"}}>
-                                <label> Add Component: </label><br/>
+                                     <Button onClick={this.slideShow} style={{ height:"35px", width:101}}>
+                                        <img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px", }} />
+                                                    <span style={{fontFamily: 'Georgia', fontSize: 15}}>Play</span></Button>
+                                    
+                                                                    
+                                    <br/><br/>
+                                    <span style={{ fontFamily: 'Georgia', fontSize: 17}}>Page No.
+                                <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warn" bsSize="small" onClick={this.previousPage}
+                                    style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
+                                    <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                        <path d="M0-.5h24v24H0z" fill="none"></path>
+                                        <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" className="jWRuRT"></path>
+                                    </svg>
+                                </Button>
+
+                                <span style={{ fontFamily: 'Georgia', fontSize: 18,textAlign:"center"  }}>{this.state.pageNo + 1}</span>
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warn" bsSize="small" onClick={this.nextPage}
+                                        style={{ marginLeft: 10,  textAlign:"center"  }}>
+                                        <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
+                                            <path d="M0-.5h24v24H0z" fill="none"></path>
+                                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
+                                        </svg>
+                                    </Button>
+                                    
+                                                   
+                                </span>
+                                                                                
+                                    <br/><br/>
+                                    
+                                    
+                            <div id= "addComponent" style={{ width:"200px", borderTop:"grey solid 3px"}}>
+                                <label style={{fontSize:"17px"}}> Add Component: </label><br/>
                                 <input type="image" data-toggle="tooltip" title="Add Textbox"
                                     onClick={this.addTextbox} style={{  height:"60px", marginBottom:"10px"}} src= "assets/images/text.png"/><br/>
                                 <input type="image" data-toggle="tooltip" title="Add Bar Chart"
@@ -707,7 +741,7 @@ class App extends Component {
                                 
                             <div  style={{ backgroundColor: "white" }}>
                                 <div id="container" style={{
-                                    border:"grey solid 1px", width:"1024px", height: "768px",
+                                    border:"grey solid 1px", width:"1024px", height: "768px", overflow:"auto"
                                 }}>
 
                                     {/* map does a for loop over all the components in the state */}
@@ -772,26 +806,7 @@ class App extends Component {
                                             </Rnd>
                                         }
                                     })}
-                                    <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Numbers
-                                <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
-                                    style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
-                                    <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
-                                        <path d="M0-.5h24v24H0z" fill="none"></path>
-                                        <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" className="jWRuRT"></path>
-                                    </svg>
-                                </Button>
-
-                                <span style={{ fontFamily: 'Georgia', fontSize: 18,textAlign:"center"  }}>{this.state.pageNo + 1}</span>
-                                    <Button data-toggle="tooltip" data-placement="bottom" title="Next Page" bsStyle="warning" bsSize="small" onClick={this.nextPage}
-                                        style={{ marginLeft: 10,  textAlign:"center"  }}>
-                                        <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
-                                            <path d="M0-.5h24v24H0z" fill="none"></path>
-                                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
-                                        </svg>
-                                    </Button>
                                     
-                                                   
-                                </span>
                                 </div>
                                 </div>
                                  
