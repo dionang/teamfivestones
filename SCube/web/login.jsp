@@ -16,8 +16,8 @@
   
         <div class="row" style="margin-top:18%">
             <div class="col-md-1 col-xs-2"></div>
-            <div class="col-md-3 col-xs-8" style="padding-left: 0px">
-                <img style="width: 100%; max-width: 300px" src="assets/images/logo.jpg" />
+            <div class="col-md-3 col-xs-8" style="padding-left: 0px;">
+                <img style="width:600px;height:300px;margin-left:-100px;margin-top: -50px" src="assets/images/scube.png" />
             </div>
             <div class="col-md-2 col-xs-2">
                 <div class="vl col-sm-12 hidden-sm hidden-xs"></div>    

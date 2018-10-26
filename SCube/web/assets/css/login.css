@@ -8,11 +8,11 @@ and open the template in the editor.
     Author     : Dion
 */
 body{
-    background-color: white;
+    background-color: #F6F6F6;
 
 }
 .vl {
-    border-left: 1px solid rgb(207, 207, 209,1);
+    border-left: 1px solid rgb(207, 207, 209, 1);
     height: 300px;
     position: absolute;
     left: 50%;
@@ -21,7 +21,7 @@ body{
     top:0px;
 }
 .input-group{
-    border:2px solid rgb(207, 207, 209, 0.2);
+    border:2px solid rgb(207, 207, 209, 1);
     border-radius:15px;
 }
 .input-group-addon{

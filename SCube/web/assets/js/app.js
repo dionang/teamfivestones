@@ -590,10 +590,10 @@ class App extends Component {
                             <div className="left_col scroll-view">
                                 <div className="navbar nav_title" style={{ border: 0 }}>
                                     <a className="site_title">
-                                        <img src={this.state.sidebar ? "assets/images/logo.png" : "assets/images/logo1_1.png"}
+                                        <img src={this.state.sidebar ? "assets/images/logo.jpg" : "assets/images/logo1.jpg"}
                                             style={{
-                                                height: this.state.sidebar ? 90 : 80,
-                                                width: this.state.sidebar ? 200 : 50,
+                                                height: this.state.sidebar ? 52 : 51,
+                                                width: this.state.sidebar ? 100 : 50,
                                             }} />
                                     </a>
                                 </div>
@@ -622,8 +622,8 @@ class App extends Component {
                                     <ul className="nav navbar-nav navbar-right">
                                         <li>
                                             <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                {document.getElementById('profileName').value}
-                                                <img style={{marginLeft:2}} src="assets/images/user.png" />
+                                                <img style={{marginLeft:2}} src="assets/images/man.png" />
+                                                     {document.getElementById('profileName').value}
                                                 <span className=" fa fa-angle-down"></span>
                                             </a>
                                             <ul className="dropdown-menu dropdown-usermenu pull-right">
