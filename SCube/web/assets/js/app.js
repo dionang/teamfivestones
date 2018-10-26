@@ -588,7 +588,7 @@ class App extends Component {
                     <div className="main_container">
                         <div className="col-md-3 left_col">
                             <div className="left_col scroll-view">
-                                <div className="navbar nav_title" style={{ border: 0 }}>
+                                <div className="navbar nav_title" style={{backgroundColor:"white",height:"57px"}}>
                                     <a className="site_title">
                                         <img src={this.state.sidebar ? "assets/images/logo.jpg" : "assets/images/logo1.jpg"}
                                             style={{
