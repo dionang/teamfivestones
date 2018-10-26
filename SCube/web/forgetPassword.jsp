@@ -46,7 +46,7 @@
                         <div class="col-lg-offset-7 col-xs-offset-6" >
 
                             <button class="btn btn-success" type="submit" style="width: 25% !important;margin-left:50px">
-                                <i class="fa fa-refresh"></i> Rest
+                                <i class="fa fa-refresh"></i> Reset
                             </button>
 
                             <a class="btn btn-primary" style="float:right;margin-right:200px" href="login.jsp"><i class="fa fa-home"></i> Back</a>
