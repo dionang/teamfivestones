@@ -45,7 +45,6 @@
                                 <% }%>
                             </select>
                             <br/>
-                            <button type="submit" class="btn btn-success" >Generate Slide Show</button>
                             <a  class="btn btn-warning" id="myBtn">Send Email</a>
                         </form>
 

@@ -159,7 +159,7 @@ class DashboardApp extends Component {
                                     <a className="site_title" style={{backgroundColor:"white",height:"57px"}}>
                                         <img src={this.state.sidebar ? "assets/images/logo.jpg" : "assets/images/logo1.jpg"}
                                             style={{
-                                                height: this.state.sidebar ? 52 : 51,
+                                                height: this.state.sidebar ? 50 : 51,
                                                 width: this.state.sidebar ? 100 : 50,
                                             }} />
                                     </a>
