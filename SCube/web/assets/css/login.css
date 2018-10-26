@@ -8,11 +8,11 @@ and open the template in the editor.
     Author     : Dion
 */
 body{
-    background-color: #393254;
+    background-color: white;
 
 }
 .vl {
-    border-left: 1px solid rgb(207, 207, 209, 0.2);
+    border-left: 1px solid rgb(207, 207, 209,1);
     height: 300px;
     position: absolute;
     left: 50%;
@@ -33,20 +33,20 @@ body{
     height:50px;
     background-color: transparent;
     border:none;
-    color:white;
+    color:black;
     font-size:18px
 }
 .btn{
     height:50px;
-    background-color: #FFBF05;
-    border-color:#FFBF05;
+    background-color: #2A3F54;
+    border-color:#2A3F54;
     font-size:large;
     font-weight:bold;
   
 
 }
 .forget{
-    color:rgb(207, 207, 209, 0.8);
+    color:black;
     font-size:medium;
 
 }

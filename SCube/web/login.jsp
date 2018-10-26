@@ -17,7 +17,7 @@
         <div class="row" style="margin-top:18%">
             <div class="col-md-1 col-xs-2"></div>
             <div class="col-md-3 col-xs-8" style="padding-left: 0px">
-                <img style="width: 100%; max-width: 300px" src="assets/images/logo.png" />
+                <img style="width: 100%; max-width: 300px" src="assets/images/logo.jpg" />
             </div>
             <div class="col-md-2 col-xs-2">
                 <div class="vl col-sm-12 hidden-sm hidden-xs"></div>    
