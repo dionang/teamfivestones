@@ -25,7 +25,7 @@ class App extends Component {
             // w : 21*37.795276,
             // h : 29.7*37.795276,
             templateName: "Template Name",
-            sidebar: false,
+            sidebar: true,
             pageNo: 0,
             picArr:[],
             exporting: false,

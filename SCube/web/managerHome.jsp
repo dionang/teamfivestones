@@ -30,7 +30,7 @@
                 
                 <div class="right_col"  >
                     <!--<div class="content" >-->
-                    <h1 style="text-align: center; color: #2F4F4F; font-family: Oswald; font-size: 60px">Scube Reporting Tool</h1>
+                    <h1 style="text-align: center; color: #2F4F4F; font-family: Oswald; font-size: 60px">S-Cube Reporting Tool</h1>
                     <div class="icons" style="border-top: 3px solid">
                         <div class="col-sm-4 outer" style="padding: 70px 0; ">
                         <div class="img" >
