@@ -208,13 +208,9 @@ class DashboardApp extends Component {
 
                             <div className="right_col" width="100%" style={{ backgroundColor: "#F3F3F3", overflow:"hidden" }}>
 
-                                <div className="col-xs-3 col-md-2" style={{ textAlign: "center", verticalAlign: 'middle', float: "right", height: 'fit-content',  }} >
-                                    <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px", width: "30px", backgroundColor: '	brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Generated Reports</label>
-                                    <label style={{ margin: "0px", fontSize: "40px", width: '100%', border: "1px solid grey", }}>100</label>
-                                </div>
                                 <div className="col-xs-3 col-md-2" style={{ textAlign: "center", verticalAlign: "middle", float: "right", height: 'fit-content', }}>
-                                    <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px",  backgroundColor: '	brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Reports Printed</label>
-                                    <br /><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>100</label>
+                                    <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px",  backgroundColor: '	brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Templates Created</label>
+                                    <br /><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>5</label>
                                 </div>
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
@@ -232,12 +228,6 @@ class DashboardApp extends Component {
                                 <br />
 
                                 <span style={{ fontFamily: "INTUITIVE", fontSize: "20px", marginRight: "20px" }}><span style={{ fontSize: "50px", backgroundColor: "#F3F3F3", fontWeight: 'bold' }}>Dashboard</span> </span>
-                                <br />
-                                <button data-toggle="tooltip" data-placement="bottom" title="Add Bar Chart"
-                                    onClick={this.addBarChart} style={{ marginRight: 5, fontSize: "18px" }}><i className="fa fa-bar-chart" /> Bar Chart</button>
-                                <button data-toggle="tooltip" data-placement="bottom" title="Add Line Chart"
-                                    onClick={this.addLineChart} style={{ marginRight: 5, fontSize: "18px" }}><i className="fa fa-line-chart" /> Line Chart </button>
-
                                 <div className="col-sm-12 col-xs-12" style={{ borderBottom: '3px solid maroon' }}>
 
                                     {/* <label> Add Component: </label> */}
@@ -277,47 +267,17 @@ class DashboardApp extends Component {
 
                                 <div id="container" ref={this.myInput} className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', height: "calc(100% + 500px)", marginTop: 15, display: "block" , overflow:"scroll", marginLeft:"10px", maxHeight:this.state.halfHeight}}>
                                     {/* map does a for loop over all the components in the state */}
-
-                                    
-
-                                    {this.state.components[this.state.pageNo].map((item, i) => {
-
-                                        
-                                        if (item.display) {
-                                            return <div key={this.state.pageNo + "," + i}
-
-                                                style={{
-                                                    borderStyle:"none",
-                                                    borderWidth: 0.5,
-                                                    backgroundColor: "white",
-                                                    borderColor: 'grey',
-                                                    width: this.state.halfWidth,
-                                                    // height: this.state.halfHeight,
-                                                    display: "inline-block",
-                                                    marginLeft:"10px",
-                                                    float: "left",
-                                                    height: "fit-content"
-                                                }}
-                                            >
-                                                <div style={{ height: 27.5, float: "right" }}>
-                                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
-                                                        onClick={() => this.changeSettings(i)}></i>
-                                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
-                                                        onClick={() => this.deleteComponent(i)}></i>
-                                                </div>
-                                                <ReportComponent type={item.type} editMode={this.state.editMode}
-                                                    properties={item.properties} i={i}
-                                                    updateProperties={this.updateProperties.bind(this)}
+                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,}} className="fa fa-wrench"
+                                                        onClick={() => this.changeSettings(0)}></i>
+                                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 10}} className="fa fa-times"
+                                                        onClick={() => this.deleteComponent(0)}></i>
+                                    <img className="col-sm-6 col-xs-6" src = "assets/images/barchartsample.png" style={{float:"left"}}></img>
+                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 10, float:"right"}} className="fa fa-times"
+                                                        onClick={() => this.deleteComponent(0)}></i>
+                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,float:"right"}} className="fa fa-wrench"
+                                                        onClick={() => this.changeSettings(0)}></i>
                                                     
-
-                                                />
-                                               
-                                                {/* <Descriptive type={item.type} editMode={this.state.editMode}
-                                                    properties={item.properties} i={i}
-                                            updateProperties={this.updateProperties.bind(this)}></Descriptive>*/}
-                                            </div>
-                                        }
-                                    })}
+                                    <img className="col-sm-6 col-xs-6" src = "assets/images/linechartsample.png" style={{float:"right"}}></img>
 
                                 </div>
                             </div>
