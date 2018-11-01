@@ -35,7 +35,8 @@
                                 <h1 style="color: #2F4F4F; font-family: Oswald; font-size: 30px">Select Template</h1>
                                 <br/>
                                 <select name="template" class="form-control" style="font-size:14px;height:40px;" id="templateName">
-                                <%                                    ReportDAO reportDao = new ReportDAO();
+                                <%  
+                                    ReportDAO reportDao = new ReportDAO();
                                     ArrayList<Template> templateList = reportDao.retrieveAllTemplatesByCompany(companyId);
                                     for (Template eachTemplate : templateList) {
                                 %>
@@ -92,13 +93,9 @@
 
                                             <a id="upload" value="Send"  class="btn btn-danger"  ><img src="assets/images/attach.png" style="wodth:20px;height:20px"/>Attach</a>
                                             <input type="submit" value="Send"  class="btn btn-success" style="margin-left:10px;" id="btnSubmit"/>
-
                                         </div>
-
                                         <br/>
                                     </form>
-
-
                                 </div>                                
                             </div>
                         </div>
@@ -114,95 +111,95 @@
         <script src="assets/js/sweetalert.min.js"></script>
         <script src="assets/js/dashboard.js"></script> 
         <script>
-                                            // Get the modal
-                                            var modal = document.getElementById('myModal');
+            // Get the modal
+            var modal = document.getElementById('myModal');
 
-                                            // Get the button that opens the modal
-                                            var btn = document.getElementById("myBtn");
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
 
-                                            // Get the <span> element that closes the modal
-                                            var span = document.getElementsByClassName("close")[0];
-                                            var file = "";
-                                            var fileName = "";
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+            var file = "";
+            var fileName = "";
 
-                                            // When the user clicks the button, open the modal 
-                                            btn.onclick = function () {
-                                                modal.style.display = "block";
+            // When the user clicks the button, open the modal 
+            btn.onclick = function () {
+                modal.style.display = "block";
 
-                                                file = document.getElementById("templateName");
-                                                var fileName = file.options[file.selectedIndex].text;
-                                                document.getElementById("fileName").value = fileName;
-                                                document.getElementById("ppt").value = fileName + ".pptx";
-                                                document.getElementById("pdf").value = fileName + ".pdf";
-                                                document.getElementById("pptName").innerHTML = fileName + ".pptx";
-                                                document.getElementById("pdfName").innerHTML = fileName + ".pdf";
+                file = document.getElementById("templateName");
+                var fileName = file.options[file.selectedIndex].text;
+                document.getElementById("fileName").value = fileName;
+                document.getElementById("ppt").value = fileName + ".pptx";
+                document.getElementById("pdf").value = fileName + ".pdf";
+                document.getElementById("pptName").innerHTML = fileName + ".pptx";
+                document.getElementById("pdfName").innerHTML = fileName + ".pdf";
 
-                                            };
+            };
 
-                                            // When the user clicks on <span> (x), close the modal
-                                            span.onclick = function () {
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            };
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+
+            };
+            $('#upload').click(function () {
+                $('#myFile').trigger('click');
+            });
+            var form = document.getElementById("submitForm");
+            $("#btnSubmit").click(function (event) {
+
+                event.preventDefault();
+                swal({
+                    title: "Confirmation",
+                    text: "Are you sure you want to send this email?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+
+
+                }).then((confirm) => {
+                    if (confirm) {
+                        var form = $('#submitForm')[0];
+                        var data = new FormData(form);
+                        // disabled the submit button
+                        $("#btnSubmit").prop("disabled", true);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/EmailController",
+                            data: data,
+                            processData: false,
+                            contentType: false,
+                            success: function (success) {
+
+                                if (success === "true") {
+                                    console.log("undefined here");
+                                    swal({icon: "success", text: "Datasource has been added successfully!!", type:
+                                                "success"}).then(function () {
+                                                $("#btnSubmit").prop("disabled", false);
                                                 modal.style.display = "none";
-                                            };
+                                    }
+                                    );
+                                } else {
+                                    swal({icon: "error", text: "Error!!!"}).then(function () {
+                                                $("#btnSubmit").prop("disabled", false);
 
-                                            // When the user clicks anywhere outside of the modal, close it
-                                            window.onclick = function (event) {
-                                                if (event.target === modal) {
-                                                    modal.style.display = "none";
-                                                }
+                                    }
+                                    );
+                                }
+                            }
+                        });
 
-                                            };
-                                            $('#upload').click(function () {
-                                                $('#myFile').trigger('click');
-                                            });
-                                            var form = document.getElementById("submitForm");
-                                            $("#btnSubmit").click(function (event) {
+                    }
+                });
 
-                                                event.preventDefault();
-                                                swal({
-                                                    title: "Confirmation",
-                                                    text: "Are you sure you want to send this email?",
-                                                    icon: "warning",
-                                                    buttons: true,
-                                                    dangerMode: true
-
-
-                                                }).then((confirm) => {
-                                                    if (confirm) {
-                                                        var form = $('#submitForm')[0];
-                                                        var data = new FormData(form);
-                                                        // disabled the submit button
-                                                        $("#btnSubmit").prop("disabled", true);
-
-                                                        $.ajax({
-                                                            type: "POST",
-                                                            url: "/EmailController",
-                                                            data: data,
-                                                            processData: false,
-                                                            contentType: false,
-                                                            success: function (success) {
-                                                 
-                                                                if (success === "true") {
-                                                                    console.log("undefined here");
-                                                                    swal({icon: "success", text: "Datasource has been added successfully!!", type:
-                                                                                "success"}).then(function () {
-                                                                                $("#btnSubmit").prop("disabled", false);
-                                                                                modal.style.display = "none";
-                                                                    }
-                                                                    );
-                                                                } else {
-                                                                    swal({icon: "error", text: "Error!!!"}).then(function () {
-                                                                                $("#btnSubmit").prop("disabled", false);
-                                                                                
-                                                                    }
-                                                                    );
-                                                                }
-                                                            }
-                                                        });
-
-                                                    }
-                                                });
-
-                                            });
+            });
         </script>
 
         <script>

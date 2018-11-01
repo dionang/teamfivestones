@@ -4,3 +4,8 @@ URL: http://18.222.28.50/SCube
 User: bitnami
 Password: scube
 PhpMyAdmin: oSHxWIdivpG8
+
+Staging server
+==============
+IP: 18.222.40.231
+Address: tCBSOG0xwWhC

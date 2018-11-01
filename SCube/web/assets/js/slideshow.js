@@ -11,7 +11,8 @@ import { Formik, Form, Field } from 'formik';
 
 //const api = 'http://localhost:8084/';
 //const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
-const api = 'https://scube.rocks/SCube/';
+//const api = 'https://scube.rocks/SCube/';
+const api = 'http://18.222.40.231/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
 class Slideshow extends Component {

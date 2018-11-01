@@ -21,7 +21,7 @@ import scube.entities.StringGenerator;
  *
  * @author ZhenDan
  */
-@WebServlet(name = "passwordController", urlPatterns = {"/passwordController","/resetPassword"})
+@WebServlet(name = "PasswordController", urlPatterns = {"/passwordController","/resetPassword"})
 public class passwordController extends HttpServlet {
 
     /**
@@ -35,23 +35,23 @@ public class passwordController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       String operation = request.getParameter("operation");
-       if (operation.equals("resetPassword")) {
-                String username = request.getParameter("username");
-                Account account = AccountDAO.getAccountByUsername(username);
-                String error = null;
-                if (account != null) {
-                    int accountId = account.getAccountId();
-                    StringGenerator generator = new StringGenerator();
-                    String randomString = generator.generateRandomString();
-                    boolean resetPassword = AccountDAO.changePassword(accountId, randomString);
-                    if (resetPassword) {
-                        EmailDAO.sendPassowrd(username, "Reset Password", randomString);
-                    }
-                } else {
-                    error = "Invalid User Name";
+        String operation = request.getParameter("operation");
+        if (operation.equals("resetPassword")) {
+            String username = request.getParameter("username");
+            Account account = AccountDAO.getAccountByUsername(username);
+            String error = null;
+            if (account != null) {
+                int accountId = account.getAccountId();
+                StringGenerator generator = new StringGenerator();
+                String randomString = generator.generateRandomString();
+                boolean resetPassword = AccountDAO.changePassword(accountId, randomString);
+                if (resetPassword) {
+                    EmailDAO.sendPassword(username, "Reset Password", randomString);
                 }
+            } else {
+                error = "Invalid User Name";
             }
+        }
         
     }
 
