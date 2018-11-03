@@ -10,7 +10,6 @@ import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Leg
 import { Formik, Form, Field } from 'formik';
 
 const api = 'http://localhost:8084/';
-//const api = 'http://103.3.61.39:8080/SCube/';
 //const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
@@ -228,7 +227,7 @@ class DashboardApp extends Component {
 
                             <div className="right_col" width="100%" style={{ backgroundColor: "#F3F3F3", overflow:"hidden" }}>
 
-                               <div className="col-xs-3 col-md-2" style={{ textAlign: "center", verticalAlign: "middle", float: "right", height: 'fit-content', }}>
+                               <div className="col-xs-3 col-md-3" style={{ textAlign: "center", verticalAlign: "middle", float: "right", height: 'fit-content', }}>
                                     <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px",  backgroundColor: 'brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Templates Created</label>
                                     <br /><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>{this.state.templateCount}</label>
                                 </div>
