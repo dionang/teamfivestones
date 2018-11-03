@@ -45,14 +45,16 @@ public class AccountController extends HttpServlet {
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
                 String accountType = request.getParameter("accountType");
-                boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
-                out.print(status);                 
-            } else if (operation.equals("setDatasource")){
-                String datasource = request.getParameter("datasource");
-                int companyId = Integer.parseInt(request.getParameter("companyId"));
-                boolean status = CompanyDAO.setDatasource(datasource, companyId);
-                response.sendRedirect("devHome.jsp" + (status ? "" : "?error=true"));
-            }
+                if (accountType.equals("company")) {
+                    String accessToken = request.getParameter("accessToken");
+                    int companyId = CompanyDAO.addCompany(username, accessToken);
+                    boolean status = AccountDAO.addAccount(username, password, companyId, accountType, name);
+                    out.print(status);  
+                } else {
+                    boolean status = AccountDAO.addAccount(username, password, account.getCompanyId(), accountType, name);
+                    out.print(status);                
+                }
+            } 
         }
     }
 

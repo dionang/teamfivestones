@@ -4,3 +4,8 @@ URL: http://18.222.28.50/SCube
 User: bitnami
 Password: scube
 PhpMyAdmin: oSHxWIdivpG8
+
+Production server
+==============
+IP: 18.222.40.231
+Password: tCBSOG0xwWhC

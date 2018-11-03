@@ -141,12 +141,13 @@ document.getElementById('submitForm').onsubmit = function (e) {
             $.ajax({
                 url: "createAccount",
                 data: {
-                    name: form.elements[0].value,
-                    username: form.elements[1].value,
-                    password: form.elements[2].value,
-                    companyId: form.elements[4].value,
-                    accountType: form.elements[5].value,
-                    operation: form.elements[6].value
+                    name: form.elements["name"].value,
+                    username: form.elements["username"].value,
+                    password: form.elements["password"].value,
+                    companyId: form.elements["companyId"] ? form.elements["companyId"].value : 0,
+                    accountType: form.elements["accountType"].value,
+                    accessToken: form.elements["accessToken"] ? form.elements["accessToken"].value : "null",
+                    operation: form.elements["operation"].value
                 },
                 success: function(success){
                     if(success === "true"){

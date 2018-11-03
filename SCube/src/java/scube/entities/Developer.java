@@ -15,9 +15,4 @@ public class Developer extends Account {
     public Developer(int accountId, int companyId, String accountType, String username, String name) {
         super(accountId, companyId, accountType, username, name);
     }
-    
-    public boolean setDatasource(String datasourceUrl) {
-        boolean status = CompanyDAO.setDatasource(datasourceUrl, getCompanyId());
-        return status;
-    }
 }

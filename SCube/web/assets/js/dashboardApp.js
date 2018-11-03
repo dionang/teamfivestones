@@ -10,12 +10,10 @@ import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Leg
 import { Formik, Form, Field } from 'formik';
 
 //const api = 'http://localhost:8084/';
-//const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
 //const api = 'http://103.3.61.39:8080/SCube/';
-//const datasourceUrl = 'http://103.3.61.39:8080/Dummy_API/getCustomerOrders';
 const api = 'https://scube.rocks/SCube/';
+//const api = 'http://18.222.40.231/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
-//const api = 'http://localhost:8084/';
 
 class DashboardApp extends Component {
     constructor(props) {

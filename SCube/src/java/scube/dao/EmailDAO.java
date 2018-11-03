@@ -17,7 +17,7 @@ import javax.mail.internet.*;
  */
 public class EmailDAO {
 
-    public static void sendPassowrd(String username, String subject, String message) {
+    public static void sendPassword(String username, String subject, String message) {
         String receiver = username;
         //Setting up configurations for the email connection to the Google SMTP server using TLS
         Properties props = new Properties();
