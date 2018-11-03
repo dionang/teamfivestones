@@ -9,8 +9,8 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-//const api = 'http://localhost:8084/';
-const api = 'https://scube.rocks/SCube/';
+const api = 'http://localhost:8084/';
+//const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 
 class DashboardApp extends Component {
@@ -147,7 +147,6 @@ class DashboardApp extends Component {
             body: { operation: "loadDashboard", accountId: accountId }
         }, function (error, response, body) {
             if (body) {
-                console.log(body);
                 let components = self.state.components;
                 for (let type in body) {
                     let properties = body[type];
@@ -178,7 +177,7 @@ class DashboardApp extends Component {
     saveDashboard = () => {
         let self = this;
         let accountId = parseInt(document.getElementById("accountId").value, 10);
-
+        console.log(self.state.components)
         request.post({
             url: api + 'saveDashboard',
             json: true,
@@ -442,6 +441,8 @@ class Barchart extends Component {
                 self.setState({
                     initialized: true,
                     datasourceUrl: datasourceUrl,
+                    datasourceId: datasourceId,
+                    datasetId: datasetId,
                     path: path,
                     title: title,
                     xAxis: xAxis,
@@ -465,7 +466,7 @@ class Barchart extends Component {
         let aggregate = "sum"; // should get from form
 
         this.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){
-            let { chartData, summaryData, datasourceUrl, path, ...other } = self.state;
+            let { chartData, summaryData, ...other } = self.state;
             self.props.updateProperties(other, self.props.i);
         });
     }   
@@ -537,7 +538,7 @@ class ChartForm extends Component {
         request.post({
             url: api + 'loadDatasource',
             json: true,
-            body: { operation: "loadDatasource", companyId: 1 }
+            body: { operation: "loadDatasource", companyId: document.getElementById("companyId").value }
         }, function (error, response, body) {
             if (body) {
                 let datasources = body.datasource;
@@ -628,14 +629,14 @@ class ChartForm extends Component {
                 render={formProps=>(
                     <Form className="form-horizontal " style={{ height:"100%", width:"90%", backgroundColor:"white", textAligh:"center",marginTop:"20px"}}>
                         <div className="form-group">
-                            <label >Chart Title</label>
-                            <div >
+                            <label>Chart Title</label>
+                            <div>
                                 <Field className="form-control nonDraggable" type="text" name="title" placeholder="Chart Title" />
                             </div>
                         </div>
                         <div className="form-group">
-                            <label >Choose the datasource</label>
-                            <div >
+                            <label>Choose the datasource</label>
+                            <div>
                                 <Field className="form-control" component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
                                     {self.state.datasources.map((datasource)=>
                                         <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
@@ -644,8 +645,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label >Choose the dataset</label>
-                            <div >
+                            <label>Choose the dataset</label>
+                            <div>
                                 <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target, formProps)}>
                                     {self.state.datasets.map((dataset)=>
                                         <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
@@ -667,8 +668,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label >Choose the Y&#8209;Axis</label>
-                            <div >
+                            <label>Choose the Y&#8209;Axis</label>
+                            <div>
                                 <Field className="form-control" component="select" name="yAxis">
                                     {self.state.listOptions.map((listOption)=>
                                         {if(listOption.infoType === "numerical") {

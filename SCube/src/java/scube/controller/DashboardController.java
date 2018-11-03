@@ -59,13 +59,13 @@ public class DashboardController extends HttpServlet {
                     JsonObject properties = componentObj.get("properties").getAsJsonObject();
                     if (properties.get("initialized").getAsBoolean()) {
                         ArrayList<String> component = new ArrayList<>();
-                        String datasourceId = properties.get("datasourceId").getAsString();
-                        String datasetId = properties.get("datasetId").getAsString();
+                        int datasourceId = properties.get("datasourceId").getAsInt();
+                        int datasetId = properties.get("datasetId").getAsInt();
                         String title = properties.get("title").getAsString();
                         String xAxis = properties.get("xAxis").getAsString();
                         String yAxis = properties.get("yAxis").getAsString();
-                        component.add(datasourceId);
-                        component.add(datasetId);
+                        component.add(datasourceId+"");
+                        component.add(datasetId+"");
                         component.add(title);
                         component.add(xAxis);
                         component.add(yAxis);

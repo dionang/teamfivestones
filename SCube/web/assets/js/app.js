@@ -9,8 +9,8 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-//const api = 'http://localhost:8084/';
-const api = 'https://scube.rocks/SCube/';
+const api = 'http://localhost:8084/';
+//const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 
 class App extends Component {
@@ -1086,6 +1086,8 @@ class Barchart extends Component {
                 self.setState({
                     initialized: true,
                     datasourceUrl: datasourceUrl,
+                    datasourceId: datasourceId,
+                    datasetId: datasetId,
                     path: path,
                     title: title,
                     xAxis: xAxis,
@@ -1228,6 +1230,8 @@ class Linechart extends Component {
                 self.setState({
                     initialized: true,
                     datasourceUrl: datasourceUrl,
+                    datasourceId: datasourceId,
+                    datasetId: datasetId,
                     path: path,
                     title: title,
                     xAxis: xAxis,
@@ -1237,7 +1241,6 @@ class Linechart extends Component {
                     summary: summary,
                     summaryData: statSummary,
                 });
-
                 callback();
             }
         });
@@ -1401,9 +1404,9 @@ class ChartForm extends Component {
     loadDatasource(){
         let self = this;
         request.post({
-            url: api + 'loadDatasource',
+            url: api + "loadDatasource",
             json: true,
-            body: { operation: "loadDatasource", companyId: 1 }
+            body: { operation: "loadDatasource", companyId: document.getElementById("companyId").value }
         }, function (error, response, body) {
             if (body) {
                 let datasources = body.datasource;
@@ -1416,6 +1419,7 @@ class ChartForm extends Component {
     }
 
     loadDataset(datasourceId, formProps){
+        formProps.values.datasourceId = parseInt(datasourceId,10);
         let self = this;
         request.post({
             url: api + 'loadDataset',
@@ -1442,6 +1446,7 @@ class ChartForm extends Component {
     }
 
     loadListOptions(datasetId, formProps){
+        formProps.values.datasetId = parseInt(datasetId,10);
         let self = this;
         request.post({
             url: api + 'loadListOptions',
@@ -1481,6 +1486,8 @@ class ChartForm extends Component {
                     title:'', 
                     path: '',
                     summary:false,
+                    datasourceId:0,
+                    datasetId:0
                 }}
 
                 // pass values to the charts
