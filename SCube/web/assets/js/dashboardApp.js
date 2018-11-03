@@ -309,8 +309,9 @@ class DashboardApp extends Component {
                                         if (item.display) {
                                             return <div key={this.state.pageNo + "," + i}
                                                 style={{
-                                                    width: "49%",
-                                                    display: "inline-block"
+                                                    width: "47%",
+                                                    display: "inline-block",
+                                                    marginLeft:10
                                                 }}
                                             >
                                                  <div style={{ height: 27.5, float: "right" }}>
@@ -578,16 +579,16 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="form-horizontal " style={{ height:"100%", width:"100%", backgroundColor:"white"}}>
+                    <Form className="form-horizontal " style={{ height:"100%", width:"90%", backgroundColor:"white", textAligh:"center",}}>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Chart Title</label>
-                            <div className="col-md-7">
+                            <label >Chart Title</label>
+                            <div >
                                 <Field className="form-control nonDraggable" type="text" name="title" placeholder="Chart Title" />
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the datasource</label>
-                            <div className="col-md-7">
+                            <label >Choose the datasource</label>
+                            <div >
                                 <Field className="form-control" component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
                                     {self.state.datasources.map((datasource)=>
                                         <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
@@ -596,8 +597,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the dataset</label>
-                            <div className="col-md-7">
+                            <label >Choose the dataset</label>
+                            <div >
                                 <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target, formProps)}>
                                     {self.state.datasets.map((dataset)=>
                                         <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
@@ -606,8 +607,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the X&#8209;Axis</label>
-                            <div className="col-md-7">
+                            <label >Choose the X&#8209;Axis</label>
+                            <div >
                                 <Field className="form-control" component="select" name="xAxis">
                                     {/* gets the option based on selected dataset */}
                                     {self.state.listOptions.map((listOption)=>
@@ -619,8 +620,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the Y&#8209;Axis</label>
-                            <div className="col-md-7">
+                            <label >Choose the Y&#8209;Axis</label>
+                            <div >
                                 <Field className="form-control" component="select" name="yAxis">
                                     {self.state.listOptions.map((listOption)=>
                                         {if(listOption.infoType === "numerical") {
@@ -641,7 +642,7 @@ class ChartForm extends Component {
                                 </div>
                             </div>
                         </div>
-                        <Button className="col-md-offset-5 col-md-2" type="submit">Submit</Button>
+                        <Button className="col-md-offset-3 col-md-7" style={{backgroundColor:"#E0E0E0"}} type="submit">Submit</Button>
                         
                         {/* <DisplayFormikState {...this.props}/> */}
                     </Form>
@@ -792,11 +793,12 @@ class Linechart extends Component {
 
     // do API call to render chartData upon loading of component from DB
     componentWillMount() {
-        let {title, datasourceUrl, path, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        let {title, datasourceId, datasetId, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        
         this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){});
     }
 
-    initialize (title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, callback) {
+    initialize (title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, callback) {
         let self = this;
         request.get({
             url: datasourceUrl,
@@ -825,6 +827,8 @@ class Linechart extends Component {
                 self.setState({
                     initialized: true,
                     datasourceUrl: datasourceUrl,
+                    datasourceId: datasourceId,
+                    datasetId: datasetId,
                     path: path,
                     title: title,
                     xAxis: xAxis,
@@ -844,10 +848,10 @@ class Linechart extends Component {
         //set settings of barchart
         console.log(values);
         let self = this;
-        let {title, datasourceUrl, path, xAxis, yAxis, summary} = values;
+        let {title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, summary} = values;
         let aggregate = "sum"; // should get from form
 
-        this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){
+        this.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){
             let { chartData, summaryData, datasourceUrl, path, ...other } = self.state;
             self.props.updateProperties(other, self.props.i);
         });
