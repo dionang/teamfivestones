@@ -9,8 +9,8 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-//const api = 'http://localhost:8084/';
-const api = 'https://scube.rocks/SCube/';
+const api = 'http://localhost:8084/';
+//const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
@@ -119,6 +119,10 @@ class DashboardApp extends Component {
         this.setState({ components });
     }
     
+    getComponentDetails = () => {
+        console.log(this.state.components);
+    }
+    
     getTemplateCount = () => {
         let self = this;
         request.post({
@@ -136,6 +140,21 @@ class DashboardApp extends Component {
 
     renameTemplate = (e) => {
         this.setState({ templateName: e.target.value });
+    }
+    
+    saveDashboard = () => {
+        let self = this;
+        request.post({
+            url: api + 'saveDashboard',
+            json: true,
+            body: { operation: "saveDashboard", templateId: templateId, components: self.state.components }
+        }, function (error, response, body) {
+            if (body && body.status) {
+                swal({icon:"success", text:"Saved succesfully"});
+            } else {
+                swal({icon:"error", text:"Error in saving"});
+            }
+        });
     }
 
     toggleChartMenu = () => {
@@ -233,7 +252,7 @@ class DashboardApp extends Component {
                                 </div>
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
-                                {/* <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> */}
+                                 <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> 
                                 {/* <Button className="col-md-2 col-xs-3" style={{ float:"right", minWidth:130 }} bsStyle="info" onClick={this.saveTemplate}>
                                         <i className="fa fa-save" /> Save Template
                                     </Button> */}
@@ -484,6 +503,7 @@ class ChartForm extends Component {
     }
 
     loadDataset(datasourceId, formProps){
+        formProps.values.datasourceId = parseInt(datasourceId,10);
         let self = this;
         request.post({
             url: api + 'loadDataset',
@@ -510,6 +530,7 @@ class ChartForm extends Component {
     }
 
     loadListOptions(datasetId, formProps){
+        formProps.values.datasetId = parseInt(datasetId,10);
         let self = this;
         request.post({
             url: api + 'loadListOptions',
@@ -549,6 +570,8 @@ class ChartForm extends Component {
                     title:'', 
                     path: '',
                     summary:false,
+                    datasourceId:0,
+                    datasetId:0
                 }}
 
                 // pass values to the charts
@@ -576,7 +599,7 @@ class ChartForm extends Component {
                         <div className="form-group">
                             <label >Choose the dataset</label>
                             <div >
-                                <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target.value, formProps)}>
+                                <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target, formProps)}>
                                     {self.state.datasets.map((dataset)=>
                                         <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
                                     )}  
@@ -770,11 +793,12 @@ class Linechart extends Component {
 
     // do API call to render chartData upon loading of component from DB
     componentWillMount() {
-        let {title, datasourceUrl, path, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        let {title, datasourceId, datasetId, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        
         this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){});
     }
 
-    initialize (title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, callback) {
+    initialize (title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, callback) {
         let self = this;
         request.get({
             url: datasourceUrl,
@@ -803,6 +827,8 @@ class Linechart extends Component {
                 self.setState({
                     initialized: true,
                     datasourceUrl: datasourceUrl,
+                    datasourceId: datasourceId,
+                    datasetId: datasetId,
                     path: path,
                     title: title,
                     xAxis: xAxis,
@@ -820,12 +846,13 @@ class Linechart extends Component {
 
     initializeChart = (values) => {
         //set settings of barchart
+        console.log(values);
         let self = this;
-        let {title, datasourceUrl, path, xAxis, yAxis, summary} = values;
+        let {title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, summary} = values;
         let aggregate = "sum"; // should get from form
 
-        this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){
-            let { chartData,summaryData, ...other } = self.state;
+        this.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){
+            let { chartData, summaryData, datasourceUrl, path, ...other } = self.state;
             self.props.updateProperties(other, self.props.i);
         });
     }   
@@ -905,190 +932,6 @@ class ReportComponent extends Component {
                     properties={this.props.properties} updateProperties={this.props.updateProperties} />
             );
         }
-    }
-}
-
-class EmptyTable extends Component {
-    constructor(props) {
-        super(props);
-        let self = this;
-        this.state = {
-            editMode: this.props.editMode,
-            columns: [{
-                    dataField: 'col1',
-                    text: 'Header 1',
-                    headerEvents: {
-                        onClick: this.handleClick,
-                        onBlur: (e) => this.handleBlur(e,0)
-                    }
-                }, {
-                    dataField: 'col2',
-                    text: 'Header 2',
-                    headerEvents: {
-                        onClick: this.handleClick,
-                        onBlur: (e) => this.handleBlur(e,1)
-                    }
-                }, {
-                    dataField: 'delete',
-                    text: 'Delete',
-                    align: 'center',
-                    editable: false,
-                    hidden: false,
-                    formatter: function(cell, row, rowIndex){
-                        return <i className="fa fa-trash" onClick={() => self.delRow(rowIndex)}/>
-                    }
-                }],
-            data: [{
-                    id: 'row1',
-                    col1: '',
-                    col2: ''
-                },{
-                    id: 'row2',
-                    col1: '',
-                    col2: ''
-                }],
-        }
-    }
-
-    componentWillMount(){
-        let self = this;
-        let columns = this.props.properties.columns;
-        let new_columns = [];
-
-        for (let i in columns) {
-            new_columns.push({
-                dataField:columns[i].dataField, 
-                text:columns[i].text, 
-                headerEvents:{
-                    onClick: this.handleClick,
-                    onBlur: (e) => this.handleBlur(e,i)
-                }
-            }) 
-        }
-        this.setState({columns: new_columns, data:this.props.properties.data})
-    }
-
-    componentWillReceiveProps(nextProps){
-        if(this.props.editMode != nextProps.editMode){
-            let columns = this.state.columns;
-            columns[columns.length - 1].hidden = !columns[columns.length - 1].hidden;
-            this.setState({columns, editMode:nextProps.editMode});
-        }
-    }
-
-    addRow = (e) => {
-        let self = this;
-        let data = this.state.data;
-        let new_data = {id:'row' + (data.length+1)}
-
-        for (let i=1; i < this.state.columns.length; i++){
-            new_data["col" + i] = '';
-        }
-
-        data.push(new_data);
-        this.setState({data})
-
-        setTimeout(function () {
-            self.updateProperties();
-        }, 100);
-    }
-
-    delRow(rowIndex){
-        let data = this.state.data;
-        data.splice(rowIndex,1);
-        
-        // fix id referencing error        
-        for(let i=0; i < data.length; i++) {
-            data[i].id = "row" + (i+1);
-        }
-        this.setState({data});
-    }
-
-    addCol = (e) => {
-        let self = this;
-        let columns = this.state.columns;
-        let new_columns = [];
-        let data = this.state.data;
-
-        // add new item to end of each table row (or else code will crash)
-        for (let obj of data){
-            obj["col" + columns.length] = '';
-        }
-
-        for (let i in columns) {
-            let column = columns[i];
-
-
-            new_columns.push(column);
-        }
-        new_columns.push({
-            dataField: 'col' + columns.length,
-            text: 'Header ' + columns.length,
-            headerEvents: {
-                onClick: this.handleClick,
-                onBlur: (e) => this.handleBlur(e,columns.length-1)
-            }
-        })
-
-        this.setState({columns: new_columns, data});
-
-        setTimeout(function() {
-            self.updateProperties();
-        }, 100);
-    }
-
-    handleClick = (e) => {
-        let value = e.target.innerHTML;
-        e.target.innerHTML = '<input class="nonDraggable" value="' + value + '"/>';
-        e.target.childNodes[0].focus();
-    }
-
-    handleBlur(e, i) {
-        let self = this;
-        let parent = e.target.parentNode;
-        let columns = this.state.columns;
-
-        parent.innerHTML = e.target.value;
-        columns[i].text = e.target.value;
-
-        this.setState({columns});
-        setTimeout(function() {
-            self.updateProperties();
-        }, 100);
-    }
-
-    updateProperties() {
-        let columns = this.state.columns;
-        let new_columns = [];
-        for (let i in columns) {
-            let column = columns[i];
-            if(i != columns.length - 1) {
-                new_columns.push({dataField:column.dataField, text:column.text})
-            }
-        }
-        this.props.updateProperties({columns:new_columns, data:this.state.data}, this.props.i);
-    }
-
-    render(){
-        return (
-            <div className="draggable" style={{width:"100%"}}>
-                <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
-                    onClick={this.addRow}>Add Row</Button>
-                <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
-                    onClick={this.addCol}>Add Col</Button>
-                <BootstrapTable keyField='id' className="nonDraggable" 
-                    striped responsive 
-                    data={ this.state.data } 
-                    columns={ this.state.columns } 
-                    cellEdit={ 
-                        cellEditFactory({ 
-                            blurToSave: true,
-                            mode:'click'
-                        }) 
-                    }
-                />
-            </div>
-        );
     }
 }
 
