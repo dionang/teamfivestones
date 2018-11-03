@@ -20,7 +20,7 @@ import scube.dao.ReportDAO;
  *
  * @author ZhenDan
  */
-@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate", "/updateTemplate", "/loadDefault", "/slideShow"})
+@WebServlet(name = "TemplateController", urlPatterns = {"/createTemplate", "/loadTemplate", "/updateTemplate", "/loadDefault", "/slideShow", "/getTemplateCountByUser"})
 public class TemplateController extends HttpServlet {
 
     /**
@@ -74,11 +74,11 @@ public class TemplateController extends HttpServlet {
                     out.print(result+"");
                 }
  
-            } else if(operation.equals("loadDefault")){
+            } else if (operation.equals("loadDefault")){
                 id=Integer.parseInt(request.getParameter("templateId"));
                 request.setAttribute("templateId", id);
                 request.getRequestDispatcher("loadTemplate.jsp").forward(request, response);
-            } else if(operation.equals("slideShow")){
+            } else if (operation.equals("slideShow")){
                 ArrayList<String> result = new ArrayList<>();
                 String template=request.getParameter("template");
                
@@ -95,6 +95,10 @@ public class TemplateController extends HttpServlet {
                 }
                 request.setAttribute("slides", result);
                 request.getRequestDispatcher("slideShow2.jsp").forward(request, response);
+            } else if (operation.equals("getTemplateCountByUser")) {
+                String userName = request.getParameter("userName");
+                int count = ReportDAO.getTemplatesCreatedByUser(userName);
+                out.print(count);
             }
         }
     }

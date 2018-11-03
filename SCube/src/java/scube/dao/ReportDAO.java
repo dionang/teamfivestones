@@ -77,31 +77,29 @@ public class ReportDAO {
         }
     }
     
-    public static Template retrieveTemplateById(int templateId) {
+    public static int getTemplatesCreatedByUser(String username) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("SELECT * from template WHERE templateId = ?");
-            stmt.setInt(1, templateId);
+            stmt = conn.prepareStatement("SELECT count(*) as count FROM `template` WHERE createdBy = ?");
+            stmt.setString(1, username);
             rs = stmt.executeQuery();
             
             if(rs.next()){
-                Template template = new Template(rs.getInt("templateId"), rs.getInt("companyId"), rs.getString("templateName"), 
-                        rs.getString("createdBy"), rs.getDate("createdOn"), rs.getDate("lastUpdatedOn"),rs.getString("size"),rs.getString("layout"));
-                
-                return template;
+                return rs.getInt("count");
             }
-            return null;
+            return 0;
         } catch (SQLException e) {
             e.printStackTrace(System.out);
-            return null;
+            return 0;
         } finally {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
+    
     public static String retrieveTemplateId() {
         Connection conn = null;
         PreparedStatement stmt = null;

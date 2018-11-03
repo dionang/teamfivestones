@@ -9,9 +9,9 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-//const api = 'http://localhost:8084/';
+const api = 'http://localhost:8084/';
 //const api = 'http://103.3.61.39:8080/SCube/';
-const api = 'https://scube.rocks/SCube/';
+//const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
@@ -26,6 +26,7 @@ class DashboardApp extends Component {
             // w : 21*37.795276,
             // h : 29.7*37.795276,
             templateName: "Template Name",
+            templateCount: 0,
             sidebar: true,
             pageNo: 0,
             picArr:[],
@@ -33,6 +34,10 @@ class DashboardApp extends Component {
             isBarPic:"-webkit-inline-box",
             isLinePic:"-webkit-inline-box",
         }
+    }
+
+    componentDidMount(){
+        this.getTemplateCount();
     }
 
     addBarChart = () => {
@@ -113,6 +118,21 @@ class DashboardApp extends Component {
         let pageNo = this.state.pageNo;
         components[pageNo][i].display = false;
         this.setState({ components });
+    }
+    
+    getTemplateCount = () => {
+        let self = this;
+        request.post({
+            url: api + 'getTemplateCountByUser',
+            form: { 
+                userName: document.getElementById("userName").value,
+                operation: "getTemplateCountByUser" 
+            }
+        }, function (error, response, body) {
+            if (body) {
+                self.setState({templateCount:body});
+            }
+        });
     }
 
     renameTemplate = (e) => {
@@ -209,8 +229,8 @@ class DashboardApp extends Component {
                             <div className="right_col" width="100%" style={{ backgroundColor: "#F3F3F3", overflow:"hidden" }}>
 
                                <div className="col-xs-3 col-md-2" style={{ textAlign: "center", verticalAlign: "middle", float: "right", height: 'fit-content', }}>
-                                    <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px",  backgroundColor: '	brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Templates Created</label>
-                                    <br /><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>5</label>
+                                    <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px",  backgroundColor: 'brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Templates Created</label>
+                                    <br /><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>{this.state.templateCount}</label>
                                 </div>
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
