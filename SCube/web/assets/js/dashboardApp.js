@@ -9,8 +9,8 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-const api = 'http://localhost:8084/';
-//const api = 'https://scube.rocks/SCube/';
+//const api = 'http://localhost:8084/';
+const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
@@ -290,8 +290,9 @@ class DashboardApp extends Component {
                                         if (item.display) {
                                             return <div key={this.state.pageNo + "," + i}
                                                 style={{
-                                                    width: "49%",
-                                                    display: "inline-block"
+                                                    width: "47%",
+                                                    display: "inline-block",
+                                                    marginLeft:10
                                                 }}
                                             >
                                                  <div style={{ height: 27.5, float: "right" }}>
@@ -555,16 +556,16 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="form-horizontal " style={{ height:"100%", width:"100%", backgroundColor:"white"}}>
+                    <Form className="form-horizontal " style={{ height:"100%", width:"90%", backgroundColor:"white", textAligh:"center",}}>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Chart Title</label>
-                            <div className="col-md-7">
+                            <label >Chart Title</label>
+                            <div >
                                 <Field className="form-control nonDraggable" type="text" name="title" placeholder="Chart Title" />
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the datasource</label>
-                            <div className="col-md-7">
+                            <label >Choose the datasource</label>
+                            <div >
                                 <Field className="form-control" component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
                                     {self.state.datasources.map((datasource)=>
                                         <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
@@ -573,8 +574,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the dataset</label>
-                            <div className="col-md-7">
+                            <label >Choose the dataset</label>
+                            <div >
                                 <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target.value, formProps)}>
                                     {self.state.datasets.map((dataset)=>
                                         <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
@@ -583,8 +584,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the X&#8209;Axis</label>
-                            <div className="col-md-7">
+                            <label >Choose the X&#8209;Axis</label>
+                            <div >
                                 <Field className="form-control" component="select" name="xAxis">
                                     {/* gets the option based on selected dataset */}
                                     {self.state.listOptions.map((listOption)=>
@@ -596,8 +597,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the Y&#8209;Axis</label>
-                            <div className="col-md-7">
+                            <label >Choose the Y&#8209;Axis</label>
+                            <div >
                                 <Field className="form-control" component="select" name="yAxis">
                                     {self.state.listOptions.map((listOption)=>
                                         {if(listOption.infoType === "numerical") {
@@ -618,7 +619,7 @@ class ChartForm extends Component {
                                 </div>
                             </div>
                         </div>
-                        <Button className="col-md-offset-5 col-md-2" type="submit">Submit</Button>
+                        <Button className="col-md-offset-3 col-md-7" style={{backgroundColor:"#E0E0E0"}} type="submit">Submit</Button>
                         
                         {/* <DisplayFormikState {...this.props}/> */}
                     </Form>
