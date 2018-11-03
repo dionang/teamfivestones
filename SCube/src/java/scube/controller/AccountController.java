@@ -47,7 +47,7 @@ public class AccountController extends HttpServlet {
                 String accountType = request.getParameter("accountType");
                 if (accountType.equals("company")) {
                     String accessToken = request.getParameter("accessToken");
-                    int companyId = CompanyDAO.addCompany(username, accessToken);
+                    int companyId = CompanyDAO.addCompany(name, accessToken);
                     boolean status = AccountDAO.addAccount(username, password, companyId, accountType, name);
                     out.print(status);  
                 } else {

@@ -9,8 +9,8 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-const api = 'http://localhost:8084/';
-//const api = 'https://scube.rocks/SCube/';
+//const api = 'http://localhost:8084/';
+const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 
 class DashboardApp extends Component {
@@ -174,7 +174,7 @@ class DashboardApp extends Component {
         this.setState({ templateName: e.target.value });
     }
     
-    saveDashboard = () => {
+    saveDashboard(){
         let self = this;
         let accountId = parseInt(document.getElementById("accountId").value, 10);
         console.log(self.state.components)
@@ -209,11 +209,16 @@ class DashboardApp extends Component {
     }
 
     updateProperties = (properties, i) => {
+        let self = this;
         let components = this.state.components;
         let pageNo = this.state.pageNo;
 
         components[pageNo][i].properties = properties;
         this.setState({ properties });
+        setTimeout(function () {
+            self.saveDashboard();
+        }, 100);
+        
     }
 
     render() {
@@ -286,8 +291,7 @@ class DashboardApp extends Component {
                                 </div>
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
-                                 <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> 
-                                 <Button bsStyle="info" onClick={this.saveDashboard}>Save Dashboard</Button> 
+                                {/* <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> */} 
                                 {/* <Button className="col-md-2 col-xs-3" style={{ float:"right", minWidth:130 }} bsStyle="info" onClick={this.saveTemplate}>
                                         <i className="fa fa-save" /> Save Template
                                     </Button> */}

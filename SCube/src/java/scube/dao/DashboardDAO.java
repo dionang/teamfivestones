@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
-import scube.entities.Component;
-
 
 public class DashboardDAO {
     
