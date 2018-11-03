@@ -68,7 +68,7 @@ public class DatasourceDAO {
             stmt.setString(3, fieldName);
             stmt.setString(4, type);
             stmt.setString(5, infoType);
-             stmt.setInt(6, datasetId);
+            stmt.setInt(6, datasetId);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -242,6 +242,29 @@ public class DatasourceDAO {
                         rs.getString("datasourceName"), rs.getString("remark"));
                 
                 return datasource;
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
+    
+    public static String retrievePath(int datasetId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT path from dataset WHERE datasetId = ?");
+            stmt.setInt(1, datasetId);
+            rs = stmt.executeQuery();
+            
+            if(rs.next()){
+                return rs.getString("path");
             }
             return null;
         } catch (SQLException e) {

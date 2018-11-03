@@ -10,18 +10,18 @@ package scube.entities;
  * @author Dion
  */
 public class Chart extends Component{
-    public String datasourceUrl;   
-    public String path;
+    public int datasourceId;   
+    public int datasetId;
     public String title;
     public String xAxis;
     public String yAxis;
     public String aggregate;
     public boolean summary;
 
-    public Chart(String type, int x, int y, int height, int width, String datasourceUrl, String path, String title, String xAxis, String yAxis, String aggregate, boolean summary) {
+    public Chart(String type, int x, int y, int height, int width, int datasourceId, int datasetId, String title, String xAxis, String yAxis, String aggregate, boolean summary) {
         super(type, x, y, height, width);
-        this.datasourceUrl = datasourceUrl;
-        this.path = path;
+        this.datasourceId = datasourceId;
+        this.datasetId = datasetId;
         this.title = title;
         this.xAxis = xAxis;
         this.yAxis = yAxis;
@@ -29,20 +29,20 @@ public class Chart extends Component{
         this.summary = summary;
     }
     
-    public String getDatasourceUrl() {
-        return datasourceUrl;
+    public int getDatasourceId() {
+        return datasourceId;
     }
 
-    public void setDatasourceUrl(String datasourceUrl) {
-        this.datasourceUrl = datasourceUrl;
+    public void setDatasourceId(int datasourceId) {
+        this.datasourceId = datasourceId;
     }
 
-    public String getPath() {
-        return path;
+    public int getDatasetId() {
+        return datasetId;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setPath(int datasetId) {
+        this.datasetId = datasetId;
     }
 
     public String getTitle() {

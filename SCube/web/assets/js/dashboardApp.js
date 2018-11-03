@@ -9,10 +9,9 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-const api = 'http://localhost:8084/';
-//const api = 'https://scube.rocks/SCube/';
+//const api = 'http://localhost:8084/';
+const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
-const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
 class DashboardApp extends Component {
     constructor(props) {
@@ -37,6 +36,7 @@ class DashboardApp extends Component {
 
     componentDidMount(){
         this.getTemplateCount();
+        this.loadDashboard();
     }
 
     addBarChart = () => {
@@ -138,16 +138,51 @@ class DashboardApp extends Component {
         });
     }
 
+    loadDashboard = () => {
+        let self = this;
+        let accountId = parseInt(document.getElementById("accountId").value, 10);
+        request.post({
+            url: api + 'loadDashboard',
+            json: true,
+            body: { operation: "loadDashboard", accountId: accountId }
+        }, function (error, response, body) {
+            if (body) {
+                console.log(body);
+                let components = self.state.components;
+                for (let type in body) {
+                    let properties = body[type];
+                    if (type == "bar") {
+                        components[self.state.pageNo].push(
+                            {
+                                type: "bar", x: 0, y: 0, height: 370, width: 500, display: true, properties: properties
+                            }
+                        );
+                    } else if (type == "line") {
+                        components[self.state.pageNo].push(
+                            {
+                                type: "line", x: 0, y: 0, height: 370, width: 500, display: true, properties: properties
+                            }
+                        );
+                    }
+                }
+                
+                self.setState({ components });
+            }
+        });
+    }
+    
     renameTemplate = (e) => {
         this.setState({ templateName: e.target.value });
     }
     
     saveDashboard = () => {
         let self = this;
+        let accountId = parseInt(document.getElementById("accountId").value, 10);
+
         request.post({
             url: api + 'saveDashboard',
             json: true,
-            body: { operation: "saveDashboard", templateId: templateId, components: self.state.components }
+            body: { operation: "saveDashboard", accountId: accountId, components: self.state.components[0] }
         }, function (error, response, body) {
             if (body && body.status) {
                 swal({icon:"success", text:"Saved succesfully"});
@@ -253,6 +288,7 @@ class DashboardApp extends Component {
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
                                  <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> 
+                                 <Button bsStyle="info" onClick={this.saveDashboard}>Save Dashboard</Button> 
                                 {/* <Button className="col-md-2 col-xs-3" style={{ float:"right", minWidth:130 }} bsStyle="info" onClick={this.saveTemplate}>
                                         <i className="fa fa-save" /> Save Template
                                     </Button> */}
@@ -363,11 +399,21 @@ class Barchart extends Component {
 
     // do API call to render chartData upon loading of component from DB
     componentWillMount() {
-        let {title, datasourceUrl, path, xAxis, yAxis, aggregate, summary} = this.props.properties;
-        this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){});
+        let self = this;
+        let {title, datasourceId, datasetId, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        request.post({
+            url: api + "getChartDetails",
+            json: true,
+            body: { operation: "getChartDetails", datasourceId: datasourceId, datasetId: datasetId }
+        }, function (error, response, body) {
+            if(body){
+                console.log(body);
+                self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){});
+            }
+        });
     }
 
-    initialize (title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, callback) {
+    initialize (title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, callback) {
         let self = this;
         request.get({
             url: datasourceUrl,
@@ -413,15 +459,16 @@ class Barchart extends Component {
 
     initializeChart = (values) => {
         //set settings of barchart
+        console.log(values);
         let self = this;
-        let {title, datasourceUrl, path, xAxis, yAxis, summary} = values;
+        let {title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, summary} = values;
         let aggregate = "sum"; // should get from form
 
-        this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){
-            let { chartData,summaryData, ...other } = self.state;
+        this.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){
+            let { chartData, summaryData, datasourceUrl, path, ...other } = self.state;
             self.props.updateProperties(other, self.props.i);
         });
-    }
+    }   
 
     render() {
         return (
@@ -793,9 +840,18 @@ class Linechart extends Component {
 
     // do API call to render chartData upon loading of component from DB
     componentWillMount() {
+        let self = this;
         let {title, datasourceId, datasetId, xAxis, yAxis, aggregate, summary} = this.props.properties;
-        
-        this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){});
+        request.post({
+            url: api + "getChartDetails",
+            json: true,
+            body: { operation: "getChartDetails", datasourceId: datasourceId, datasetId: datasetId }
+        }, function (error, response, body) {
+            if(body){
+                console.log(body);
+                self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){});
+            }
+        });
     }
 
     initialize (title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, callback) {
@@ -810,7 +866,7 @@ class Linechart extends Component {
                 for (let subpath of path.split("/")) {
                     data = data[subpath];
                 }
-
+                
                 // aggregate the data for the chart
                 let processor = new JsonProcessor();
                 let aggregatedData = processor.getAggregatedData(data, xAxis, yAxis, aggregate, summary);
@@ -822,7 +878,7 @@ class Linechart extends Component {
                     median: aggregatedData.median,
                     var: aggregatedData.var
                 };
-
+                
                 // write the cal for the variance 
                 self.setState({
                     initialized: true,
