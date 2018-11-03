@@ -311,7 +311,7 @@ class DashboardApp extends Component {
                                                 style={{
                                                     width: "47%",
                                                     display: "inline-block",
-                                                    marginLeft:10
+                                                    marginLeft:20
                                                 }}
                                             >
                                                  <div style={{ height: 27.5, float: "right" }}>
@@ -579,7 +579,7 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="form-horizontal " style={{ height:"100%", width:"90%", backgroundColor:"white", textAligh:"center",}}>
+                    <Form className="form-horizontal " style={{ height:"100%", width:"90%", backgroundColor:"white", textAligh:"center",marginTop:"20px"}}>
                         <div className="form-group">
                             <label >Chart Title</label>
                             <div >
