@@ -277,10 +277,10 @@ class DashboardApp extends Component {
                                                     display: "inline-block"
                                                 }}
                                             >
-                                                {/* <div style={{ height: 27.5, float: "right" }}>
+                                                 <div style={{ height: 27.5, float: "right" }}>
                                                     <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
                                                         onClick={() => this.changeSettings(i)}></i>
-                                                </div> */}
+                                                </div>
                                                 <ReportComponent type={item.type} editMode={this.state.editMode}
                                                     properties={item.properties} i={i}
                                                     updateProperties={this.updateProperties.bind(this)}
@@ -390,10 +390,10 @@ class Barchart extends Component {
         return (
             <div  >
                 { this.state.initialized ?
-                    <div style={{ height: "fit-content" }}>
+                    <div style={{ width:"90%" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
                         {this.state.facetype ?
-                        <BarChart data={this.state.chartData} width={650} height={250} margin={{ top: 10, right: 30, left: 20, bottom: 30 }}>
+                        <BarChart data={this.state.chartData} style={{width:100, height:100}}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
@@ -409,8 +409,8 @@ class Barchart extends Component {
                             <Legend verticalAlign="top" height={20} />
                         </BarChart>
                         :
-                        <ResponsiveContainer style={{height:"100%"}}>
-                            <BarChart data={this.state.chartData} width={730} height={250} margin={{ top: 1, right: 30, left: 20, bottom: 30 }}>
+                        <ResponsiveContainer style={{width:"90%"}}>
+                            <BarChart data={this.state.chartData} width="100%" height= "100%">
                                 <CartesianGrid strokeDa1sharray="3 3" />
                                 <XAxis dataKey={this.state.xAxis}>
                                     <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
@@ -427,7 +427,7 @@ class Barchart extends Component {
                         </ResponsiveContainer>}
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
-                    : <ChartForm initializeChart={this.initializeChart} />
+                    : <ChartForm initializeChart={this.initializeChart} style={{width:"90%"}} />
                 }
             </div>
         );
@@ -538,7 +538,7 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="form-horizontal " style={{ height:"500px", width:"500px", backgroundColor:"white"}}>
+                    <Form className="form-horizontal " style={{ height:"100%", width:"100%", backgroundColor:"white"}}>
                         <div className="form-group">
                             <label className="col-md-3 control-label">Chart Title</label>
                             <div className="col-md-7">
@@ -816,10 +816,10 @@ class Linechart extends Component {
         return (
             <div >
                 {this.state.initialized ?
-                    <div style={{ height: "calc(70.5% + 1px)" }}>
+                    <div style={{width:"90%"}}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
                         {this.state.facetype ?
-                        <LineChart width={700} height={250}  margin={{ top: 1,right: 30, left: 20, bottom: 30 }} data={this.state.chartData}>
+                        <LineChart  style={{position: "relative", width: "300", height: "300"}} data={this.state.chartData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
@@ -832,8 +832,8 @@ class Linechart extends Component {
                             <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
                         </LineChart>
                         :
-                        <ResponsiveContainer className="draggable" width="95%" height="90%">
-                            <LineChart width={730} height={250}  margin={{ top: 1,right: 30, left: 20, bottom: 30 }} data={this.state.chartData}>
+                        <ResponsiveContainer>
+                            <LineChart  style={{position: "relative", width: "300", height: "300"}} data={this.state.chartData}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey={this.state.xAxis}>
                                     <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
@@ -848,7 +848,7 @@ class Linechart extends Component {
                         </ResponsiveContainer>}
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
-                    : <ChartForm initializeChart={this.initializeChart} />
+                    : <ChartForm initializeChart={this.initializeChart} style={{width:"90%"}}/>
                 }
             </div>
         );   
