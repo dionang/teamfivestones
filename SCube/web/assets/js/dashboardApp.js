@@ -347,7 +347,7 @@ class DashboardApp extends Component {
                                                 style={{
                                                     width: "47%",
                                                     display: "inline-block",
-                                                    marginLeft:20
+                                                    marginLeft:15
                                                 }}
                                             >
                                                  <div style={{ height: 27.5, float: "right" }}>
@@ -477,7 +477,7 @@ class Barchart extends Component {
                     <div style={{ width:"90%" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
                         {this.state.facetype ?
-                        <BarChart data={this.state.chartData} style={{width:100, height:100}}>
+                        <BarChart data={this.state.chartData} width={500} height={400}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
@@ -494,7 +494,7 @@ class Barchart extends Component {
                         </BarChart>
                         :
                         <ResponsiveContainer style={{width:"90%"}}>
-                            <BarChart data={this.state.chartData} width="100%" height= "100%">
+                            <BarChart data={this.state.chartData} width={500} height={400}>
                                 <CartesianGrid strokeDa1sharray="3 3" />
                                 <XAxis dataKey={this.state.xAxis}>
                                     <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
@@ -920,7 +920,7 @@ class Linechart extends Component {
                     <div style={{width:"90%"}}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
                         {this.state.facetype ?
-                        <LineChart  style={{position: "relative", width: "300", height: "300"}} data={this.state.chartData}>
+                        <LineChart  width={500} height={400} data={this.state.chartData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
@@ -934,7 +934,7 @@ class Linechart extends Component {
                         </LineChart>
                         :
                         <ResponsiveContainer>
-                            <LineChart  style={{position: "relative", width: "300", height: "300"}} data={this.state.chartData}>
+                            <LineChart  width={500} height={400} data={this.state.chartData}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey={this.state.xAxis}>
                                     <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
