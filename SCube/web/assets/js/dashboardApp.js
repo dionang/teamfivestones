@@ -31,7 +31,9 @@ class DashboardApp extends Component {
             sidebar: true,
             pageNo: 0,
             picArr:[],
-            exporting: false
+            exporting: false,
+            isBarPic:"-webkit-inline-box",
+            isLinePic:"-webkit-inline-box",
         }
     }
 
@@ -49,7 +51,7 @@ class DashboardApp extends Component {
         );
 
         // updates state
-        this.setState({ components, editMode: true });
+        this.setState({ components, editMode: true,isBarPic:"none"  });
     }
 
     addLineChart = () => {
@@ -64,7 +66,7 @@ class DashboardApp extends Component {
             }
         );
 
-        this.setState({ components, editMode: true });
+        this.setState({ components, editMode: true,isLinePic:"none" });
     }
 
     addTable = () => {
@@ -208,7 +210,7 @@ class DashboardApp extends Component {
 
                             <div className="right_col" width="100%" style={{ backgroundColor: "#F3F3F3", overflow:"hidden" }}>
 
-                                <div className="col-xs-3 col-md-2" style={{ textAlign: "center", verticalAlign: "middle", float: "right", height: 'fit-content', }}>
+                               <div className="col-xs-3 col-md-2" style={{ textAlign: "center", verticalAlign: "middle", float: "right", height: 'fit-content', }}>
                                     <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px",  backgroundColor: '	brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Templates Created</label>
                                     <br /><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>5</label>
                                 </div>
@@ -267,17 +269,33 @@ class DashboardApp extends Component {
 
                                 <div id="container" ref={this.myInput} className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', height: "calc(100% + 500px)", marginTop: 15, display: "block" , overflow:"scroll", marginLeft:"10px", maxHeight:this.state.halfHeight}}>
                                     {/* map does a for loop over all the components in the state */}
-                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,}} className="fa fa-wrench"
-                                                        onClick={() => this.changeSettings(0)}></i>
-                                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 10}} className="fa fa-times"
-                                                        onClick={() => this.deleteComponent(0)}></i>
-                                    <img className="col-sm-6 col-xs-6" src = "assets/images/barchartsample.png" style={{float:"left"}}></img>
-                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 10, float:"right"}} className="fa fa-times"
-                                                        onClick={() => this.deleteComponent(0)}></i>
-                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,float:"right"}} className="fa fa-wrench"
-                                                        onClick={() => this.changeSettings(0)}></i>
+                                    {this.state.components[this.state.pageNo].map((item, i) => {
+                                        if (item.display) {
+                                            return <div key={this.state.pageNo + "," + i}
+                                                style={{
+                                                    width: "49%",
+                                                    display: "inline-block"
+                                                }}
+                                            >
+                                                {/* <div style={{ height: 27.5, float: "right" }}>
+                                                    <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
+                                                        onClick={() => this.changeSettings(i)}></i>
+                                                </div> */}
+                                                <ReportComponent type={item.type} editMode={this.state.editMode}
+                                                    properties={item.properties} i={i}
+                                                    updateProperties={this.updateProperties.bind(this)}
                                                     
-                                    <img className="col-sm-6 col-xs-6" src = "assets/images/linechartsample.png" style={{float:"right"}}></img>
+                                                />
+                                            </div>
+                                        }
+                                    })}
+                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,display:this.state.isBarPic}} className="fa fa-wrench"
+                                                        onClick={() => this.addBarChart()}></i>
+                                    <img  src = "assets/images/barchartsample.png" style={{float:"left",display:this.state.isBarPic, width:"49%"}}></img>
+                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,float:"right", display:this.state.isLinePic}} className="fa fa-wrench"
+                                                        onClick={() => this.addLineChart()}></i>
+                                                    
+                                    <img src = "assets/images/linechartsample.png" style={{float:"right",display:this.state.isLinePic, width:"49%"}}></img>
 
                                 </div>
                             </div>
