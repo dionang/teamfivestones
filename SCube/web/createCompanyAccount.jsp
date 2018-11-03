@@ -40,7 +40,7 @@
                                     <br>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <label for="name" class="icon-user"> Name
+                                            <label for="name" class="icon-user"> Company Name
                                                 <span class="required">*</span>
                                             </label>  
                                         </div>
@@ -91,6 +91,19 @@
                                     </div>
                                     <br>
                                     <div class="row">
+                                        <div class="col-md-5">
+                                            <label class="icon-key"> Access Token
+                                                <span class="required">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10 col-xs-12 ">
+                                            <input class="form-control" name="accessToken" required />
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
                                         <div class="col-md-3 col-xs-12" style="font-size:13px">
                                             [ Password format :
                                         </div>
@@ -110,7 +123,6 @@
                                         </div>
                                     </div>
                                     <br>
-                                    <input type="hidden" name="companyId" value="<%= account.getCompanyId()%>">
                                     <input type="hidden" name="accountType" value="company">
                                     <input type="hidden" name="operation" value="createAccount"/>
                                     <input type="hidden" name="type" value="createCompanyAccount.jsp" id="type"/>

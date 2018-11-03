@@ -15,7 +15,7 @@ and open the template in the editor.
 }
 
 /** inputs and textarea**/
- .form-control{
+.form-control{
     display:block;
     height:40px;
     border:1px solid #DBDBDB;
@@ -71,26 +71,20 @@ label .l:hover {
     color:#E5224C;
 }
 
- .dropdown-submenu {
+.dropdown-submenu {
     position: relative;
-    
-    
-    
 }
 
 .dropdown-submenu .dropdown-menu {
     top: 0;
     left: 100%;
     margin-top: -1px;
-
-    
-    
 }
+
 .dropdown-menu{
     top:0;
-   
-  
 }
+
 .span{
    float: left;
    font-size:15px;

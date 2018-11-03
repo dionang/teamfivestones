@@ -10,13 +10,9 @@
         <title>Login Page</title>
     </head>
     <body>
-        
-        
-        
-  
         <div class="row" style="margin-top:18%">
             <div class="col-md-1 col-xs-2"></div>
-            <div class="col-md-3 col-xs-8" style="padding-left: 0px;">
+            <div class="col-md-4 col-xs-8" style="padding-left: 0px;">
                 <img style="width:600px;height:300px;margin-left:-100px;margin-top: -50px" src="assets/images/scube.png" />
             </div>
             <div class="col-md-2 col-xs-2">

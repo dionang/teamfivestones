@@ -11,8 +11,8 @@ import { Formik, Form, Field } from 'formik';
 
 //const api = 'http://localhost:8084/';
 //const api = 'http://103.3.61.39:8080/SCube/';
-//const api = 'https://scube.rocks/SCube/';
-const api = 'http://18.222.40.231/SCube/';
+const api = 'https://scube.rocks/SCube/';
+//const api = 'http://18.222.40.231/SCube/';
 const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
 class DashboardApp extends Component {
