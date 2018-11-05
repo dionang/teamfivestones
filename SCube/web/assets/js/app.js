@@ -1150,7 +1150,8 @@ class Barchart extends Component {
 }
 
 class Linechart extends Component {
-    constructor(props) {
+   
+     constructor(props) {
         super(props);
         this.state = {
             ...this.props.properties,
@@ -1226,8 +1227,8 @@ class Linechart extends Component {
             let { chartData,summaryData, ...other } = self.state;
             self.props.updateProperties(other, self.props.i);
         });
-    }   
-
+    }
+   
     render() {
         return (
             <div className="draggable" style={{ height: "100%" }}>
