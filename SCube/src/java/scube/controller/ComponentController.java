@@ -72,8 +72,8 @@ public class ComponentController extends HttpServlet {
                             components.add(new Textbox(type, x, y, height, width, text));
                         } else if (type.equals("bar") || type.equals("line")){
                             boolean initialized = properties.get("initialized").getAsBoolean();                        
-                            String datasourceUrl = properties.get("datasourceUrl").getAsString();
-                            String path = properties.get("path").getAsString();
+                            int datasourceId = properties.get("datasourceId").getAsInt();
+                            int datasetId = properties.get("datasetId").getAsInt();
                             String title = properties.get("title").getAsString();
                             String xAxis = properties.get("xAxis").getAsString();
                             String yAxis = properties.get("yAxis").getAsString();
@@ -81,7 +81,7 @@ public class ComponentController extends HttpServlet {
                             boolean summary = properties.get("summary").getAsBoolean();                        
 
                             if(initialized){
-                                components.add(new Chart(type, x, y, height, width, datasourceUrl, path, title, xAxis, yAxis, aggregate, summary));
+                                components.add(new Chart(type, x, y, height, width, datasourceId, datasetId, title, xAxis, yAxis, aggregate, summary));
                             }
                         } else if (type.equals("image")) {
                             String imageUrl = properties.get("imageUrl").getAsString();
@@ -137,8 +137,8 @@ public class ComponentController extends HttpServlet {
                             case "line":
                                 Chart chart = (Chart) component;
                                 properties.addProperty("initialized", true);
-                                properties.addProperty("datasourceUrl", chart.getDatasourceUrl());
-                                properties.addProperty("path", chart.getPath());
+                                properties.addProperty("datasourceId", chart.getDatasourceId());
+                                properties.addProperty("datasetId", chart.getDatasetId());
                                 properties.addProperty("title", chart.getTitle());
                                 properties.addProperty("xAxis", chart.getXAxis());
                                 properties.addProperty("yAxis", chart.getYAxis());
@@ -176,10 +176,8 @@ public class ComponentController extends HttpServlet {
                     
                     result.add(componentArr);
                 } 
-
                 
                 responseObj.add("components", result);
-//                System.out.println(responseObj.toString());
                 out.println(responseObj.toString());
             }
         }

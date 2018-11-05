@@ -20,7 +20,7 @@ import scube.entities.*;
  *
  * @author HongYuan
  */
-@WebServlet(name = "DatasourceController", urlPatterns = {"/addDatasource", "/getDatasources", "/updateDatasource", "/loadDatasource", "/loadDataset", "/loadListOptions"})
+@WebServlet(name = "DatasourceController", urlPatterns = {"/addDatasource", "/getDatasources", "/updateDatasource", "/loadDatasource", "/loadDataset", "/loadListOptions", "/getChartDetails"})
 public class DatasourceController extends HttpServlet {
 
     /**
@@ -82,7 +82,6 @@ public class DatasourceController extends HttpServlet {
                         } else if (!r) {
                             result = false;
                         }
-
                     }
                 } else {
                     result = false;
@@ -137,10 +136,6 @@ public class DatasourceController extends HttpServlet {
                 String datasourceUrl = json.get("datasourceUrl").getAsString();
                 String datasourceName = json.get("datasourceName").getAsString();
                 String remark = json.get("remark").getAsString();
-                String allDataset=json.get("allDataset").getAsString();
-                String allList=json.get("allList").getAsString();
-                String updateSet="";
-                String updateList="";
                 boolean result = true;
                 boolean addDataset = true;
                 boolean addListOption = true;
@@ -207,7 +202,7 @@ public class DatasourceController extends HttpServlet {
                 responseObj.add("datasource", datasourceArr);
                 out.println(responseObj.toString());
                 
-            } else if (operation.equals("loadDataset")){
+            } else if (operation.equals("loadDataset")) {
                 JsonObject responseObj = new JsonObject();
                 int datasourceId = json.get("datasourceId").getAsInt();
                 ArrayList<Dataset> dataset=DatasourceDAO.getListTypeDataset(datasourceId);
@@ -222,7 +217,7 @@ public class DatasourceController extends HttpServlet {
                 responseObj.add("dataset", datasetArr);
                 out.println(responseObj.toString());
                 
-            }else if (operation.equals("loadListOptions")){
+            } else if (operation.equals("loadListOptions")) {
                 JsonObject responseObj = new JsonObject();
                 int datasetId = json.get("datasetId").getAsInt();
                 ArrayList<List> list=DatasourceDAO.getAllListOptionByDataset(datasetId);
@@ -236,6 +231,16 @@ public class DatasourceController extends HttpServlet {
                     listArr.add(listObj);
                 }
                 responseObj.add("list", listArr);
+                out.println(responseObj.toString());
+                
+            } else if (operation.equals("getChartDetails")) {
+                JsonObject responseObj = new JsonObject();
+                int datasourceId = json.get("datasourceId").getAsInt();
+                int datasetId = json.get("datasetId").getAsInt();
+                String datasourceUrl = DatasourceDAO.retrieveDatasourceById(datasourceId).getDatasourceUrl();
+                String path = DatasourceDAO.retrievePath(datasetId);
+                responseObj.addProperty("datasourceUrl", datasourceUrl);
+                responseObj.addProperty("path", path);
                 out.println(responseObj.toString());
             }
         }

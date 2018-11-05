@@ -10,10 +10,8 @@ import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Leg
 import { Formik, Form, Field } from 'formik';
 
 //const api = 'http://localhost:8084/';
-//const datasourceUrl = 'http://localhost:8084/Dummy_API/getCustomerOrders';
 const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
-const datasourceUrl = 'https://scube.rocks/SCube/Dummy_API/getCustomerOrders';
 
 class App extends Component {
     constructor(props) {
@@ -1041,11 +1039,25 @@ class Barchart extends Component {
 
     // do API call to render chartData upon loading of component from DB
     componentWillMount() {
-        let {title, datasourceUrl, path, xAxis, yAxis, aggregate, summary} = this.props.properties;
-        this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){});
+        let self = this;
+        let {title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        if (datasourceUrl == undefined || path == undefined) {
+            request.post({
+                url: api + "getChartDetails",
+                json: true,
+                body: { operation: "getChartDetails", datasourceId: datasourceId, datasetId: datasetId }
+            }, function (error, response, body) {
+                if(body){
+                    console.log(body);
+                    self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){});
+                }
+            });
+        } else {
+            self.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){});
+        }
     }
 
-    initialize (title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, callback) {
+    initialize (title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, callback) {
         let self = this;
         request.get({
             url: datasourceUrl,
@@ -1074,6 +1086,8 @@ class Barchart extends Component {
                 self.setState({
                     initialized: true,
                     datasourceUrl: datasourceUrl,
+                    datasourceId: datasourceId,
+                    datasetId: datasetId,
                     path: path,
                     title: title,
                     xAxis: xAxis,
@@ -1091,15 +1105,16 @@ class Barchart extends Component {
 
     initializeChart = (values) => {
         //set settings of barchart
+        console.log(values);
         let self = this;
-        let {title, datasourceUrl, path, xAxis, yAxis, summary} = values;
+        let {title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, summary} = values;
         let aggregate = "sum"; // should get from form
 
-        this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){
-            let { chartData,summaryData, ...other } = self.state;
+        this.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){
+            let { chartData, summaryData, ...other } = self.state;
             self.props.updateProperties(other, self.props.i);
         });
-    }
+    }  
 
     render() {
         return (
@@ -1169,11 +1184,25 @@ class Linechart extends Component {
 
     // do API call to render chartData upon loading of component from DB
     componentWillMount() {
-        let {title, datasourceUrl, path, xAxis, yAxis, aggregate, summary} = this.props.properties;
-        this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){});
+        let self = this;
+        let {title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        if (datasourceUrl == undefined || path == undefined) {
+            request.post({
+                url: api + "getChartDetails",
+                json: true,
+                body: { operation: "getChartDetails", datasourceId: datasourceId, datasetId: datasetId }
+            }, function (error, response, body) {
+                if(body){
+                    console.log(body);
+                    self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){});
+                }
+            });
+        } else {
+            self.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){});
+        }
     }
 
-    initialize (title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, callback) {
+    initialize (title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, callback) {
         let self = this;
         request.get({
             url: datasourceUrl,
@@ -1202,6 +1231,8 @@ class Linechart extends Component {
                 self.setState({
                     initialized: true,
                     datasourceUrl: datasourceUrl,
+                    datasourceId: datasourceId,
+                    datasetId: datasetId,
                     path: path,
                     title: title,
                     xAxis: xAxis,
@@ -1211,7 +1242,6 @@ class Linechart extends Component {
                     summary: summary,
                     summaryData: statSummary,
                 });
-
                 callback();
             }
         });
@@ -1219,12 +1249,13 @@ class Linechart extends Component {
 
     initializeChart = (values) => {
         //set settings of barchart
+        console.log(values);
         let self = this;
-        let {title, datasourceUrl, path, xAxis, yAxis, summary} = values;
+        let {title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, summary} = values;
         let aggregate = "sum"; // should get from form
 
-        this.initialize(title, datasourceUrl, path, xAxis, yAxis, aggregate, summary, function(){
-            let { chartData,summaryData, ...other } = self.state;
+        this.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){
+            let { chartData, summaryData, ...other } = self.state;
             self.props.updateProperties(other, self.props.i);
         });
     }
@@ -1374,9 +1405,9 @@ class ChartForm extends Component {
     loadDatasource(){
         let self = this;
         request.post({
-            url: api + 'loadDatasource',
+            url: api + "loadDatasource",
             json: true,
-            body: { operation: "loadDatasource", companyId: 1 }
+            body: { operation: "loadDatasource", companyId: document.getElementById("companyId").value }
         }, function (error, response, body) {
             if (body) {
                 let datasources = body.datasource;
@@ -1389,6 +1420,7 @@ class ChartForm extends Component {
     }
 
     loadDataset(datasourceId, formProps){
+        formProps.values.datasourceId = parseInt(datasourceId,10);
         let self = this;
         request.post({
             url: api + 'loadDataset',
@@ -1415,6 +1447,7 @@ class ChartForm extends Component {
     }
 
     loadListOptions(datasetId, formProps){
+        formProps.values.datasetId = parseInt(datasetId,10);
         let self = this;
         request.post({
             url: api + 'loadListOptions',
@@ -1454,6 +1487,8 @@ class ChartForm extends Component {
                     title:'', 
                     path: '',
                     summary:false,
+                    datasourceId:0,
+                    datasetId:0
                 }}
 
                 // pass values to the charts

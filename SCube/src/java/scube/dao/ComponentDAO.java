@@ -43,7 +43,7 @@ public class ComponentDAO {
                         case "bar":
                         case "line":
                             Chart chart = (Chart) component;
-                            addChart(templateId, page, i, chart.getDatasourceUrl(), chart.getPath(), chart.getTitle(), chart.getXAxis(), chart.getYAxis(), chart.getAggregate(), chart.getSummary());
+                            addChart(templateId, page, i, chart.getDatasourceId(), chart.getDatasetId(), chart.getTitle(), chart.getXAxis(), chart.getYAxis(), chart.getAggregate(), chart.getSummary());
                             break;
                         case "image":
                             Image image = (Image) component;
@@ -72,7 +72,7 @@ public class ComponentDAO {
         }
     }
     
-    public static void addChart(int templateId, int page, int position, String datasourceUrl, String path, String title, String xAxis, String yAxis, String aggregate, boolean summary) {
+    public static void addChart(int templateId, int page, int position, int datasourceId, int datasetId, String title, String xAxis, String yAxis, String aggregate, boolean summary) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -83,8 +83,8 @@ public class ComponentDAO {
             stmt.setInt(1, templateId);
             stmt.setInt(2, page);            
             stmt.setInt(3, position);            
-            stmt.setString(4, datasourceUrl);            
-            stmt.setString(5, path);
+            stmt.setInt(4, datasourceId);            
+            stmt.setInt(5, datasetId);
             stmt.setString(6, title);
             stmt.setString(7, xAxis);
             stmt.setString(8, yAxis);            
@@ -212,7 +212,7 @@ public class ComponentDAO {
                 } else if (type.equals("line") || type.equals("bar")){
                     ArrayList<String> props = getChartProps(templateId, page, position);
                     component = new Chart(type, rs.getInt("x"), rs.getInt("y"), 
-                        rs.getInt("height"), rs.getInt("width"), props.get(0), props.get(1), props.get(2), props.get(3), props.get(4), props.get(5), props.get(6).equals("true"));
+                        rs.getInt("height"), rs.getInt("width"), Integer.parseInt(props.get(0)), Integer.parseInt(props.get(1)), props.get(2), props.get(3), props.get(4), props.get(5), props.get(6).equals("true"));
                 } else if (type.equals("image")) {
                     component = new Image(type, rs.getInt("x"), rs.getInt("y"), rs.getInt("height"), rs.getInt("width"), 
                         getImagePrefix(templateId, page, position), getImageData(templateId, page, position));
@@ -368,8 +368,8 @@ public class ComponentDAO {
             rs = stmt.executeQuery();
 
             if(rs.next()){
-                props.add(rs.getString("datasourceUrl"));
-                props.add(rs.getString("path"));
+                props.add(""+rs.getInt("datasourceId"));
+                props.add(""+rs.getInt("datasetId"));
                 props.add(rs.getString("title"));
                 props.add(rs.getString("xAxis"));
                 props.add(rs.getString("yAxis"));                
@@ -436,27 +436,6 @@ public class ComponentDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
-    
-    // Update operations
-//    public static boolean changePassword(int accountId, String newPassword) {
-//        Connection conn = null;
-//        PreparedStatement stmt = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            conn = ConnectionManager.getConnection();
-//            stmt = conn.prepareStatement("UPDATE account SET passwordHash = ? WHERE accountId = ?");
-//            stmt.setString(1, passwordHash);            
-//            stmt.setInt(2, accountId);
-//            stmt.executeUpdate();
-//            return true;
-//        } catch (SQLException e) {
-//            e.printStackTrace(System.out);
-//            return false;
-//        } finally {
-//            ConnectionManager.close(conn, stmt, rs);
-//        }
-//    }
     
     // Delete operations
     public static boolean deleteAllComponents(int templateId) {
