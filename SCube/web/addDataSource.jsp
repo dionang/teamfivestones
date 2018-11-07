@@ -338,11 +338,64 @@
                             array.push("</ul>");
 
                             $(".buttonInside").append(array.join(""));
-                            $('.dropdown-submenu a.test').on("click", function (e) {
-                                $(this).next('ul').toggle();
+                                                        $('.dropdown-submenu a.test').on("click", function (e) {
+                                
+                                console.log("click");
+                                var maxHeight = 200;
+                                var $container = $(".buttonInside"),
+                                        $list = $(this).next('ul'),
+                                        
+                                        $anchor = $list.find("a"),
+                                        height = $list.height(), // make sure there is enough room at the bottom
+                                        multiplier = height / maxHeight;
+
+                                // need to save height here so it can revert on mouseout            
+                                $container.data("origHeight", $container.height());
+
+                                // so it can retain it's rollover color all the while the dropdown is open
+                                $anchor.addClass("hover");
+console.log(multiplier);
+                                if (multiplier > 1) {
+                                     
+                                    console.log("click");
+                                    $list
+                                            .css({
+                                                height: maxHeight,
+                                                overflow: "hidden",
+                                                
+                                                
+                                            })
+                                            .mousemove(function (e) {
+                                                var offset = $container.position();
+                                        console.log(offset);
+                                                var relativeY = ((e.pageY - offset.top) * multiplier) - ($container.data("origHeight") * multiplier);
+                                                if (relativeY > $container.data("origHeight")) {
+                                                    $list.css("top", -relativeY + $container.data("origHeight"));
+                                                }
+                                                ;
+                                            });
+                                }
+
+$(this).next('ul').toggle();
+                               
                                 e.stopPropagation();
                                 e.preventDefault();
-                            });
+                            }),
+                             function() {
+    
+        var $el = $(this);
+        
+        // put things back to normal
+        $el
+            .height($(this).data("origHeight"))
+            .find("ul")
+            .css({ top: 0 })
+            .hide()
+            .end()
+            .find("a")
+            .removeClass("hover");
+    
+    };
 
                         };
                         request.send();
@@ -410,6 +463,59 @@
 
                         
                         parentId = element.parentNode.parentNode.parentNode.parentNode.id;
+                        var maxHeight = 200;
+                        // Returns a NodeList
+                        var elems = $(document.getElementById(parentId)).find("ul");
+
+// Convert the NodeList to an Array
+                        var ul = jQuery.makeArray(elems);
+                        //var $container =$(document.getElementById(parentId));
+                        //var $list = jQuery.makeArray($container.find("ul") );
+                        console.log(ul);
+
+                        jQuery.each(ul, function (i, list) {
+
+                            var height = $(list).height() * 1.1; // make sure there is enough room at the bottom
+                            console.log(height);
+                            var multiplier = height / maxHeight;     // needs to move faster if list is taller
+
+                            console.log(multiplier);
+                            // need to save height here so it can revert on mouseout            
+                            $(list).data("origHeight", $(list).height());
+
+                            // so it can retain it's rollover color all the while the dropdown is open
+                            //$anchor.addClass("hover");
+
+                            // make sure dropdown appears directly below parent list item    
+//                            $list
+//                                    .show()
+//                                    .css({
+//                                        paddingTop: $container.data("origHeight")
+//                                    });
+
+                            // don't do any animation if list shorter than max
+                            if (multiplier > 1) {
+                                $(list)
+                                        .css({
+                                            height: maxHeight,
+                                            overflow: "hidden"
+                                        })
+                                        .mousemove(function (e) {
+                                            var offset = $(list).offset();
+                                            var relativeY = ((e.pageY - offset.top) * multiplier) - ($(list).data("origHeight") * multiplier);
+                                            if (relativeY > $(list).data("origHeight")) {
+                                                $(list).css("top", -relativeY + $(list).data("origHeight"));
+                                            }
+                                            ;
+                                        });
+                            }
+
+
+                        });
+
+
+
+
                         if (count != 0) {
 
                             for (var i = count - 1; i >= 0; i--) {
