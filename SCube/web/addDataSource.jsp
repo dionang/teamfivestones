@@ -110,13 +110,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-5" style="padding-top: 20px">
                                                 <a class="btn btn-warning"  onclick="clone();"><i class="fa fa-plus"></i> Add Data Configuration</a>
                                             </div>
                                             <input type="hidden" name="counter" id="counter"/>
 
-                                            
+
 
                                         </div>
 
@@ -135,11 +135,15 @@
                                         <br>
                                         <input type="hidden" name="companyId" value="<%= account.getCompanyId()%>">
                                     <input type="hidden" name="operation" value="addDatasource" />
-                                    <div class="row">                                        
-                                        <div class="col-sm-5" style="float:right; width:25.66666667%">
-                                            <input   type="submit" value="Create Datasource" class="btn btn-success"/>
-                                            <a class="btn btn-primary" href="devHome.jsp" ><i class="fa fa-home"></i> Back</a>                                            
+                                    <div class="row">  
+                                        <div class="col-lg-offset-8 col-lg-2 ">
+                                            <input type="submit" value="Create Datasource" class="btn btn-success" style="margin-left:60px"/>
                                         </div>
+
+                                        <div class="col-lg-2">
+                                            <a class="btn btn-primary" style="float:right" href="devHome.jsp"><i class="fa fa-home"></i> Back</a>
+                                        </div>
+
                                     </div>
                                     <br/>
 
@@ -222,19 +226,22 @@
                                                                                 remark: form.elements["remark"].value,
                                                                                 counter: count,
                                                                                 subCounter: subCount,
-                                                                                params: list,
+                                                                                params: list
                                                                             }),
                                                                             success: function (success) {
-                                                                               
-                                                                                
-                                                                                if (success === "true") {
-                                                                                    swal({icon: "success", text: "Datasource has been added successfully!!", type:
+                                                                                var array = success.split(",");
+                                                                                var result = array[0];
+                                                                                var message = array[1];
+
+
+                                                                                if (result === "true") {
+                                                                                    swal({icon: "success", text: message, type:
                                                                                                 "success"}).then(function () {
                                                                                         window.location = "devHome.jsp";
                                                                                     }
                                                                                     );
                                                                                 } else {
-                                                                                    swal("Error!", {
+                                                                                    swal(message, {
                                                                                         icon: "error"
                                                                                     });
                                                                                 }
@@ -260,9 +267,9 @@
 
                         div.find('input[name=name]').attr("required", true);
                         div.find('input[name=name]').attr('name', 'name' + counter);
-                        
+
                         div.find('select[name=type]').attr('name', 'type' + counter);
-                        
+
                         div.find('div[name=dropdown]').attr('name', 'dropdown' + counter);
                         div.attr("class", "jsonForm");
                         $("#content").append(div.show());
@@ -338,13 +345,12 @@
                             array.push("</ul>");
 
                             $(".buttonInside").append(array.join(""));
-                                                        $('.dropdown-submenu a.test').on("click", function (e) {
-                                
+                            $('.dropdown-submenu a.test').on("click", function (e) {
+
                                 console.log("click");
                                 var maxHeight = 200;
                                 var $container = $(".buttonInside"),
                                         $list = $(this).next('ul'),
-                                        
                                         $anchor = $list.find("a"),
                                         height = $list.height(), // make sure there is enough room at the bottom
                                         multiplier = height / maxHeight;
@@ -354,20 +360,19 @@
 
                                 // so it can retain it's rollover color all the while the dropdown is open
                                 $anchor.addClass("hover");
-console.log(multiplier);
+                                console.log(multiplier);
                                 if (multiplier > 1) {
-                                     
+
                                     console.log("click");
                                     $list
                                             .css({
                                                 height: maxHeight,
                                                 overflow: "hidden",
-                                                
-                                                
+
                                             })
                                             .mousemove(function (e) {
                                                 var offset = $container.position();
-                                        console.log(offset);
+                                                console.log(offset);
                                                 var relativeY = ((e.pageY - offset.top) * multiplier) - ($container.data("origHeight") * multiplier);
                                                 if (relativeY > $container.data("origHeight")) {
                                                     $list.css("top", -relativeY + $container.data("origHeight"));
@@ -376,26 +381,26 @@ console.log(multiplier);
                                             });
                                 }
 
-$(this).next('ul').toggle();
-                               
+                                $(this).next('ul').toggle();
+
                                 e.stopPropagation();
                                 e.preventDefault();
                             }),
-                             function() {
-    
-        var $el = $(this);
-        
-        // put things back to normal
-        $el
-            .height($(this).data("origHeight"))
-            .find("ul")
-            .css({ top: 0 })
-            .hide()
-            .end()
-            .find("a")
-            .removeClass("hover");
-    
-    };
+                                    function () {
+
+                                        var $el = $(this);
+
+                                        // put things back to normal
+                                        $el
+                                                .height($(this).data("origHeight"))
+                                                .find("ul")
+                                                .css({top: 0})
+                                                .hide()
+                                                .end()
+                                                .find("a")
+                                                .removeClass("hover");
+
+                                    };
 
                         };
                         request.send();
@@ -461,7 +466,7 @@ $(this).next('ul').toggle();
                     //call API
                     function getData(element) {
 
-                        
+
                         parentId = element.parentNode.parentNode.parentNode.parentNode.id;
                         var maxHeight = 200;
                         // Returns a NodeList

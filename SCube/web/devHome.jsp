@@ -87,7 +87,7 @@
                                             </div>
                                             <div class="row"  >
                                                 <div class="col-xs-5" style="margin-left:10px; padding:0px">
-                                                    <button class="btn edit" name="viewBtn" value="view" style="width:100%">
+                                                    <button class="btn btn-success edit" name="viewBtn" value="view" style="width:100%">
                                                         <i class="fa fa-edit"></i> View/Edit
                                                     </button>
                                                 </div>

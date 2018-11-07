@@ -105,6 +105,32 @@ public class DatasourceDAO {
             ConnectionManager.close(conn, stmt, rs);
         }
     }
+    public static ArrayList<Datasource> getDatasourcesByName(int companyId,String datasourceName) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT * from datasource WHERE companyId = ? and datasourceName=?");
+            stmt.setInt(1, companyId);
+            stmt.setString(2, datasourceName);
+            rs = stmt.executeQuery();
+            
+            ArrayList<Datasource> datasourceList = new ArrayList<>();
+            while(rs.next()){
+                Datasource ds = new Datasource(rs.getInt("datasourceId"), rs.getInt("companyId"),
+                        rs.getString("datasourceUrl"),rs.getString("datasourceName"),rs.getString("remark"));
+                datasourceList.add(ds);
+            }
+            return datasourceList;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+            return null;
+        } finally {
+            ConnectionManager.close(conn, stmt, rs);
+        }
+    }
        //retrieve all datasources (URL) from datasource table for API call
     public static int getLatestDatasourceId() {
         Connection conn = null;

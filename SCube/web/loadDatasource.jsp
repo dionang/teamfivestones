@@ -187,7 +187,7 @@
                                             <%  }%>
 
                                             <div id="list" style="display:none;margin-top: 10px;border-bottom: 1px solid rgba(0, 0, 0, 0.3);padding-bottom: 20px;">
-                                                 <input type="text" name="datasetId" value="-1" />
+                                                <input type="text" name="datasetId" value="-1" />
                                                 <div class="row" style="margin-top:10px;display:inline-block;width:100%;">
 
                                                     <div class="col-lg-4 col-xs-12 form-group"  >
@@ -247,11 +247,11 @@
                                     <input type="hidden" name="companyId" value="<%= account.getCompanyId()%>">
                                     <input type="hidden" name="operation" value="updateDatasource"/>
                                     <div class="row">
-                                        <div class="col-sm-5">
-                                            <input type="submit" value="Update Datasource" class="btn btn-success"/>
+                                        <div class="col-lg-offset-8 col-lg-2 ">
+                                            <input type="submit" value="Update Datasource" class="btn btn-success" style="margin-left:60px"/>
                                         </div>
-                                        <div class="col-sm-2"></div>
-                                        <div class="col-sm-5">
+
+                                        <div class="col-lg-2">
                                             <a class="btn btn-primary" style="float:right" href="devHome.jsp"><i class="fa fa-home"></i> Back</a>
                                         </div>
                                     </div>
@@ -278,86 +278,86 @@
                 <script src="assets/js/dashboard.js"></script> 
 
                 <script type="text/javascript">
-                    function assginUL() {
-                        var button = document.getElementsByClassName("buttonInside")[0];
+                                                function assginUL() {
+                                                    var button = document.getElementsByClassName("buttonInside")[0];
 
-                        var top = button.offsetTop;
-                        var height = button.clientHeight;
-                        var url = document.getElementById("url").value;
-                        var requestURL = url;
-                        var request = new XMLHttpRequest();
-                        request.open('GET', requestURL);
-                        request.responseType = 'json';
-                        request.onload = function () {
-                            var json = request.response;
-                            array = ["<ul class='dropdown-menu parent' style='left:25px;top:" + (top + height) + "px'>"];
-                            function printAll(items) {
-                                switch ($.type(items)) {
-                                    case "object":
-                                        getChildren(items);
-                                        break;
-                                    case "array":
-                                        printArray(items);
-                                        break;
-                                }
+                                                    var top = button.offsetTop;
+                                                    var height = button.clientHeight;
+                                                    var url = document.getElementById("url").value;
+                                                    var requestURL = url;
+                                                    var request = new XMLHttpRequest();
+                                                    request.open('GET', requestURL);
+                                                    request.responseType = 'json';
+                                                    request.onload = function () {
+                                                        var json = request.response;
+                                                        array = ["<ul class='dropdown-menu parent' style='left:25px;top:" + (top + height) + "px'>"];
+                                                        function printAll(items) {
+                                                            switch ($.type(items)) {
+                                                                case "object":
+                                                                    getChildren(items);
+                                                                    break;
+                                                                case "array":
+                                                                    printArray(items);
+                                                                    break;
+                                                            }
 
-                            }
+                                                        }
 
-                            function getChildren(parent) {
-                                for (var child in parent) {
-                                    //console.log(child);
-                                    if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
-                                        array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
-                                    } else if ($.type(parent[child]) === "array") {
+                                                        function getChildren(parent) {
+                                                            for (var child in parent) {
+                                                                //console.log(child);
+                                                                if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
+                                                                    array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
+                                                                } else if ($.type(parent[child]) === "array") {
 
-                                        if ((parent[child]).length !== 0) {
+                                                                    if ((parent[child]).length !== 0) {
 
-                                            array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
-                                            printArray(parent[child]);
-                                            array.push("</ul></li>");
-                                        } else
-                                            array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
-                                    } else {
-                                        array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
-                                        printAll(parent[child]);
-                                        array.push("</ul></li>");
-                                    }
+                                                                        array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
+                                                                        printArray(parent[child]);
+                                                                        array.push("</ul></li>");
+                                                                    } else
+                                                                        array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
+                                                                } else {
+                                                                    array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
+                                                                    printAll(parent[child]);
+                                                                    array.push("</ul></li>");
+                                                                }
 
-                                }
-                            }
+                                                            }
+                                                        }
 
-                            function printArray(myArray) {
+                                                        function printArray(myArray) {
 
 
-                                var first = myArray[0];
-                                if (typeof (first) === "object") {
-                                    for (var child in first) {
-                                        array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
-                                    }
-                                    array.push("<li><button class='btn btn-default' onclick='getList();' type='button'>Select </button></li>");
-                                } else {
-                                    for (var i = 0; i < myArray.length; i++) {
-                                        printAll(myArray[i]);
-                                    }
-                                }
-                            }
+                                                            var first = myArray[0];
+                                                            if (typeof (first) === "object") {
+                                                                for (var child in first) {
+                                                                    array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
+                                                                }
+                                                                array.push("<li><button class='btn btn-default' onclick='getList();' type='button'>Select </button></li>");
+                                                            } else {
+                                                                for (var i = 0; i < myArray.length; i++) {
+                                                                    printAll(myArray[i]);
+                                                                }
+                                                            }
+                                                        }
 
-                            printAll(json);
-                            array.push("</ul>");
+                                                        printAll(json);
+                                                        array.push("</ul>");
 //                                                                $("#" + String(parentId)).html('<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)">Select<span class="caret"></span></button>  <label>Path: </label><input type="text" name="path" /> <label>Name: </label><input type="text" name="name" /><label>Type: </label><select id="type"><option value="string">String</option><option value="number">Number</option> <option value="list">List</option><option value="datetime">Datetime</option></select> <a class="close-link" onclick="remove(this);"><i class="fa fa-close"></i></a>' + array.join(""));
 //                                                               console.log(array.join(""));
 
-                            $(".buttonInside").append(array.join(""));
-                             $('.dropdown-submenu a.test').on("click", function (e) {
-                                $(this).next('ul').toggle();
-                                e.stopPropagation();
-                                e.preventDefault();
-                            });
-                             };
-                        request.send();
-                         
-                    }
-                    window.onload = assginUL;
+                                                        $(".buttonInside").append(array.join(""));
+                                                        $('.dropdown-submenu a.test').on("click", function (e) {
+                                                            $(this).next('ul').toggle();
+                                                            e.stopPropagation();
+                                                            e.preventDefault();
+                                                        });
+                                                    };
+                                                    request.send();
+
+                                                }
+                                                window.onload = assginUL;
                 </script>
 
                 <script >
@@ -425,18 +425,21 @@
                                                 subCounter: subCount,
                                                 allDataset: document.getElementById("allDataset").value,
                                                 allList: document.getElementById("allList").value,
-                                                params: list,
+                                                params: list
                                             }),
 
                                             success: function (success) {
-                                                if (success === "true") {
-                                                    swal({icon: "success", text: "Datasource has been updated successfully!!", type:
+                                                var array = success.split(",");
+                                                var result = array[0];
+                                                var message = array[1];
+                                                if (result === "true") {
+                                                    swal({icon: "success", text: message , type:
                                                                 "success"}).then(function () {
                                                         window.location = "devHome.jsp";
                                                     }
                                                     );
                                                 } else {
-                                                    swal("Error!", {
+                                                    swal(message , {
                                                         icon: "error"
                                                     });
                                                 }
@@ -543,22 +546,22 @@
                                 e.stopPropagation();
                                 e.preventDefault();
                             });
-                             };
+                        };
                         request.send();
-                        
+
                     }
                     // delete selected div
                     function remove(element) {
 
                         var parentId = element.parentNode.parentNode.parentNode.id;
                         document.getElementById(parentId).remove();
-                        
+
                     }
                     function removeList(element) {
 
                         var parentId = element.parentNode.parentNode.id;
                         document.getElementById(parentId).remove();
-                        
+
                     }
                     function getList() {
                         /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
@@ -571,7 +574,7 @@
 
                             chkArray.push("<div class='row' id=" + parentId + count + " >");
                             chkArray.push("<input type='hidden' name='fNValue" + parentId + count + "' class='form-control'  value=" + $(this).val() + " style='display:inline'  />");
-                             chkArray.push(" <input type='hidden' name='listId" + parentId + count + "' value='-1' />");
+                            chkArray.push(" <input type='hidden' name='listId" + parentId + count + "' value='-1' />");
                             chkArray.push("<div class='col-lg-5 col-xs-12 form-group' style='margin-left: 12px;' >");
                             chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: </label>");
                             chkArray.push("<input type='text' name='fName" + parentId + count + "' class='form-control' required='' value=" + $(this).val() + " style='width:60%;display:inline'  />");
@@ -607,10 +610,10 @@
                     //call API
                     function getData(element) {
                         parentId = element.parentNode.parentNode.parentNode.parentNode.id;
-                        var subcounter=document.getElementsByName("subCounter"+parentId)[0];
-                        if(subcounter!==undefined){
-                            count=document.getElementsByName("subCounter"+parentId)[0].value;
-                            document.getElementsByName("subCounter"+parentId)[0].value=0;
+                        var subcounter = document.getElementsByName("subCounter" + parentId)[0];
+                        if (subcounter !== undefined) {
+                            count = document.getElementsByName("subCounter" + parentId)[0].value;
+                            document.getElementsByName("subCounter" + parentId)[0].value = 0;
                         }
                         if (count != 0) {
                             for (var i = count - 1; i >= 0; i--) {
@@ -623,12 +626,12 @@
                         chkArray = [];
 
                         $('.child').hide();
-                        
-                        
+
+
 
                     }
                     ;
-                 function handleClick(e) {
+                    function handleClick(e) {
 
 
                         // get the text value of the selected field

@@ -54,9 +54,17 @@ public class DatasourceController extends HttpServlet {
                 String datasourceUrl = json.get("datasourceUrl").getAsString();
                 String datasourceName = json.get("datasourceName").getAsString();
                 String remark = json.get("remark").getAsString();
-                boolean result = true;
-                boolean status = DatasourceDAO.addDatasource(account.getCompanyId(), datasourceUrl, datasourceName, remark);
-                if (status) {
+                String[] result =new String[2];
+                result[0]="true";
+                result[1]="Datasource has been configured successfully!!!";
+                ArrayList<Datasource>  existName=DatasourceDAO.getDatasourcesByName(account.getCompanyId(),datasourceName);
+              
+                if(existName.size()!=0){
+                    result[0]="false";
+                    result[1]="DatasoureName is already exist.";
+                }else{
+                    boolean status = DatasourceDAO.addDatasource(account.getCompanyId(), datasourceUrl, datasourceName, remark);
+                    if (status) {
                     JsonArray allArr = json.getAsJsonArray("params");
                     int id = DatasourceDAO.getLatestDatasourceId();
                     for (int i = 0; i < allArr.size(); i++) {
@@ -76,17 +84,23 @@ public class DatasourceController extends HttpServlet {
 
                                 boolean r1 = DatasourceDAO.addListOption(fNValue,fName, dType, iType, datasetId);
                                 if (!r1) {
-                                    result = false;
+                                    result[0] = "false";
+                                    result[1]="Error occurs when add in option list.";
                                 }
                             }
                         } else if (!r) {
-                            result = false;
+                            result[0] = "false";
+                            result[1]="Error occurs when add in new dataset.";
                         }
                     }
                 } else {
-                    result = false;
+                    result[0] = "false";
+                    result[1]="Error occurs when add in new datasource.";
                 }
-                out.print(result);
+                    
+                }
+                out.print(result[0]+","+result[1]);
+               
             } else if (operation.equals("getDatasources")) {
                 String viewBtn = request.getParameter("viewBtn");
                 int id;
@@ -136,14 +150,21 @@ public class DatasourceController extends HttpServlet {
                 String datasourceUrl = json.get("datasourceUrl").getAsString();
                 String datasourceName = json.get("datasourceName").getAsString();
                 String remark = json.get("remark").getAsString();
-                boolean result = true;
+                //boolean result = true;
                 boolean addDataset = true;
                 boolean addListOption = true;
                 boolean deleteDataset=true;
                 boolean deleteListOption=true;
-                boolean status = DatasourceDAO.updateDatasource(id, account.getCompanyId(), datasourceUrl, datasourceName, remark);
-                
-                if (status) {
+                String[] result =new String[2];
+                result[0]="true";
+                result[1]="Datasource has been updated successfully!!!";
+                ArrayList<Datasource>  existName=DatasourceDAO.getDatasourcesByName(account.getCompanyId(),datasourceName);
+                 if(existName.size()!=0){
+                    result[0]="false";
+                    result[1]="DatasoureName is already exist.";
+                }else{
+                    boolean status = DatasourceDAO.updateDatasource(id, account.getCompanyId(), datasourceUrl, datasourceName, remark);
+                    if (status) {
                     deleteDataset=DatasourceDAO. deleteDatasetByDatasourece(id);
                     ArrayList<Dataset> datasetList=DatasourceDAO.getAllDatasetByDatasource(id);
                     for(Dataset set: datasetList){
@@ -177,16 +198,21 @@ public class DatasourceController extends HttpServlet {
    
                     }
                      if(!addDataset||!addListOption||!deleteDataset||!deleteListOption){
-                         result=false;
-                         System.out.println("something wrong with updateDataset/updateListOption");
+                         result[0]="false";
+                        result[1]="Error occurs when updating dataset/list option";
+                        
                          
                      }
                  
                 } else {
-                    result = false;
-                    System.out.println("something wrong with updateDatasource");
+                    result[0]="false";
+                    result[1]="Error occurs when updating datasource";
                 }
-                out.print(result);
+                 }
+                
+                
+                
+                out.print(result[0]+","+result[1]);
             } else if (operation.equals("loadDatasource")){
                 JsonObject responseObj = new JsonObject();
                 int companyId = json.get("companyId").getAsInt();

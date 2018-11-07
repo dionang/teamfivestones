@@ -45,7 +45,7 @@
                                 <% }%>
                             </select>
                             <br/>
-                            <a  class="btn btn-warning" id="myBtn">Send Email</a>
+                            <a  class="btn btn-warning" id="myBtn">Compose Email</a>
                         </form>
 
                         <!-- Modal content -->
