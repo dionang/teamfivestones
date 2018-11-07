@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12 col-xs-12 ">
-                                                <input type="text" class="form-control" name="datasourceUrl" placeholder="Enter your API URL" required="" id="url" style="width:100%" />
+                                                <input type="text" class="form-control" name="datasourceUrl" placeholder="Enter your API URL. Eg: https://my.uuvoucher.com/api/1/getServiceList" required="" id="url" style="width:100%" />
                                             </div>
                                         </div>
                                         <br>
@@ -135,13 +135,10 @@
                                         <br>
                                         <input type="hidden" name="companyId" value="<%= account.getCompanyId()%>">
                                     <input type="hidden" name="operation" value="addDatasource" />
-                                    <div class="row">
-                                        <div class="col-sm-5">
-                                            <input type="submit" value="Create Datasource" class="btn btn-success"/>
-                                        </div>
-                                        <div class="col-sm-2"></div>
-                                        <div class="col-sm-5">
-                                            <a class="btn btn-primary" style="float:right" href="devHome.jsp"><i class="fa fa-home"></i> Back</a>
+                                    <div class="row">                                        
+                                        <div class="col-sm-5" style="float:right; width:25.66666667%">
+                                            <input   type="submit" value="Create Datasource" class="btn btn-success"/>
+                                            <a class="btn btn-primary" href="devHome.jsp" ><i class="fa fa-home"></i> Back</a>                                            
                                         </div>
                                     </div>
                                     <br/>

@@ -277,7 +277,7 @@ class App extends Component {
 
         // if exporting
         if (this.state.exporting) {
-            domtoimage.toJpeg(document.getElementById('container'), { quality: 1 })
+            domtoimage.toJpeg(document.getElementById('containerReportCap'), { quality: 1 })
                 .then(function (dataUrl) {
                     // add page screenshot to picArr
                     var picArr = self.state.picArr;
@@ -634,18 +634,8 @@ class App extends Component {
                             </div>
                         </div>
 
-                        <div className="right_col">
-                            <div className="col-md-12 col-xs-12">
-                                <label style={{ fontSize: 15, marginRight: 2, float:"left" }}>Template Name:</label>
-                                <input style={{ fontSize: 15, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
-                                <span style={{float:"right"}}>
-                                    <DropdownButton title="Export As" id="dropdown-size-medium"  onSelect={this.export}>
-                                        <MenuItem eventKey="PDF">PDF</MenuItem>
-                                        <MenuItem eventKey="PPT">PPT</MenuItem>
-                                    </DropdownButton>
-                                </span>
-                            </div>
-
+                        <div className="right_col" style={{backgroundColor:"white"}}>
+                            
                             {/* <div id="size" className="modal">
                                 <div className="modal-content">
                                     <form onSubmit={this.handleFormSubmit} id="myform" visibility= {this.state.formVisibility}>
@@ -688,20 +678,31 @@ class App extends Component {
                             </div> */}
 
 
-                            <div className="col-sm-12 col-xs-12" style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: 'white', borderBottom: '7px solid #EB6B2A' }}>
+                            <div className="col-sm-12 col-xs-12" style={{ paddingTop: 5, backgroundColor: 'white',height:window.innerHeight*0.13, borderBottom:"#003366 5px solid" }}>
+                                <div className="col-md-12 col-xs-12">
+                                <label style={{ fontSize: 15, marginRight: 2, float:"left" }}>Template Name:</label>
+                                <input style={{ fontSize: 15, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
+                                <span style={{float:"right"}}>
+                                    <DropdownButton title="Export As" id="dropdown-size-medium"  onSelect={this.export}>
+                                        <MenuItem eventKey="PDF">PDF</MenuItem>
+                                        <MenuItem eventKey="PPT">PPT</MenuItem>
+                                    </DropdownButton>
+                                </span>
+                            </div>
+
                                 <label> Add Component: </label>
                                 <input type="image" data-toggle="tooltip" title="Add Textbox"
-                                    onClick={this.addTextbox} style={{ marginRight: 1, height:"40px", marginBottom:"-10px" }} src= "assets/images/text.png"/>
+                                    onClick={this.addTextbox} style={{ marginRight: 1, height:window.innerHeight*0.04, marginBottom:"-15px" }} src= "assets/images/text.png"/>
                                 <input type="image" data-toggle="tooltip" title="Add Bar Chart"
-                                    onClick={this.addBarChart} style={{ marginRight: 10, height:"40px", marginBottom:"-10px"  }} src= "assets/images/bar chart.png"/>
+                                    onClick={this.addBarChart} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/bar chart.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Line Chart" 
-                                    onClick={this.addLineChart} style={{ marginRight: 10, height:"40px", marginBottom:"-10px"  }} src= "assets/images/line chart.png"/>
+                                    onClick={this.addLineChart} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/line chart.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Table" 
-                                    onClick={this.addTable} style={{ marginRight: 10, height:"40px", marginBottom:"-10px"  }} src= "assets/images/table.png"/>
+                                    onClick={this.addTable} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/table.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Image" 
-                                    onClick={this.addImage} style={{ marginRight: 10, height:"40px", marginBottom:"-10px"  }} src= "assets/images/picture.png"/>
+                                    onClick={this.addImage} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/picture.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Video" 
-                                    onClick={this.addVideo} style={{ marginRight: 10, height:"40px", marginBottom:"-10px"  }} src= "assets/images/video_4880.png"/>
+                                    onClick={this.addVideo} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/video_4880.png"/>
                                 {/*
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"
                                     onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
@@ -716,7 +717,7 @@ class App extends Component {
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"
                                     onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 5}}><i className="fa fa-play-circle" /></Button>
                                 */}
-                                <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Number
+                                <span style={{ fontFamily: 'Georgia', fontSize: 18,  marginLeft:window.innerWidth*0.1}}>Page Number
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
                                     style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
                                     <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
@@ -733,12 +734,12 @@ class App extends Component {
                                             <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
                                         </svg>
                                     </Button>
-                                    <Button style={{ marginLeft: 5,marginRight:5}} bsStyle = "info" onClick={this.saveTemplate}> 
+                                    <Button style={{ marginLeft: 5,marginRight:5, marginTop:5}} bsStyle = "info" onClick={this.saveTemplate}> 
                                         <i className="fa fa-save fa-lg" style={{marginRight:4}}/>Save
                                     </Button>
                                     {this.state.editMode ?
                                         <span>
-                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right' }} bsStyle="danger" onClick={this.toggleEditMode}>
+                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right',marginTop:5 }} bsStyle="danger" onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Editing
                                             </Button>
@@ -747,7 +748,7 @@ class App extends Component {
                                         </span>
                                         :
                                         <span>
-                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right'}} bsStyle="success" onClick={this.toggleEditMode}>
+                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right',marginTop:5}} bsStyle="success" onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Edit
                                             </Button>
@@ -757,73 +758,76 @@ class App extends Component {
                                     }                            
                                 </span>
                             </div>
-                            <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE" }}>
-                                <div id="container" style={{
-                                    backgroundColor: 'white', height: window.innerHeight * 0.70, 
-                                }}>
+                            
+                            <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE", paddingBottom:window.innerHeight * 0.02, textAlign:"center", paddingTop:window.innerHeight * 0.02,}}>
+                                <div style={{display: "inline-block", border:"#C0C0C0 solid 1px", }}>
+                                    <div id="containerReportCap" style={{
+                                        backgroundColor: 'white', height:window.innerHeight*0.7 ,width:window.innerWidth*0.7
+                                    }}>
 
-                                    {/* map does a for loop over all the components in the state */}
-                                    {/* {console.log("pageNo" + this.state.pageNo)} */}
-                                    {this.state.components[this.state.pageNo].map((item, i) => {
-                                        if (item.display) {
-                                            return <Rnd key={this.state.pageNo + "," + i}
-                                                style={{
-                                                    borderStyle: this.state.editMode ? "dotted" : "hidden",
-                                                    borderWidth: 2,
-                                                    backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
-                                                                      ? "transparent" : "white",
-                                                    borderColor: 'grey',
-                                                    width: "fit-content"
-                                                }}
+                                        {/* map does a for loop over all the components in the state */}
+                                        {/* {console.log("pageNo" + this.state.pageNo)} */}
+                                        {this.state.components[this.state.pageNo].map((item, i) => {
+                                            if (item.display) {
+                                                return <Rnd key={this.state.pageNo + "," + i}
+                                                    style={{
+                                                        borderStyle: this.state.editMode ? "dotted" : "hidden",
+                                                        borderWidth: 2,
+                                                        backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
+                                                                          ? "transparent" : "white",
+                                                        borderColor: 'grey',
+                                                        width: "fit-content"
+                                                    }}
 
-                                                // intialize components x,y,height and width
-                                                position={{ x: item.x, y: item.y }}
-                                                size={{ width: item.width, height: item.height }}
+                                                    // intialize components x,y,height and width
+                                                    position={{ x: item.x, y: item.y }}
+                                                    size={{ width: item.width, height: item.height }}
 
-                                                // min height and size
-                                                minHeight={10} minWidth={10}
+                                                    // min height and size
+                                                    minHeight={10} minWidth={10}
 
-                                                // to customize the dragging and resizing behavior
-                                                bounds={"parent"}
-                                                cancel={".nonDraggable"}
-                                                dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
-                                                enableResizing={{
-                                                    bottom: this.state.editMode,
-                                                    bottomLeft: this.state.editMode,
-                                                    bottomRight: this.state.editMode,
-                                                    left: this.state.editMode,
-                                                    right: this.state.editMode,
-                                                    top: this.state.editMode,
-                                                    topLeft: this.state.editMode,
-                                                    topRight: this.state.editMode
-                                                }}
+                                                    // to customize the dragging and resizing behavior
+                                                    bounds={"parent"}
+                                                    cancel={".nonDraggable"}
+                                                    dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
+                                                    enableResizing={{
+                                                        bottom: this.state.editMode,
+                                                        bottomLeft: this.state.editMode,
+                                                        bottomRight: this.state.editMode,
+                                                        left: this.state.editMode,
+                                                        right: this.state.editMode,
+                                                        top: this.state.editMode,
+                                                        topLeft: this.state.editMode,
+                                                        topRight: this.state.editMode
+                                                    }}
 
-                                                // update height and width onResizeStop
-                                                // onResizeStop will activate a callback function containing these params
-                                                // ref represents item that was resized
-                                                onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
+                                                    // update height and width onResizeStop
+                                                    // onResizeStop will activate a callback function containing these params
+                                                    // ref represents item that was resized
+                                                    onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
 
-                                                // update height and width onResizeStop
-                                                // onDragStop will activate a callback function containing these params
-                                                // ref represents item that was dragged
-                                                onDragStop={(event, ref) => this.onDragStop(ref, i)}
-                                            >
-                                                <div style={{ height: 27.5, float: "right" }}>
-                                                    <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
-                                                        onClick={() => this.changeSettings(i)}></i>
-                                                    <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
-                                                        onClick={() => this.deleteComponent(i)}></i>
-                                                </div>
-                                                <ReportComponent type={item.type} editMode={this.state.editMode}
+                                                    // update height and width onResizeStop
+                                                    // onDragStop will activate a callback function containing these params
+                                                    // ref represents item that was dragged
+                                                    onDragStop={(event, ref) => this.onDragStop(ref, i)}
+                                                >
+                                                    <div style={{ height: 27.5, float: "right" }}>
+                                                        <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
+                                                            onClick={() => this.changeSettings(i)}></i>
+                                                        <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
+                                                            onClick={() => this.deleteComponent(i)}></i>
+                                                    </div>
+                                                    <ReportComponent type={item.type} editMode={this.state.editMode}
+                                                        properties={item.properties} i={i}
+                                                        updateProperties={this.updateProperties.bind(this)}
+                                                    />
+                                                    {/* <Descriptive type={item.type} editMode={this.state.editMode}
                                                     properties={item.properties} i={i}
-                                                    updateProperties={this.updateProperties.bind(this)}
-                                                />
-                                                {/* <Descriptive type={item.type} editMode={this.state.editMode}
-                                                properties={item.properties} i={i}
-                                                updateProperties={this.updateProperties.bind(this)}></Descriptive> */}
-                                            </Rnd>
-                                        }
-                                    })}
+                                                    updateProperties={this.updateProperties.bind(this)}></Descriptive> */}
+                                                </Rnd>
+                                            }
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                         </div>
