@@ -7,6 +7,8 @@ package scube.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import scube.dao.AccountDAO;
 import scube.dao.EmailDAO;
+import javax.mail.*;
 import scube.entities.Account;
 import scube.entities.StringGenerator;
 
@@ -21,7 +24,7 @@ import scube.entities.StringGenerator;
  *
  * @author ZhenDan
  */
-@WebServlet(name = "PasswordController", urlPatterns = {"/passwordController","/resetPassword"})
+@WebServlet(name = "passwordController", urlPatterns = {"/passwordController","/resetPassword"})
 public class passwordController extends HttpServlet {
 
     /**
@@ -35,24 +38,35 @@ public class passwordController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String operation = request.getParameter("operation");
-        if (operation.equals("resetPassword")) {
-            String username = request.getParameter("username");
-            Account account = AccountDAO.getAccountByUsername(username);
-            String error = null;
-            if (account != null) {
-                int accountId = account.getAccountId();
-                StringGenerator generator = new StringGenerator();
-                String randomString = generator.generateRandomString();
-                boolean resetPassword = AccountDAO.changePassword(accountId, randomString);
-                if (resetPassword) {
-                    EmailDAO.sendPassword(username, "Reset Password", randomString);
-                }
-            } else {
-                error = "Invalid User Name";
-            }
-        }
-        
+//         try(PrintWriter out = response.getWriter()){
+//       String operation = request.getParameter("operation");
+//       if (operation.equals("resetPassword")) {
+//                String username = request.getParameter("username");
+//                String email=request.getParameter("email");
+//                Account account = AccountDAO.getAccountByUsername(username);
+//                
+//                String[] result=new String[2];
+//                if (account != null) {
+//                    int accountId = account.getAccountId();
+//                    StringGenerator generator = new StringGenerator();
+//                    String randomString = generator.generateRandomString();
+//                    boolean resetPassword = AccountDAO.changePassword(accountId, randomString);
+//                    if (resetPassword) {
+//                        EmailDAO.sendPassowrd(email, "Reset Password", randomString);
+//                        result[0]="true";
+//                        result[1]="A new password is sent to successfully sent to your email!!";
+//                    }else{
+//                        result[0]="false";
+//                        result[1]="ERROR!!!Password can't be reset";
+//                    }
+//                } else {
+//                    result[0]="false";
+//                    result[1]="ERROR!!!Invalid User Name";   
+//                }
+//                out.print(result[0]);
+//            }
+//        
+//         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -81,7 +95,45 @@ public class passwordController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try(PrintWriter out = response.getWriter()){
+       String operation = request.getParameter("operation");
+       if (operation.equals("resetPassword")) {
+                String username = request.getParameter("username");
+                String email=request.getParameter("email");
+                Account account = AccountDAO.getAccountByUsername(username);
+                
+                String[] result=new String[2];
+                if (account != null) {
+                    System.out.println("i am here");
+                    int accountId = account.getAccountId();
+                    StringGenerator generator = new StringGenerator();
+                    String randomString = generator.generateRandomString();
+                    boolean resetPassword = AccountDAO.changePassword(accountId, randomString);
+                    if (resetPassword) {
+                        try{
+                            EmailDAO.sendPassowrd(email, "Reset Password", randomString);
+                            result[0]="true";
+                            result[1]="A new password is successfully sent to your email!!";
+                        }catch(MessagingException mex){
+                            System.out.println("Error with email " + mex);
+                            result[0]="false";
+                            result[1]="Error with email!!";
+                           
+                        } 
+                       
+                    }else{
+                        result[0]="false";
+                        result[1]="ERROR!!! Password can't be reset";
+                    }
+                } else {
+                    result[0]="false";
+                    result[1]="ERROR!!! Invalid User Name"; 
+ 
+                }
+                out.print(result[0]+","+result[1]);
+            }
+        
+         }
     }
 
     /**

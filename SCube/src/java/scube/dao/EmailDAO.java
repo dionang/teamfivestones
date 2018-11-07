@@ -17,7 +17,7 @@ import javax.mail.internet.*;
  */
 public class EmailDAO {
 
-    public static void sendPassword(String username, String subject, String message) {
+    public static void sendPassowrd(String username, String subject, String message)throws MessagingException {
         String receiver = username;
         //Setting up configurations for the email connection to the Google SMTP server using TLS
         Properties props = new Properties();
@@ -32,7 +32,7 @@ public class EmailDAO {
                 return new PasswordAuthentication("scube.noreply@gmail.com", "Zd123456");
             }
         });
-        try {
+//        try {
             //Creating a Message object to set the email content
             MimeMessage msg = new MimeMessage(session);
             /*Parsing the String with defualt delimiter as a comma by marking the boolean as true and storing the email
@@ -45,11 +45,11 @@ public class EmailDAO {
             msg.setText(message);
             msg.setHeader("XPriority", "1");
             Transport.send(msg);
-            System.out.println("Mail has been sent successfully to " + receiver);
-        } catch (MessagingException mex) {
-            System.out.println("Unable to send an email " + mex);
-            throw new RuntimeException("Error with email");
-        }
+            //System.out.println("Mail has been sent successfully to " + receiver);
+//        } catch (MessagingException mex) {
+//            System.out.println("Unable to send an email " + mex);
+//            throw new RuntimeException("Error with email");
+//        }
 
     }
 
