@@ -218,8 +218,8 @@ JsonProcessor.prototype.getAggregatedData = function(data, xAxis, yAxis, operati
             variance += Math.pow(num - avg, 2)
         }
 
-        avg = (sum/statData.length).toFixed(4);
-        variance = (variance/statData.length).toFixed(4);
+        avg = (sum/statData.length).toFixed(2);
+        variance = (variance/statData.length).toFixed(2);
     }
 
 
