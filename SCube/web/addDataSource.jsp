@@ -18,7 +18,13 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/dashboard.css">
         <link rel="stylesheet" href="assets/css/createForm.css">
+        
         <title>Add DataSource</title>
+        <style>
+            ::-webkit-scrollbar{
+                background:transparent;
+            }
+        </style>
     </head>
 
     <body class="nav-md">
@@ -346,61 +352,50 @@
 
                             $(".buttonInside").append(array.join(""));
                             $('.dropdown-submenu a.test').on("click", function (e) {
-
-                                console.log("click");
-                                var maxHeight = 200;
-                                var $container = $(".buttonInside"),
-                                        $list = $(this).next('ul'),
-                                        $anchor = $list.find("a"),
-                                        height = $list.height(), // make sure there is enough room at the bottom
-                                        multiplier = height / maxHeight;
-
-                                // need to save height here so it can revert on mouseout            
-                                $container.data("origHeight", $container.height());
-
-                                // so it can retain it's rollover color all the while the dropdown is open
-                                $anchor.addClass("hover");
-                                console.log(multiplier);
-                                if (multiplier > 1) {
-
-                                    console.log("click");
-                                    $list
-                                            .css({
-                                                height: maxHeight,
-                                                overflow: "hidden",
-
-                                            })
-                                            .mousemove(function (e) {
-                                                var offset = $container.position();
-                                                console.log(offset);
-                                                var relativeY = ((e.pageY - offset.top) * multiplier) - ($container.data("origHeight") * multiplier);
-                                                if (relativeY > $container.data("origHeight")) {
-                                                    $list.css("top", -relativeY + $container.data("origHeight"));
-                                                }
-                                                ;
-                                            });
+                               
+                                var $list = $(this).next('ul');
+                                var listHeight = 200;
+                                var maxListHeight = $list.height();
+                                $list.toggle();
+                                var adjustedTop = $(this).parent().parent().offset().top;
+                                $list.offset({top: adjustedTop , left:$list.offset().left })
+                                $list.height(listHeight);
+                                
+                                $list.css("overflow-x","visible");
+                                $list.css("overflow-y","hidden");
+                                
+                                var totalWidth=$list.width();
+                                var parent=$(this).parent().parent();
+                                parent.css("width",parent.width()+$list.width());
+                                
+                                var current=$(this);
+                              
+                                while(current.parent().parent().attr('class')==='dropdown-menu child'){
+                                   // current.parent().parent().css("width",170);
+                                   // var parentWidth=current.parent().parent().width();
+                                    totalWidth+=200;
+                                   current.parent().parent().css("width",totalWidth);
+                                    current=current.parent().parent();
                                 }
+                               current.scrollLeft(totalWidth);
 
-                                $(this).next('ul').toggle();
+                                $list.scrollLeft(parent.width());
+                                $list.on('mousemove', function(e) {
+                                //    var cPointY = e.pageY,
+                                //        dP = ((cPointY / wrapHeight));
+                                //   $(this).next('ul').scrollTop((listHeight * dP) - wrapScreenHeight);
+
+                                    var offsetTop = $list.offset().top;
+                                    var relativeHeight = e.pageY-offsetTop;
+                                    var multiplier = relativeHeight/listHeight;
+                                    $list.scrollTop(multiplier*maxListHeight*1.10);
+                                });
+
+                                
 
                                 e.stopPropagation();
                                 e.preventDefault();
-                            }),
-                                    function () {
-
-                                        var $el = $(this);
-
-                                        // put things back to normal
-                                        $el
-                                                .height($(this).data("origHeight"))
-                                                .find("ul")
-                                                .css({top: 0})
-                                                .hide()
-                                                .end()
-                                                .find("a")
-                                                .removeClass("hover");
-
-                                    };
+                            })
 
                         };
                         request.send();
@@ -472,54 +467,14 @@
                         // Returns a NodeList
                         var elems = $(document.getElementById(parentId)).find("ul");
 
-// Convert the NodeList to an Array
+                        // Convert the NodeList to an Array
                         var ul = jQuery.makeArray(elems);
-                        //var $container =$(document.getElementById(parentId));
-                        //var $list = jQuery.makeArray($container.find("ul") );
-                        console.log(ul);
 
                         jQuery.each(ul, function (i, list) {
-
-                            var height = $(list).height() * 1.1; // make sure there is enough room at the bottom
-                            console.log(height);
-                            var multiplier = height / maxHeight;     // needs to move faster if list is taller
-
-                            console.log(multiplier);
-                            // need to save height here so it can revert on mouseout            
-                            $(list).data("origHeight", $(list).height());
-
-                            // so it can retain it's rollover color all the while the dropdown is open
-                            //$anchor.addClass("hover");
-
-                            // make sure dropdown appears directly below parent list item    
-//                            $list
-//                                    .show()
-//                                    .css({
-//                                        paddingTop: $container.data("origHeight")
-//                                    });
-
-                            // don't do any animation if list shorter than max
-                            if (multiplier > 1) {
-                                $(list)
-                                        .css({
-                                            height: maxHeight,
-                                            overflow: "hidden"
-                                        })
-                                        .mousemove(function (e) {
-                                            var offset = $(list).offset();
-                                            var relativeY = ((e.pageY - offset.top) * multiplier) - ($(list).data("origHeight") * multiplier);
-                                            if (relativeY > $(list).data("origHeight")) {
-                                                $(list).css("top", -relativeY + $(list).data("origHeight"));
-                                            }
-                                            ;
-                                        });
-                            }
-
+                            $(list).css("width",200);
+                            $(list).css("text-align","left");
 
                         });
-
-
-
 
                         if (count != 0) {
 
@@ -533,125 +488,7 @@
                         chkArray = [];
 
                         $('.child').hide();
-                        //$('#' + String(parentId) + ' input[name="path' + parentId + '"]').val("");
-
-//                        var url = document.getElementById("url").value;
-//                      
-//                        var requestURL = url;
-//                        var request = new XMLHttpRequest();
-//                        request.open('GET', requestURL);
-//                        request.responseType = 'json';
-//                        request.onload = function () {
-//                            var json = request.response;
-//                            array = ["<ul class='dropdown-menu' style='left:25px;top:" + (top + height) + "px'>"];
-//                            function printAll(items) {
-//                                switch ($.type(items)) {
-//                                    case "object":
-//                                        getChildren(items);
-//                                        break;
-//                                    case "array":
-//                                        printArray(items);
-//                                        break;
-//                                }
-//
-//                            }
-//
-//                            function getChildren(parent) {
-//                                for (var child in parent) {
-//                                    //console.log(child);
-//                                    if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
-//                                        array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
-//                                        
-//                                    } else if ($.type(parent[child]) === "array") {
-//
-//                                        if ((parent[child]).length !== 0) {
-//
-//                                            array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu'>");
-//                                            printArray(parent[child]);
-//                                            array.push("</ul></li>");
-//                                        } else
-//                                            array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
-//                                    } else {
-//                                        array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu'>");
-//                                        printAll(parent[child]);
-//                                        array.push("</ul></li>");
-//                                    }
-//
-//                                }
-//                            }
-//
-//                            function printArray(myArray) {
-//
-//
-//                                var first = myArray[0];
-//                                if (typeof (first) === "object") {
-//                                    for (var child in first) {
-//                                        array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
-//                                    }
-//                                    array.push("<li><button class='btn btn-default getList' type='button'>Select </button></li>");
-//                                } else {
-//                                    for (var i = 0; i < myArray.length; i++) {
-//                                        printAll(myArray[i]);
-//                                    }
-//                                }
-//                            }
-//
-//                            printAll(json);
-//                            array.push("</ul>");
-//
-//                            $(".buttonInside").append(array.join(""));
-//                            $('.dropdown-submenu a.test').on("click", function (e) {
-//                                $(this).next('ul').toggle();
-//                                e.stopPropagation();
-//                                e.preventDefault();
-//                            });
-//                            $('.getList').on("click", function (e) {
-//
-//                                /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
-//
-//                               
-//                                var path = $('#' + String(parentId) + ' input[name="path"]').val();
-//                                document.getElementsByName("type"+parentId)[0].value="list";
-//                               //document.getElementsByName("type"+parentId)[0].selectmenu('refresh');
-//                                count=0;
-//                                $(".chk:checked").each(function () {
-//                                    chkArray.push("<input type='hidden' name='fNValue" + parentId + count + "' class='form-control' value=" + $(this).val() + " style='width:230px;display:inline'  />");
-//                                    chkArray.push("<div class='row' id=" + parentId + count + " >");
-//                                    chkArray.push("<div class='col-lg-5 form-group' style='margin-left: 12px;' >");
-//                                    chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: </label>");
-//                                    chkArray.push("<input type='text' name='fName" + parentId + count + "' class='form-control' value=" + $(this).val() + " style='width:230px;display:inline'  />");
-//                                    chkArray.push("</div>");
-//                                    chkArray.push("<div class='col-lg-2 form-group' >");
-//                                    chkArray.push("<label style='font-weight:200; font-size:15px'>Type: </label>");
-//                                    chkArray.push("<select id='dataType' name='dType" + parentId + count + "' style='font-size:14px; height:40px;'>");
-//                                    chkArray.push("<option value='string'> String </option>");
-//                                    chkArray.push("<option value='number' >Number</option>");
-//                                    chkArray.push("<option value='list' >List</option>");
-//                                    chkArray.push("<option value='datetime' >Datetime</option>");
-//                                    chkArray.push("</select>");
-//                                    chkArray.push("</div>");
-//                                    chkArray.push("<div class='col-lg-3 form-group' >");
-//                                    chkArray.push("<label style='font-weight:200; font-size:15px'>Info Type: </label>");
-//                                    chkArray.push("<select id='infoType' name='iType" + parentId + count + "' style='font-size:14px; height:40px;'>");
-//                                    chkArray.push("<option value='categorical' >Categorical</option>");
-//                                    chkArray.push("<option value='numerical' >Numerical</option>");
-//                                    chkArray.push("</select>");
-//                                    chkArray.push('<label></label>');
-//                                    chkArray.push('<a class="close-link" onclick="removeList(this);" id ="remove"><i class="fa fa-close"></i></a>');
-//                                    chkArray.push("</div>");
-//                                    chkArray.push("</div></br>");
-//                                    count++;
-//                                });
-//                                
-//                                chkArray.push("<input type='hidden' value=" + count + " name='subCounter" + parentId + "' value=" + count + "/>");
-//
-//                                
-//                                $("#" + parentId).append(chkArray.join(""));
-//                                $(".chk:checkbox").prop('checked', false);
-//                            });
-//                        };
-//                        request.send();
-//                        
+    
                     }
                     ;
 
