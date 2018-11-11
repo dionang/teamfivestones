@@ -104,7 +104,7 @@
 
 
                                                     <div class="col-lg-4 col-xs-12 form-group"  >
-                                                        <span class="span" style="margin-left:12px;" >Path: </span>
+                                                        <span class="span" style="margin-left:12px;" >Path:&nbsp </span>
                                                         <div class="buttonInside" name="dropdown<%=i%>" style="position:relative;margin-bottom:10px;height:40px">
                                                             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)" style="position:absolute;height:40px">Select<span class="caret"></span></button>
                                                             <input type="text" name="path<%=i%>" id="p" class="form-control" style="width:80%;padding-left:80px" readonly value="<%=set.get(i).getPath()%>"/>
@@ -113,12 +113,12 @@
                                                     </div>
 
                                                     <div class="col-lg-5 col-xs-12 form-group" >
-                                                        <span class="span">Dataset Name: </span>
+                                                        <span class="span">Dataset Name:&nbsp </span>
                                                         <input type="text" name="name<%=i%>" class="form-control" style="width:60%" placeholder="Give a name for the Dataset"  value="<%=set.get(i).getDtatasetName()%>" />
                                                     </div>
 
                                                     <div class="col-lg-3 col-xs-12 form-group" >
-                                                        <span class="span">Type: </span>
+                                                        <span class="span">Type:&nbsp </span>
                                                         <select id="type" name="type<%=i%>" style="font-size:14px;height:40px;width:50%" value="<%=set.get(i).getType()%>">
                                                             <option value="string"  <%if (set.get(i).getType().equals("string")) { %> selected <%}%>>String</option>
                                                             <option value="number" <%if (set.get(i).getType().equals("number")) { %> selected <%}%>>Number</option>
@@ -147,11 +147,11 @@
                                                     <input type="hidden" name="listId<%=i%><%=j%>" value="<%=list.getListId()%>" />
                                                     <input type="hidden" name="fNValue<%=i%><%=j%>" class="form-control" value="<%=list.getFNValue()%>" style="width:230px;display:inline"  />
                                                     <div class="col-lg-5 col-xs-12 form-group" style="margin-left: 12px;" >
-                                                        <label style="font-weight:200;font-size:15px">Field Name: </label>
+                                                        <label style="font-weight:200;font-size:15px">Field Name: &nbsp</label>
                                                         <input type="text" name="fName<%=i%><%=j%>" class="form-control" value="<%=list.getfFieldName()%>" style="width:230px;display:inline"  />
                                                     </div>
                                                     <div class="col-lg-3 col-xs-12 form-group" >
-                                                        <label style="font-weight:200; font-size:15px">Variable Type: </label>
+                                                        <label style="font-weight:200; font-size:15px">Variable Type:&nbsp </label>
                                                         <select id="dataType" name="dType<%=i%><%=j%>" style="font-size:14px; height:40px;">
                                                             <option value="string" <%if (list.getType().equals("string")) { %> selected <%}%>> String </option>
                                                             <option value="number" <%if (list.getType().equals("number")) { %> selected <%}%>>Number</option>
@@ -160,7 +160,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-3 col-xs-12 form-group" >
-                                                        <label style="font-weight:200; font-size:15px">Data Type: </label>
+                                                        <label style="font-weight:200; font-size:15px">Data Type:&nbsp </label>
                                                         <select id="infoType" name="iType<%=i%><%=j%>" style="font-size:14px; height:40px;">
                                                             <option value="categorical" <%if (list.getInfoType().equals("categorical")) { %> selected <%}%>>Categorical</option>
                                                             <option value="numerical" <%if (list.getInfoType().equals("numerical")) { %> selected <%}%>>Numerical</option>
@@ -191,7 +191,7 @@
                                                 <div class="row" style="margin-top:10px;display:inline-block;width:100%;">
 
                                                     <div class="col-lg-4 col-xs-12 form-group"  >
-                                                        <span class="span" style="margin-left:12px;" >Path: </span>
+                                                        <span class="span" style="margin-left:12px;" >Path:&nbsp </span>
                                                         <div class="buttonInside" name="dropdown" style="position:relative;margin-bottom:10px;height:40px">
                                                             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)" style="position:absolute;height:40px">Select<span class="caret"></span></button>
                                                             <input type="text" name="path" id="p" class="form-control" style="width:80%;padding-left:80px" readonly />
@@ -202,13 +202,13 @@
 
 
                                                     <div class="col-lg-5 col-xs-12 form-group" >
-                                                        <span class="span">Dataset Name: </span>
+                                                        <span class="span">Dataset Name:&nbsp </span>
                                                         <input type="text" name="name" class="form-control" style="width:60%" placeholder="Give a name for the Dataset"/>
                                                     </div>
 
 
                                                     <div class="col-lg-3 col-xs-12 form-group" >
-                                                        <span class="span">Type: </span>
+                                                        <span class="span">Type:&nbsp </span>
                                                         <select id="type" name="type" style="font-size:14px;height:40px;width:50%">
                                                             <option value="string" >String</option>
                                                             <option value="number" >Number</option>
@@ -433,13 +433,13 @@
                                                 var result = array[0];
                                                 var message = array[1];
                                                 if (result === "true") {
-                                                    swal({icon: "success", text: message , type:
+                                                    swal({icon: "success", text: message, type:
                                                                 "success"}).then(function () {
                                                         window.location = "devHome.jsp";
                                                     }
                                                     );
                                                 } else {
-                                                    swal(message , {
+                                                    swal(message, {
                                                         icon: "error"
                                                     });
                                                 }
@@ -457,98 +457,102 @@
                     //clone div to display the dropdown multiple times
                     var parentId;
                     function clone() {
+                        var api = document.getElementById("url").value;
+                        if (api === "") {
+                            swal("Warning!", "Please enter an API url!", "warning");
+                        } else {
+                            var div = $("#list").clone();
+                            div.attr("id", counter);
+                            div.find('input[name=datasetId]').attr('name', 'datasetId' + counter);
+                            div.find('input[name=path]').attr("required", true);
+                            div.find('input[name=path]').attr('name', 'path' + counter);
+                            div.find('input[name=name]').attr("required", true);
+                            div.find('input[name=name]').attr('name', 'name' + counter);
+                            div.find('select[name=type]').attr('name', 'type' + counter);
+                            div.attr("class", "jsonForm");
+                            $("#content").append(div.show());
+                            counter++;
+                            array = [];
+                            chkArray = [];
+                            document.getElementById("counter").value = counter;
+                            var button = document.getElementsByClassName("buttonInside")[0];
 
-                        var div = $("#list").clone();
-                        div.attr("id", counter);
-                        div.find('input[name=datasetId]').attr('name', 'datasetId' + counter);
-                        div.find('input[name=path]').attr("required", true);
-                        div.find('input[name=path]').attr('name', 'path' + counter);
-                        div.find('input[name=name]').attr("required", true);
-                        div.find('input[name=name]').attr('name', 'name' + counter);
-                        div.find('select[name=type]').attr('name', 'type' + counter);
-                        div.attr("class", "jsonForm");
-                        $("#content").append(div.show());
-                        counter++;
-                        array = [];
-                        chkArray = [];
-                        document.getElementById("counter").value = counter;
-                        var button = document.getElementsByClassName("buttonInside")[0];
+                            var top = button.offsetTop;
+                            var height = button.clientHeight;
+                            var url = document.getElementById("url").value;
+                            var requestURL = url;
+                            var request = new XMLHttpRequest();
+                            request.open('GET', requestURL);
+                            request.responseType = 'json';
+                            request.onload = function () {
+                                var json = request.response;
+                                array = ["<ul class='dropdown-menu parent' style='left:25px;top:" + (top + height) + "px'>"];
+                                function printAll(items) {
+                                    switch ($.type(items)) {
+                                        case "object":
+                                            getChildren(items);
+                                            break;
+                                        case "array":
+                                            printArray(items);
+                                            break;
+                                    }
 
-                        var top = button.offsetTop;
-                        var height = button.clientHeight;
-                        var url = document.getElementById("url").value;
-                        var requestURL = url;
-                        var request = new XMLHttpRequest();
-                        request.open('GET', requestURL);
-                        request.responseType = 'json';
-                        request.onload = function () {
-                            var json = request.response;
-                            array = ["<ul class='dropdown-menu parent' style='left:25px;top:" + (top + height) + "px'>"];
-                            function printAll(items) {
-                                switch ($.type(items)) {
-                                    case "object":
-                                        getChildren(items);
-                                        break;
-                                    case "array":
-                                        printArray(items);
-                                        break;
                                 }
 
-                            }
+                                function getChildren(parent) {
+                                    for (var child in parent) {
+                                        //console.log(child);
+                                        if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
+                                            array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
+                                        } else if ($.type(parent[child]) === "array") {
 
-                            function getChildren(parent) {
-                                for (var child in parent) {
-                                    //console.log(child);
-                                    if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
-                                        array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
-                                    } else if ($.type(parent[child]) === "array") {
+                                            if ((parent[child]).length !== 0) {
 
-                                        if ((parent[child]).length !== 0) {
-
+                                                array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
+                                                printArray(parent[child]);
+                                                array.push("</ul></li>");
+                                            } else
+                                                array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
+                                        } else {
                                             array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
-                                            printArray(parent[child]);
+                                            printAll(parent[child]);
                                             array.push("</ul></li>");
-                                        } else
-                                            array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
+                                        }
+
+                                    }
+                                }
+
+                                function printArray(myArray) {
+
+
+                                    var first = myArray[0];
+                                    if (typeof (first) === "object") {
+                                        for (var child in first) {
+                                            array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
+                                        }
+                                        array.push("<li><button class='btn btn-default' onclick='getList();' type='button'>Select </button></li>");
                                     } else {
-                                        array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
-                                        printAll(parent[child]);
-                                        array.push("</ul></li>");
-                                    }
-
-                                }
-                            }
-
-                            function printArray(myArray) {
-
-
-                                var first = myArray[0];
-                                if (typeof (first) === "object") {
-                                    for (var child in first) {
-                                        array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
-                                    }
-                                    array.push("<li><button class='btn btn-default' onclick='getList();' type='button'>Select </button></li>");
-                                } else {
-                                    for (var i = 0; i < myArray.length; i++) {
-                                        printAll(myArray[i]);
+                                        for (var i = 0; i < myArray.length; i++) {
+                                            printAll(myArray[i]);
+                                        }
                                     }
                                 }
-                            }
 
-                            printAll(json);
-                            array.push("</ul>");
+                                printAll(json);
+                                array.push("</ul>");
 //                                                                $("#" + String(parentId)).html('<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)">Select<span class="caret"></span></button>  <label>Path: </label><input type="text" name="path" /> <label>Name: </label><input type="text" name="name" /><label>Type: </label><select id="type"><option value="string">String</option><option value="number">Number</option> <option value="list">List</option><option value="datetime">Datetime</option></select> <a class="close-link" onclick="remove(this);"><i class="fa fa-close"></i></a>' + array.join(""));
 //                                                               console.log(array.join(""));
 
-                            $(".buttonInside").append(array.join(""));
-                            $('.dropdown-submenu a.test').on("click", function (e) {
-                                $(this).next('ul').toggle();
-                                e.stopPropagation();
-                                e.preventDefault();
-                            });
-                        };
-                        request.send();
+                                $(".buttonInside").append(array.join(""));
+                                $('.dropdown-submenu a.test').on("click", function (e) {
+                                    $(this).next('ul').toggle();
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                });
+                            };
+                            request.send();
 
+                        }
                     }
                     // delete selected div
                     function remove(element) {
@@ -576,11 +580,11 @@
                             chkArray.push("<input type='hidden' name='fNValue" + parentId + count + "' class='form-control'  value=" + $(this).val() + " style='display:inline'  />");
                             chkArray.push(" <input type='hidden' name='listId" + parentId + count + "' value='-1' />");
                             chkArray.push("<div class='col-lg-5 col-xs-12 form-group' style='margin-left: 12px;' >");
-                            chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: </label>");
+                            chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: &nbsp</label>");
                             chkArray.push("<input type='text' name='fName" + parentId + count + "' class='form-control' required='' value=" + $(this).val() + " style='width:60%;display:inline'  />");
                             chkArray.push("</div>");
                             chkArray.push("<div class='col-lg-3 col-xs-12 form-group' >");
-                            chkArray.push("<label style='font-weight:200; font-size:15px'>Variable Type: </label>");
+                            chkArray.push("<label style='font-weight:200; font-size:15px'>Variable Type: &nbsp</label>");
                             chkArray.push("<select id='dataType' name='dType" + parentId + count + "' style='font-size:14px; height:40px;'>");
                             chkArray.push("<option value='string'> String </option>");
                             chkArray.push("<option value='number' >Number</option>");
@@ -589,12 +593,12 @@
                             chkArray.push("</select>");
                             chkArray.push("</div>");
                             chkArray.push("<div class='col-lg-3 col-xs-12 form-group' >");
-                            chkArray.push("<label style='font-weight:200; font-size:15px'>Data Type: </label>");
+                            chkArray.push("<label style='font-weight:200; font-size:15px'>Data Type:&nbsp </label>");
                             chkArray.push("<select id='infoType' name='iType" + parentId + count + "' style='font-size:14px; height:40px;'>");
                             chkArray.push("<option value='categorical' >Categorical</option>");
                             chkArray.push("<option value='numerical' >Numerical</option>");
                             chkArray.push("</select>");
-                            chkArray.push('<label></label>');
+                            chkArray.push('<label>&nbsp &nbsp</label>');
                             chkArray.push('<a class="close-link" onclick="removeList(this);" id ="remove"><i class="fa fa-close"></i></a>');
                             chkArray.push("</div>");
                             chkArray.push("</div></br>");

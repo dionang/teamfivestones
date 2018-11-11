@@ -28,8 +28,8 @@
             <div class="main_container">
                 <jsp:include page="sidebarManager.jsp"></jsp:include>
                 <jsp:include page="navbar.jsp"></jsp:include>
-                    <div class="right_col" style="background-image: url(https://auditplus.com.pl/wp-content/uploads/2013/06/Abstract-office-table-free-ppt-backgrounds.jpg); background-size:  100% 100%; " >
-                        <div class="form" style="background-color: #FDFDFD; margin-top: 20px; " >
+                    <div class="right_col"
+                        <div class="form" style=" margin-top: 20px; " >
                             <form action="slideShow" method="post" target="_blank" >
                                 <input type="hidden" name="operation" value="slideShow"/>
                                 <h1 style="color: #2F4F4F; font-family: Oswald; font-size: 30px">Select Template</h1>

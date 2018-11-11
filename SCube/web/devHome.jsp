@@ -92,7 +92,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="col-xs-5" style="padding:0px">
-                                                    <button class="btn delete" name="deleteBtn" value="delete" style="width:100%">
+                                                    <button class="btn btn-danger delete" name="deleteBtn" value="delete" style="width:100%">
                                                         <i class="fa fa-trash"></i> Delete
                                                     </button>
                                                 </div>

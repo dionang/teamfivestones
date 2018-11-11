@@ -24,7 +24,7 @@ import scube.entities.StringGenerator;
  *
  * @author ZhenDan
  */
-@WebServlet(name = "passwordController", urlPatterns = {"/passwordController","/resetPassword"})
+@WebServlet(name = "passwordController", urlPatterns = {"/passwordController","/resetPassword","/password"})
 public class passwordController extends HttpServlet {
 
     /**
@@ -97,21 +97,20 @@ public class passwordController extends HttpServlet {
             throws ServletException, IOException {
         try(PrintWriter out = response.getWriter()){
        String operation = request.getParameter("operation");
-       if (operation.equals("resetPassword")) {
+       if (operation.equals("forgetPassword")) {
                 String username = request.getParameter("username");
                 String email=request.getParameter("email");
                 Account account = AccountDAO.getAccountByUsername(username);
                 
                 String[] result=new String[2];
                 if (account != null) {
-                    System.out.println("i am here");
                     int accountId = account.getAccountId();
                     StringGenerator generator = new StringGenerator();
                     String randomString = generator.generateRandomString();
                     boolean resetPassword = AccountDAO.changePassword(accountId, randomString);
                     if (resetPassword) {
                         try{
-                            EmailDAO.sendPassowrd(email, "Reset Password", randomString);
+                            EmailDAO.sendPassowrd(email, "New generated Password", randomString);
                             result[0]="true";
                             result[1]="A new password is successfully sent to your email!!";
                         }catch(MessagingException mex){
@@ -131,6 +130,17 @@ public class passwordController extends HttpServlet {
  
                 }
                 out.print(result[0]+","+result[1]);
+            }else if(operation.equals("resetPassword")){
+                String username = request.getParameter("username");
+                String password=request.getParameter("password");
+                Account account = AccountDAO.getAccountByUsername(username);
+                boolean result=false;
+                if (account != null) {
+                    int accountId = account.getAccountId();
+                    result = AccountDAO.changePassword(accountId, password);
+                    
+                }
+                out.print(result);
             }
         
          }

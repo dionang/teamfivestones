@@ -56,7 +56,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12 col-xs-12 ">
-                                                <input type="text" class="form-control" name="datasourceUrl" placeholder="Enter your API URL. Eg: https://my.uuvoucher.com/api/1/getServiceList" required="" id="url" style="width:100%" />
+                                                <input type="text" class="form-control" name="datasourceUrl" placeholder="Enter your API URL (Eg: https://my.uuvoucher.com/api/1/getServiceList)." required="" id="url" style="width:100%" />
                                             </div>
                                         </div>
                                         <br>
@@ -85,7 +85,7 @@
                                                     <div class="row" style="margin-top:10px;display:inline-block;width:100%;">
 
                                                         <div class="col-lg-4 col-xs-12 form-group"  >
-                                                            <span class="span" style="margin-left:12px;" >Path: </span>
+                                                            <span class="span" style="margin-left:12px;" >Path:&nbsp </span>
                                                             <div class="buttonInside" name="dropdown" style="position:relative;margin-bottom:10px;height:40px">
                                                                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onclick="getData(this)" style="position:absolute;height:40px">Select<span class="caret"></span></button>
                                                                 <input type="text" name="path" id="p" class="form-control" style="width:80%;padding-left:80px" readonly />
@@ -96,13 +96,13 @@
 
 
                                                         <div class="col-lg-5 col-xs-12 form-group" >
-                                                            <span class="span">Dataset Name: </span>
+                                                            <span class="span">Dataset Name:&nbsp </span>
                                                             <input type="text" name="name" class="form-control" style="width:60%" placeholder="Give a name for the Dataset"/>
                                                         </div>
 
 
                                                         <div class="col-lg-3 col-xs-12 form-group" >
-                                                            <span class="span">Type: </span>
+                                                            <span class="span">Type:&nbsp</span>
                                                             <select id="type" name="type" style="font-size:14px;height:40px;width:50%">
                                                                 <option value="string" >String</option>
                                                                 <option value="number" >Number</option>
@@ -265,7 +265,10 @@
                     var parentId;
                     //clone div to display the dropdown multiple times
                     function clone() {
-
+                        var api=document.getElementById("url").value;
+                        if(api===""){
+                           swal("Warning!", "Please enter an API url!", "warning");
+                        }else{
                         var div = $("#list").clone();
                         div.attr("id", counter);
                         div.find('input[name=path]').attr("required", true);
@@ -400,6 +403,7 @@
                         };
                         request.send();
                     }
+                }
                     // delete selected div
                     function remove(element) {
 
@@ -427,11 +431,11 @@
                             chkArray.push("<div class='row' id=" + parentId + count + " >");
                             chkArray.push("<input type='hidden' name='fNValue" + parentId + count + "' class='form-control'  value=" + $(this).val() + " style='display:inline'  />");
                             chkArray.push("<div class='col-lg-5 col-xs-12 form-group' style='margin-left: 12px;' >");
-                            chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name: </label>");
+                            chkArray.push("<label style='font-weight:200;font-size:15px'>Field Name:&nbsp </label>");
                             chkArray.push("<input type='text' name='fName" + parentId + count + "' class='form-control' required='' value=" + $(this).val() + " style='width:60%;display:inline'  />");
                             chkArray.push("</div>");
                             chkArray.push("<div class='col-lg-3 col-xs-12 form-group' >");
-                            chkArray.push("<label style='font-weight:200; font-size:15px'>Variable Type: </label>");
+                            chkArray.push("<label style='font-weight:200; font-size:15px'>Variable Type:&nbsp </label>");
                             chkArray.push("<select id='dataType' name='dType" + parentId + count + "' style='font-size:14px; height:40px;'>");
                             chkArray.push("<option value='string'> String </option>");
                             chkArray.push("<option value='number' >Number</option>");
@@ -440,12 +444,12 @@
                             chkArray.push("</select>");
                             chkArray.push("</div>");
                             chkArray.push("<div class='col-lg-3 col-xs-12 form-group' >");
-                            chkArray.push("<label style='font-weight:200; font-size:15px'>Data Type: </label>");
+                            chkArray.push("<label style='font-weight:200; font-size:15px'>Data Type:&nbsp </label>");
                             chkArray.push("<select id='infoType' name='iType" + parentId + count + "' style='font-size:14px; height:40px;'>");
                             chkArray.push("<option value='categorical' >Categorical</option>");
                             chkArray.push("<option value='numerical' >Numerical</option>");
                             chkArray.push("</select>");
-                            chkArray.push('<label></label>');
+                            chkArray.push('<label>&nbsp &nbsp</label>');
                             chkArray.push('<a class="close-link" onclick="removeList(this);" id ="remove"><i class="fa fa-close"></i></a>');
                             chkArray.push("</div>");
                             chkArray.push("</div></br>");

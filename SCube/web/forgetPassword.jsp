@@ -19,8 +19,8 @@
     <body>
         <div class="col-md-offset-1 col-md-10" style="margin-top:100px;">
             <div class="form">
-                <form action="resetPassword" method="post" id="submitForm">
-                    <input type="hidden" name="operation" value="resetPassword" />
+                <form action="password" method="post" id="submitForm">
+                    <input type="hidden" name="operation" value="forgetPassword" />
                     <div class="row">
                         <div class="col-md-10">
                             <h1>Forget Password ?</h1>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-10 col-xs-12">
-                            <input class="form-control" name="email" placeholder="Enter your username" required="" />
+                            <input class="form-control" name="email" placeholder="Enter your email" required="" />
                         </div>
                     </div>
                     <br>
@@ -92,7 +92,7 @@
                                 var form = document.getElementById("submitForm");
                                 $.ajax({
                                     type: "POST",
-                                    url: "resetPassword",
+                                    url: "password",
                                     data: {
                                         operation: form.elements[0].value,
                                         username: form.elements[1].value,

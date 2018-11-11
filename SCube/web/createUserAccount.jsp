@@ -35,9 +35,9 @@
                 %>
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <!-- page content -->
-                <div class="right_col" style="background-image: url(https://auditplus.com.pl/wp-content/uploads/2013/06/Abstract-office-table-free-ppt-backgrounds.jpg); background-size:  100% 100%; " >
+                <div class="right_col"  >
                     <div class="row">
-                        <div class="col-xs-offset-1 col-xs-10" style="background-color: #FDFDFD">
+                        <div class="col-xs-offset-1 col-xs-10" >
                             <div class="form" >
                                 <form action="createAccount" method="post" id="submitForm">
                                     <div class="row">
