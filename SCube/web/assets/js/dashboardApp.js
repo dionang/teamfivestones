@@ -9,8 +9,8 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-//const api = 'http://localhost:8084/';
-const api = 'https://scube.rocks/SCube/';
+const api = 'http://localhost:8084/';
+//const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 
 class DashboardApp extends Component {
@@ -272,7 +272,7 @@ class DashboardApp extends Component {
                                                 <span className=" fa fa-angle-down"></span>
                                             </a>
                                                 <ul className="dropdown-menu dropdown-usermenu pull-right">
-                                                    <li><a href="javascript:;"> Profile</a></li>
+                                                    <li><a href="resetPassword.jsp"><i class="fa fa-refresh pull-right"></i> Reset Password</a></li>
                                                     <li><a href="logout.jsp"><i className="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                                 </ul>
                                             </li>
@@ -291,7 +291,7 @@ class DashboardApp extends Component {
                                 </div>
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
-                                {/* <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> */} 
+                                <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> 
                                 {/* <Button className="col-md-2 col-xs-3" style={{ float:"right", minWidth:130 }} bsStyle="info" onClick={this.saveTemplate}>
                                         <i className="fa fa-save" /> Save Template
                                     </Button> */}
@@ -367,11 +367,11 @@ class DashboardApp extends Component {
                                     })}
                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,display:this.state.isBarPic}} className="fa fa-wrench"
                                                         onClick={() => this.addBarChart()}></i>
-                                    <img  src = "assets/images/barchartsample.png" style={{float:"left",display:this.state.isBarPic, width:"49%"}}></img>
+                                    <img  src = "assets/images/barchartsample.png" style={{float:"left",display:this.state.isBarPic, width:"48%"}}></img>
                                      <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,float:"right", display:this.state.isLinePic}} className="fa fa-wrench"
                                                         onClick={() => this.addLineChart()}></i>
                                                     
-                                    <img src = "assets/images/linechartsample.png" style={{float:"right",display:this.state.isLinePic, width:"49%"}}></img>
+                                    <img src = "assets/images/linechartsample.png" style={{float:"right",display:this.state.isLinePic, width:"48%"}}></img>
 
                                 </div>
                             </div>
@@ -404,6 +404,7 @@ class Barchart extends Component {
     componentWillMount() {
         let self = this;
         let {title, datasourceId, datasetId, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        console.log("props.properties" + this.props.properties);
         request.post({
             url: api + "getChartDetails",
             json: true,
@@ -411,7 +412,7 @@ class Barchart extends Component {
         }, function (error, response, body) {
             if(body){
                 console.log(body);
-                self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){});
+                self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){}); //dion changed
             }
         });
     }
@@ -432,6 +433,7 @@ class Barchart extends Component {
                 // aggregate the data for the chart
                 let processor = new JsonProcessor();
                 let aggregatedData = processor.getAggregatedData(data, xAxis, yAxis, aggregate, summary);
+                console.log(aggregatedData);
                 let statSummary = {
                     sum: aggregatedData.sum, 
                     avg: aggregatedData.avg,
@@ -477,12 +479,12 @@ class Barchart extends Component {
 
     render() {
         return (
-            <div  >
+            <div  style={{ zIndex: 99}}>
                 { this.state.initialized ?
                     <div style={{ width:"90%" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
                         {this.state.facetype ?
-                        <BarChart data={this.state.chartData} width={500} height={400}>
+                        <BarChart data={this.state.chartData} width={200} height={200}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
@@ -499,7 +501,7 @@ class Barchart extends Component {
                         </BarChart>
                         :
                         <ResponsiveContainer style={{width:"90%"}}>
-                            <BarChart data={this.state.chartData} width={500} height={400}>
+                            <BarChart data={this.state.chartData} width={200} height={200}>
                                 <CartesianGrid strokeDa1sharray="3 3" />
                                 <XAxis dataKey={this.state.xAxis}>
                                     <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
@@ -920,12 +922,12 @@ class Linechart extends Component {
 
     render() {
         return (
-            <div >
+            <div style={{ zIndex: 99}}>
                 {this.state.initialized ?
                     <div style={{width:"90%"}}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
                         {this.state.facetype ?
-                        <LineChart  width={500} height={400} data={this.state.chartData}>
+                        <LineChart  width={200} height={200} data={this.state.chartData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
@@ -939,7 +941,7 @@ class Linechart extends Component {
                         </LineChart>
                         :
                         <ResponsiveContainer>
-                            <LineChart  width={500} height={400} data={this.state.chartData}>
+                            <LineChart  width={200} height={200} data={this.state.chartData}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey={this.state.xAxis}>
                                     <Label value={this.state.xAxis}offset={-5} position="insideBottom" />

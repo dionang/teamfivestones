@@ -220,6 +220,7 @@ JsonProcessor.prototype.getAggregatedData = function(data, xAxis, yAxis, operati
 
         avg = (sum/statData.length).toFixed(2);
         variance = (variance/statData.length).toFixed(2);
+        
     }
 
 
