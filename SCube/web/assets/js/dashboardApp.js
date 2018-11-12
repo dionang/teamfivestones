@@ -9,8 +9,8 @@ import cellEditFactory from 'react-bootstrap-table2-editor';
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Legend, Tooltip, ResponsiveContainer} from 'recharts';
 import { Formik, Form, Field } from 'formik';
 
-const api = 'http://localhost:8084/';
-//const api = 'https://scube.rocks/SCube/';
+//const api = 'http://localhost:8084/';
+const api = 'https://scube.rocks/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 
 class DashboardApp extends Component {
@@ -31,6 +31,7 @@ class DashboardApp extends Component {
             exporting: false,
             isBarPic:"-webkit-inline-box",
             isLinePic:"-webkit-inline-box",
+            displayChart:false,
         }
     }
 
@@ -139,35 +140,36 @@ class DashboardApp extends Component {
     }
 
     loadDashboard = () => {
-        let self = this;
-        let accountId = parseInt(document.getElementById("accountId").value, 10);
-        request.post({
-            url: api + 'loadDashboard',
-            json: true,
-            body: { operation: "loadDashboard", accountId: accountId }
-        }, function (error, response, body) {
-            if (body) {
-                let components = self.state.components;
-                for (let type in body) {
-                    let properties = body[type];
-                    if (type == "bar") {
-                        components[self.state.pageNo].push(
-                            {
-                                type: "bar", x: 0, y: 0, height: 370, width: 500, display: true, properties: properties
-                            }
-                        );
-                    } else if (type == "line") {
-                        components[self.state.pageNo].push(
-                            {
-                                type: "line", x: 0, y: 0, height: 370, width: 500, display: true, properties: properties
-                            }
-                        );
+            let self = this;
+        if(self.state.displayChart===true){
+            let accountId = parseInt(document.getElementById("accountId").value, 10);
+            request.post({
+                url: api + 'loadDashboard',
+                json: true,
+                body: { operation: "loadDashboard", accountId: accountId }
+            }, function (error, response, body) {
+                if (body) {
+                    let components = self.state.components;
+                    for (let type in body) {
+                        let properties = body[type];
+                        if (type == "bar") {
+                            components[self.state.pageNo].push(
+                                {
+                                    type: "bar", x: 0, y: 0, height: 370, width: 500, display: true, properties: properties
+                                }
+                            );
+                        } else if (type == "line") {
+                            components[self.state.pageNo].push(
+                                {
+                                    type: "line", x: 0, y: 0, height: 370, width: 500, display: true, properties: properties
+                                }
+                            );
+                        }
                     }
+
+                    self.setState({ components });
                 }
-                
-                self.setState({ components });
-            }
-        });
+            });}
     }
     
     renameTemplate = (e) => {
@@ -291,7 +293,7 @@ class DashboardApp extends Component {
                                 </div>
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
-                                <Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> 
+                                {/*<Button bsStyle="info" onClick={this.getComponentDetails}>Get Component Details</Button> */}
                                 {/* <Button className="col-md-2 col-xs-3" style={{ float:"right", minWidth:130 }} bsStyle="info" onClick={this.saveTemplate}>
                                         <i className="fa fa-save" /> Save Template
                                     </Button> */}
@@ -367,7 +369,7 @@ class DashboardApp extends Component {
                                     })}
                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,display:this.state.isBarPic}} className="fa fa-wrench"
                                                         onClick={() => this.addBarChart()}></i>
-                                    <img  src = "assets/images/barchartsample.png" style={{float:"left",display:this.state.isBarPic, width:"48%"}}></img>
+                                    <img  src = "assets/images/barchartsample.png" style={{float:"left",display:this.state.isBarPic, width:"48%", marginTop:-40}}></img>
                                      <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,float:"right", display:this.state.isLinePic}} className="fa fa-wrench"
                                                         onClick={() => this.addLineChart()}></i>
                                                     
@@ -481,10 +483,10 @@ class Barchart extends Component {
         return (
             <div  style={{ zIndex: 99}}>
                 { this.state.initialized ?
-                    <div style={{ width:"90%" }}>
+                    <div>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
                         {this.state.facetype ?
-                        <BarChart data={this.state.chartData} width={200} height={200}>
+                        <BarChart data={this.state.chartData} width={500} height={400}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
@@ -501,7 +503,7 @@ class Barchart extends Component {
                         </BarChart>
                         :
                         <ResponsiveContainer style={{width:"90%"}}>
-                            <BarChart data={this.state.chartData} width={200} height={200}>
+                            <BarChart data={this.state.chartData} width={500} height={400}>
                                 <CartesianGrid strokeDa1sharray="3 3" />
                                 <XAxis dataKey={this.state.xAxis}>
                                     <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
@@ -927,7 +929,7 @@ class Linechart extends Component {
                     <div style={{width:"90%"}}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
                         {this.state.facetype ?
-                        <LineChart  width={200} height={200} data={this.state.chartData}>
+                        <LineChart  width={500} height={400} data={this.state.chartData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
@@ -941,7 +943,7 @@ class Linechart extends Component {
                         </LineChart>
                         :
                         <ResponsiveContainer>
-                            <LineChart  width={200} height={200} data={this.state.chartData}>
+                            <LineChart  width={500} height={400} data={this.state.chartData}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey={this.state.xAxis}>
                                     <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
