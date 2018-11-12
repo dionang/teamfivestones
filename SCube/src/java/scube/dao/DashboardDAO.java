@@ -31,7 +31,7 @@ public class DashboardDAO {
                 stmt.setInt(3, Integer.parseInt(barChart.get(1)));
                 stmt.setString(4, barChart.get(2));
                 stmt.setString(5, barChart.get(3));
-                stmt.setString(6, barChart.get(3));
+                stmt.setString(6, barChart.get(4));
             }
             
             if (lineChart == null){
@@ -45,7 +45,7 @@ public class DashboardDAO {
                 stmt.setInt(8, Integer.parseInt(lineChart.get(1)));
                 stmt.setString(9, lineChart.get(2));
                 stmt.setString(10, lineChart.get(3));
-                stmt.setString(11, lineChart.get(3));
+                stmt.setString(11, lineChart.get(4));
             }
             
             stmt.executeUpdate();

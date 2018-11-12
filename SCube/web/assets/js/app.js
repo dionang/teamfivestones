@@ -277,7 +277,7 @@ class App extends Component {
 
         // if exporting
         if (this.state.exporting) {
-            domtoimage.toJpeg(document.getElementById('containerReportCap'), { quality: 1 })
+            domtoimage.toPng(document.getElementById('containerReportCap'), { quality: 1 })
                 .then(function (dataUrl) {
                     // add page screenshot to picArr
                     var picArr = self.state.picArr;
@@ -314,7 +314,7 @@ class App extends Component {
                             // let width = document.getElementById('container').width;
                             // let height = document.getElementById('container').height;
 
-                            doc.addImage(dataUrl, 'JPEG', 0, 0, 297, 140);
+                            doc.addImage(dataUrl, 'PNG', 0, 0, 290, 140);
 
                             // 20 is left margin, 200 is top margin
                             doc.text(20, 200, "Page No: " + (i + 1));
@@ -626,6 +626,7 @@ class App extends Component {
                                                 <span className=" fa fa-angle-down"></span>
                                             </a>
                                             <ul className="dropdown-menu dropdown-usermenu pull-right">
+                                                <li><a href="resetPassword.jsp"><i class="fa fa-refresh pull-right"></i> Reset Password</a></li>
                                                 <li><a href="logout.jsp"><i className="fa fa-sign-out pull-right"/> Log Out</a></li>
                                             </ul>
                                         </li>
@@ -760,9 +761,9 @@ class App extends Component {
                             </div>
                             
                             <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE", paddingBottom:window.innerHeight * 0.02, textAlign:"center", paddingTop:window.innerHeight * 0.02,}}>
-                                <div style={{display: "inline-block", border:"#C0C0C0 solid 1px", }}>
+                                <div style={{ marginLeft: window.innerWidth*0.02,  border:"#C0C0C0 solid 1px", marginRight: window.innerWidth*0.02}}>
                                     <div id="containerReportCap" style={{
-                                        backgroundColor: 'white', height:window.innerHeight*0.7 ,width:window.innerWidth*0.7
+                                        backgroundColor: 'white', height:window.innerHeight*0.7, margin:0, 
                                     }}>
 
                                         {/* map does a for loop over all the components in the state */}

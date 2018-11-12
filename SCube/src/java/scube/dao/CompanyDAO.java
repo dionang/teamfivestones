@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class CompanyDAO {
     // Create operations
@@ -12,6 +12,7 @@ public class CompanyDAO {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
+        String tokenHash = BCrypt.hashpw(accessToken, BCrypt.gensalt());
         
         try {
             int nextId = getNextId();
@@ -19,7 +20,7 @@ public class CompanyDAO {
             stmt = conn.prepareStatement("INSERT INTO company VALUES (?,?,?)");
             stmt.setInt(1, nextId);
             stmt.setString(2, companyName);
-            stmt.setString(3, accessToken);
+            stmt.setString(3, tokenHash);
             stmt.executeUpdate();
             return nextId;
         } catch (SQLException e) {
@@ -42,7 +43,7 @@ public class CompanyDAO {
             stmt.setInt(1, companyId);
             rs = stmt.executeQuery();
             if(rs.next()){
-                return accessToken.equals(rs.getString("accessToken"));
+                return BCrypt.checkpw(accessToken, rs.getString("accessToken"));
             }
             return false;
         } catch (SQLException e) {

@@ -184,6 +184,9 @@ JsonProcessor.prototype.getAggregatedData = function(data, xAxis, yAxis, operati
     for (let obj of data){
         let category = obj[xAxis];
         let value = obj[yAxis];
+//        if (typeof(value) === "string") {
+//            value = 1;
+//        }
 
         if (summary) {
             statData.push(value);
@@ -220,8 +223,8 @@ JsonProcessor.prototype.getAggregatedData = function(data, xAxis, yAxis, operati
 
         avg = (sum/statData.length).toFixed(2);
         variance = (variance/statData.length).toFixed(2);
+        
     }
-
 
     // do appropriate aggregation
     let newData = [];
