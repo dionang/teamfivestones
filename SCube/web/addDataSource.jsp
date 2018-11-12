@@ -18,12 +18,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/dashboard.css">
         <link rel="stylesheet" href="assets/css/createForm.css">
-        
+
         <title>Add DataSource</title>
         <style>
-            ::-webkit-scrollbar{
-                background:transparent;
-            }
+           
         </style>
     </head>
 
@@ -265,145 +263,148 @@
                     var parentId;
                     //clone div to display the dropdown multiple times
                     function clone() {
-                        var api=document.getElementById("url").value;
-                        if(api===""){
-                           swal("Warning!", "Please enter an API url!", "warning");
-                        }else{
-                        var div = $("#list").clone();
-                        div.attr("id", counter);
-                        div.find('input[name=path]').attr("required", true);
-                        div.find('input[name=path]').attr('name', 'path' + counter);
+                        var api = document.getElementById("url").value;
+                        if (api === "") {
+                            swal("Warning!", "Please enter an API url!", "warning");
+                        } else {
+                            var div = $("#list").clone();
+                            div.attr("id", counter);
+                            div.find('input[name=path]').attr("required", true);
+                            div.find('input[name=path]').attr('name', 'path' + counter);
 
-                        div.find('input[name=name]').attr("required", true);
-                        div.find('input[name=name]').attr('name', 'name' + counter);
+                            div.find('input[name=name]').attr("required", true);
+                            div.find('input[name=name]').attr('name', 'name' + counter);
 
-                        div.find('select[name=type]').attr('name', 'type' + counter);
+                            div.find('select[name=type]').attr('name', 'type' + counter);
 
-                        div.find('div[name=dropdown]').attr('name', 'dropdown' + counter);
-                        div.attr("class", "jsonForm");
-                        $("#content").append(div.show());
-                        counter++;
-                        array = [];
-                        chkArray = [];
-                        document.getElementById("counter").value = counter;
-                        var button = document.getElementsByName("dropdown" + (counter - 1))[0];
+                            div.find('div[name=dropdown]').attr('name', 'dropdown' + counter);
+                            div.attr("class", "jsonForm");
+                            $("#content").append(div.show());
+                            counter++;
+                            array = [];
+                            chkArray = [];
+                            document.getElementById("counter").value = counter;
+                            var button = document.getElementsByName("dropdown" + (counter - 1))[0];
 
-                        var top = button.offsetTop;
-                        var height = button.clientHeight;
-                        var url = document.getElementById("url").value;
-                        var requestURL = url;
-                        var request = new XMLHttpRequest();
-                        request.open('GET', requestURL);
-                        request.responseType = 'json';
-                        request.onload = function () {
-                            var json = request.response;
-                            array = ["<ul class='dropdown-menu parent' style='left:25px;top:" + (top + height) + "px'>"];
-                            function printAll(items) {
-                                switch ($.type(items)) {
-                                    case "object":
-                                        getChildren(items);
-                                        break;
-                                    case "array":
-                                        printArray(items);
-                                        break;
+                            var top = button.offsetTop;
+                            var height = button.clientHeight;
+                            var url = document.getElementById("url").value;
+                            var requestURL = url;
+                            var request = new XMLHttpRequest();
+                            request.open('GET', requestURL);
+                            request.responseType = 'json';
+                            request.onload = function () {
+                                var json = request.response;
+                                array = ["<ul class='dropdown-menu parent' style='left:25px;top:" + (top + height) + "px'>"];
+                                function printAll(items) {
+                                    switch ($.type(items)) {
+                                        case "object":
+                                            getChildren(items);
+                                            break;
+                                        case "array":
+                                            printArray(items);
+                                            break;
+                                    }
+
                                 }
 
-                            }
+                                function getChildren(parent) {
+                                    for (var child in parent) {
+                                        //console.log(child);
+                                        if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
+                                            array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
 
-                            function getChildren(parent) {
-                                for (var child in parent) {
-                                    //console.log(child);
-                                    if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
-                                        array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
+                                        } else if ($.type(parent[child]) === "array") {
 
-                                    } else if ($.type(parent[child]) === "array") {
+                                            if ((parent[child]).length !== 0) {
 
-                                        if ((parent[child]).length !== 0) {
-
+                                                array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
+                                                printArray(parent[child]);
+                                                array.push("</ul></li>");
+                                            } else
+                                                array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
+                                        } else {
                                             array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
-                                            printArray(parent[child]);
+                                            printAll(parent[child]);
                                             array.push("</ul></li>");
-                                        } else
-                                            array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "<span class='caret'></span></a></li>");
+                                        }
+
+                                    }
+                                }
+
+                                function printArray(myArray) {
+
+
+                                    var first = myArray[0];
+                                    if (typeof (first) === "object") {
+                                        for (var child in first) {
+                                            array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
+                                        }
+                                        array.push("<li><button class='btn btn-default' type='button' onclick='getList();' >Select </button></li>");
                                     } else {
-                                        array.push("<li class='dropdown-submenu' ><a class='test' tabindex='-1' href='#' onclick='handleClick(this);'>" + child + "<span class='caret'></span></a><ul class='dropdown-menu child'>");
-                                        printAll(parent[child]);
-                                        array.push("</ul></li>");
-                                    }
-
-                                }
-                            }
-
-                            function printArray(myArray) {
-
-
-                                var first = myArray[0];
-                                if (typeof (first) === "object") {
-                                    for (var child in first) {
-                                        array.push("<li style='display:inline'><a tabindex='-1' ><input type='checkbox' style='display:inline;height:auto;width:auto' class='chk' value=" + child + ">" + child + "</a></li>");
-                                    }
-                                    array.push("<li><button class='btn btn-default' type='button' onclick='getList();' >Select </button></li>");
-                                } else {
-                                    for (var i = 0; i < myArray.length; i++) {
-                                        printAll(myArray[i]);
+                                        for (var i = 0; i < myArray.length; i++) {
+                                            printAll(myArray[i]);
+                                        }
                                     }
                                 }
-                            }
 
-                            printAll(json);
-                            array.push("</ul>");
+                                printAll(json);
+                                array.push("</ul>");
 
-                            $(".buttonInside").append(array.join(""));
-                            $('.dropdown-submenu a.test').on("click", function (e) {
-                               
-                                var $list = $(this).next('ul');
-                                var listHeight = 200;
-                                var maxListHeight = $list.height();
-                                $list.toggle();
-                                var adjustedTop = $(this).parent().parent().offset().top;
-                                $list.offset({top: adjustedTop , left:$list.offset().left })
-                                $list.height(listHeight);
-                                
-                                $list.css("overflow-x","visible");
-                                $list.css("overflow-y","hidden");
-                                
-                                var totalWidth=$list.width();
-                                var parent=$(this).parent().parent();
-                                parent.css("width",parent.width()+$list.width());
-                                
-                                var current=$(this);
+                                $(".buttonInside").append(array.join(""));
+                                $('.dropdown-submenu a.test').on("click", function (e) {
+                                    var $list = $(this).next('ul');
+                                    var listHeight = 250;
+                                    var maxListHeight = $list.height();
+                                    $list.toggle();
+                                    var adjustedTop = $(this).parent().parent().offset().top;
+                                    $list.offset({top: adjustedTop, left: $list.offset().left})
+                                    $list.height(listHeight);
+
+                                    $list.css("overflow-x", "hidden");
+                                    $list.css("overflow-y", "scroll");
+
+                                    var totalWidth = $list.width();
+                                    var parent = $(this).parent().parent();
+                                    parent.css("width", parent.width() + $list.width());
+
+                                    var current = $(this);
+
+                                    while (current.parent().parent().attr('class') === 'dropdown-menu child') {
                               
-                                while(current.parent().parent().attr('class')==='dropdown-menu child'){
-                                   // current.parent().parent().css("width",170);
-                                   // var parentWidth=current.parent().parent().width();
-                                    totalWidth+=200;
-                                   current.parent().parent().css("width",totalWidth);
-                                    current=current.parent().parent();
-                                }
-                               current.scrollLeft(totalWidth);
+                                        current.parent().parent().css("width", 170);
+                                        var parentWidth = current.parent().parent().width();
+                                        totalWidth += parentWidth;
+                                        current.parent().parent().css("width", totalWidth);
+                                        current = current.parent().parent();
+                                    }
+                                    if(current.parent().parent().attr('class') === 'dropdown-menu parent'){
+                                         current.parent().parent().css("width", 170);
+                                    }
+                                    current.scrollLeft(totalWidth);
 
-                                $list.scrollLeft(parent.width());
-                                $list.on('mousemove', function(e) {
-                                //    var cPointY = e.pageY,
-                                //        dP = ((cPointY / wrapHeight));
-                                //   $(this).next('ul').scrollTop((listHeight * dP) - wrapScreenHeight);
+                                    $list.scrollLeft(parent.width());
+//                                $list.on('mousemove', function(e) {
+//                                //    var cPointY = e.pageY,
+//                                //        dP = ((cPointY / wrapHeight));
+//                                //   $(this).next('ul').scrollTop((listHeight * dP) - wrapScreenHeight);
+//
+//                                    var offsetTop = $list.offset().top;
+//                                    var relativeHeight = e.pageY-offsetTop;
+//                                    var multiplier = relativeHeight/listHeight;
+//                                    $list.scrollTop(multiplier*maxListHeight*1.10);
+//                                });
 
-                                    var offsetTop = $list.offset().top;
-                                    var relativeHeight = e.pageY-offsetTop;
-                                    var multiplier = relativeHeight/listHeight;
-                                    $list.scrollTop(multiplier*maxListHeight*1.10);
-                                });
 
-                                
 
-                                e.stopPropagation();
-                                e.preventDefault();
-                            })
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                })
 
-                        };
-                        request.send();
+                            };
+                            request.send();
+                        }
                     }
-                }
                     // delete selected div
                     function remove(element) {
 
@@ -475,8 +476,8 @@
                         var ul = jQuery.makeArray(elems);
 
                         jQuery.each(ul, function (i, list) {
-                            $(list).css("width",200);
-                            $(list).css("text-align","left");
+                            //$(list).css("width", 200);
+                            $(list).css("text-align", "left");
 
                         });
 
@@ -492,7 +493,7 @@
                         chkArray = [];
 
                         $('.child').hide();
-    
+
                     }
                     ;
 

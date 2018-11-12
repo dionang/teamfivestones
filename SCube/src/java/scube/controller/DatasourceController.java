@@ -158,11 +158,7 @@ public class DatasourceController extends HttpServlet {
                 String[] result =new String[2];
                 result[0]="true";
                 result[1]="Datasource has been updated successfully!!!";
-                ArrayList<Datasource>  existName=DatasourceDAO.getDatasourcesByName(account.getCompanyId(),datasourceName);
-                 if(existName.size()!=0){
-                    result[0]="false";
-                    result[1]="DatasoureName is already exist.";
-                }else{
+                
                     boolean status = DatasourceDAO.updateDatasource(id, account.getCompanyId(), datasourceUrl, datasourceName, remark);
                     if (status) {
                     deleteDataset=DatasourceDAO. deleteDatasetByDatasourece(id);
@@ -208,7 +204,7 @@ public class DatasourceController extends HttpServlet {
                     result[0]="false";
                     result[1]="Error occurs when updating datasource";
                 }
-                 }
+                
                 
                 
                 

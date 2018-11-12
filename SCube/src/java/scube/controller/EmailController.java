@@ -83,7 +83,10 @@ public class EmailController extends HttpServlet {
         String subject = "";
         String ppt = "";
         String pdf = "";
-        String home = System.getProperty("user.home");
+        String servletPath = request.getServletContext().getRealPath("/");
+        String rootPath = servletPath.split("SCube")[0];
+        String home=rootPath + "ROOT" + File.separator + "images"+ File.separator;
+        
         ArrayList<String> filePath = new ArrayList<String>();
         FileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
@@ -107,12 +110,12 @@ public class EmailController extends HttpServlet {
                 } else if (fieldName.equals("pdf")) {
                     pdf = item.getString();
                     if (pdf != null) {
-                    filePath.add(home + "\\Downloads\\" + pdf);
+                    filePath.add(home+pdf);
                 }
                 } else if (fieldName.equals("ppt")) {
                     ppt = item.getString();
                     if (ppt != null) {
-                    filePath.add(home + "\\Downloads\\" + ppt);
+                    filePath.add(home+ppt);
                 }
                 }
 
