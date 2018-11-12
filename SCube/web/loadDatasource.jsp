@@ -187,7 +187,7 @@
                                             <%  }%>
 
                                             <div id="list" style="display:none;margin-top: 10px;border-bottom: 1px solid rgba(0, 0, 0, 0.3);padding-bottom: 20px;">
-                                                <input type="text" name="datasetId" value="-1" />
+                                                <input type="hidden" name="datasetId" value="-1" />
                                                 <div class="row" style="margin-top:10px;display:inline-block;width:100%;">
 
                                                     <div class="col-lg-4 col-xs-12 form-group"  >
@@ -305,7 +305,7 @@
 
                                                         function getChildren(parent) {
                                                             for (var child in parent) {
-                                                                //console.log(child);
+                                
                                                                 if ($.type(parent[child]) !== "object" && $.type(parent[child]) !== "array") {
                                                                     array.push("<li onclick='handleClick(this);'><a tabindex='-1'>" + child + "</a></li>");
                                                                 } else if ($.type(parent[child]) === "array") {
@@ -349,7 +349,40 @@
 
                                                         $(".buttonInside").append(array.join(""));
                                                         $('.dropdown-submenu a.test').on("click", function (e) {
-                                                            $(this).next('ul').toggle();
+                                                            console.log("i am er");
+                                                            var $list = $(this).next('ul');
+                                                            var listHeight = 250;
+                                                            var maxListHeight = $list.height();
+                                                            $list.toggle();
+                                                            var adjustedTop = $(this).parent().parent().offset().top;
+                                                            $list.offset({top: adjustedTop, left: $list.offset().left})
+                                                            $list.height(listHeight);
+
+                                                            $list.css("overflow-x", "hidden");
+                                                            $list.css("overflow-y", "scroll");
+
+                                                            var totalWidth = $list.width();
+                                                            var parent = $(this).parent().parent();
+                                                            parent.css("width", parent.width() + $list.width());
+
+                                                            var current = $(this);
+
+                                                            while (current.parent().parent().attr('class') === 'dropdown-menu child') {
+                   
+                                                                current.parent().parent().css("width", 170);
+                                                                var parentWidth = current.parent().parent().width();
+                                                                totalWidth += parentWidth;
+                                                                current.parent().parent().css("width", totalWidth);
+                                                                current = current.parent().parent();
+                                                            }
+                                                            if (current.parent().parent().attr('class') === 'dropdown-menu parent') {
+                                                                current.parent().parent().css("width", 170);
+                                                            }
+                                                            current.scrollLeft(totalWidth);
+
+                                                            $list.scrollLeft(parent.width());
+
+
                                                             e.stopPropagation();
                                                             e.preventDefault();
                                                         });
@@ -452,6 +485,7 @@
                 <script>
 
                     var counter = document.getElementById("counter").value;
+                    var count=0;
                     var array = [];
                     var chkArray = [];
                     //clone div to display the dropdown multiple times
@@ -545,9 +579,42 @@
 
                                 $(".buttonInside").append(array.join(""));
                                 $('.dropdown-submenu a.test').on("click", function (e) {
-                                    $(this).next('ul').toggle();
-                                    e.stopPropagation();
-                                    e.preventDefault();
+                                     console.log("i am er");
+                                                            var $list = $(this).next('ul');
+                                                            var listHeight = 250;
+                                                            var maxListHeight = $list.height();
+                                                            $list.toggle();
+                                                            var adjustedTop = $(this).parent().parent().offset().top;
+                                                            $list.offset({top: adjustedTop, left: $list.offset().left})
+                                                            $list.height(listHeight);
+
+                                                            $list.css("overflow-x", "hidden");
+                                                            $list.css("overflow-y", "scroll");
+
+                                                            var totalWidth = $list.width();
+                                                            var parent = $(this).parent().parent();
+                                                            parent.css("width", parent.width() + $list.width());
+
+                                                            var current = $(this);
+
+                                                            while (current.parent().parent().attr('class') === 'dropdown-menu child') {
+                   
+                                                                current.parent().parent().css("width", 170);
+                                                                var parentWidth = current.parent().parent().width();
+                                                                totalWidth += parentWidth;
+                                                                current.parent().parent().css("width", totalWidth);
+                                                                current = current.parent().parent();
+                                                            }
+                                                            if (current.parent().parent().attr('class') === 'dropdown-menu parent') {
+                                                                current.parent().parent().css("width", 170);
+                                                            }
+                                                            current.scrollLeft(totalWidth);
+
+                                                            $list.scrollLeft(parent.width());
+
+
+                                                            e.stopPropagation();
+                                                            e.preventDefault();
                                 });
                             };
                             request.send();
@@ -619,7 +686,7 @@
                             count = document.getElementsByName("subCounter" + parentId)[0].value;
                             document.getElementsByName("subCounter" + parentId)[0].value = 0;
                         }
-                        if (count != 0) {
+                        if (count !== 0) {
                             for (var i = count - 1; i >= 0; i--) {
                                 document.getElementById(parentId + i).remove();
 
