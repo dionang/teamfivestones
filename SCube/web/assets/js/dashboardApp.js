@@ -31,7 +31,7 @@ class DashboardApp extends Component {
             exporting: false,
             isBarPic:"-webkit-inline-box",
             isLinePic:"-webkit-inline-box",
-            displayChart:false,
+            displayChart:true,
         }
     }
 
@@ -344,36 +344,38 @@ class DashboardApp extends Component {
 
 
 
-                                <div id="container" ref={this.myInput} className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', height: "calc(100% + 500px)", marginTop: 15, display: "block" , overflow:"scroll", marginLeft:"10px", maxHeight:this.state.halfHeight}}>
+                                <div id="container" ref={this.myInput} className="col-sm-12 col-xs-12" style={{ backgroundColor: 'white', height: "calc(100% + 500px)", marginTop: 15, display: "inline-flex" , overflow:"scroll", marginLeft:"10px", maxHeight:this.state.halfHeight}}>
                                     {/* map does a for loop over all the components in the state */}
                                     {this.state.components[this.state.pageNo].map((item, i) => {
                                         if (item.display) {
                                             return <div key={this.state.pageNo + "," + i}
                                                 style={{
                                                     width: "47%",
-                                                    display: "inline-block",
-                                                    marginLeft:15
+                                                    
                                                 }}
                                             >
-                                                 <div style={{ height: 27.5, float: "right" }}>
-                                                    <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
+                                            
+                                            <div style={{ height: 27.5, float: "right" }}>
+                                                    <i style={{ marginTop: 10, marginRight: 6,  }} className="fa fa-wrench"
                                                         onClick={() => this.changeSettings(i)}></i>
                                                 </div>
+                                                 
                                                 <ReportComponent type={item.type} editMode={this.state.editMode}
                                                     properties={item.properties} i={i}
                                                     updateProperties={this.updateProperties.bind(this)}
                                                     
                                                 />
+                                                
                                             </div>
                                         }
                                     })}
-                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,display:this.state.isBarPic}} className="fa fa-wrench"
+                                    {/*<i style={{ zIndex: 99, marginTop: 10, marginRight: 6,display:this.state.isBarPic}} className="fa fa-wrench"
                                                         onClick={() => this.addBarChart()}></i>
                                     <img  src = "assets/images/barchartsample.png" style={{float:"left",display:this.state.isBarPic, width:"48%", marginTop:-40}}></img>
                                      <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,float:"right", display:this.state.isLinePic}} className="fa fa-wrench"
                                                         onClick={() => this.addLineChart()}></i>
                                                     
-                                    <img src = "assets/images/linechartsample.png" style={{float:"right",display:this.state.isLinePic, width:"48%"}}></img>
+                                    <img src = "assets/images/linechartsample.png" style={{float:"right",display:this.state.isLinePic, width:"48%"}}></img>*/}
 
                                 </div>
                             </div>
@@ -485,14 +487,13 @@ class Barchart extends Component {
                 { this.state.initialized ?
                     <div>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
-                        {this.state.facetype ?
-                        <BarChart data={this.state.chartData} width={500} height={400}>
+                        <BarChart data={this.state.chartData} width={400} height={300}>
                             <CartesianGrid strokeDasharray="3 3" />
+                            <Text/>
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
                             </XAxis>
                             <YAxis dataKey={this.state.yAxis}>
-                                <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
                             </YAxis>
                             <Tooltip />
                             <Bar dataKey={this.state.yAxis} fill="#CD5C5C" isAnimationActive={false}/>
@@ -501,23 +502,7 @@ class Barchart extends Component {
 
                             <Legend verticalAlign="top" height={20} />
                         </BarChart>
-                        :
-                        <ResponsiveContainer style={{width:"90%"}}>
-                            <BarChart data={this.state.chartData} width={500} height={400}>
-                                <CartesianGrid strokeDa1sharray="3 3" />
-                                <XAxis dataKey={this.state.xAxis}>
-                                    <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
-                                </XAxis>
-                                <YAxis dataKey={this.state.yAxis}>
-                                    <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
-                                </YAxis>
-                                <Tooltip />
-                                <Bar dataKey={this.state.yAxis} fill="#CD5C5C" />
-                                {/* <Bar dataKey="neutral" fill="orange" /> */}
-                                {/* <Bar dataKey="negative" fill="grey" /> */}
-                                <Legend verticalAlign="top" height={20} />
-                            </BarChart>
-                        </ResponsiveContainer>}
+                       
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
                     : <ChartForm initializeChart={this.initializeChart} style={{width:"90%"}} />
@@ -928,34 +913,18 @@ class Linechart extends Component {
                 {this.state.initialized ?
                     <div style={{width:"90%"}}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
-                        {this.state.facetype ?
-                        <LineChart  width={500} height={400} data={this.state.chartData}>
+                        <LineChart  width={400} height={300} data={this.state.chartData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
                             </XAxis>
                             <YAxis dataKey={this.state.yAxis}>
-                                <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
                             </YAxis>
                             <Tooltip />
                             <Legend verticalAlign="top" height={20} />
                             <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
                         </LineChart>
-                        :
-                        <ResponsiveContainer>
-                            <LineChart  width={500} height={400} data={this.state.chartData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey={this.state.xAxis}>
-                                    <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
-                                </XAxis>
-                                <YAxis dataKey={this.state.yAxis}>
-                                    <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
-                                </YAxis>
-                                <Tooltip />
-                                <Legend verticalAlign="top" height={20} />
-                                <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
-                            </LineChart>
-                        </ResponsiveContainer>}
+                        
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
                     : <ChartForm initializeChart={this.initializeChart} style={{width:"90%"}}/>
