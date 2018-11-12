@@ -53,7 +53,7 @@ class DashboardApp extends Component {
         );
 
         // updates state
-        this.setState({ components, editMode: true,isBarPic:"none"  });
+        this.setState({ components, editMode: true, isBarPic:"none"  });
     }
 
     addLineChart = () => {
@@ -272,7 +272,7 @@ class DashboardApp extends Component {
                                                 <span className=" fa fa-angle-down"></span>
                                             </a>
                                                 <ul className="dropdown-menu dropdown-usermenu pull-right">
-                                                    <li><a href="resetPassword.jsp"><i class="fa fa-refresh pull-right"></i> Reset Password</a></li>
+                                                    <li><a href="resetPassword.jsp"><i className="fa fa-refresh pull-right"></i> Reset Password</a></li>
                                                     <li><a href="logout.jsp"><i className="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                                 </ul>
                                             </li>
@@ -368,7 +368,7 @@ class DashboardApp extends Component {
                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,display:this.state.isBarPic}} className="fa fa-wrench"
                                                         onClick={() => this.addBarChart()}></i>
                                     <img  src = "assets/images/barchartsample.png" style={{float:"left",display:this.state.isBarPic, width:"48%"}}></img>
-                                     <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,float:"right", display:this.state.isLinePic}} className="fa fa-wrench"
+                                    <i style={{ zIndex: 99, marginTop: 10, marginRight: 6,float:"right", display:this.state.isLinePic}} className="fa fa-wrench"
                                                         onClick={() => this.addLineChart()}></i>
                                                     
                                     <img src = "assets/images/linechartsample.png" style={{float:"right",display:this.state.isLinePic, width:"48%"}}></img>
@@ -404,14 +404,12 @@ class Barchart extends Component {
     componentWillMount() {
         let self = this;
         let {title, datasourceId, datasetId, xAxis, yAxis, aggregate, summary} = this.props.properties;
-        console.log("props.properties" + this.props.properties);
         request.post({
             url: api + "getChartDetails",
             json: true,
             body: { operation: "getChartDetails", datasourceId: datasourceId, datasetId: datasetId }
         }, function (error, response, body) {
             if(body){
-                console.log(body);
                 self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){}); //dion changed
             }
         });
@@ -477,9 +475,14 @@ class Barchart extends Component {
         });
     }   
 
+    
     render() {
+
+        console.log(this.state.chartData);
+        console.log(this.state.xAxis);
+        console.log(this.state.yAxis);
         return (
-            <div  style={{ zIndex: 99}}>
+            <div style={{ zIndex: 99}}>
                 { this.state.initialized ?
                     <div style={{ width:"90%" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>

@@ -72,7 +72,6 @@ public class DashboardController extends HttpServlet {
                         allComponents.put(type, component);
                     }
                 }
-                
                 boolean status = DashboardDAO.saveDashboard(accountId, allComponents);
                 responseObj.addProperty("status", status);
                 out.print(responseObj.toString());
