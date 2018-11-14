@@ -9,6 +9,9 @@
         <div class="clearfix"></div><br />
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-expand"></i></a>
+            </div>
             <div class="menu_section">
                 <ul class="nav side-menu" id="options">
                     <li><a href="companyHome.jsp"><i class="fa fa-home"></i>  Home</a></li>

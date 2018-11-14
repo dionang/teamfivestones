@@ -5,16 +5,36 @@ $(document).ready(function () {
     $('#options li').click(function () {
         $(this).find('ul').toggle();
     });
-    
-    $('#menu_toggle').click(function () {
+   
+    $('#compress').click(function () {
         $('#logo').toggle();
         $('#logo2').toggle();
         $('#title').toggle();
         $('#title1').toggle();
+        $(this).hide();
+        $("#expand").show();
+        
+        
 
         $('body').hasClass("nav-md") ? ($('#sidebar-menu').find("li.active ul").hide(), $('#sidebar-menu').find("li.active").addClass("active-sm").removeClass("active")) : ($('#sidebar-menu').find("li.active-sm ul").show(), $('#sidebar-menu').find("li.active-sm").addClass("active").removeClass("active-sm")), $('body').toggleClass("nav-md nav-sm");
+        
     });
-   
+    
+    $('#expand').click(function () {
+        $('#logo').toggle();
+        $('#logo2').toggle();
+        $('#title').toggle();
+        $('#title1').toggle();
+        $(this).hide();
+        $("#compress").show();
+        
+        
+
+        $('body').hasClass("nav-md") ? ($('#sidebar-menu').find("li.active ul").hide(), $('#sidebar-menu').find("li.active").addClass("active-sm").removeClass("active")) : ($('#sidebar-menu').find("li.active-sm ul").show(), $('#sidebar-menu').find("li.active-sm").addClass("active").removeClass("active-sm")), $('body').toggleClass("nav-md nav-sm");
+        
+    });
+    
+    
 });
 
 function loadChartBoxes(){

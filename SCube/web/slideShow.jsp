@@ -69,14 +69,14 @@
                                             <input type="text" class="new" name="subject" placeholder="Subject" />
                                         </div>
                                         <div class="row">
-                                            <textarea class="message" placeholder="Add a message here" name="message"></textarea>
+                                            <textarea class="message" style="resize: vertical;" placeholder="Add a message here" name="message"></textarea>
                                         </div>
                                         <br>
                                         <div class="row">
-                                            Attached:
+                                            <h4 style="font-family: helvetica"><strong>Pre-Attached File:</strong></h4>
                                         </div>
                                         <div class="row form-group">
-                                            <input type="checkbox" id="ppt" name="ppt" value="" checked><label id="pptName"></label>
+                                            <input type="checkbox" id="ppt" name="ppt" value="" checked><label id="pptName" style=""></label>
                                             <input type="checkbox" id="pdf" name="pdf" value="" checked style="margin-left:10px"> <label id="pdfName" ></label>
                                         </div>
                                         <input type="hidden" name="username" value="<%= account.getUsername()%>">
@@ -90,9 +90,9 @@
                                         <input type = "file" name = "file" multiple="multiple" class="btn btn-danger" id="myFile" onchange="myFunction()" style="display:none"/>
                                         <div class="row form-group">
 
-                                            <a id="upload" value="Send"  class="btn btn-danger"  ><img src="assets/images/attach.png" style="wodth:20px;height:20px"/>Attach</a>
-                                            <input type="submit" value="Send"  class="btn btn-success" style="margin-left:10px;" id="btnSubmit"/>
-
+                           
+                                            <input type="submit" value="Send"  class="btn btn-success" style="float:right" id="btnSubmit"/>
+                                            <a id="upload" value="Send"  class="btn btn-danger" style="float:right;margin-right:20px" ><img src="assets/images/attach.png" style="wodth:20px;height:20px"/>Attach</a>
                                         </div>
 
                                         <br/>

@@ -580,9 +580,9 @@ class App extends Component {
 
     render() {
         return (
-                <div>
+                <div style={{overflow:"hidden"}}>
                 {this.state.slideshowBool? 
-            <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
+            <div className="nav-md"  id="main">
                 <div className="container body" style={{ margin: 0, padding: 0, width: "100%" }}>
                     <div className="main_container">
                         <div className="col-md-3 left_col">
@@ -604,7 +604,7 @@ class App extends Component {
                                                 <li><a href="managerHome.jsp"><i className="fa fa-home"/>  Home</a></li>
                                                 <li><a href="dashboard.jsp"><i className="fa fa-bar-chart"/>  View Dashboard</a></li>
                                                 <li><a href="createUserAccount.jsp"><i className="fa fa-group"/>  Create User Account</a></li>
-                                                <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"/>  Template</a></li>
+                                                <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"/>  Reports</a></li>
                                                 <li><a href="slideShow.jsp"><i className="fa fa-envelope"/>  Email</a></li>
                                             </ul>
                                         </ul>
@@ -615,9 +615,9 @@ class App extends Component {
                         <div className="top_nav" >
                             <div className="nav_menu">
                                 <nav>
-                                    <div className="nav toggle" onClick={this.toggleSidebar}>
-                                        <a id="menu_toggle"><i className="fa fa-bars"></i></a>
-                                    </div>
+                                   <div className="nav toggle" onClick={this.toggleSidebar}>
+                                            <a id="menu_toggle"><i className="fa fa-bars"></i></a>
+                                        </div>
                                     <ul className="nav navbar-nav navbar-right">
                                         <li>
                                             <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -770,15 +770,17 @@ class App extends Component {
                                         {/* {console.log("pageNo" + this.state.pageNo)} */}
                                         {this.state.components[this.state.pageNo].map((item, i) => {
                                             if (item.display) {
-                                                return <Rnd key={this.state.pageNo + "," + i}
+                                                return <Rnd key={this.state.pageNo + "," + i} 
                                                     style={{
                                                         borderStyle: this.state.editMode ? "dotted" : "hidden",
-                                                        borderWidth: 2,
+                                                        borderWidth: 1.5,
                                                         backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
                                                                           ? "transparent" : "white",
                                                         borderColor: 'grey',
-                                                        width: "fit-content"
+                                                        width: "fit-content",
+                                                        
                                                     }}
+                                                    
 
                                                     // intialize components x,y,height and width
                                                     position={{ x: item.x, y: item.y }}
@@ -835,23 +837,29 @@ class App extends Component {
                     </div>
                 </div>
             </div>:      
-                   
+                    <div style={{height:"100%"}}>
+                <div style={{height:"fit-content", textAlign:"center"}}>
+                     
+                                    
+                                                                                                                                                                                        </div>
                    
                                                                                                                                                     
-           <div style={{  backgroundColor:"white", height:"fit-content", textAlign:"center", overflow:"hidden" }}>
+           <div style={{  fintFamily:"helvetica",backgroundColor:"white", height:"fit-content", textAlign:"center"}}>
        
-                    <div style={{height:window.innerHeight*0.70, marginTop:window.innerHeight*0.1}}>
-     
-                                 
-                    <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#E9E9E8", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
+                     <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#CAE4DB", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
                             <img src="assets/images/arrow left.png" class="image" style={{height:window.innerWidth * 0.050, marginTop: window.innerHeight * 0.30}} /> 
                     </div>
                   
                   
-                   <div style={{float:"right",  height: window.innerHeight * 0.70,width: window.innerWidth * 0.06,backgroundColor:"#E9E9E8", textAlign:"center", cursor: "pointer"}} onClick={this.nextPage}>
+                   <div style={{float:"right",  height: window.innerHeight * 0.70,width: window.innerWidth * 0.06,backgroundColor:"#CAE4DB", textAlign:"center", cursor: "pointer"}} onClick={this.nextPage}>
                             <img src="assets/images/arrow right.png" class="image" style={{height: window.innerWidth * 0.050,  marginTop: window.innerHeight * 0.30}} />
                     </div>
-                                <div style={{ height: window.innerHeight * 0.70, backgroundColor:"white", marginLeft: window.innerWidth * 0.08}}>
+                                                                                                                                                                                    
+                       <div style={{height:window.innerHeight*0.70, marginTop:window.innerHeight*0.1, marginRight: window.innerWidth*0.11, marginLeft: window.innerWidth*0.11}}>
+     
+                                 
+                   
+                                <div style={{ height: window.innerHeight * 0.70, backgroundColor:"white"}}>
 
                                     {/* map does a for loop over all the components in the state */}
                                     {/* {console.log("pageNo" + this.state.pageNo)} */}
@@ -865,7 +873,6 @@ class App extends Component {
                                                                       ? "transparent" : "white",
                                                     borderColor: 'grey',
                                                     width: "fit-content",
-                                                    
                                                 }}
 
                                                 // intialize components x,y,height and width
@@ -919,14 +926,16 @@ class App extends Component {
                                     </div>
                                     </div> 
                                     
-                                        <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
+                                        <span style={{marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
+                                        <Button onClick={this.exitSlide} style={{ marginRight:window.innerWidth*0.007, marginTop:window.innerHeight*0.02, backgroundColor:"#DCAE1D", color:"white", fontSize:window.innerWidth*0.012, padding:3, float:"right"}}>Exit
+                          <i style ={{marginTop:3}} className="fa fa-sign-out pull-right"></i>
+                                                                                                                                                                                                </Button>                                                         
                                                                                                                                                                                                                 
-                                                                                                                                                                                                                
-                                        <Button onClick={this.exitSlide} style={{float:"right",marginTop:window.innerHeight*0.1}}>Exit Slide Show</Button>
-                                    
+                                       
                                     
                                
                                
+                                                          </div>
                                                           </div>
                                
                 }
@@ -1019,7 +1028,7 @@ class Textbox extends Component {
                 toolbarConfig={toolbarConfig}
                 toolbarClassName={"draggable"}
                 toolbarStyle={{display: this.state.editMode ? "" : "none", position:"absolute", margin:0, bottom:0, paddingLeft:10, 
-                    borderTop:"1px solid lightgray", width:"100%", backgroundColor:"whitesmoke"}}
+                    borderTop:"1px solid lightgray", width:"100%", backgroundColor:"whitesmoke", cursor: "grabbing"}}
             />
         );
     }
@@ -1123,7 +1132,7 @@ class Barchart extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{ height: "100%" }}>
+            <div className="draggable" style={{ height: "100%" , cursor: "grabbing"}}>
                 { this.state.initialized ?
                     <div style={{ height: "calc(62.5% + 100px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
@@ -1162,7 +1171,7 @@ class Barchart extends Component {
                         </ResponsiveContainer>}
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
-                    : <ChartForm initializeChart={this.initializeChart} />
+                    : <ChartForm initializeChart={this.initializeChart} style={{cursor: "grabbing"}} />
                 }
             </div>
         );
@@ -1267,7 +1276,7 @@ class Linechart extends Component {
    
     render() {
         return (
-            <div className="draggable" style={{ height: "100%" }}>
+            <div className="draggable" style={{ height: "100%", cursor: "grabbing" }}>
                 {this.state.initialized ?
                     <div style={{ height: "calc(70.5% + 1px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
@@ -1301,7 +1310,7 @@ class Linechart extends Component {
                         </ResponsiveContainer>}
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
-                    : <ChartForm initializeChart={this.initializeChart} />
+                    : <ChartForm initializeChart={this.initializeChart} style={{cursor: "grabbing"}} />
                 }
             </div>
         );   
@@ -1337,7 +1346,7 @@ class ImageComponent extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{height:"100%", width:"100%", backgroundColor: this.props.editMode ? "white" : "transparent"}}>
+            <div className="draggable" style={{height:"100%", width:"100%", backgroundColor: this.props.editMode ? "white" : "transparent", cursor: "grabbing"}}>
                 {this.state.initialized ? 
                 <img style={{height:"calc(100% - 27.5px)", width:"100%"}} 
                     src={this.state.imageUrl} 
@@ -1377,7 +1386,7 @@ class VideoComponent extends React.Component {
 
     render() {
         return (
-            <div className="draggable" style={{height:"100%", width:"100%", background:this.props.editMode ? "white" : "transparent"}}>
+            <div className="draggable" style={{height:"100%", width:"100%", background:this.props.editMode ? "white" : "transparent", cursor: "grabbing"}}>
                 {this.state.initialized ? 
                     <iframe style={{width:"100%", height:"calc(100% - 27.5px)"}} 
                         src={this.state.videoUrl} frameBorder="0" allow="encrypted-media" allowFullScreen>
@@ -1874,7 +1883,7 @@ class EmptyTable extends Component {
 
     render(){
         return (
-            <div className="draggable">
+            <div className="draggable" style={{cursor: "grabbing"}}>
                 <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
                     onClick={this.addRow}>Add Row</Button>
                 <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
