@@ -836,12 +836,9 @@ class App extends Component {
                    
                    
                                                                                                                                                     
-           <div style={{  backgroundColor:"white", height:"fit-content", textAlign:"center", overflow:"hidden" }}>
+           <div style={{  backgroundColor:"white", height:"fit-content", textAlign:"center", overflow:"hidden", textAlign:"center" }}>
        
-                    <div style={{height:window.innerHeight*0.70, marginTop:window.innerHeight*0.1}}>
-     
-                                 
-                    <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#E9E9E8", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
+                     <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#E9E9E8", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
                             <img src="assets/images/arrow left.png" class="image" style={{height:window.innerWidth * 0.050, marginTop: window.innerHeight * 0.30}} /> 
                     </div>
                   
@@ -849,7 +846,12 @@ class App extends Component {
                    <div style={{float:"right",  height: window.innerHeight * 0.70,width: window.innerWidth * 0.06,backgroundColor:"#E9E9E8", textAlign:"center", cursor: "pointer"}} onClick={this.nextPage}>
                             <img src="assets/images/arrow right.png" class="image" style={{height: window.innerWidth * 0.050,  marginTop: window.innerHeight * 0.30}} />
                     </div>
-                                <div style={{ height: window.innerHeight * 0.70, backgroundColor:"white", marginLeft: window.innerWidth * 0.08}}>
+                                                                                                                                                                                    
+                       <div style={{height:window.innerHeight*0.70, marginTop:window.innerHeight*0.1, display:"inline-block"}}>
+     
+                                 
+                   
+                                <div style={{ height: window.innerHeight * 0.70, backgroundColor:"white"}}>
 
                                     {/* map does a for loop over all the components in the state */}
                                     {/* {console.log("pageNo" + this.state.pageNo)} */}
