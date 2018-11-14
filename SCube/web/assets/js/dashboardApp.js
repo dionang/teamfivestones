@@ -252,7 +252,7 @@ class DashboardApp extends Component {
                                                 <li><a href="managerHome.jsp"><i className="fa fa-home"/>  Home</a></li>
                                                 <li><a href="dashboard.jsp"><i className="fa fa-bar-chart"/>  View Dashboard</a></li>
                                                 <li><a href="createUserAccount.jsp"><i className="fa fa-group"/>  Create User Account</a></li>
-                                                <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"/>  Template</a></li>
+                                                <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"/>  Reports</a></li>
                                                 <li><a href="slideShow.jsp"><i className="fa fa-envelope"/>  Email</a></li> 
                                             </ul>
                                         </ul>
