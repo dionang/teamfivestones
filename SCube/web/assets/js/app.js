@@ -771,7 +771,7 @@ class App extends Component {
                                                 return <Rnd key={this.state.pageNo + "," + i} 
                                                     style={{
                                                         borderStyle: this.state.editMode ? "dotted" : "hidden",
-                                                        borderWidth: 2,
+                                                        borderWidth: 1.5,
                                                         backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
                                                                           ? "transparent" : "white",
                                                         borderColor: 'grey',
