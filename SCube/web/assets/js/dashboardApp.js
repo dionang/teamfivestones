@@ -229,17 +229,18 @@ class DashboardApp extends Component {
                 <input type="hidden" id="templateId" value="1" />
                 <input type="hidden" id="companyId" value="1" />
                 <input type="hidden" id="userName" value="manager" />
-                <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
+                <div className="nav-md"  id="main">
                     <div className="container body" style={{ margin: 0, padding: 0, width: "100%" }}>
                         <div className="main_container">
                             <div className="col-md-3 left_col">
                             <div className="left_col scroll-view">
                                 <div className="navbar nav_title" style={{ border: 0 }}>
                                     <a className="site_title" style={{backgroundColor:"white",height:"57px"}}>
-                                        <img src={this.state.sidebar ? "assets/images/logo.jpg" : "assets/images/logo1.jpg"}
+                                        
+                                        <img src={"assets/images/logo.jpg" }
                                             style={{
-                                                height: this.state.sidebar ? 50 : 51,
-                                                width: this.state.sidebar ? 100 : 50,
+                                                height: 50 ,
+                                                width: 100 ,
                                             }} />
                                     </a>
                                     </div>
@@ -262,9 +263,7 @@ class DashboardApp extends Component {
                             <div className="top_nav" >
                                 <div className="nav_menu">
                                     <nav>
-                                        <div className="nav toggle" onClick={this.toggleSidebar}>
-                                            <a id="menu_toggle"><i className="fa fa-bars"></i></a>
-                                        </div>
+                                        
                                         <ul className="nav navbar-nav navbar-right">
                                             <li>
                                                 <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
