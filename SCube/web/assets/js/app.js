@@ -580,7 +580,7 @@ class App extends Component {
 
     render() {
         return (
-                <div>
+                <div style={{overflow:"hidden"}}>
                 {this.state.slideshowBool? 
             <div className="nav-md"  id="main">
                 <div className="container body" style={{ margin: 0, padding: 0, width: "100%" }}>
@@ -833,21 +833,25 @@ class App extends Component {
                     </div>
                 </div>
             </div>:      
-                   
+                    <div style={{height:"100%"}}>
+                <div style={{height:"fit-content", textAlign:"center"}}>
+                     
+                                    
+                                                                                                                                                                                        </div>
                    
                                                                                                                                                     
-           <div style={{  backgroundColor:"white", height:"fit-content", textAlign:"center", overflow:"hidden", textAlign:"center" }}>
+           <div style={{  fintFamily:"helvetica",backgroundColor:"white", height:"fit-content", textAlign:"center"}}>
        
-                     <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#E9E9E8", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
+                     <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#CAE4DB", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
                             <img src="assets/images/arrow left.png" class="image" style={{height:window.innerWidth * 0.050, marginTop: window.innerHeight * 0.30}} /> 
                     </div>
                   
                   
-                   <div style={{float:"right",  height: window.innerHeight * 0.70,width: window.innerWidth * 0.06,backgroundColor:"#E9E9E8", textAlign:"center", cursor: "pointer"}} onClick={this.nextPage}>
+                   <div style={{float:"right",  height: window.innerHeight * 0.70,width: window.innerWidth * 0.06,backgroundColor:"#CAE4DB", textAlign:"center", cursor: "pointer"}} onClick={this.nextPage}>
                             <img src="assets/images/arrow right.png" class="image" style={{height: window.innerWidth * 0.050,  marginTop: window.innerHeight * 0.30}} />
                     </div>
                                                                                                                                                                                     
-                       <div style={{height:window.innerHeight*0.70, marginTop:window.innerHeight*0.1, display:"inline-block"}}>
+                       <div style={{height:window.innerHeight*0.70, marginTop:window.innerHeight*0.1, marginRight: window.innerWidth*0.11, marginLeft: window.innerWidth*0.11}}>
      
                                  
                    
@@ -919,14 +923,16 @@ class App extends Component {
                                     </div>
                                     </div> 
                                     
-                                        <span style={{ fontFamily: 'Georgia', fontSize: 18,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
+                                        <span style={{ marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
+                                        <Button onClick={this.exitSlide} style={{ marginTop:window.innerHeight*0.02, backgroundColor:"#DCAE1D", color:"white", fontSize:window.innerWidth*0.012, padding:3, float:"right"}}>Exit
+                          <i style ={{marginTop:3}} className="fa fa-sign-out pull-right"></i>
+                                                                                                                                                                                                </Button>                                                         
                                                                                                                                                                                                                 
-                                                                                                                                                                                                                
-                                        <Button onClick={this.exitSlide} style={{float:"right",marginTop:window.innerHeight*0.1}}>Exit Slide Show</Button>
-                                    
+                                       
                                     
                                
                                
+                                                          </div>
                                                           </div>
                                
                 }
