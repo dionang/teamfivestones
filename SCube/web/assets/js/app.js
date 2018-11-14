@@ -768,15 +768,17 @@ class App extends Component {
                                         {/* {console.log("pageNo" + this.state.pageNo)} */}
                                         {this.state.components[this.state.pageNo].map((item, i) => {
                                             if (item.display) {
-                                                return <Rnd key={this.state.pageNo + "," + i}
+                                                return <Rnd key={this.state.pageNo + "," + i} 
                                                     style={{
                                                         borderStyle: this.state.editMode ? "dotted" : "hidden",
                                                         borderWidth: 2,
                                                         backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
                                                                           ? "transparent" : "white",
                                                         borderColor: 'grey',
-                                                        width: "fit-content"
+                                                        width: "fit-content",
+                                                        
                                                     }}
+                                                    
 
                                                     // intialize components x,y,height and width
                                                     position={{ x: item.x, y: item.y }}
@@ -869,7 +871,6 @@ class App extends Component {
                                                                       ? "transparent" : "white",
                                                     borderColor: 'grey',
                                                     width: "fit-content",
-                                                    
                                                 }}
 
                                                 // intialize components x,y,height and width
@@ -923,8 +924,8 @@ class App extends Component {
                                     </div>
                                     </div> 
                                     
-                                        <span style={{ marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
-                                        <Button onClick={this.exitSlide} style={{ marginTop:window.innerHeight*0.02, backgroundColor:"#DCAE1D", color:"white", fontSize:window.innerWidth*0.012, padding:3, float:"right"}}>Exit
+                                        <span style={{marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
+                                        <Button onClick={this.exitSlide} style={{ marginRight:window.innerWidth*0.007, marginTop:window.innerHeight*0.02, backgroundColor:"#DCAE1D", color:"white", fontSize:window.innerWidth*0.012, padding:3, float:"right"}}>Exit
                           <i style ={{marginTop:3}} className="fa fa-sign-out pull-right"></i>
                                                                                                                                                                                                 </Button>                                                         
                                                                                                                                                                                                                 
@@ -1025,7 +1026,7 @@ class Textbox extends Component {
                 toolbarConfig={toolbarConfig}
                 toolbarClassName={"draggable"}
                 toolbarStyle={{display: this.state.editMode ? "" : "none", position:"absolute", margin:0, bottom:0, paddingLeft:10, 
-                    borderTop:"1px solid lightgray", width:"100%", backgroundColor:"whitesmoke"}}
+                    borderTop:"1px solid lightgray", width:"100%", backgroundColor:"whitesmoke", cursor: "grabbing"}}
             />
         );
     }
@@ -1129,7 +1130,7 @@ class Barchart extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{ height: "100%" }}>
+            <div className="draggable" style={{ height: "100%" , cursor: "grabbing"}}>
                 { this.state.initialized ?
                     <div style={{ height: "calc(62.5% + 100px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
@@ -1168,7 +1169,7 @@ class Barchart extends Component {
                         </ResponsiveContainer>}
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
-                    : <ChartForm initializeChart={this.initializeChart} />
+                    : <ChartForm initializeChart={this.initializeChart} style={{cursor: "grabbing"}} />
                 }
             </div>
         );
@@ -1273,7 +1274,7 @@ class Linechart extends Component {
    
     render() {
         return (
-            <div className="draggable" style={{ height: "100%" }}>
+            <div className="draggable" style={{ height: "100%", cursor: "grabbing" }}>
                 {this.state.initialized ?
                     <div style={{ height: "calc(70.5% + 1px)" }}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
@@ -1307,7 +1308,7 @@ class Linechart extends Component {
                         </ResponsiveContainer>}
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
-                    : <ChartForm initializeChart={this.initializeChart} />
+                    : <ChartForm initializeChart={this.initializeChart} style={{cursor: "grabbing"}} />
                 }
             </div>
         );   
@@ -1343,7 +1344,7 @@ class ImageComponent extends Component {
 
     render() {
         return (
-            <div className="draggable" style={{height:"100%", width:"100%", backgroundColor: this.props.editMode ? "white" : "transparent"}}>
+            <div className="draggable" style={{height:"100%", width:"100%", backgroundColor: this.props.editMode ? "white" : "transparent", cursor: "grabbing"}}>
                 {this.state.initialized ? 
                 <img style={{height:"calc(100% - 27.5px)", width:"100%"}} 
                     src={this.state.imageUrl} 
@@ -1383,7 +1384,7 @@ class VideoComponent extends React.Component {
 
     render() {
         return (
-            <div className="draggable" style={{height:"100%", width:"100%", background:this.props.editMode ? "white" : "transparent"}}>
+            <div className="draggable" style={{height:"100%", width:"100%", background:this.props.editMode ? "white" : "transparent", cursor: "grabbing"}}>
                 {this.state.initialized ? 
                     <iframe style={{width:"100%", height:"calc(100% - 27.5px)"}} 
                         src={this.state.videoUrl} frameBorder="0" allow="encrypted-media" allowFullScreen>
@@ -1880,7 +1881,7 @@ class EmptyTable extends Component {
 
     render(){
         return (
-            <div className="draggable">
+            <div className="draggable" style={{cursor: "grabbing"}}>
                 <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
                     onClick={this.addRow}>Add Row</Button>
                 <Button bsSize="small" bsStyle="primary" style={{ display:this.state.editMode ? "inline-block" : "none", padding:"4px 6px" }}
