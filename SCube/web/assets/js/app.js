@@ -920,8 +920,8 @@ class App extends Component {
                     <span style={{marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
                     <Button onClick={this.exitSlide}
                         style={{ marginRight:window.innerWidth*0.007, marginTop:window.innerHeight*0.02, fontSize:window.innerWidth*0.012, 
-                            backgroundColor:"#FFAAAA", color:"white", height:40, width:70, padding:3, float:"right"}}>Exit
-                        <i style ={{marginTop:3}} className="fa fa-sign-out pull-right"></i>
+                            backgroundColor:"#FFAAAA", color:"white", height:40, width:window.innerWidth*0.1, padding:3, float:"right"}}>Exit
+                        <i style ={{marginTop:3, marginLeft:5}} className="fa fa-sign-out"></i>
                     </Button>                                                         
                 </div>
             </div>
