@@ -47,23 +47,12 @@
                                         <div class="card-footer">
 
                                             <div class="row">
-                                                <div class="col-sm-offset-1 col-sm-4">
-                                                    <h4 style="cursor:pointer" class="card-title "><span class="glyphicon glyphicon-plus "></span>Create New Template</h4>
+                                                <div class="col-sm-offset-1 col-sm-4" style="width:230px">
+                                                    <h4 style="cursor:pointer" class="card-title " ><span class="glyphicon glyphicon-plus "></span>Create New Template</h4>
                                                 </div>
                                             </div>
 
-                                            <div class="row" style=" opacity: 0;" >
-                                                <div class="col-xs-5" style="margin-left:10px; padding:0px">
-                                                    <button class="btn btn-success" name="viewBtn" value="view" style="width:100%">
-                                                        <i class="fa fa-edit"></i> View/Edit
-                                                    </button>
-                                                </div>
-                                                <div class="col-xs-5" style="padding:0px">
-                                                    <button class="btn btn-danger" name="deleteBtn" value="delete" style="width:100%">
-                                                        <i class="fa fa-trash"></i> Delete
-                                                    </button>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </a> 
@@ -163,23 +152,21 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="row">
-                                                <div class="col-sm-offset-1 col-sm-4">
-                                                    <h4 class="card-title"><%= template.getTemplateName()%></h4>
+                                                <div class="col-sm-offset-1 col-sm-6" >
+                                                     <button class="edit" name="viewBtn" value="view">
+                                                        <h4 class="card-title"><%= template.getTemplateName()%></h4>
+                                                    </button>
+                                                   
+                                                </div>
+                                                    <div class="col-sm-2" ></div>
+                                                <div class="col-sm-1" >
+                                                    <button class="delete" name="deleteBtn" value="delete" >
+                                                        <i class="fa fa-trash" style="color:black;font-size:x-large;color:#CA5D5F"></i>
+                                                    </button>
                                                 </div>
                                             </div>
 
-                                            <div class="row"  >
-                                                <div class="col-xs-5" style="margin-left:10px; padding:0px">
-                                                    <button class="btn btn-success edit" name="viewBtn" value="view" style="width:100%">
-                                                        <i class="fa fa-edit"></i> View/Edit
-                                                    </button>
-                                                </div>
-                                                <div class="col-xs-5" style="padding:0px">
-                                                    <button class="btn btn-danger delete" name="deleteBtn" value="delete" style="width:100%">
-                                                        <i class="fa fa-trash"></i> Delete
-                                                    </button>
-                                                </div>
-                                            </div>
+                                           
                                         </div>
                                     </div>
                                 </div>             
@@ -287,7 +274,7 @@
             $("#myInput").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
 
-                $("#myDIV form").filter(function () {
+                $("#myDiv form").filter(function () {
 
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                 });

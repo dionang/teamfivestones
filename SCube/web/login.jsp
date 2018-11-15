@@ -49,7 +49,7 @@
                             </div>
                             <br><br>  
                             <div class="row">
-                                <a href="forgetPassword.jsp"><label class="forget">Forget your password?</label></a>
+                               <a href="forgetPassword.jsp" class="forget">Forget your password?</a>
                             </div>
                         </form> 
                     </div>
