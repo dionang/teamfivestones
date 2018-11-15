@@ -9,15 +9,13 @@
         
         <div class="clearfix"></div><br />
         <div style="marginTop:20">
-                <div id="compress" style="float:right;margin-right:30px;margin-top: -5px;color:white">
-                    <i class="fa fa-minus-square-o" ></i>
-                </div>
-             <div id="expand" style="display:none;margin-right:10px;margin-top: -5px;float:right;color:white">
-                    <i class="fa fa-plus-square-o" ></i>
-                </div>
-            
-            
+            <div id="compress" style="float:right;margin-right:30px;margin-top: -5px;color:white">
+                <i class="fa fa-minus-square-o" ></i>
             </div>
+            <div id="expand" style="display:none;margin-right:10px;margin-top: -5px;float:right;color:white">
+                <i class="fa fa-plus-square-o" ></i>
+            </div>
+        </div>
         
         
         <!-- sidebar menu -->

@@ -28,7 +28,7 @@ class App extends Component {
             pageNo: 0,
             picArr:[],
             exporting: false,
-            slideshowBool:true
+            slideshow: false
         }
     }
 
@@ -530,6 +530,7 @@ class App extends Component {
     }
 
     toggleSidebar = () => {
+        console.log("sidebar");
         this.setState({ sidebar: !this.state.sidebar });
     }
 
@@ -542,11 +543,11 @@ class App extends Component {
     }
     
     slideShow=()=>{
-        this.setState({slideshowBool:false,editMode: false, pageNo:0});
+        this.setState({slideshow:true, editMode: false, pageNo:0});
     }
     
     exitSlide=()=>{
-        this.setState({slideshowBool:true,editMode: true});
+        this.setState({slideshow:false, editMode: true});
     }
 
     // handleFormSubmit= (formSubmitEvent) => {
@@ -580,15 +581,15 @@ class App extends Component {
 
     render() {
         return (
-                <div style={{overflow:"hidden"}}>
-                {this.state.slideshowBool? 
-            <div className="nav-md"  id="main">
+            <div style={{overflow:"hidden"}}>
+            {!this.state.slideshow? 
+            <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
                 <div className="container body" style={{ margin: 0, padding: 0, width: "100%" }}>
                     <div className="main_container">
                         <div className="col-md-3 left_col">
                             <div className="left_col scroll-view">
                                 <div className="navbar nav_title" style={{backgroundColor:"white",height:"57px"}}>
-                                    <a className="site_title">
+                                    <a className="site_title" style={{height: 50}}>
                                         <img src={this.state.sidebar ? "assets/images/logo.jpg" : "assets/images/logo1.jpg"}
                                             style={{
                                                 height: this.state.sidebar ? 50 : 51,
@@ -596,7 +597,15 @@ class App extends Component {
                                             }} />
                                     </a>
                                 </div>
-                                <div className="clearfix"></div><br />
+                                <div className="clearfix"></div><br/>
+                                <div id="compress" style={{display: this.state.sidebar ? 'block':'none', float:'right', marginRight:30, marginTop:-5, color:'white'}} 
+                                    onClick={this.toggleSidebar}>
+                                    <i className="fa fa-minus-square-o"></i>
+                                </div>
+                                <div id="expand" style={{display: this.state.sidebar ? 'none':'block', float:'right', marginRight:10, marginTop:-5, color:'white'}} 
+                                    onClick={this.toggleSidebar}>
+                                    <i className="fa fa-plus-square-o" ></i>
+                                </div>
                                 <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
                                     <div className="menu_section">
                                         <ul className="nav side-menu" id="options">
@@ -615,9 +624,7 @@ class App extends Component {
                         <div className="top_nav" >
                             <div className="nav_menu">
                                 <nav>
-                                   <div className="nav toggle" onClick={this.toggleSidebar}>
-                                            <a id="menu_toggle"><i className="fa fa-bars"></i></a>
-                                        </div>
+                                   
                                     <ul className="nav navbar-nav navbar-right">
                                         <li>
                                             <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -626,7 +633,7 @@ class App extends Component {
                                                 <span className=" fa fa-angle-down"></span>
                                             </a>
                                             <ul className="dropdown-menu dropdown-usermenu pull-right">
-                                                <li><a href="resetPassword.jsp"><i class="fa fa-refresh pull-right"></i> Reset Password</a></li>
+                                                <li><a href="resetPassword.jsp"><i className="fa fa-refresh pull-right"></i> Reset Password</a></li>
                                                 <li><a href="logout.jsp"><i className="fa fa-sign-out pull-right"/> Log Out</a></li>
                                             </ul>
                                         </li>
@@ -836,111 +843,90 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
-            </div>:      
-                    <div style={{height:"100%"}}>
-                <div style={{height:"fit-content", textAlign:"center"}}>
-                     
-                                    
-                                                                                                                                                                                        </div>
-                   
-                                                                                                                                                    
-           <div style={{  fintFamily:"helvetica",backgroundColor:"white", height:"fit-content", textAlign:"center"}}>
-       
-                     <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#CAE4DB", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
-                            <img src="assets/images/arrow left.png" class="image" style={{height:window.innerWidth * 0.050, marginTop: window.innerHeight * 0.30}} /> 
+            </div>
+            :      
+            <div style={{height:"100%"}}>
+                <div style={{height:"fit-content", textAlign:"center"}}></div>
+                <div style={{ fontFamily:"helvetica",backgroundColor:"white", height:"fit-content", textAlign:"center"}}>
+                    <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#CAE4DB", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
+                        <img src="assets/images/arrow left.png" className="image" style={{height:window.innerWidth * 0.050, marginTop: window.innerHeight * 0.30}} /> 
                     </div>
-                  
-                  
-                   <div style={{float:"right",  height: window.innerHeight * 0.70,width: window.innerWidth * 0.06,backgroundColor:"#CAE4DB", textAlign:"center", cursor: "pointer"}} onClick={this.nextPage}>
-                            <img src="assets/images/arrow right.png" class="image" style={{height: window.innerWidth * 0.050,  marginTop: window.innerHeight * 0.30}} />
+                    <div style={{float:"right",  height: window.innerHeight * 0.70,width: window.innerWidth * 0.06,backgroundColor:"#CAE4DB", textAlign:"center", cursor: "pointer"}} onClick={this.nextPage}>
+                        <img src="assets/images/arrow right.png" className="image" style={{height: window.innerWidth * 0.050,  marginTop: window.innerHeight * 0.30}} />
                     </div>
-                                                                                                                                                                                    
-                       <div style={{height:window.innerHeight*0.70, marginTop:window.innerHeight*0.1, marginRight: window.innerWidth*0.11, marginLeft: window.innerWidth*0.11}}>
-     
-                                 
-                   
-                                <div style={{ height: window.innerHeight * 0.70, backgroundColor:"white"}}>
+                    <div style={{height:window.innerHeight*0.70, marginTop:window.innerHeight*0.1, marginRight: window.innerWidth*0.11, marginLeft: window.innerWidth*0.11}}>
+                        <div style={{ height: window.innerHeight * 0.70, backgroundColor:"white"}}>
+                            {/* map does a for loop over all the components in the state */}
+                            {/* {console.log("pageNo" + this.state.pageNo)} */}
+                            {this.state.components[this.state.pageNo].map((item, i) => {
+                                if (item.display) {
+                                    return <Rnd key={this.state.pageNo + "," + i}
+                                        style={{
+                                            borderStyle: this.state.editMode ? "dotted" : "hidden",
+                                            borderWidth: 2,
+                                            backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
+                                                              ? "transparent" : "white",
+                                            borderColor: 'grey',
+                                            width: "fit-content",
+                                        }}
 
-                                    {/* map does a for loop over all the components in the state */}
-                                    {/* {console.log("pageNo" + this.state.pageNo)} */}
-                                    {this.state.components[this.state.pageNo].map((item, i) => {
-                                        if (item.display) {
-                                            return <Rnd key={this.state.pageNo + "," + i}
-                                                style={{
-                                                    borderStyle: this.state.editMode ? "dotted" : "hidden",
-                                                    borderWidth: 2,
-                                                    backgroundColor: (item.type === "text" || item.type === "image" || item.type === "video") 
-                                                                      ? "transparent" : "white",
-                                                    borderColor: 'grey',
-                                                    width: "fit-content",
-                                                }}
+                                        // intialize components x,y,height and width
+                                        position={{ x: item.x, y: item.y }}
+                                        size={{ width: item.width, height: item.height }}
 
-                                                // intialize components x,y,height and width
-                                                position={{ x: item.x, y: item.y }}
-                                                size={{ width: item.width, height: item.height }}
+                                        // min height and size
+                                        minHeight={10} minWidth={10}
 
-                                                // min height and size
-                                                minHeight={10} minWidth={10}
+                                        // to customize the dragging and resizing behavior
+                                        bounds={"parent"}
+                                        cancel={".nonDraggable"}
+                                        dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
+                                        enableResizing={{
+                                            bottom: this.state.editMode,
+                                            bottomLeft: this.state.editMode,
+                                            bottomRight: this.state.editMode,
+                                            left: this.state.editMode,
+                                            right: this.state.editMode,
+                                            top: this.state.editMode,
+                                            topLeft: this.state.editMode,
+                                            topRight: this.state.editMode
+                                        }}
 
-                                                // to customize the dragging and resizing behavior
-                                                bounds={"parent"}
-                                                cancel={".nonDraggable"}
-                                                dragHandleClassName={this.state.editMode ? "draggable" : "cannotDrag"}
-                                                enableResizing={{
-                                                    bottom: this.state.editMode,
-                                                    bottomLeft: this.state.editMode,
-                                                    bottomRight: this.state.editMode,
-                                                    left: this.state.editMode,
-                                                    right: this.state.editMode,
-                                                    top: this.state.editMode,
-                                                    topLeft: this.state.editMode,
-                                                    topRight: this.state.editMode
-                                                }}
+                                        // update height and width onResizeStop
+                                        // onResizeStop will activate a callback function containing these params
+                                        // ref represents item that was resized
+                                        onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
 
-                                                // update height and width onResizeStop
-                                                // onResizeStop will activate a callback function containing these params
-                                                // ref represents item that was resized
-                                                onResize={(event, dir, ref, delta, pos) => this.onResize(ref, pos, i)}
-
-                                                // update height and width onResizeStop
-                                                // onDragStop will activate a callback function containing these params
-                                                // ref represents item that was dragged
-                                                onDragStop={(event, ref) => this.onDragStop(ref, i)}
-                                            >
-                                                <div style={{ height: 27.5, float: "right" }}>
-                                                    <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
-                                                        onClick={() => this.changeSettings(i)}></i>
-                                                    <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
-                                                        onClick={() => this.deleteComponent(i)}></i>
-                                                </div>
-                                                <ReportComponent type={item.type} editMode={this.state.editMode}
-                                                    properties={item.properties} i={i}
-                                                    updateProperties={this.updateProperties.bind(this)}
-                                                />
-                                                {/* <Descriptive type={item.type} editMode={this.state.editMode}
-                                                properties={item.properties} i={i}
-                                                updateProperties={this.updateProperties.bind(this)}></Descriptive> */}
-                                            </Rnd>
-                                        }
-                                    })}
-                                    </div>
-                                    </div> 
-                                    
-                                        <span style={{marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
-                                        <Button onClick={this.exitSlide} style={{ marginRight:window.innerWidth*0.007, marginTop:window.innerHeight*0.02, backgroundColor:"#DCAE1D", color:"white", fontSize:window.innerWidth*0.012, padding:3, float:"right"}}>Exit
-                          <i style ={{marginTop:3}} className="fa fa-sign-out pull-right"></i>
-                                                                                                                                                                                                </Button>                                                         
-                                                                                                                                                                                                                
-                                       
-                                    
-                               
-                               
-                                                          </div>
-                                                          </div>
-                               
-                }
+                                        // update height and width onResizeStop
+                                        // onDragStop will activate a callback function containing these params
+                                        // ref represents item that was dragged
+                                        onDragStop={(event, ref) => this.onDragStop(ref, i)}
+                                    >
+                                        <div style={{ height: 27.5, float: "right" }}>
+                                            <i style={{ marginTop: 10, marginRight: 6, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-wrench"
+                                                onClick={() => this.changeSettings(i)}></i>
+                                            <i style={{ marginTop: 10, marginRight: 10, visibility: this.state.editMode ? "" : "hidden" }} className="fa fa-times"
+                                                onClick={() => this.deleteComponent(i)}></i>
+                                        </div>
+                                        <ReportComponent type={item.type} editMode={this.state.editMode}
+                                            properties={item.properties} i={i}
+                                            updateProperties={this.updateProperties.bind(this)}
+                                        />
+                                    </Rnd>
+                                }
+                            })}
+                        </div>
+                    </div> 
+                    <span style={{marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
+                    <Button onClick={this.exitSlide}
+                        style={{ marginRight:window.innerWidth*0.007, marginTop:window.innerHeight*0.02, fontSize:window.innerWidth*0.012, 
+                            backgroundColor:"#FFAAAA", color:"white", height:40, width:70, padding:3, float:"right"}}>Exit
+                        <i style ={{marginTop:3}} className="fa fa-sign-out pull-right"></i>
+                    </Button>                                                         
                 </div>
-           
+            </div>
+            }
+            </div>
         );
     }
 }
@@ -1851,7 +1837,7 @@ class EmptyTable extends Component {
 
     handleClick = (e) => {
         let value = e.target.innerHTML;
-        e.target.innerHTML = '<input class="nonDraggable" value="' + value + '"/>';
+        e.target.innerHTML = '<input className="nonDraggable" value="' + value + '"/>';
         e.target.childNodes[0].focus();
     }
 

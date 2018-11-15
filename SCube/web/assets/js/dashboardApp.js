@@ -226,10 +226,7 @@ class DashboardApp extends Component {
     render() {
         return (
             <div>
-                <input type="hidden" id="templateId" value="1" />
-                <input type="hidden" id="companyId" value="1" />
-                <input type="hidden" id="userName" value="manager" />
-                <div className="nav-md"  id="main">
+                <div className={this.state.sidebar ? "nav-md" : "nav-sm"} id="main">
                     <div className="container body" style={{ margin: 0, padding: 0, width: "100%" }}>
                         <div className="main_container">
                             <div className="col-md-3 left_col">
@@ -244,7 +241,15 @@ class DashboardApp extends Component {
                                             }} />
                                     </a>
                                     </div>
-                                    <div className="clearfix"></div><br />
+                                    <div className="clearfix"></div><br/>
+                                    <div id="compress" style={{display: this.state.sidebar ? 'block':'none', float:'right', marginRight:30, marginTop:-5, color:'white'}} 
+                                        onClick={this.toggleSidebar}>
+                                        <i className="fa fa-minus-square-o" ></i>
+                                    </div>
+                                    <div id="expand" style={{display: this.state.sidebar ? 'none':'block', float:'right', marginRight:10, marginTop:-5, color:'white'}} 
+                                        onClick={this.toggleSidebar}>
+                                        <i className="fa fa-plus-square-o" ></i>
+                                    </div>
                                     <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
                                         <div className="menu_section">
                                             <ul className="nav side-menu" id="options">
@@ -263,19 +268,15 @@ class DashboardApp extends Component {
                             <div className="top_nav" >
                                 <div className="nav_menu">
                                     <nav>
-                                        <div className="nav toggle" onClick={this.toggleSidebar}>
-                                            <a id="menu_toggle"><i className="fa fa-bars"></i></a>
-                                        </div>
                                         <ul className="nav navbar-nav navbar-right">
                                             <li>
                                                 <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                               
-                                                <img style={{marginLeft:2}} src="assets/images/man.png" />
-                                                     {document.getElementById('profileName').value}
-                                                <span className=" fa fa-angle-down"></span>
-                                            </a>
+                                                    <img style={{marginLeft:2}} src="assets/images/man.png" />
+                                                         {document.getElementById('profileName').value}
+                                                    <span className=" fa fa-angle-down"></span>
+                                                </a>
                                                 <ul className="dropdown-menu dropdown-usermenu pull-right">
-                                                    <li><a href="resetPassword.jsp"><i class="fa fa-refresh pull-right"></i> Reset Password</a></li>
+                                                    <li><a href="resetPassword.jsp"><i className="fa fa-refresh pull-right"></i> Reset Password</a></li>
                                                     <li><a href="logout.jsp"><i className="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                                 </ul>
                                             </li>
@@ -288,9 +289,9 @@ class DashboardApp extends Component {
 
                             <div className="right_col" width="100%" style={{ backgroundColor: "#F3F3F3", overflow:"hidden" }}>
 
-                               <div className="col-xs-3 col-md-3" style={{ textAlign: "center", verticalAlign: "middle", float: "right", height: 'fit-content', }}>
+                                <div className="col-xs-3 col-md-3" style={{ textAlign: "center", verticalAlign: "middle", float: "right", height: 'fit-content', }}>
                                     <label style={{ margin: '0px', fontFamily: 'Georgia', fontSize: "16px", marginTop: "5px",  backgroundColor: 'brown', width: "100%", color: 'white', borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>Number of Templates Created</label>
-                                    <br /><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>{this.state.templateCount}</label>
+                                    <br/><label style={{ margin: '0px', fontSize: "40px", width: '100%', border: "1px solid grey", }}>{this.state.templateCount}</label>
                                 </div>
 
                                 {/* <button className="btn btn-primary" id="changeSize" onClick={this.openModal} >Change Page Size</button> */}
@@ -305,7 +306,7 @@ class DashboardApp extends Component {
                                 {/* <Button className="col-md-2 col-xs-2" style={{ float:"right", minWidth:150 }} bsStyle="warning" onClick={this.savePresentation}>
                                         <i className="fa fa-edit" style={{ marginRight: 2 }} /> Export as PPT
                                     </Button> */}
-                                <br />
+                                <br/>
 
                                 <span style={{ fontFamily: "INTUITIVE", fontSize: "20px", marginRight: "20px" }}><span style={{ fontSize: "50px", backgroundColor: "#F3F3F3", fontWeight: 'bold' }}>Dashboard</span> </span>
                                 <div className="col-sm-12 col-xs-12" style={{ borderBottom: '3px solid maroon' }}>
