@@ -845,7 +845,7 @@ class App extends Component {
                 </div>
             </div>
             :      
-            <div style={{height:"100%"}}>
+            <div style={{height:"100%",backgroundColor:"whitesmoke"}}>
                 <div style={{height:"fit-content", textAlign:"center"}}></div>
                 <div style={{ fontFamily:"helvetica",backgroundColor:"white", height:"fit-content", textAlign:"center"}}>
                     <div style={{float:"left", height: window.innerHeight * 0.70, width: window.innerWidth * 0.06, backgroundColor:"#CAE4DB", textAlign:"center", cursor: "pointer"}} onClick={this.previousPage}>
@@ -917,13 +917,14 @@ class App extends Component {
                             })}
                         </div>
                     </div> 
-                    <span style={{marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  margin: "60px" }}>Page Number: {this.state.pageNo + 1} </span>                 
+                                                                          
+                </div>
+                 <span style={{marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  marginLeft:600 }}>Page Number: {this.state.pageNo + 1} </span>                 
                     <Button onClick={this.exitSlide}
                         style={{ marginRight:window.innerWidth*0.007, marginTop:window.innerHeight*0.02, fontSize:window.innerWidth*0.012, 
                             backgroundColor:"#FFAAAA", color:"white", height:40, width:window.innerWidth*0.1, padding:3, float:"right"}}>Exit
                         <i style ={{marginTop:3, marginLeft:5}} className="fa fa-sign-out"></i>
-                    </Button>                                                         
-                </div>
+                    </Button>  
             </div>
             }
             </div>
