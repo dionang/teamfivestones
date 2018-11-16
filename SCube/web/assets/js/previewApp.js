@@ -36,7 +36,7 @@ class App extends Component {
         this.loadTemplate();
         setTimeout(function () {
             self.savePDF();
-        }, 5000);
+        }, 8000);
     }
 
     changeSettings(i) {
@@ -184,7 +184,7 @@ class App extends Component {
                         // give time for page to rerender before calling the method
                         setTimeout(function () {
                             self.savePDF();
-                        }, 2000);
+                        }, 3000);
 
                         // reached the last page, proceed to export PDF
                     } else {
