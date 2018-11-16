@@ -687,30 +687,32 @@ class App extends Component {
 
 
                             <div className="col-sm-12 col-xs-12" style={{ paddingTop: 5, backgroundColor: 'white',height:window.innerHeight*0.13, borderBottom:"#003366 5px solid" }}>
-                                <div className="col-md-12 col-xs-12">
+                                <div className="col-md-12 col-xs-12" style={{height:"fit-content", marginBottom:5}}>
                                 <label style={{ fontSize: 15, marginRight: 2, float:"left" }}>Template Name:</label>
-                                <input style={{ fontSize: 15, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
+                                <input style={{ fontSize: 15, marginLeft: 10, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
                                 <span style={{float:"right"}}>
                                     <DropdownButton title="Export As" id="dropdown-size-medium"  onSelect={this.export}>
                                         <MenuItem eventKey="PDF">PDF</MenuItem>
                                         <MenuItem eventKey="PPT">PPT</MenuItem>
                                     </DropdownButton>
                                 </span>
-                            </div>
-
+                                </div>
+                            
+                            
                                 <label> Add Component: </label>
                                 <input type="image" data-toggle="tooltip" title="Add Textbox"
-                                    onClick={this.addTextbox} style={{ marginRight: 1, height:window.innerHeight*0.04, marginBottom:"-15px" }} src= "assets/images/text.png"/>
+                                    onClick={this.addTextbox} style={{ marginRight: 0.5, height:window.innerHeight*0.035, marginBottom:"-15px" }} src= "assets/images/text.png"/>
                                 <input type="image" data-toggle="tooltip" title="Add Bar Chart"
-                                    onClick={this.addBarChart} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/bar chart.png"/>
+                                    onClick={this.addBarChart} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-15px"  }} src= "assets/images/bar chart.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Line Chart" 
-                                    onClick={this.addLineChart} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/line chart.png"/>
+                                    onClick={this.addLineChart} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-15px"  }} src= "assets/images/line chart.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Table" 
-                                    onClick={this.addTable} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/table.png"/>
+                                    onClick={this.addTable} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-15px"  }} src= "assets/images/table.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Image" 
-                                    onClick={this.addImage} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/picture.png"/>
+                                    onClick={this.addImage} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-15px"  }} src= "assets/images/picture.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Video" 
-                                    onClick={this.addVideo} style={{ marginRight: 10, height:window.innerHeight*0.04, marginBottom:"-15px"  }} src= "assets/images/video_4880.png"/>
+                                    onClick={this.addVideo} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-15px"  }} src= "assets/images/video_4880.png"/>
+                            
                                 {/*
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"
                                     onClick={this.addTextbox} style={{ marginRight: 5, marginLeft: 6 }}><i className="fa fa-font" /></Button>
@@ -725,7 +727,7 @@ class App extends Component {
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Video"
                                     onClick={this.addVideo} style={{ backgroundColor: "#D896FF", color: "white", border: "1px solid #D896FF", marginRight: 5}}><i className="fa fa-play-circle" /></Button>
                                 */}
-                                <span style={{ fontFamily: 'Georgia', fontSize: 18,  marginLeft:window.innerWidth*0.1}}>Page Number
+                                <span style={{ fontFamily: 'Georgia', fontSize: 18,  marginLeft:window.innerWidth*0.08,}}>Page Number
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Previous Page" bsStyle="warning" bsSize="small" onClick={this.previousPage}
                                     style={{ marginRight: 10, marginLeft: 10, textAlign:"center"  }}>
                                     <svg height="15" preserveAspectRatio="xMinYMax meet" viewBox="0 0 17 17" width="24">
@@ -742,29 +744,28 @@ class App extends Component {
                                             <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" className="jWRuRT"></path>
                                         </svg>
                                     </Button>
-                                    <Button style={{ marginLeft: 5,marginRight:5, marginTop:5}} bsStyle = "info" onClick={this.saveTemplate}> 
+                                
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Play Slideshow"style={{marginLeft:"10px"}} onClick={this.slideShow}>
+                                        <img src="assets/images/slideshow.png" style={{height: "22px", marginRight:"5px"}} />
+                                    </Button>
+                                    </span>      
+                                    <Button style={{ marginLeft: 5,marginRight:5}} bsStyle = "info" onClick={this.saveTemplate}> 
                                         <i className="fa fa-save fa-lg" style={{marginRight:4}}/>Save
                                     </Button>
                                     {this.state.editMode ?
-                                        <span>
-                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right',marginTop:5 }} bsStyle="danger" onClick={this.toggleEditMode}>
+                                            <Button style={{ width: "fit-content", float:'right', fontSize: window.innerHeight*0.02 }} bsStyle="danger" onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Editing
                                             </Button>
-                                           <Button style={{marginLeft:"30px"}} onClick={this.slideShow}><img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px"}} />
-                                                   <span style={{fontFamily: 'Georgia', fontSize: 17}}>Play slide show</span></Button>
-                                        </span>
+                                           
                                         :
-                                        <span>
-                                            <Button className="col-md-2 col-xs-2" style={{ width: "fit-content", marginLeft:5, float:'right',marginTop:5}} bsStyle="success" onClick={this.toggleEditMode}>
+                                            <Button style={{ width: "fit-content",  float:'right', fontSize: window.innerHeight*0.02}} bsStyle="success" onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Edit
                                             </Button>
-                                            <Button style={{marginLeft:"30px"}} onClick={this.slideShow}><img src="assets/images/slideshow.png" style={{height: "25px", marginRight:"5px"}} />
-                                                   <span style={{fontFamily: 'Georgia', fontSize: 17}}>Play slide show</span></Button>
-                                        </span>
+                                            
                                     }                            
-                                </span>
+                                
                             </div>
                             
                             <div className="col-sm-12 col-xs-12" style={{ background: "#EEEEEE", paddingBottom:window.innerHeight * 0.02, textAlign:"center", paddingTop:window.innerHeight * 0.02,}}>
@@ -919,12 +920,14 @@ class App extends Component {
                     </div> 
                                                                           
                 </div>
-                 <span style={{marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012,  marginLeft:600 }}>Page Number: {this.state.pageNo + 1} </span>                 
+                <div style={{textAlign:"center", width:"100%", height:"100%"}}>
+                 <span style={{marginTop:window.innerHeight*0.02,fontFamily: 'helvetica', fontSize:window.innerWidth*0.012, display:"inline-block" }}>Page Number: {this.state.pageNo + 1} </span>                 
                     <Button onClick={this.exitSlide}
-                        style={{ marginRight:window.innerWidth*0.007, marginTop:window.innerHeight*0.02, fontSize:window.innerWidth*0.012, 
+                        style={{ marginRight:window.innerWidth*0.007, marginTop:window.innerHeight*0.12, fontSize:window.innerWidth*0.012, 
                             backgroundColor:"#FFAAAA", color:"white", height:40, width:window.innerWidth*0.1, padding:3, float:"right"}}>Exit
                         <i style ={{marginTop:3, marginLeft:5}} className="fa fa-sign-out"></i>
                     </Button>  
+                    </div>
             </div>
             }
             </div>
