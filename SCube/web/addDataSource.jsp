@@ -139,13 +139,13 @@
                                         <br>
                                         <input type="hidden" name="companyId" value="<%= account.getCompanyId()%>">
                                     <input type="hidden" name="operation" value="addDatasource" />
-                                    <div class="row">  
-                                        <div class="col-lg-offset-8 col-lg-2 ">
-                                            <input type="submit" value="Create Datasource" class="btn btn-success" style="margin-left:60px"/>
+                                    <div class="row" >  
+                                        <div class="col-lg-offset-8 col-lg-2 col-sm-offset-6 col-sm-2" style="width:fit-content;">
+                                            <input type="submit" value="Create Datasource" class="btn btn-success" />
                                         </div>
-
-                                        <div class="col-lg-2">
-                                            <a class="btn btn-primary" style="float:right" href="devHome.jsp"><i class="fa fa-home"></i> Back</a>
+                                     
+                                        <div class="col-lg-2 col-sm-2 " style="width:fit-content;float:right">
+                                            <a class="btn btn-primary" style="" href="devHome.jsp"><i class="fa fa-home"></i>Back</a>
                                         </div>
 
                                     </div>
