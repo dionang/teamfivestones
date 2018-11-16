@@ -615,6 +615,7 @@ class App extends Component {
                                                 <li><a href="createUserAccount.jsp"><i className="fa fa-group"/>  Create User Account</a></li>
                                                 <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"/>  Reports</a></li>
                                                 <li><a href="slideShow.jsp"><i className="fa fa-envelope"/>  Email</a></li>
+                                                <li><a href="previewLinkGenerator.jsp"><i className="fa fa-link"></i> Generate Preview URL</a></li>
                                             </ul>
                                         </ul>
                                     </div>

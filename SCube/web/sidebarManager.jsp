@@ -29,6 +29,7 @@
                     <li><a href="createUserAccount.jsp"><i class="fa fa-group"></i>  Create User Account</a></li>
                     <li><a href="templateHome.jsp"><i class="fa fa-file-image-o"></i>  Reports</a></li> 
                     <li><a href="slideShow.jsp"><i class="fa fa-envelope"></i>  Email</a></li>
+                    <li><a href="previewLinkGenerator.jsp"><i class="fa fa-link"></i>Generate Preview URL</a></li>
                 </ul>
             </div>
         </div>

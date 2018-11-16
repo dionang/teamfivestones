@@ -253,14 +253,13 @@ class DashboardApp extends Component {
                                     <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
                                         <div className="menu_section">
                                             <ul className="nav side-menu" id="options">
-                                            <ul className="nav side-menu" id="options">
                                                 <li><a href="managerHome.jsp"><i className="fa fa-home"/>  Home</a></li>
                                                 <li><a href="dashboard.jsp"><i className="fa fa-bar-chart"/>  View Dashboard</a></li>
                                                 <li><a href="createUserAccount.jsp"><i className="fa fa-group"/>  Create User Account</a></li>
                                                 <li><a href="templateHome.jsp"><i className="fa fa-file-image-o"/>  Reports</a></li>
                                                 <li><a href="slideShow.jsp"><i className="fa fa-envelope"/>  Email</a></li> 
+                                                <li><a href="previewLinkGenerator.jsp"><i className="fa fa-link"></i> Generate Preview URL</a></li>
                                             </ul>
-                                        </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -272,8 +271,8 @@ class DashboardApp extends Component {
                                             <li>
                                                 <a className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                     <img style={{marginLeft:2}} src="assets/images/man.png" />
-                                                         {document.getElementById('profileName').value}
-                                                    <span className=" fa fa-angle-down"></span>
+                                                        {document.getElementById('profileName').value}
+                                                    <span className=" fa fa-angle-down" style={{marginLeft:5}}></span>
                                                 </a>
                                                 <ul className="dropdown-menu dropdown-usermenu pull-right">
                                                     <li><a href="resetPassword.jsp"><i className="fa fa-refresh pull-right"></i> Reset Password</a></li>

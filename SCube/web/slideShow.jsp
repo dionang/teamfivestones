@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/dashboard.css">
         <link rel="stylesheet" href="assets/css/slideShow.css">
-        <title>Slide Show</title>
+        <title>Email</title>
         <%
             Account account = (Account) session.getAttribute("account");
 
@@ -32,10 +32,11 @@
                         <div class="form" style=" margin-top: 20px; " >
                             <form action="slideShow" method="post" target="_blank" >
                                 <input type="hidden" name="operation" value="slideShow"/>
-                                <h1 style="color: #2F4F4F; font-family: Oswald; font-size: 30px">Select Template</h1>
+                                <h1 style="color: #2F4F4F; font-family: Oswald; font-size: 30px">Select Report</h1>
                                 <br/>
                                 <select name="template" class="form-control" style="font-size:14px;height:40px;" id="templateName">
-                                <%                                    ReportDAO reportDao = new ReportDAO();
+                                <%                                    
+                                    ReportDAO reportDao = new ReportDAO();
                                     ArrayList<Template> templateList = reportDao.retrieveAllTemplatesByCompany(companyId);
                                     for (Template eachTemplate : templateList) {
                                 %>
