@@ -747,20 +747,20 @@ class App extends Component {
                                     </Button>
                                 
                                     <Button data-toggle="tooltip" data-placement="bottom" title="Play Slideshow"style={{marginLeft:"10px"}} onClick={this.slideShow}>
-                                        <img src="assets/images/slideshow.png" style={{height: "22px", marginRight:"5px"}} />
+                                        <img src="assets/images/slideshow.png" style={{height: "20px", marginRight:"5px"}} />
                                     </Button>
                                     </span>      
                                     <Button style={{ marginLeft: 5,marginRight:5}} bsStyle = "info" onClick={this.saveTemplate}> 
                                         <i className="fa fa-save fa-lg" style={{marginRight:4}}/>Save
                                     </Button>
                                     {this.state.editMode ?
-                                            <Button style={{ width: "fit-content", float:'right', fontSize: window.innerHeight*0.02 }} bsStyle="danger" onClick={this.toggleEditMode}>
+                                            <Button style={{ width: "fit-content", float:'right' }} bsStyle="danger" onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Editing
                                             </Button>
                                            
                                         :
-                                            <Button style={{ width: "fit-content",  float:'right', fontSize: window.innerHeight*0.02}} bsStyle="success" onClick={this.toggleEditMode}>
+                                            <Button style={{ width: "fit-content",  float:'right'}} bsStyle="success" onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Edit
                                             </Button>
