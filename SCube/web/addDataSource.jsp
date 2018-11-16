@@ -54,7 +54,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12 col-xs-12 ">
-                                                <input type="text" class="form-control" name="datasourceUrl" placeholder="Enter your API URL" required="" id="url" style="width:100%" />
+                                                <input type="text" class="form-control" name="datasourceUrl" placeholder="Enter your API URL Eg: https://abc.com/api/someEndpoint?someParam=someValue" required="" id="url" style="width:100%" />
                                             </div>
                                         </div>
                                         <br>

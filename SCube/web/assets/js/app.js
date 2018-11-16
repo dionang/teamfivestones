@@ -465,6 +465,9 @@ class App extends Component {
         }
 
         pptx.save(this.state.templateName);
+        // completed the rendering of doc
+        // upload PDF to public folder
+        
     }
 
     saveTemplate = () => {
@@ -746,21 +749,21 @@ class App extends Component {
                                         </svg>
                                     </Button>
                                 
-                                    <Button data-toggle="tooltip" data-placement="bottom" title="Play Slideshow"style={{marginLeft:"10px"}} onClick={this.slideShow}>
-                                        <img src="assets/images/slideshow.png" style={{height: "20px", marginRight:"5px"}} />
+                                    <Button data-toggle="tooltip" data-placement="bottom" title="Play Slideshow"style={{marginLeft:"10px", height:"33px"}} onClick={this.slideShow}>
+                                        <img src="assets/images/slideshow.png" style={{height: "22px", marginRight:"5px"}} />
                                     </Button>
                                     </span>      
-                                    <Button style={{ marginLeft: 5,marginRight:5}} bsStyle = "info" onClick={this.saveTemplate}> 
+                                    <Button style={{ marginLeft: 5,marginRight:5,  height:"33px"}} bsStyle = "info" onClick={this.saveTemplate}> 
                                         <i className="fa fa-save fa-lg" style={{marginRight:4}}/>Save
                                     </Button>
                                     {this.state.editMode ?
-                                            <Button style={{ width: "fit-content", float:'right' }} bsStyle="danger" onClick={this.toggleEditMode}>
+                                            <Button style={{ width: "fit-content", float:'right', height:"33px" }} bsStyle="danger" onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Editing
                                             </Button>
                                            
                                         :
-                                            <Button style={{ width: "fit-content",  float:'right'}} bsStyle="success" onClick={this.toggleEditMode}>
+                                            <Button style={{ width: "fit-content",  float:'right',  height:"33px"}} bsStyle="success" onClick={this.toggleEditMode}>
                                                 <i className="fa fa-edit" style={{ marginRight: 2 }} />
                                                 Edit
                                             </Button>
