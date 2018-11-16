@@ -281,7 +281,7 @@
                                     },
                                     success: function (success) {
                                         if (success === "true") {
-                                            alert("i am here");
+                                          
                                             swal({icon: "success", text: "Password reset successfully!", type: "success"});
 
                                         } else {
