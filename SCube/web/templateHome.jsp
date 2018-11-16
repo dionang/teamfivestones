@@ -138,7 +138,12 @@
 
                             <div id="myDiv">   
                             <% for (int i = 0; i < templateList.size(); i++) {
-                            Template template = templateList.get(i);%>
+                                Template template = templateList.get(i);
+                            
+                                if(template.getTemplateId()==1){
+                                    continue;
+                                }
+                            %>
                             <form action="loadTemplate" method="post" id="form<%=i%>" >
                                 <input type=hidden name="templateId" value="<%= template.getTemplateId()%>">
                                 <input type=hidden name="templateName" value="<%= template.getTemplateName()%>">

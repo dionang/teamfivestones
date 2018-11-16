@@ -468,6 +468,21 @@ class App extends Component {
         // completed the rendering of doc
         // upload PDF to public folder
         
+        let self = this;
+       
+        pptx.save(self.state.templateName,function(file){
+            if(typeof(file)=="object"){
+                 let formData = new FormData();
+                 formData.append("file", file, self.state.templateName + ".pptx");
+                 let xhr = new XMLHttpRequest();
+                 xhr.open("POST", api + "saveFile");
+                 xhr.send(formData);
+            }
+               
+//           
+        },'blob')
+        
+        
     }
 
     saveTemplate = () => {
