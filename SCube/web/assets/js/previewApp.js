@@ -703,7 +703,7 @@ class Barchart extends Component {
 
     render() {
         return (
-            <div  style={{ zIndex: 99}}>
+            <div style={{ zIndex: 99}}>
                 { this.state.initialized ?
                     <div>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>

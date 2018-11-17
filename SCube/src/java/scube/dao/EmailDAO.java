@@ -126,7 +126,8 @@ public class EmailDAO {
         BodyPart messageBodyPart = new MimeBodyPart();
         messageBodyPart.setDataHandler(new DataHandler(source));
         int length=filename.length();
-        int lastSlash=filename.lastIndexOf( '\\' );
+        String seperator = File.separator;
+        int lastSlash=filename.lastIndexOf(seperator);
         messageBodyPart.setFileName(filename.substring(lastSlash+1, length));
         multipart.addBodyPart(messageBodyPart);
     }
