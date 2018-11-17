@@ -477,8 +477,7 @@ class App extends Component {
                  let xhr = new XMLHttpRequest();
                  xhr.open("POST", api + "saveFile");
                  xhr.send(formData);
-            }
-               
+            }            
 //           
         },'blob')
         

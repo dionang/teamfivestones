@@ -352,7 +352,7 @@ class DashboardApp extends Component {
                                             return <div key={this.state.pageNo + "," + i}
                                                 style={{
                                                     width: "47%",
-                                                    
+                                                    marginLeft:10
                                                 }}
                                             >
                                             
