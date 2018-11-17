@@ -3,7 +3,9 @@
 <%@page import="scube.dao.ReportDAO"%>
 <%@ include file="protect.jsp" %>
 <%@ page import="scube.entities.*" %>
-<%    Account account = (Account) session.getAttribute("account");
+<%    
+    String api = "https://scube.rocks/images/";
+    Account account = (Account) session.getAttribute("account");
     ArrayList<Template> templateList;
     if (!(account instanceof Manager) && !(account instanceof User)) {
         response.sendRedirect("login.jsp");
@@ -152,7 +154,7 @@
                                     <div class="card card-inverse card-info" >
                                         <div class="card-block">
                                             <!--<img class="card-img-top" src="assets/images/dummyReport.png">-->
-                                            <img class="card-img-top" src="https://scube.rocks/images/<%= template.getTemplateName()%>_slide1.jpg" style="height:150px; width:100%">
+                                            <img class="card-img-top" src="<%= api + template.getTemplateName()%>_slide1.jpg" style="height:150px; width:100%">
 
                                         </div>
                                         <div class="card-footer">

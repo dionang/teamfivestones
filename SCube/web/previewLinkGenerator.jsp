@@ -75,6 +75,7 @@
                 let templateId = document.getElementById('selectedTemplate').value.split(',')[0];
                 let accessToken = document.getElementById('accessToken').value;
                 let previewLink = document.getElementById('previewLink');
+//                let previewUrl = 'https://report.scubeapp.com/SCube/renderPdf.jsp?accessToken=' + accessToken + '&templateId=' + templateId;
                 let previewUrl = 'https://scube.rocks/SCube/renderPdf.jsp?accessToken=' + accessToken + '&templateId=' + templateId;
                 previewLink.value = previewUrl;
             }
