@@ -314,7 +314,7 @@ class App extends Component {
                             // let width = document.getElementById('container').width;
                             // let height = document.getElementById('container').height;
 
-                            doc.addImage(dataUrl, 'PNG', 0, 0, 290, 140);
+                            doc.addImage(dataUrl, 'PNG', 0, 0, 297, 210);
 
                             // 20 is left margin, 200 is top margin
                             doc.text(20, 200, "Page No: " + (i + 1));
@@ -477,8 +477,7 @@ class App extends Component {
                  let xhr = new XMLHttpRequest();
                  xhr.open("POST", api + "saveFile");
                  xhr.send(formData);
-            }
-               
+            }            
 //           
         },'blob')
         
@@ -705,7 +704,7 @@ class App extends Component {
                             </div> */}
 
 
-                            <div className="col-sm-12 col-xs-12" style={{backgroundColor: 'white',height:window.innerHeight*0.13, borderBottom:"#003366 5px solid" }}>
+                            <div className="col-sm-12 col-xs-12" style={{backgroundColor: 'white',height:"100px", borderBottom:"#003366 5px solid" }}>
                                 <div className="col-md-12 col-xs-12" style={{height:"fit-content", marginBottom:5}}>
                                 <label style={{ fontSize: 15, marginRight: 2, float:"left" }}>Template Name:</label>
                                 <input style={{ fontSize: 15, marginLeft: 10, float:"left" }} value={this.state.templateName} onChange={this.renameTemplate} />
@@ -720,17 +719,17 @@ class App extends Component {
                             
                                 <label> Add Component: </label>
                                 <input type="image" data-toggle="tooltip" title="Add Textbox"
-                                    onClick={this.addTextbox} style={{ marginRight: 0.5, height:window.innerHeight*0.035, marginBottom:"-10px" }} src= "assets/images/text.png"/>
+                                    onClick={this.addTextbox} style={{ marginRight: 0.5, height:window.innerHeight*0.035, marginBottom:"-6px" }} src= "assets/images/text.png"/>
                                 <input type="image" data-toggle="tooltip" title="Add Bar Chart"
-                                    onClick={this.addBarChart} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-10px"  }} src= "assets/images/bar chart.png"/>
+                                    onClick={this.addBarChart} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-6px"  }} src= "assets/images/bar chart.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Line Chart" 
-                                    onClick={this.addLineChart} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-10px"  }} src= "assets/images/line chart.png"/>
+                                    onClick={this.addLineChart} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-6px"  }} src= "assets/images/line chart.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Table" 
-                                    onClick={this.addTable} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-10px"  }} src= "assets/images/table.png"/>
+                                    onClick={this.addTable} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-6px"  }} src= "assets/images/table.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Image" 
-                                    onClick={this.addImage} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-10px"  }} src= "assets/images/picture.png"/>
+                                    onClick={this.addImage} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-6px"  }} src= "assets/images/picture.png"/>
                                 <input type="image"  data-toggle="tooltip"  title="Add Video" 
-                                    onClick={this.addVideo} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-10px"  }} src= "assets/images/video_4880.png"/>
+                                    onClick={this.addVideo} style={{ marginRight: 5, height:window.innerHeight*0.035, marginBottom:"-6px"  }} src= "assets/images/video_4880.png"/>
                             
                                 {/*
                                 <Button data-toggle="tooltip" data-placement="bottom" title="Add Textbox" bsStyle="primary"

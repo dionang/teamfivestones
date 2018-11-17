@@ -627,21 +627,18 @@ class Barchart extends Component {
     // do API call to render chartData upon loading of component from DB
     componentWillMount() {
         let self = this;
-        let {title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary} = this.props.properties;
-        if (datasourceUrl == undefined || path == undefined) {
-            request.post({
-                url: api + "getChartDetails",
-                json: true,
-                body: { operation: "getChartDetails", datasourceId: datasourceId, datasetId: datasetId }
-            }, function (error, response, body) {
-                if(body){
-                    console.log(body);
-                    self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){});
-                }
-            });
-        } else {
-            self.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){});
-        }
+        let {title, datasourceId, datasetId, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        console.log("props.properties" + this.props.properties);
+        request.post({
+            url: api + "getChartDetails",
+            json: true,
+            body: { operation: "getChartDetails", datasourceId: datasourceId, datasetId: datasetId }
+        }, function (error, response, body) {
+            if(body){
+                console.log(body);
+                self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){}); //dion changed
+            }
+        });
     }
 
     initialize (title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, callback) {
@@ -660,6 +657,7 @@ class Barchart extends Component {
                 // aggregate the data for the chart
                 let processor = new JsonProcessor();
                 let aggregatedData = processor.getAggregatedData(data, xAxis, yAxis, aggregate, summary);
+                console.log(aggregatedData);
                 let statSummary = {
                     sum: aggregatedData.sum, 
                     avg: aggregatedData.avg,
@@ -701,22 +699,21 @@ class Barchart extends Component {
             let { chartData, summaryData, ...other } = self.state;
             self.props.updateProperties(other, self.props.i);
         });
-    }  
+    }   
 
     render() {
         return (
-            <div className="draggable" style={{ height: "100%" , cursor: "grabbing"}}>
+            <div  style={{ zIndex: 99}}>
                 { this.state.initialized ?
-                    <div style={{ height: "calc(62.5% + 100px)" }}>
+                    <div>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
-                        {this.state.facetype ?
-                        <BarChart data={this.state.chartData} width={650} height={250} margin={{ top: 10, right: 30, left: 20, bottom: 30 }}>
+                        <BarChart data={this.state.chartData} width={400} height={300}>
                             <CartesianGrid strokeDasharray="3 3" />
+                            <Text/>
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
                             </XAxis>
                             <YAxis dataKey={this.state.yAxis}>
-                                <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
                             </YAxis>
                             <Tooltip />
                             <Bar dataKey={this.state.yAxis} fill="#CD5C5C" isAnimationActive={false}/>
@@ -725,26 +722,10 @@ class Barchart extends Component {
 
                             <Legend verticalAlign="top" height={20} />
                         </BarChart>
-                        :
-                        <ResponsiveContainer style={{height:"100%"}}>
-                            <BarChart data={this.state.chartData} width={730} height={250} margin={{ top: 1, right: 30, left: 20, bottom: 30 }}>
-                                <CartesianGrid strokeDa1sharray="3 3" />
-                                <XAxis dataKey={this.state.xAxis}>
-                                    <Label value={this.state.xAxis} offset={-5} position="insideBottom" />
-                                </XAxis>
-                                <YAxis dataKey={this.state.yAxis}>
-                                    <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
-                                </YAxis>
-                                <Tooltip />
-                                <Bar dataKey={this.state.yAxis} fill="#CD5C5C" />
-                                {/* <Bar dataKey="neutral" fill="orange" /> */}
-                                {/* <Bar dataKey="negative" fill="grey" /> */}
-                                <Legend verticalAlign="top" height={20} />
-                            </BarChart>
-                        </ResponsiveContainer>}
+                       
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
-                    : <ChartForm initializeChart={this.initializeChart} style={{cursor: "grabbing"}} />
+                    : <ChartForm initializeChart={this.initializeChart} style={{width:"90%"}} />
                 }
             </div>
         );
@@ -752,8 +733,7 @@ class Barchart extends Component {
 }
 
 class Linechart extends Component {
-   
-     constructor(props) {
+    constructor(props) {
         super(props);
         this.state = {
             ...this.props.properties,
@@ -772,21 +752,17 @@ class Linechart extends Component {
     // do API call to render chartData upon loading of component from DB
     componentWillMount() {
         let self = this;
-        let {title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary} = this.props.properties;
-        if (datasourceUrl == undefined || path == undefined) {
-            request.post({
-                url: api + "getChartDetails",
-                json: true,
-                body: { operation: "getChartDetails", datasourceId: datasourceId, datasetId: datasetId }
-            }, function (error, response, body) {
-                if(body){
-                    console.log(body);
-                    self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){});
-                }
-            });
-        } else {
-            self.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){});
-        }
+        let {title, datasourceId, datasetId, xAxis, yAxis, aggregate, summary} = this.props.properties;
+        request.post({
+            url: api + "getChartDetails",
+            json: true,
+            body: { operation: "getChartDetails", datasourceId: datasourceId, datasetId: datasetId }
+        }, function (error, response, body) {
+            if(body){
+                console.log(body);
+                self.initialize(title, body.datasourceUrl, datasourceId, datasetId, body.path, xAxis, yAxis, aggregate, summary, function(){});
+            }
+        });
     }
 
     initialize (title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, callback) {
@@ -801,7 +777,7 @@ class Linechart extends Component {
                 for (let subpath of path.split("/")) {
                     data = data[subpath];
                 }
-
+                
                 // aggregate the data for the chart
                 let processor = new JsonProcessor();
                 let aggregatedData = processor.getAggregatedData(data, xAxis, yAxis, aggregate, summary);
@@ -813,7 +789,7 @@ class Linechart extends Component {
                     median: aggregatedData.median,
                     var: aggregatedData.var
                 };
-
+                
                 // write the cal for the variance 
                 self.setState({
                     initialized: true,
@@ -829,6 +805,7 @@ class Linechart extends Component {
                     summary: summary,
                     summaryData: statSummary,
                 });
+
                 callback();
             }
         });
@@ -842,48 +819,32 @@ class Linechart extends Component {
         let aggregate = "sum"; // should get from form
 
         this.initialize(title, datasourceUrl, datasourceId, datasetId, path, xAxis, yAxis, aggregate, summary, function(){
-            let { chartData, summaryData, ...other } = self.state;
+            let { chartData, summaryData, datasourceUrl, path, ...other } = self.state;
             self.props.updateProperties(other, self.props.i);
         });
-    }
-   
+    }   
+
     render() {
         return (
-            <div className="draggable" style={{ height: "100%", cursor: "grabbing" }}>
+            <div style={{ zIndex: 99}}>
                 {this.state.initialized ?
-                    <div style={{ height: "calc(70.5% + 1px)" }}>
+                    <div style={{width:"90%"}}>
                         <p style={{ fontFamily: 'Georgia', textAlign: "center", fontSize: 20, }}> {this.state.title} </p>
-                        {this.state.facetype ?
-                        <LineChart width={700} height={250}  margin={{ top: 1,right: 30, left: 20, bottom: 30 }} data={this.state.chartData}>
+                        <LineChart  width={400} height={300} data={this.state.chartData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey={this.state.xAxis}>
                                 <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
                             </XAxis>
                             <YAxis dataKey={this.state.yAxis}>
-                                <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
                             </YAxis>
                             <Tooltip />
                             <Legend verticalAlign="top" height={20} />
                             <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
                         </LineChart>
-                        :
-                        <ResponsiveContainer className="draggable" width="95%" height="90%">
-                            <LineChart width={730} height={250}  margin={{ top: 1,right: 30, left: 20, bottom: 30 }} data={this.state.chartData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey={this.state.xAxis}>
-                                    <Label value={this.state.xAxis}offset={-5} position="insideBottom" />
-                                </XAxis>
-                                <YAxis dataKey={this.state.yAxis}>
-                                    <Label value={this.state.yAxis} offset={-10} position="insideLeft" angle={-90} />
-                                </YAxis>
-                                <Tooltip />
-                                <Legend verticalAlign="top" height={20} />
-                                <Line type="monotone" dataKey={this.state.yAxis} stroke="#8884d8" />
-                            </LineChart>
-                        </ResponsiveContainer>}
+                        
                         {this.state.summary ? <Descriptive summaryData={this.state.summaryData}/> : ""}
                     </div>
-                    : <ChartForm initializeChart={this.initializeChart} style={{cursor: "grabbing"}} />
+                    : <ChartForm initializeChart={this.initializeChart} style={{width:"90%"}}/>
                 }
             </div>
         );   
@@ -993,7 +954,7 @@ class ChartForm extends Component {
     loadDatasource(){
         let self = this;
         request.post({
-            url: api + "loadDatasource",
+            url: api + 'loadDatasource',
             json: true,
             body: { operation: "loadDatasource", companyId: document.getElementById("companyId").value }
         }, function (error, response, body) {
@@ -1084,16 +1045,16 @@ class ChartForm extends Component {
 
                 // render form
                 render={formProps=>(
-                    <Form className="form-horizontal draggable" style={{ height:"100%", width:"100%", backgroundColor:"white"}}>
+                    <Form className="form-horizontal " style={{ height:"100%", width:"90%", backgroundColor:"white", textAligh:"center",marginTop:"20px"}}>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Chart Title</label>
-                            <div className="col-md-7">
+                            <label>Chart Title</label>
+                            <div>
                                 <Field className="form-control nonDraggable" type="text" name="title" placeholder="Chart Title" />
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the datasource</label>
-                            <div className="col-md-7">
+                            <label>Choose the datasource</label>
+                            <div>
                                 <Field className="form-control" component="select" name="datasource" onChange={(e)=>this.loadDataset(e.target.value, formProps)}>
                                     {self.state.datasources.map((datasource)=>
                                         <option key={"datasource" + datasource.id} value={datasource.id}>{datasource.name}</option>
@@ -1102,9 +1063,9 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the dataset</label>
-                            <div className="col-md-7">
-                                <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target.value, formProps)}>
+                            <label>Choose the dataset</label>
+                            <div>
+                                <Field className="form-control" component="select" name="path" onChange={(e)=>this.loadListOptions(e.target, formProps)}>
                                     {self.state.datasets.map((dataset)=>
                                         <option key={"path" + dataset.id} value={dataset.id}>{dataset.name}</option>
                                     )}  
@@ -1112,8 +1073,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the X&#8209;Axis</label>
-                            <div className="col-md-7">
+                            <label >Choose the X&#8209;Axis</label>
+                            <div >
                                 <Field className="form-control" component="select" name="xAxis">
                                     {/* gets the option based on selected dataset */}
                                     {self.state.listOptions.map((listOption)=>
@@ -1125,8 +1086,8 @@ class ChartForm extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-3 control-label">Choose the Y&#8209;Axis</label>
-                            <div className="col-md-7">
+                            <label>Choose the Y&#8209;Axis</label>
+                            <div>
                                 <Field className="form-control" component="select" name="yAxis">
                                     {self.state.listOptions.map((listOption)=>
                                         {if(listOption.infoType === "numerical") {
@@ -1147,7 +1108,7 @@ class ChartForm extends Component {
                                 </div>
                             </div>
                         </div>
-                        <Button className="col-md-offset-5 col-md-2" type="submit">Submit</Button>
+                        <Button className="col-md-offset-3 col-md-7" style={{backgroundColor:"#E0E0E0"}} type="submit">Submit</Button>
                         
                         {/* <DisplayFormikState {...this.props}/> */}
                     </Form>

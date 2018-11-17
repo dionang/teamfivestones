@@ -142,7 +142,7 @@
                             <% for (int i = 0; i < templateList.size(); i++) {
                                 Template template = templateList.get(i);
                             
-                                if(template.getTemplateId()==1){
+                                if(template.getTemplateId() == 1){
                                     continue;
                                 }
                             %>
