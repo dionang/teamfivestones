@@ -314,7 +314,7 @@ class App extends Component {
                             // let width = document.getElementById('container').width;
                             // let height = document.getElementById('container').height;
 
-                            doc.addImage(dataUrl, 'PNG', 0, 0, 297, 210);
+                            doc.addImage(dataUrl, 'PNG', 0, 0, 280, 131);
 
                             // 20 is left margin, 200 is top margin
                             doc.text(20, 200, "Page No: " + (i + 1));
