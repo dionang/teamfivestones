@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    loadChartBoxes();
+//    loadChartBoxes();
     
     // Toggle sidebar
     $('#options li').click(function () {

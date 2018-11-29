@@ -10,8 +10,8 @@ import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Label, Leg
 import { Formik, Form, Field } from 'formik';
 
 //const api = 'http://localhost:8084/';
-const api = 'https://scube.rocks/SCube/';
-//const api = 'https://report.scubeapp.com/SCube/';
+//const api = 'https://scube.rocks/SCube/';
+const api = 'https://report.scubeapp.com/SCube/';
 //const api = 'http://18.222.40.231/SCube/';
 
 class Slideshow extends Component {

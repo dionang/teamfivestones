@@ -4,7 +4,8 @@
 <%@ include file="protect.jsp" %>
 <%@ page import="scube.entities.*" %>
 <%    
-    String api = "https://scube.rocks/images/";
+//    String api = "https://scube.rocks/images/";
+    String api = "https://report.scubeapp.com/images/";
     Account account = (Account) session.getAttribute("account");
     ArrayList<Template> templateList;
     if (!(account instanceof Manager) && !(account instanceof User)) {
